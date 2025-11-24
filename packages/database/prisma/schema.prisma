@@ -1,0 +1,546 @@
+// Prisma schema for CMS Platform
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ORGANIZATION MODELS
+// ============================================
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique // URL-friendly, unique identifier
+  joinCode  String   @unique // 8-char code for manual joining
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members      OrganizationMember[]
+  articles     Article[]
+  tags         Tag[]
+  invites      OrganizationInvite[]
+  joinRequests JoinRequest[]
+
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId      String       @unique // Each user in exactly ONE org
+  profile        Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  role           MemberRole   @default(MEMBER)
+  joinedAt       DateTime     @default(now())
+
+  @@index([profileId])
+  @@map("organization_members")
+}
+
+model OrganizationInvite {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  token          String       @unique // UUID for invite link
+  email          String? // Optional: specific email
+  createdBy      String // ProfileId of admin who created
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+
+  @@index([token])
+  @@index([organizationId])
+  @@map("organization_invites")
+}
+
+model JoinRequest {
+  id             String        @id @default(uuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId      String
+  profile        Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  status         RequestStatus @default(PENDING)
+  requestedAt    DateTime      @default(now())
+  reviewedAt     DateTime?
+  reviewedBy     String? // ProfileId of admin who approved/denied
+
+  @@unique([organizationId, profileId])
+  @@index([profileId])
+  @@index([status])
+  @@index([organizationId])
+  @@map("join_requests")
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+// ============================================
+// PROFILE MODEL
+// ============================================
+
+model Profile {
+  id              String    @id // Supabase auth.users.id
+  fullName        String?
+  email           String    @unique
+  isAdmin         Boolean   @default(false)
+  accessGrantedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  articles               Article[]
+  organizationMembership OrganizationMember?
+  joinRequests           JoinRequest[]
+
+  @@map("profiles")
+}
+
+// ============================================
+// ARTICLE MODEL
+// ============================================
+
+model Article {
+  id           String          @id @default(uuid())
+  title        String
+  content      String          @db.Text
+  category     ContentCategory @default(EVERGREEN) // Content classification
+  thumbnailUrl String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  isApproved   Boolean         @default(false)
+  approvedAt   DateTime?
+  approvedBy   String?
+  submissions  Submission[]
+
+  userId  String
+  profile Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("articles")
+}
+
+// ============================================
+// SUBMISSION MODEL
+// ============================================
+
+model Submission {
+  id        String           @id @default(uuid())
+  articleId String
+  article   Article          @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  status    SubmissionStatus @default(PENDING)
+
+  // Language for this submission - all outputs will be in this language
+  language Language @default(ENGLISH)
+
+  // Track which media types were requested
+  // Note: Video automatically includes bubbles (video quiz)
+  // Interactive Podcast requires Podcast to be generated first
+  generateAudio              Boolean @default(true)
+  generatePodcast            Boolean @default(true)
+  generateVideo              Boolean @default(true) // Includes video quiz bubbles
+  generateQuiz               Boolean @default(true)
+  generateInteractivePodcast Boolean @default(true) // Requires podcast
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations to output models
+  audioOutputs              AudioOutput[]
+  podcastOutputs            PodcastOutput[]
+  videoOutputs              VideoOutput[]
+  quizOutputs               QuizOutput[]
+  interactivePodcastOutputs InteractivePodcastOutput[]
+
+  @@map("submissions")
+}
+
+enum SubmissionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  PARTIAL_COMPLETE
+}
+
+enum Language {
+  ENGLISH
+  MARATHI
+  HINDI
+  BENGALI
+}
+
+// ============================================
+// AUDIO OUTPUT MODEL
+// ============================================
+
+model AudioOutput {
+  id           String       @id @default(uuid())
+  submissionId String
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       OutputStatus @default(PENDING)
+
+  // Audio-specific fields
+  speakableScript String? @db.Text
+  audioFileUrl    String?
+  voiceId         String?
+  duration        Int? // Duration in seconds
+
+  // Approval tracking
+  isApproved Boolean   @default(false)
+  approvedAt DateTime?
+  approvedBy String?
+
+  // Relations
+  tags AudioOutputTag[]
+
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("audio_outputs")
+}
+
+// ============================================
+// PODCAST OUTPUT MODEL
+// ============================================
+
+model PodcastOutput {
+  id           String       @id @default(uuid())
+  submissionId String
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       OutputStatus @default(PENDING)
+
+  // Podcast-specific fields
+  title        String?
+  thumbnailUrl String?
+  transcript   String? @db.Text
+  audioFileUrl String?
+  segments     Json? // Array of {speaker, text, audioUrl, startTime, endTime}
+  wordTimings  Json? // Array of {word, startTime, endTime} for interactive podcast
+  duration     Int? // Total duration in seconds
+
+  // Approval tracking
+  isApproved Boolean   @default(false)
+  approvedAt DateTime?
+  approvedBy String?
+
+  // Relations
+  tags PodcastOutputTag[]
+
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("podcast_outputs")
+}
+
+// ============================================
+// VIDEO OUTPUT MODEL
+// ============================================
+
+model VideoOutput {
+  id           String       @id @default(uuid())
+  submissionId String
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       OutputStatus @default(PENDING)
+
+  // Video-specific fields (one record per video)
+  title             String?
+  script            String? @db.Text
+  videoUrl          String?
+  thumbnailUrl      String?
+  heygenVideoId     String? // HeyGen video ID for tracking
+  submagicProjectId String? // Submagic project ID for webhook matching
+  duration          Int? // Duration in seconds
+  transcript        String? @db.Text
+  wordTimings       Json? // Array of {text, start_time, end_time} for detailed word-level transcript
+  bubbles           VideoBubble[]
+
+  // HeyGen character configuration
+  heygenCharacterType String? // 'talking_photo' or 'avatar'
+  heygenCharacterId   String? // talking_photo_id or avatar_id from HeyGen
+  heygenVoiceId       String? // voice_id from HeyGen
+
+  // Submagic editing configuration
+  submagicTemplate      String? // e.g., "Ella", "Sara", "Daniel", "Tracy"
+  enableCaptions        Boolean @default(true)
+  enableMagicZooms      Boolean @default(true)
+  enableMagicBrolls     Boolean @default(true
+  magicBrollsPercentage Int?    @default(40) // 0-100
+
+  // Approval tracking
+  isApproved Boolean   @default(false)
+  approvedAt DateTime?
+  approvedBy String?
+
+  // Relations
+  tags VideoOutputTag[]
+
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("video_outputs")
+}
+
+model VideoBubble {
+  id            String       @id @default(uuid())
+  videoOutputId String
+  videoOutput   VideoOutput  @relation(fields: [videoOutputId], references: [id], onDelete: Cascade)
+
+  appearsAt     Int          // in seconds or ms, your choice
+  order         Int?         // position if multiple bubbles at same time
+
+  question      String       @db.Text
+  options       Json?        // [{id, text}] for MCQ, optional for TRUE_FALSE / FILL_BLANK
+  correctAnswer Json?        // String / array / structured as you prefer
+  explanation   String?      @db.Text
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([videoOutputId, appearsAt])
+  @@map("video_bubbles")
+}
+
+// ============================================
+// QUIZ OUTPUT MODEL
+// ============================================
+
+model QuizOutput {
+  id           String       @id @default(uuid())
+  submissionId String
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       OutputStatus @default(PENDING)
+
+  // Quiz-specific fields
+  questions QuizQuestion[]
+
+  // Approval tracking
+  isApproved Boolean   @default(false)
+  approvedAt DateTime?
+  approvedBy String?
+
+  // Relations
+  tags QuizOutputTag[]
+
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("quiz_outputs")
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_BLANK
+  // add more as needed (DRAG_DROP, SCALE, etc.)
+}
+
+model QuizQuestion {
+  id           String       @id @default(uuid())
+  quizOutputId String
+  quizOutput   QuizOutput   @relation(fields: [quizOutputId], references: [id], onDelete: Cascade)
+
+  order        Int          // position in quiz
+  type         QuestionType // MULTIPLE_CHOICE / TRUE_FALSE / FILL_BLANK
+
+  prompt       String       @db.Text          // question text
+  stem         String?      @db.Text          // optional extra context
+  options      Json?        // [{id, text}] for MCQ/fill-blank choices
+  correctAnswer Json?       // string/array/map depending on type
+  explanation  String?      @db.Text
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([quizOutputId, order])
+  @@map("quiz_questions")
+}
+
+
+// ============================================
+// INTERACTIVE PODCAST OUTPUT MODEL
+// ============================================
+
+model InteractivePodcastOutput {
+  id           String       @id @default(uuid())
+  submissionId String
+  submission   Submission   @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  status       OutputStatus @default(PENDING)
+
+  // Interactive podcast-specific fields
+  title        String?
+  thumbnailUrl String?
+  audioFileUrl String?
+  duration     Int? // Total duration in seconds
+  // Segments structure: Array of TranscriptSegment objects
+  // Each segment: {id, startTime, endTime, text, words?: [{text, start_time, end_time, isBlank?, correctAnswer?}], interactive?: {triggerTime, type: 'fill-blank', question, options: [], correctAnswer, explanation}}
+  segments     Json?
+
+  // Approval tracking
+  isApproved Boolean   @default(false)
+  approvedAt DateTime?
+  approvedBy String?
+
+  // Relations
+  tags InteractivePodcastOutputTag[]
+
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("interactive_podcast_outputs")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum OutputStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ContentCategory {
+  EVERGREEN // Financial basics, foundational knowledge
+  PERIODIC_UPDATES // Regular scheduled updates
+  MARKET_UPDATES // Real-time market changes
+}
+
+// ============================================
+// TAG MODELS
+// ============================================
+
+model Tag {
+  id          String   @id @default(uuid())
+  name        String // e.g., "Machine Learning", "Health & Wellness"
+  description String?  @db.Text
+  category    String? // e.g., "Technology", "Education", "Health"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Relations to content types
+  audioOutputTags              AudioOutputTag[]
+  podcastOutputTags            PodcastOutputTag[]
+  videoOutputTags              VideoOutputTag[]
+  interactivePodcastOutputTags InteractivePodcastOutputTag[]
+  quizOutputTags               QuizOutputTag[]
+
+  @@unique([organizationId, name]) // Tag names must be unique within an organization
+  @@index([organizationId])
+  @@map("tags")
+}
+
+// Junction table: AudioOutput <-> Tag
+model AudioOutputTag {
+  id            String      @id @default(uuid())
+  audioOutputId String
+  audioOutput   AudioOutput @relation(fields: [audioOutputId], references: [id], onDelete: Cascade)
+  tagId         String
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Language inheritance tracking
+  sourceAudioOutputId String? // If non-English, references the English AudioOutput it inherited from
+  isInherited         Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([audioOutputId, tagId])
+  @@map("audio_output_tags")
+}
+
+// Junction table: PodcastOutput <-> Tag
+model PodcastOutputTag {
+  id              String        @id @default(uuid())
+  podcastOutputId String
+  podcastOutput   PodcastOutput @relation(fields: [podcastOutputId], references: [id], onDelete: Cascade)
+  tagId           String
+  tag             Tag           @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Language inheritance tracking
+  sourcePodcastOutputId String? // If non-English, references the English PodcastOutput it inherited from
+  isInherited           Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([podcastOutputId, tagId])
+  @@map("podcast_output_tags")
+}
+
+// Junction table: VideoOutput <-> Tag
+model VideoOutputTag {
+  id            String      @id @default(uuid())
+  videoOutputId String
+  videoOutput   VideoOutput @relation(fields: [videoOutputId], references: [id], onDelete: Cascade)
+  tagId         String
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Language inheritance tracking
+  sourceVideoOutputId String? // If non-English, references the English VideoOutput it inherited from
+  isInherited         Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([videoOutputId, tagId])
+  @@map("video_output_tags")
+}
+
+// Junction table: InteractivePodcastOutput <-> Tag
+model InteractivePodcastOutputTag {
+  id                   String                   @id @default(uuid())
+  interactivePodcastId String
+  interactivePodcast   InteractivePodcastOutput @relation(fields: [interactivePodcastId], references: [id], onDelete: Cascade)
+  tagId                String
+  tag                  Tag                      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Language inheritance tracking
+  sourceInteractivePodcastId String? // If non-English, references the English InteractivePodcastOutput
+  isInherited                Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([interactivePodcastId, tagId])
+  @@map("interactive_podcast_output_tags")
+}
+
+// Junction table: QuizOutput <-> Tag
+model QuizOutputTag {
+  id           String     @id @default(uuid())
+  quizOutputId String
+  quizOutput   QuizOutput @relation(fields: [quizOutputId], references: [id], onDelete: Cascade)
+  tagId        String
+  tag          Tag        @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Language inheritance tracking
+  sourceQuizOutputId String? // If non-English, references the English QuizOutput it inherited from
+  isInherited        Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([quizOutputId, tagId])
+  @@map("quiz_output_tags")
+}
