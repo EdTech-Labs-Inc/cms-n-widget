@@ -1,0 +1,421 @@
+.interactive-podcast-player {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.interactive-podcast-player,
+.interactive-podcast-player * {
+  color: white;
+}
+
+.podcast-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Top Header */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(0, 6, 49, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.back-button {
+  background: rgba(217, 156, 87, 0.1);
+  border: 1px solid rgba(217, 156, 87, 0.2);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
+}
+
+.back-button:hover {
+  background: rgba(217, 156, 87, 0.2);
+  border-color: var(--gold-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.88);
+  transform: translateY(-1px);
+}
+
+.header-text {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.podcast-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+.podcast-subtitle {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Main Content Area */
+.podcast-main {
+  flex: 1;
+  overflow: hidden;
+  margin-top: 140px;
+  padding-bottom: 120px;
+}
+
+/* Bottom Left Progress */
+.bottom-left-progress {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 100;
+}
+
+.progress-circle {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  background: rgba(217, 156, 87, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(217, 156, 87, 0.3);
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-stroke {
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-text {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+}
+
+.progress-score {
+  color: var(--gold-secondary);
+  font-weight: 800;
+}
+
+.progress-divider {
+  opacity: 0.6;
+  font-weight: 600;
+}
+
+/* Bottom Right Play Button */
+.bottom-right-play-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+  z-index: 100;
+}
+
+.bottom-right-play-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 28px rgba(223, 159, 57, 0.5);
+}
+
+.bottom-right-play-button:active {
+  transform: scale(0.95);
+}
+
+.bottom-right-play-button svg {
+  width: 48px;
+  height: 48px;
+}
+
+.bottom-right-play-button.disabled-for-interaction {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+  animation: disabledPulse 2s infinite;
+}
+
+.bottom-right-play-button.disabled-for-interaction:hover {
+  transform: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes disabledPulse {
+  0%, 100% { 
+    opacity: 0.6;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  50% { 
+    opacity: 0.4;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Start Interface */
+.start-interface {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+  text-align: center;
+  max-width: 700px;
+  width: 90%;
+}
+
+.game-explanation {
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+
+.game-explanation p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.gold-start-button {
+  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(223, 159, 57, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 140px;
+}
+
+.gold-start-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(223, 159, 57, 0.6);
+}
+
+.gold-start-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes goldButtonPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(223, 159, 57, 0.4);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(223, 159, 57, 0.6);
+  }
+}
+
+/* Countdown Timer */
+.countdown-timer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.countdown-circle {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+  animation: countdownPulse 1s ease-in-out infinite;
+}
+
+.countdown-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.countdown-stroke {
+  transition: stroke-dashoffset 1s linear;
+}
+
+.countdown-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+  z-index: 1;
+}
+
+.countdown-text {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(217, 156, 87, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 0.375rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(217, 156, 87, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes countdownPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(223, 159, 57, 0.6);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .top-header {
+    padding: 1rem;
+  }
+
+  .podcast-title {
+    font-size: 1.25rem;
+  }
+
+  .podcast-main {
+    margin-top: 120px;
+    padding-bottom: 100px;
+  }
+
+  .bottom-left-progress {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .progress-circle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .progress-ring {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .progress-circle svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .progress-text {
+    font-size: 0.875rem;
+  }
+
+  .progress-score {
+    font-size: 0.875rem;
+  }
+
+  .progress-divider {
+    font-size: 0.875rem;
+  }
+
+  .countdown-timer {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .countdown-circle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .countdown-progress {
+    width: 64px;
+    height: 64px;
+  }
+
+  .countdown-number {
+    font-size: 1.25rem;
+  }
+
+  .countdown-text {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.625rem;
+  }
+
+  .bottom-right-play-button {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 64px;
+    height: 64px;
+  }
+
+  .bottom-right-play-button svg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .start-interface {
+    max-width: 90%;
+    padding: 0 1rem;
+  }
+
+  .game-explanation p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
