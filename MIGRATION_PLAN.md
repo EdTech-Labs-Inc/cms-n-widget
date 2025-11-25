@@ -293,7 +293,110 @@ git commit -m "Phase 2: Database schema with normalized VideoBubble and QuizQues
    cp old-code/apps/backend/lib/services/core/file-extraction.service.ts apps/backend/lib/services/core/
    ```
 
-4. **Replace console.log with Structured Logging**
+4. **Standalone Services** (4 services - REQUIRES SCHEMA UPDATES)
+
+   Copy from `/_old-code/apps/backend/lib/services/`:
+   ```bash
+   # Copy standalone service files
+   cp _old-code/apps/backend/lib/services/submission.service.ts apps/backend/lib/services/
+   cp _old-code/apps/backend/lib/services/ai-tagging.service.ts apps/backend/lib/services/
+   cp _old-code/apps/backend/lib/services/profile.service.ts apps/backend/lib/services/
+   cp _old-code/apps/backend/lib/services/tag.service.ts apps/backend/lib/services/
+   ```
+
+   **🔴 CRITICAL SCHEMA UPDATES REQUIRED:**
+
+   **submission.service.ts (462 lines):**
+   - Orchestrates media generation for submissions
+   - **⚠️ SCHEMA UPDATE at Line 106:**
+     ```typescript
+     // OLD CODE (don't copy):
+     const quizOutput = await prisma.quizOutput.create({
+       data: {
+         submissionId: submission.id,
+         status: 'PENDING',
+         questions: [], // ❌ JSON column - remove this!
+       },
+     });
+
+     // NEW CODE (use this):
+     const quizOutput = await prisma.quizOutput.create({
+       data: {
+         submissionId: submission.id,
+         status: 'PENDING',
+         // questions is now a relation, not a JSON field
+       },
+     });
+     ```
+
+   - **⚠️ INCLUDE UPDATES at Lines 260-276:**
+     ```typescript
+     // When fetching videoOutputs, add bubbles relation:
+     videoOutputs: {
+       include: {
+         bubbles: { orderBy: { appearsAt: 'asc' } },
+         tags: { include: { tag: true } },
+       },
+     },
+
+     // When fetching quizOutputs, add questions relation:
+     quizOutputs: {
+       include: {
+         questions: { orderBy: { order: 'asc' } },
+         tags: { include: { tag: true } },
+       },
+     },
+     ```
+
+   **ai-tagging.service.ts (572 lines):**
+   - Generates AI tags for content using OpenAI
+   - **⚠️ SCHEMA UPDATE at Line 363:**
+     ```typescript
+     // OLD CODE (accessing questions as JSON):
+     if (!quizOutput || !quizOutput.questions) {
+       console.log(`⚠️  Skipping quiz tagging - no questions available`);
+       return;
+     }
+
+     // NEW CODE (questions is now a relation):
+     const quizOutput = await prisma.quizOutput.findUnique({
+       where: { id: quizOutputId },
+       include: {
+         submission: { include: { article: true } },
+         questions: { orderBy: { order: 'asc' } }, // ✅ Include relation
+       },
+     });
+
+     if (!quizOutput || !quizOutput.questions || quizOutput.questions.length === 0) {
+       console.log(`⚠️  Skipping quiz tagging - no questions available`);
+       return;
+     }
+     ```
+
+   - **⚠️ FIELD NAME UPDATE at Lines 377-384:**
+     ```typescript
+     // OLD CODE (accessing q.question field):
+     const questionsText = questions
+       .map((q, i) => `${i + 1}. ${q.question} ${q.explanation ? `(${q.explanation})` : ""}`)
+       .join("\n");
+
+     // NEW CODE (use q.prompt field):
+     const questionsText = questions
+       .map((q, i) => `${i + 1}. ${q.prompt} ${q.explanation ? `(${q.explanation})` : ""}`)
+       .join("\n");
+     ```
+
+   **profile.service.ts (388 lines):**
+   - User profile and organization management
+   - ✅ NO SCHEMA UPDATES NEEDED (doesn't interact with VideoOutput/QuizOutput)
+   - Copy as-is and update console.log → logger
+
+   **tag.service.ts (253 lines):**
+   - CRUD operations for tags
+   - ✅ NO SCHEMA UPDATES NEEDED (doesn't interact with VideoOutput/QuizOutput)
+   - Copy as-is and update console.log → logger
+
+5. **Replace console.log with Structured Logging**
 
    In ALL copied services:
    ```typescript
@@ -308,7 +411,11 @@ git commit -m "Phase 2: Database schema with normalized VideoBubble and QuizQues
 **🔴 Audit Checklist:**
 - [ ] OpenAI service split into 2 files
 - [ ] All 5+ prompts removed from OpenAI service
-- [ ] All console.log replaced with logger
+- [ ] submission.service.ts: Removed `questions: []` from QuizOutput create (line 106)
+- [ ] submission.service.ts: Added bubbles/questions includes to getSubmission() (lines 260-276)
+- [ ] ai-tagging.service.ts: Updated tagQuizOutput() to include questions relation (line 363)
+- [ ] ai-tagging.service.ts: Changed `q.question` to `q.prompt` in questionsText mapping (lines 377-384)
+- [ ] All console.log replaced with logger in all 12 service files
 - [ ] All services import from `@repo/logging`
 
 **Git Commit:**
