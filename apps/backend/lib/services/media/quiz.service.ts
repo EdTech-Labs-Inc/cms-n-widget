@@ -1,0 +1,118 @@
+import { openaiService } from '../external/openai.service';
+import { aiTaggingService } from '../ai-tagging.service';
+import { prisma } from '../../config/database';
+import { QuizQuestionsSchema } from '@/types/schemas';
+import { logger } from '@repo/logging';
+
+/**
+ * Quiz Service - Generate quiz questions from articles
+ *
+ * Workflow:
+ * 1. Take article content
+ * 2. Use OpenAI to generate quiz questions (MCQ, TRUE_FALSE)
+ * 3. Save questions to database
+ */
+export class QuizService {
+  /**
+   * Generate quiz questions for an article
+   */
+  async generateQuiz(articleId: string, outputId: string, language: string = 'ENGLISH', organizationId?: string): Promise<void> {
+    try {
+      // Update status to PROCESSING
+      await prisma.quizOutput.update({
+        where: { id: outputId },
+        data: { status: 'PROCESSING' },
+      });
+
+      // Get article and submission to get language
+      const quizOutput = await prisma.quizOutput.findUnique({
+        where: { id: outputId },
+        include: {
+          submission: {
+            include: { article: true }
+          }
+        }
+      });
+
+      if (!quizOutput?.submission?.article) {
+        throw new Error('Article not found');
+      }
+
+      const article = quizOutput.submission.article;
+      const languageToUse = quizOutput.submission.language || language;
+
+      // Use organizationId from parameter or article
+      const orgId = organizationId || article.organizationId;
+
+      const languageMap: Record<string, string> = {
+        ENGLISH: 'English',
+        MARATHI: 'Marathi',
+        HINDI: 'Hindi',
+        BENGALI: 'Bengali',
+      };
+      const languageName = languageMap[languageToUse] || 'English';
+
+      // Generate quiz questions using OpenAI
+      const prompt = `generate_quiz_questions_prompt`;
+
+      const result = await openaiService.generateStructured({
+        prompt,
+        schema: QuizQuestionsSchema,
+        schemaName: 'QuizQuestions',
+        systemPrompt: `generate_quiz_questions_system_prompt`,
+        temperature: 0.7,
+      });
+
+      // 🔴 CRITICAL SCHEMA UPDATE: Create QuizQuestion rows (not JSON)
+      await prisma.quizQuestion.createMany({
+        data: result.questions.map((q: any, index: number) => ({
+          quizOutputId: outputId,
+          order: index,
+          type: q.type,
+          prompt: q.prompt,
+          stem: q.stem,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation,
+        }))
+      });
+
+      // Update quiz status to COMPLETED
+      await prisma.quizOutput.update({
+        where: { id: outputId },
+        data: {
+          status: 'COMPLETED',
+        },
+      });
+
+      logger.info('Quiz generated successfully', {
+        articleId,
+        outputId,
+        questionCount: result.questions.length
+      });
+
+      // Auto-tag the quiz output (only for English)
+      await aiTaggingService.tagQuizOutput(outputId);
+    } catch (error) {
+      logger.error('Quiz generation error', {
+        articleId,
+        outputId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+
+      // Update status to FAILED with error message
+      await prisma.quizOutput.update({
+        where: { id: outputId },
+        data: {
+          status: 'FAILED',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        },
+      });
+
+      throw error;
+    }
+  }
+}
+
+// Singleton instance
+export const quizService = new QuizService();

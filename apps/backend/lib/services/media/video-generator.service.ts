@@ -1,0 +1,251 @@
+import { openaiService } from '../external/openai.service';
+import { heygenService } from '../external/heygen.service';
+import { prisma } from '../../config/database';
+import { VideoScriptsSchema } from '@/types/schemas';
+import { logger } from '@repo/logging';
+
+/**
+ * Video Generator Service - Generate videos from articles
+ *
+ * Workflow (Webhook-based):
+ * 1. Generate 1-3 video scripts from article (OpenAI)
+ * 2. For each script:
+ *    - Create HeyGen video (non-blocking)
+ *    - Store video ID and script in pending state
+ * 3. HeyGen webhook notifies when video is ready (handled by video-webhook.service.ts)
+ */
+export class VideoGeneratorService {
+  /**
+   * Generate videos with bubbles for an article
+   * Creates HeyGen videos but doesn't wait for completion (webhook-based)
+   * Now creates one VideoOutput record per video (not a JSON array)
+   */
+  async generateVideos(articleId: string, language: string = 'ENGLISH', organizationId?: string): Promise<void> {
+    try {
+      // Get article and submission
+      const article = await prisma.article.findUnique({
+        where: { id: articleId },
+        include: {
+          submissions: {
+            where: {
+              language: language as any,
+              articleId: articleId
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 1
+          }
+        },
+      });
+
+      if (!article) {
+        throw new Error('Article not found');
+      }
+
+      const submission = article.submissions[0];
+      if (!submission) {
+        throw new Error('Submission not found');
+      }
+
+      // Use organizationId from parameter or article
+      const orgId = organizationId || article.organizationId;
+
+      const languageToUse = submission.language || language;
+      logger.info('Generating videos for article', {
+        articleTitle: article.title,
+        language: languageToUse
+      });
+
+      // Step 1: Generate video scripts (1-3 videos)
+      const { videos: scriptList } = await this.generateVideoScripts(article.title, article.content, languageToUse);
+
+      logger.info('Generated video scripts', { scriptCount: scriptList.length });
+
+
+      // Step 2: Create VideoOutput for each script and initiate HeyGen videos
+      let processedCount = 0;
+
+      for (const scriptData of scriptList) {
+        const { title, script } = scriptData;
+
+        // Check if VideoOutput already exists (created by submission.service with customization)
+        let videoOutput = await prisma.videoOutput.findFirst({
+          where: {
+            submissionId: submission.id,
+            status: 'PENDING',
+          },
+        });
+
+        if (videoOutput) {
+          // Update existing VideoOutput with title and script
+          logger.info('Using existing VideoOutput with customization settings', {
+            videoOutputId: videoOutput.id
+          });
+          videoOutput = await prisma.videoOutput.update({
+            where: { id: videoOutput.id },
+            data: {
+              status: 'PROCESSING',
+              title,
+              script,
+            },
+          });
+        } else {
+          // Create VideoOutput record in PROCESSING state (fallback for legacy flow)
+          logger.info('Creating new VideoOutput without customization');
+          videoOutput = await prisma.videoOutput.create({
+            data: {
+              submissionId: submission.id,
+              status: 'PROCESSING',
+              title,
+              script,
+            },
+          });
+        }
+
+        // Initiate HeyGen video creation (non-blocking)
+        // Use character configuration from VideoOutput if set, otherwise use defaults
+        const { videoId } = await heygenService.generateVideo({
+          script,
+          title,
+          characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
+          characterId: videoOutput.heygenCharacterId || undefined,
+          voiceId: videoOutput.heygenVoiceId || undefined,
+        });
+
+        logger.info('HeyGen video initiated', {
+          videoId,
+          title,
+          videoOutputId: videoOutput.id
+        });
+
+        // Update VideoOutput with HeyGen video ID
+        await prisma.videoOutput.update({
+          where: { id: videoOutput.id },
+          data: {
+            heygenVideoId: videoId,
+          },
+        });
+
+        processedCount++;
+      }
+
+      logger.info('Initiated HeyGen videos', {
+        processedCount,
+        totalScripts: scriptList.length
+      });
+    } catch (error) {
+      logger.error('Video Generation Error', {
+        error: error instanceof Error ? error.message : error
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Generate video scripts from article
+   */
+  private async generateVideoScripts(title: string, content: string, language: string = 'ENGLISH') {
+    const languageMap: Record<string, string> = {
+      ENGLISH: 'English',
+      MARATHI: 'Marathi',
+      HINDI: 'Hindi',
+      BENGALI: 'Bengali',
+    };
+    const languageName = languageMap[language] || 'English';
+
+    const prompt = `generate_video_scripts_prompt`;
+
+    return await openaiService.generateStructured({
+      prompt,
+      schema: VideoScriptsSchema,
+      schemaName: 'VideoScripts',
+      systemPrompt: `generate_video_scripts_system_prompt`,
+      temperature: 0.7,
+    });
+  }
+
+  /**
+   * Regenerate video with edited script
+   * Initiates a new HeyGen video generation with the updated script
+   */
+  async regenerateVideo(videoOutputId: string): Promise<void> {
+    try {
+      logger.info('Regenerating video', { videoOutputId });
+
+      // Get the video output with its script and customization settings
+      const videoOutput = await prisma.videoOutput.findUnique({
+        where: { id: videoOutputId },
+        include: {
+          submission: {
+            include: {
+              article: true,
+            },
+          },
+        },
+      });
+
+      if (!videoOutput) {
+        throw new Error('Video output not found');
+      }
+
+      if (!videoOutput.script) {
+        throw new Error('No script available for regeneration');
+      }
+
+      logger.info('Using edited script for regeneration', {
+        scriptLength: videoOutput.script.length
+      });
+
+      // Update status to PROCESSING
+      await prisma.videoOutput.update({
+        where: { id: videoOutputId },
+        data: {
+          status: 'PROCESSING',
+          error: null, // Clear any previous errors
+        },
+      });
+
+      // Initiate HeyGen video creation with the edited script
+      // Use existing character configuration if set
+      const { videoId } = await heygenService.generateVideo({
+        script: videoOutput.script,
+        title: videoOutput.title || videoOutput.submission.article.title,
+        characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
+        characterId: videoOutput.heygenCharacterId || undefined,
+        voiceId: videoOutput.heygenVoiceId || undefined,
+      });
+
+      logger.info('HeyGen video initiated for regeneration', {
+        videoId,
+        videoOutputId
+      });
+
+      // Update VideoOutput with new HeyGen video ID
+      await prisma.videoOutput.update({
+        where: { id: videoOutputId },
+        data: {
+          heygenVideoId: videoId,
+        },
+      });
+
+      logger.info('Video regeneration initiated, awaiting webhook callback');
+    } catch (error) {
+      logger.error('Video Regeneration Error', {
+        error: error instanceof Error ? error.message : error
+      });
+
+      // Mark as failed
+      await prisma.videoOutput.update({
+        where: { id: videoOutputId },
+        data: {
+          status: 'FAILED',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        },
+      });
+
+      throw error;
+    }
+  }
+}
+
+// Singleton instance
+export const videoGeneratorService = new VideoGeneratorService();
