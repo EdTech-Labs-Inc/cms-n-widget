@@ -37,6 +37,40 @@ export const SubmissionsController = {
     return await submissionService.getSubmission(id);
   },
 
+  async getVideoOutput(videoId: string) {
+    return await prisma.videoOutput.findUnique({
+      where: { id: videoId },
+      include: {
+        bubbles: {
+          orderBy: { appearsAt: 'asc' },
+        },
+        tags: {
+          include: { tag: true },
+        },
+        submission: {
+          include: { article: true },
+        },
+      },
+    });
+  },
+
+  async getQuizOutput(quizId: string) {
+    return await prisma.quizOutput.findUnique({
+      where: { id: quizId },
+      include: {
+        questions: {
+          orderBy: { order: 'asc' },
+        },
+        tags: {
+          include: { tag: true },
+        },
+        submission: {
+          include: { article: true },
+        },
+      },
+    });
+  },
+
   async updateQuiz(submissionId: string, quizId: string, questions: any[]) {
     const quizOutput = await prisma.quizOutput.findFirst({
       where: {
