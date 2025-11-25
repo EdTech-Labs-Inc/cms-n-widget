@@ -169,6 +169,8 @@ model Submission {
   interactivePodcastOutputs InteractivePodcastOutput[]
 
   @@map("submissions")
+
+  @@index([articleId, language])
 }
 
 enum SubmissionStatus {
@@ -298,6 +300,9 @@ model VideoOutput {
   updatedAt DateTime @updatedAt
 
   @@map("video_outputs")
+
+  @@index([heygenVideoId])
+  @@index([submagicProjectId])
 }
 
 model VideoBubble {
