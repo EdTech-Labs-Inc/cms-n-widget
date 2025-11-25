@@ -3,6 +3,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { s3Client, STORAGE_BUCKET } from '../../config/storage';
 import { config } from '../../config/constants';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@repo/logging';
 
 /**
  * Upload result containing both CloudFront and S3 URLs
@@ -68,7 +69,11 @@ export class StorageService {
         key: fileName,
       };
     } catch (error) {
-      console.error('Storage Upload Error:', error);
+      logger.error('Storage upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        filePath,
+        contentType,
+      });
       throw new Error(`Failed to upload file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -97,7 +102,11 @@ export class StorageService {
         : `videos/${submissionId}/${filename}`; // Fallback for legacy/migration
       return this.uploadFile(buffer, filePath, 'video/mp4');
     } catch (error) {
-      console.error('Video Upload Error:', error);
+      logger.error('Video upload from URL failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        videoUrl,
+        submissionId,
+      });
       throw new Error(`Failed to upload video: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -113,7 +122,7 @@ export class StorageService {
 
       // Check if this is a data URL (base64 encoded)
       if (imageUrl.startsWith('data:')) {
-        console.log(`📥 Processing base64 data URL thumbnail...`);
+        logger.debug('Processing base64 data URL thumbnail');
 
         // Extract the content type and base64 data
         const matches = imageUrl.match(/^data:([^;]+);base64,(.+)$/);
@@ -126,10 +135,13 @@ export class StorageService {
 
         // Convert base64 to buffer
         buffer = Buffer.from(base64Data, 'base64');
-        console.log(`✅ Decoded base64 image (${buffer.length} bytes, type: ${contentType})`);
+        logger.debug('Decoded base64 image', {
+          bufferSize: buffer.length,
+          contentType,
+        });
       } else {
         // Regular URL - download the image
-        console.log(`📥 Downloading thumbnail from URL...`);
+        logger.debug('Downloading thumbnail from URL', { imageUrl });
 
         const response = await fetch(imageUrl);
         if (!response.ok) {
@@ -145,13 +157,24 @@ export class StorageService {
       const filePath = organizationId
         ? `organizations/${organizationId}/thumbnails/${resourceType}/${resourceId}/${filename}`
         : `thumbnails/${resourceType}/${resourceId}/${filename}`; // Fallback for legacy/migration
-      console.log(`📤 Uploading thumbnail to S3: ${filePath}`);
+
+      logger.info('Uploading thumbnail to S3', {
+        filePath,
+        resourceType,
+        resourceId,
+        bufferSize: buffer.length,
+        contentType,
+      });
 
       // Thumbnails only need CloudFront URL for display (no Transcribe needed)
       const uploadResult = await this.uploadFile(buffer, filePath, contentType);
       return uploadResult.cloudfrontUrl;
     } catch (error) {
-      console.error('Thumbnail Upload Error:', error);
+      logger.error('Thumbnail upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        resourceType,
+        resourceId,
+      });
       throw new Error(`Failed to upload thumbnail: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -182,8 +205,12 @@ export class StorageService {
     organizationId?: string
   ): Promise<string> {
     try {
-      console.log(`📤 Uploading custom thumbnail for ${resourceType}/${resourceId}`);
-      console.log(`📊 File size: ${buffer.length} bytes, type: ${contentType}`);
+      logger.info('Uploading custom thumbnail', {
+        resourceType,
+        resourceId,
+        bufferSize: buffer.length,
+        contentType,
+      });
 
       // Validate content type
       if (!['image/jpeg', 'image/png'].includes(contentType)) {
@@ -201,10 +228,19 @@ export class StorageService {
       // Upload to S3
       const uploadResult = await this.uploadFile(buffer, filePath, contentType);
 
-      console.log(`✅ Custom thumbnail uploaded: ${uploadResult.cloudfrontUrl}`);
+      logger.info('Custom thumbnail uploaded successfully', {
+        cloudfrontUrl: uploadResult.cloudfrontUrl,
+        resourceType,
+        resourceId,
+      });
       return uploadResult.cloudfrontUrl;
     } catch (error) {
-      console.error('Custom Thumbnail Upload Error:', error);
+      logger.error('Custom thumbnail upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        resourceType,
+        resourceId,
+        contentType,
+      });
       throw new Error(`Failed to upload custom thumbnail: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -221,7 +257,11 @@ export class StorageService {
 
       return await getSignedUrl(s3Client, command, { expiresIn });
     } catch (error) {
-      console.error('Signed URL Error:', error);
+      logger.error('Failed to generate signed URL', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        key,
+        expiresIn,
+      });
       throw new Error(`Failed to generate signed URL: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -289,7 +329,7 @@ export class StorageService {
    */
   async deleteFile(key: string): Promise<void> {
     // Implementation can be added when needed
-    console.log(`Delete file: ${key}`);
+    logger.info('Delete file requested', { key });
   }
 
 }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../../config/constants';
+import { logger } from '@repo/logging';
 
 /**
  * HeyGen Service - Reusable wrapper for HeyGen Video Generation API
@@ -91,7 +92,10 @@ export class HeyGenService {
       let script = params.script;
 
       if (script.length > maxLength) {
-        console.warn(`⚠️  Script too long (${script.length} chars), truncating to ${maxLength} chars`);
+        logger.warn('Script exceeded maximum length, truncating', {
+          actualLength: script.length,
+          maxLength,
+        });
         script = script.substring(0, maxLength);
       }
 
@@ -150,14 +154,24 @@ export class HeyGenService {
         throw new Error('HeyGen did not return a video ID');
       }
 
-      console.log(`🎬 HeyGen video ${videoId} creation initiated. Webhook will be called when ready.`);
+      logger.info('HeyGen video creation initiated', {
+        videoId,
+        characterType: character.type,
+        scriptLength: script.length,
+      });
 
       return { videoId };
     } catch (error) {
-      console.error('HeyGen Generate Video Error:', error);
+      logger.error('HeyGen video generation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        scriptLength: params.script.length,
+      });
       if (axios.isAxiosError(error)) {
         // Log full error response for debugging
-        console.error('HeyGen API Response:', JSON.stringify(error.response?.data, null, 2));
+        logger.error('HeyGen API error details', {
+          statusCode: error.response?.status,
+          data: error.response?.data,
+        });
         const errorData = error.response?.data?.error;
         const message = errorData?.message || error.response?.data?.message || error.message;
         throw new Error(`HeyGen API error: ${message}`);

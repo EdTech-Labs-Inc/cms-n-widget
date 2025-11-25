@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../../config/constants';
+import { logger } from '@repo/logging';
 
 /**
  * Submagic Service - AI Video Editing API
@@ -77,20 +78,16 @@ export class SubmagicService {
     }
   ): Promise<{ projectId: string }> {
     try {
-      console.log(`🎨 Uploading video to Submagic for AI editing...`);
-      console.log(`📹 Video URL: ${videoUrl}`);
-      console.log(`🔔 Webhook URL: ${webhookUrl}`);
-
       // Map language to Submagic language code
       const { code: languageCode, note } = this.mapLanguageToSubmagic(language);
 
-      if (language) {
-        console.log(`🌐 Submission Language: ${language}`);
-        if (note) {
-          console.log(`   → ${note}`);
-        }
-        console.log(`   → Submagic language code: ${languageCode}`);
-      }
+      logger.info('Uploading video to Submagic for AI editing', {
+        videoUrl,
+        webhookUrl,
+        language,
+        languageCode,
+        languageMappingNote: note,
+      });
 
       // Apply default values or use provided options
       const templateName = options?.templateName ?? 'Ella';
@@ -99,7 +96,7 @@ export class SubmagicService {
       const magicBrolls = options?.magicBrolls ?? true;
       const magicBrollsPercentage = options?.magicBrollsPercentage ?? 40;
 
-      console.log(`🎨 Submagic Configuration:`, {
+      logger.info('Submagic configuration applied', {
         templateName,
         enableCaptions,
         magicZooms,
@@ -133,15 +130,23 @@ export class SubmagicService {
         throw new Error('Submagic did not return a project ID');
       }
 
-      console.log(`✅ Submagic project created: ${projectId}`);
-      console.log(`⏳ Waiting for Submagic webhook notification...`);
+      logger.info('Submagic project created, awaiting webhook notification', {
+        projectId,
+        webhookUrl,
+      });
 
       return { projectId };
     } catch (error) {
-      console.error('Submagic Upload Error:', error);
+      logger.error('Submagic video upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        videoUrl,
+      });
       if (axios.isAxiosError(error)) {
         // Log full error response for debugging
-        console.error('Submagic API Response:', JSON.stringify(error.response?.data, null, 2));
+        logger.error('Submagic API error details', {
+          statusCode: error.response?.status,
+          data: error.response?.data,
+        });
         const errorData = error.response?.data?.error;
         const message = errorData?.message || error.response?.data?.message || error.message;
         throw new Error(`Submagic API error: ${message}`);
@@ -177,7 +182,10 @@ export class SubmagicService {
         error: response.data?.error,
       };
     } catch (error) {
-      console.error('Submagic Get Status Error:', error);
+      logger.error('Failed to get Submagic project status', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        projectId,
+      });
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message || error.message;
         throw new Error(`Submagic API error: ${message}`);

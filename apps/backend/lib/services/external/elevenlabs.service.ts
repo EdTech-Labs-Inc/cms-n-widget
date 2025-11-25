@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logger } from '@repo/logging';
 import { config } from '../../config/constants';
 
 /**
@@ -63,7 +64,11 @@ export class ElevenLabsService {
 
       return Buffer.from(response.data);
     } catch (error) {
-      console.error('ElevenLabs TTS Error:', error);
+      logger.error('ElevenLabs text-to-speech failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        voiceId: params.voiceId || this.defaultVoiceId,
+        textLength: params.text.length,
+      });
       if (axios.isAxiosError(error)) {
         const message = error.response?.data
           ? Buffer.from(error.response.data).toString()
@@ -97,7 +102,9 @@ export class ElevenLabsService {
 
       return response.data.voices || [];
     } catch (error) {
-      console.error('ElevenLabs Get Voices Error:', error);
+      logger.error('Failed to fetch ElevenLabs voices', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
       throw new Error(`Failed to get voices: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -123,7 +130,10 @@ export class ElevenLabsService {
 
       return response.data;
     } catch (error) {
-      console.error('ElevenLabs Get Voice Error:', error);
+      logger.error('Failed to fetch ElevenLabs voice', {
+        voiceId,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
       return null;
     }
   }

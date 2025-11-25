@@ -1,6 +1,7 @@
 import mammoth from 'mammoth';
 import { readFile } from 'fs/promises';
-import { openaiService } from '../external/openai.service';
+import { logger } from '@repo/logging';
+import { contentRegenerationService } from '../external/content-regeneration.service';
 
 /**
  * File Extraction Service
@@ -33,15 +34,26 @@ export class FileExtractionService {
       }
 
       // Use OpenAI to clean the content and extract proper title
-      console.log('🤖 [FileExtraction] Using OpenAI to clean article and extract title...');
-      const { title, cleanedContent } = await openaiService.cleanArticleContent({
+      logger.info('Using OpenAI to clean article and extract title', {
+        filePath,
+        mimeType,
+        contentLength: rawContent.length,
+      });
+      const { title, cleanedContent } = await contentRegenerationService.cleanArticleContent({
         rawContent: rawContent,
       });
-      console.log('✅ [FileExtraction] Article cleaned. Title:', title, 'Content length:', cleanedContent.length);
+      logger.info('Article cleaned successfully', {
+        title,
+        cleanedContentLength: cleanedContent.length,
+      });
 
       return { title, content: cleanedContent };
     } catch (error) {
-      console.error('File extraction error:', error);
+      logger.error('File extraction failed', {
+        filePath,
+        mimeType,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
       throw new Error(`Failed to extract content from file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }

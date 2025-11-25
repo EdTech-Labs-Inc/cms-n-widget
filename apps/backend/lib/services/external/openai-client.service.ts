@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { z } from 'zod';
 import { zodResponseFormat } from 'openai/helpers/zod';
+import { logger } from '@repo/logging';
 import { config } from '../../config/constants';
 
 /**
@@ -74,7 +75,11 @@ export class OpenAIClientService {
       const validated = params.schema.parse(response.parsed);
       return validated;
     } catch (error) {
-      console.error('OpenAI Structured Generation Error:', error);
+      logger.error('OpenAI structured generation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        schemaName: params.schemaName,
+        model: params.model || this.defaultModel,
+      });
       throw new Error(`Failed to generate structured output: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -117,7 +122,10 @@ export class OpenAIClientService {
 
       return response;
     } catch (error) {
-      console.error('OpenAI Text Generation Error:', error);
+      logger.error('OpenAI text generation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        model: params.model || this.defaultModel,
+      });
       throw new Error(`Failed to generate text: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -159,7 +167,11 @@ export class OpenAIClientService {
 
       return response;
     } catch (error) {
-      console.error('OpenAI Chat Error:', error);
+      logger.error('OpenAI chat completion failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        model: params.model || this.defaultModel,
+        messageCount: params.messages.length,
+      });
       throw new Error(`Failed to chat: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -221,7 +233,12 @@ export class OpenAIClientService {
       const qualityForModel = getQualityForModel(params.quality, requestedModel);
 
       if (requestedModel === 'gpt-image-1') {
-        console.log(`🎨 Generating image with ${requestedModel} (quality: ${qualityForModel}): "${params.title}"`);
+        logger.info('Generating image with OpenAI', {
+          model: requestedModel,
+          quality: qualityForModel,
+          title: params.title,
+          size,
+        });
 
         const response = await this.client.images.generate({
           model: requestedModel,
@@ -237,10 +254,18 @@ export class OpenAIClientService {
         }
 
         const dataUrl = `data:image/png;base64,${base64Data}`;
-        console.log(`✅ Image generated successfully with ${requestedModel}`);
+        logger.info('Image generated successfully', {
+          model: requestedModel,
+          format: 'base64',
+        });
         return dataUrl;
       } else {
-        console.log(`🎨 Generating image with ${requestedModel} (quality: ${qualityForModel}): "${params.title}"`);
+        logger.info('Generating image with OpenAI', {
+          model: requestedModel,
+          quality: qualityForModel,
+          title: params.title,
+          size,
+        });
 
         const response = await this.client.images.generate({
           model: requestedModel,
@@ -255,14 +280,21 @@ export class OpenAIClientService {
         if (!imageUrl) {
           throw new Error('OpenAI did not return an image URL');
         }
-        console.log(`✅ Image generated successfully with ${requestedModel}`);
+        logger.info('Image generated successfully', {
+          model: requestedModel,
+          format: 'url',
+        });
         return imageUrl;
       }
     } catch (error) {
-      console.error(`⚠️  Image generation with ${requestedModel} failed:`, error);
+      logger.warn('Image generation failed, attempting fallback', {
+        model: requestedModel,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        title: params.title,
+      });
 
       if (requestedModel === 'gpt-image-1') {
-        console.log(`🔄 Falling back to dall-e-3...`);
+        logger.info('Falling back to dall-e-3 for image generation');
         try {
           const fallbackQuality = getQualityForModel(params.quality, 'dall-e-3');
 
@@ -280,10 +312,17 @@ export class OpenAIClientService {
             throw new Error('OpenAI did not return an image URL');
           }
 
-          console.log(`✅ Image generated successfully with dall-e-3 (fallback)`);
+          logger.info('Image generated successfully with fallback model', {
+            model: 'dall-e-3',
+            format: 'url',
+          });
           return fallbackImageUrl;
         } catch (fallbackError) {
-          console.error('❌ Fallback to dall-e-3 also failed:', fallbackError);
+          logger.error('Fallback image generation also failed', {
+            fallbackModel: 'dall-e-3',
+            originalModel: requestedModel,
+            error: fallbackError instanceof Error ? fallbackError.message : 'Unknown error',
+          });
           throw new Error(`Failed to generate image: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown error'}`);
         }
       }

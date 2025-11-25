@@ -1,5 +1,6 @@
 import { prisma } from '../../config/database';
 import { submissionService } from '../submission.service';
+import { logger } from '@repo/logging';
 
 /**
  * Timeout Monitor Service
@@ -21,12 +22,13 @@ export class TimeoutMonitorService {
    * and mark them as FAILED with timeout error
    */
   async checkAndMarkStuckOutputs(): Promise<void> {
-    console.log('\n⏰ ========== TIMEOUT MONITOR CHECK ==========');
-    console.log(`Timestamp: ${new Date().toISOString()}`);
-    console.log(`Checking for outputs stuck in PROCESSING > 30 minutes...`);
-
     const thresholdDate = new Date(Date.now() - this.TIMEOUT_THRESHOLD);
-    console.log(`Threshold date: ${thresholdDate.toISOString()}`);
+
+    logger.info('Starting timeout monitor check', {
+      timestamp: new Date().toISOString(),
+      thresholdDate: thresholdDate.toISOString(),
+      timeoutMinutes: this.TIMEOUT_THRESHOLD / 60 / 1000,
+    });
 
     const affectedSubmissionIds = new Set<string>();
     let totalStuckOutputs = 0;
@@ -54,36 +56,38 @@ export class TimeoutMonitorService {
 
       // Update all affected submission statuses
       if (affectedSubmissionIds.size > 0) {
-        console.log(`\n🔄 Updating ${affectedSubmissionIds.size} affected submission(s)...`);
+        logger.info('Updating affected submissions', {
+          affectedCount: affectedSubmissionIds.size,
+        });
 
         for (const submissionId of affectedSubmissionIds) {
           try {
             await submissionService.updateSubmissionStatus(submissionId);
-            console.log(`  ✅ Updated submission ${submissionId}`);
+            logger.debug('Submission status updated', { submissionId });
           } catch (error) {
-            console.error(`  ❌ Failed to update submission ${submissionId}:`, error instanceof Error ? error.message : 'Unknown error');
+            logger.error('Failed to update submission status', {
+              submissionId,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            });
           }
         }
       }
 
       // Summary
       if (totalStuckOutputs > 0) {
-        console.log(`\n📊 TIMEOUT MONITOR SUMMARY:`);
-        console.log(`  - Total stuck outputs found: ${totalStuckOutputs}`);
-        console.log(`  - Affected submissions: ${affectedSubmissionIds.size}`);
-        console.log(`  - All marked as FAILED and submission statuses updated`);
+        logger.warn('Timeout monitor found stuck outputs', {
+          totalStuckOutputs,
+          affectedSubmissions: affectedSubmissionIds.size,
+          action: 'Marked as FAILED and updated submission statuses',
+        });
       } else {
-        console.log(`\n✅ No stuck outputs found - all systems healthy`);
+        logger.info('Timeout monitor check complete - no stuck outputs found');
       }
-
-      console.log('================================================\n');
     } catch (error) {
-      console.error('\n❌ TIMEOUT MONITOR ERROR:');
-      console.error(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      if (error instanceof Error && error.stack) {
-        console.error(`Stack trace:\n${error.stack}`);
-      }
-      console.error('================================================\n');
+      logger.error('Timeout monitor check failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+      });
       // Don't throw - we want the worker to continue running even if this check fails
     }
   }
@@ -108,11 +112,18 @@ export class TimeoutMonitorService {
     });
 
     if (stuckOutputs.length > 0) {
-      console.log(`\n🎵 Found ${stuckOutputs.length} stuck AudioOutput(s):`);
+      logger.warn('Found stuck AudioOutputs', {
+        count: stuckOutputs.length,
+      });
 
       for (const output of stuckOutputs) {
         const minutesStuck = Math.floor((Date.now() - output.updatedAt.getTime()) / 1000 / 60);
-        console.log(`  - AudioOutput ${output.id} (stuck for ${minutesStuck} minutes)`);
+
+        logger.warn('Marking stuck AudioOutput as FAILED', {
+          outputId: output.id,
+          submissionId: output.submissionId,
+          minutesStuck,
+        });
 
         await prisma.audioOutput.update({
           where: { id: output.id },
@@ -123,7 +134,6 @@ export class TimeoutMonitorService {
         });
 
         affectedSubmissionIds.add(output.submissionId);
-        console.log(`    ✅ Marked as FAILED`);
       }
     }
 
@@ -150,7 +160,9 @@ export class TimeoutMonitorService {
     });
 
     if (stuckOutputs.length > 0) {
-      console.log(`\n🎬 Found ${stuckOutputs.length} stuck VideoOutput(s):`);
+      logger.warn('Found stuck VideoOutputs', {
+        count: stuckOutputs.length,
+      });
 
       for (const output of stuckOutputs) {
         const minutesStuck = Math.floor((Date.now() - output.updatedAt.getTime()) / 1000 / 60);
@@ -167,9 +179,13 @@ export class TimeoutMonitorService {
           errorMessage += 'Submagic webhook may have never arrived or processing failed.';
         }
 
-        console.log(`  - VideoOutput ${output.id} (stuck for ${minutesStuck} minutes)`);
-        console.log(`    HeyGen ID: ${hasHeygenId ? output.heygenVideoId : 'NOT SET'}`);
-        console.log(`    Submagic ID: ${hasSubmagicId ? output.submagicProjectId : 'NOT SET'}`);
+        logger.warn('Marking stuck VideoOutput as FAILED', {
+          outputId: output.id,
+          submissionId: output.submissionId,
+          minutesStuck,
+          heygenVideoId: hasHeygenId ? output.heygenVideoId : 'NOT SET',
+          submagicProjectId: hasSubmagicId ? output.submagicProjectId : 'NOT SET',
+        });
 
         await prisma.videoOutput.update({
           where: { id: output.id },
@@ -180,7 +196,6 @@ export class TimeoutMonitorService {
         });
 
         affectedSubmissionIds.add(output.submissionId);
-        console.log(`    ✅ Marked as FAILED`);
       }
     }
 
@@ -207,11 +222,18 @@ export class TimeoutMonitorService {
     });
 
     if (stuckOutputs.length > 0) {
-      console.log(`\n🎙️ Found ${stuckOutputs.length} stuck PodcastOutput(s):`);
+      logger.warn('Found stuck PodcastOutputs', {
+        count: stuckOutputs.length,
+      });
 
       for (const output of stuckOutputs) {
         const minutesStuck = Math.floor((Date.now() - output.updatedAt.getTime()) / 1000 / 60);
-        console.log(`  - PodcastOutput ${output.id} (stuck for ${minutesStuck} minutes)`);
+
+        logger.warn('Marking stuck PodcastOutput as FAILED', {
+          outputId: output.id,
+          submissionId: output.submissionId,
+          minutesStuck,
+        });
 
         await prisma.podcastOutput.update({
           where: { id: output.id },
@@ -222,7 +244,6 @@ export class TimeoutMonitorService {
         });
 
         affectedSubmissionIds.add(output.submissionId);
-        console.log(`    ✅ Marked as FAILED`);
       }
     }
 
@@ -249,11 +270,18 @@ export class TimeoutMonitorService {
     });
 
     if (stuckOutputs.length > 0) {
-      console.log(`\n❓ Found ${stuckOutputs.length} stuck QuizOutput(s):`);
+      logger.warn('Found stuck QuizOutputs', {
+        count: stuckOutputs.length,
+      });
 
       for (const output of stuckOutputs) {
         const minutesStuck = Math.floor((Date.now() - output.updatedAt.getTime()) / 1000 / 60);
-        console.log(`  - QuizOutput ${output.id} (stuck for ${minutesStuck} minutes)`);
+
+        logger.warn('Marking stuck QuizOutput as FAILED', {
+          outputId: output.id,
+          submissionId: output.submissionId,
+          minutesStuck,
+        });
 
         await prisma.quizOutput.update({
           where: { id: output.id },
@@ -264,7 +292,6 @@ export class TimeoutMonitorService {
         });
 
         affectedSubmissionIds.add(output.submissionId);
-        console.log(`    ✅ Marked as FAILED`);
       }
     }
 
@@ -291,11 +318,18 @@ export class TimeoutMonitorService {
     });
 
     if (stuckOutputs.length > 0) {
-      console.log(`\n🎮 Found ${stuckOutputs.length} stuck InteractivePodcastOutput(s):`);
+      logger.warn('Found stuck InteractivePodcastOutputs', {
+        count: stuckOutputs.length,
+      });
 
       for (const output of stuckOutputs) {
         const minutesStuck = Math.floor((Date.now() - output.updatedAt.getTime()) / 1000 / 60);
-        console.log(`  - InteractivePodcastOutput ${output.id} (stuck for ${minutesStuck} minutes)`);
+
+        logger.warn('Marking stuck InteractivePodcastOutput as FAILED', {
+          outputId: output.id,
+          submissionId: output.submissionId,
+          minutesStuck,
+        });
 
         await prisma.interactivePodcastOutput.update({
           where: { id: output.id },
@@ -306,7 +340,6 @@ export class TimeoutMonitorService {
         });
 
         affectedSubmissionIds.add(output.submissionId);
-        console.log(`    ✅ Marked as FAILED`);
       }
     }
 

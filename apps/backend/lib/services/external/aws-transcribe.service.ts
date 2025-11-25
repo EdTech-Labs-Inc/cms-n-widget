@@ -6,6 +6,7 @@ import {
     LanguageCode,
   } from '@aws-sdk/client-transcribe';
   import axios from 'axios';
+  import { logger } from '@repo/logging';
   
   /**
    * AWS Transcribe Service - Generate word-level transcripts from videos
@@ -56,8 +57,11 @@ import {
       duration: number;
     }> {
       try {
-        console.log(`🎤 Starting transcription for: ${s3VideoUrl}`);
-  
+        logger.info('Starting AWS transcription job', {
+          s3VideoUrl,
+          language,
+        });
+
         // Map our language enum to AWS language codes
         const languageCode = this.mapLanguageToAWSCode(language);
   
@@ -80,19 +84,30 @@ import {
         });
   
         await this.client.send(startCommand);
-        console.log(`✅ Transcription job started: ${jobName}`);
-  
+        logger.info('AWS transcription job started', {
+          jobName,
+          languageCode,
+        });
+
         // Poll for completion
         const transcriptJson = await this.pollForCompletion(jobName);
   
         // Parse transcript JSON
         const { transcript, wordTimings, duration } = this.parseTranscript(transcriptJson);
-  
-        console.log(`✅ Transcription complete: ${wordTimings.length} words, ${duration}s duration`);
-  
+
+        logger.info('AWS transcription complete', {
+          wordCount: wordTimings.length,
+          duration,
+          transcriptLength: transcript.length,
+        });
+
         return { transcript, wordTimings, duration };
       } catch (error) {
-        console.error('AWS Transcribe Error:', error);
+        logger.error('AWS transcription failed', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+          s3VideoUrl,
+          language,
+        });
         throw new Error(`Failed to transcribe video: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
@@ -113,9 +128,14 @@ import {
   
         const response = await this.client.send(getCommand);
         const status = response.TranscriptionJob?.TranscriptionJobStatus;
-  
-        console.log(`📊 Transcription job status: ${status} (attempt ${attempt + 1}/${MAX_ATTEMPTS})`);
-  
+
+        logger.debug('AWS transcription job status check', {
+          jobName,
+          status,
+          attempt: attempt + 1,
+          maxAttempts: MAX_ATTEMPTS,
+        });
+
         if (status === TranscriptionJobStatus.COMPLETED) {
           // Get transcript JSON from URL
           const transcriptUrl = response.TranscriptionJob?.Transcript?.TranscriptFileUri;
@@ -135,7 +155,11 @@ import {
   
         // Calculate delay with exponential backoff
         const delay = Math.min(INITIAL_DELAY * Math.pow(1.5, attempt), MAX_DELAY);
-        console.log(`⏳ Waiting ${delay / 1000}s before next poll...`);
+        logger.debug('Waiting before next transcription poll', {
+          jobName,
+          delaySeconds: delay / 1000,
+          attempt: attempt + 1,
+        });
         await this.sleep(delay);
       }
   
