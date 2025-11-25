@@ -1,0 +1,123 @@
+/* Import shared utilities */
+@import './utilities.css';
+
+:root {
+  /* Professional Gamified Font System */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+
+  font-family: var(--font-primary);
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* New Brand Colors */
+  --navy-primary: #000420;
+  --gold-secondary: #D99C57;
+  --blue-accent: #2884C8;
+  --purple-accent: #6402B0;
+
+  /* Color Variations */
+  --navy-light: rgba(0, 6, 49, 0.8);
+  --navy-lighter: rgba(0, 6, 49, 0.6);
+  --gold-light: rgba(217, 156, 87, 0.15);
+  --gold-lighter: rgba(217, 156, 87, 0.08);
+  --blue-light: rgba(40, 132, 200, 0.15);
+  --purple-light: rgba(100, 2, 176, 0.15);
+
+  /* FinDemo Learning Hub Color System - Legacy */
+  --primary-dark: var(--navy-primary);
+  --accent-gold: var(--gold-secondary);
+  --bright-blue: var(--blue-accent);
+  --purple: var(--purple-accent);
+  --success-green: #4CAF50;
+  --white: #FFFFFF;
+  --white-87: rgba(255, 255, 255, 0.87);
+  --white-60: rgba(255, 255, 255, 0.6);
+  --white-40: rgba(255, 255, 255, 0.4);
+  --white-20: rgba(255, 255, 255, 0.2);
+  --white-10: rgba(255, 255, 255, 0.1);
+
+  /* Text Colors for Dark Theme */
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Difficulty Colors */
+  --difficulty-beginner: var(--success-green);
+  --difficulty-intermediate: var(--accent-gold);
+  --difficulty-advanced: var(--purple);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--bright-blue) 0%, var(--primary-dark) 100%);
+  --gradient-gold: linear-gradient(135deg, var(--accent-gold) 0%, #F5B041 100%);
+  --gradient-blue: linear-gradient(135deg, var(--bright-blue) 0%, #5DADE2 100%);
+  --gradient-purple: linear-gradient(135deg, var(--purple) 0%, #8E44AD 100%);
+
+  color-scheme: dark;
+  background-color: var(--primary-dark);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  text-decoration: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 3.2em;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: var(--font-display);
+  background-color: var(--white-10);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+button:hover {
+  border-color: var(--accent-gold);
+  background-color: var(--white-20);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Force dark theme for learning hub */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--white-87);
+    background-color: var(--primary-dark);
+  }
+}

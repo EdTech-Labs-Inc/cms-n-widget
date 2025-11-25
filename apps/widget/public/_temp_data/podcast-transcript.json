@@ -1,0 +1,183 @@
+{
+  "podcastId": "asset-allocation-101",
+  "title": "Asset Allocation 101: Building Your Investment Portfolio",
+  "audioFile": "PodAssetAllocation.mp3",
+  "duration": 180,
+  "backgroundImage": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&h=1080&fit=crop",
+  "segments": [
+    {
+      "id": "seg-1",
+      "startTime": 0,
+      "endTime": 8,
+      "text": "Welcome to today's episode on asset allocation - the foundation of smart investing.",
+      "keywords": ["asset allocation", "smart investing"]
+    },
+    {
+      "id": "seg-2",
+      "startTime": 8,
+      "endTime": 16,
+      "text": "Think of your portfolio like a balanced meal. You wouldn't eat only dessert, right?",
+      "keywords": ["portfolio", "balanced"]
+    },
+    {
+      "id": "seg-3",
+      "startTime": 16,
+      "endTime": 24,
+      "text": "Similarly, a well-diversified portfolio contains different types of investments.",
+      "keywords": ["diversified portfolio", "investments"],
+      "interactive": {
+        "triggerTime": 20,
+        "type": "fill-blank",
+        "question": "A well-diversified portfolio contains different types of ___.",
+        "options": ["investments", "risks"],
+        "correctAnswer": "investments",
+        "explanation": "Diversification means spreading your money across different investment types to reduce risk."
+      }
+    },
+    {
+      "id": "seg-4",
+      "startTime": 24,
+      "endTime": 35,
+      "text": "The three main asset classes are stocks, bonds, and cash equivalents. Each serves a unique purpose.",
+      "keywords": ["stocks", "bonds", "cash equivalents"]
+    },
+    {
+      "id": "seg-5",
+      "startTime": 35,
+      "endTime": 45,
+      "text": "Stocks offer growth potential but come with higher volatility. They're your portfolio's growth engine.",
+      "keywords": ["stocks", "growth", "volatility"],
+      "interactive": {
+        "triggerTime": 40,
+        "type": "fill-blank",
+        "question": "Stocks offer growth potential but come with higher ___.",
+        "options": ["volatility", "dividends"],
+        "correctAnswer": "volatility",
+        "explanation": "Volatility refers to how much an investment's value fluctuates. Stocks tend to be more volatile than bonds."
+      }
+    },
+    {
+      "id": "seg-6",
+      "startTime": 45,
+      "endTime": 55,
+      "text": "Bonds provide stability and regular income. They're like the steady foundation of your investment house.",
+      "keywords": ["bonds", "stability", "income"]
+    },
+    {
+      "id": "seg-7",
+      "startTime": 55,
+      "endTime": 65,
+      "text": "Cash equivalents offer liquidity and safety, perfect for emergency funds and short-term goals.",
+      "keywords": ["cash equivalents", "liquidity", "emergency funds"]
+    },
+    {
+      "id": "seg-8",
+      "startTime": 65,
+      "endTime": 75,
+      "text": "Your ideal asset allocation depends on three key factors: age, risk tolerance, and financial goals.",
+      "keywords": ["asset allocation", "risk tolerance", "financial goals"],
+      "interactive": {
+        "triggerTime": 70,
+        "type": "fill-blank",
+        "question": "Your ideal asset allocation depends on age, ___, and financial goals.",
+        "options": ["risk tolerance", "income level"],
+        "correctAnswer": "risk tolerance",
+        "explanation": "Risk tolerance is your ability and willingness to endure investment losses in pursuit of higher returns."
+      }
+    },
+    {
+      "id": "seg-9",
+      "startTime": 75,
+      "endTime": 85,
+      "text": "Younger investors can typically afford more risk, allocating more to stocks for long-term growth.",
+      "keywords": ["younger investors", "risk", "long-term growth"]
+    },
+    {
+      "id": "seg-10",
+      "startTime": 85,
+      "endTime": 95,
+      "text": "As you approach retirement, shifting towards bonds helps preserve your wealth.",
+      "keywords": ["retirement", "bonds", "preserve wealth"]
+    },
+    {
+      "id": "seg-11",
+      "startTime": 95,
+      "endTime": 105,
+      "text": "A common rule of thumb: subtract your age from 100 to find your stock percentage.",
+      "keywords": ["rule of thumb", "stock percentage"],
+      "interactive": {
+        "triggerTime": 100,
+        "type": "fill-blank",
+        "question": "Subtract your age from ___ to find your stock percentage.",
+        "options": ["100", "120"],
+        "correctAnswer": "100",
+        "explanation": "The '100 minus age' rule suggests that a 30-year-old might have 70% in stocks, while a 60-year-old might have 40%."
+      }
+    },
+    {
+      "id": "seg-12",
+      "startTime": 105,
+      "endTime": 115,
+      "text": "For example, a 30-year-old might have 70% stocks and 30% bonds.",
+      "keywords": ["70% stocks", "30% bonds"]
+    },
+    {
+      "id": "seg-13",
+      "startTime": 115,
+      "endTime": 125,
+      "text": "Remember to rebalance your portfolio annually to maintain your target allocation.",
+      "keywords": ["rebalance", "portfolio", "target allocation"]
+    },
+    {
+      "id": "seg-14",
+      "startTime": 125,
+      "endTime": 135,
+      "text": "Market movements will shift your percentages, so regular rebalancing keeps you on track.",
+      "keywords": ["market movements", "rebalancing"],
+      "interactive": {
+        "triggerTime": 130,
+        "type": "fill-blank",
+        "question": "Regular ___ keeps your portfolio on track.",
+        "options": ["rebalancing", "trading"],
+        "correctAnswer": "rebalancing",
+        "explanation": "Rebalancing means selling some winners and buying more of what's underperformed to maintain your target allocation."
+      }
+    },
+    {
+      "id": "seg-15",
+      "startTime": 135,
+      "endTime": 145,
+      "text": "Don't let emotions drive your decisions. Stick to your plan through market ups and downs.",
+      "keywords": ["emotions", "decisions", "market"]
+    },
+    {
+      "id": "seg-16",
+      "startTime": 145,
+      "endTime": 155,
+      "text": "Consider using index funds or ETFs for easy diversification within each asset class.",
+      "keywords": ["index funds", "ETFs", "diversification"]
+    },
+    {
+      "id": "seg-17",
+      "startTime": 155,
+      "endTime": 165,
+      "text": "Start with a simple portfolio and add complexity as you learn and grow.",
+      "keywords": ["simple portfolio", "learn", "grow"]
+    },
+    {
+      "id": "seg-18",
+      "startTime": 165,
+      "endTime": 180,
+      "text": "Remember, the best portfolio is one you can stick with. Start today, stay consistent, and let time work its magic.",
+      "keywords": ["best portfolio", "consistent", "time"],
+      "interactive": {
+        "triggerTime": 170,
+        "type": "fill-blank",
+        "question": "The best portfolio is one you can ___ with.",
+        "options": ["stick", "trade"],
+        "correctAnswer": "stick",
+        "explanation": "Consistency and patience are key to investment success. Frequent trading often leads to poor returns."
+      }
+    }
+  ]
+}

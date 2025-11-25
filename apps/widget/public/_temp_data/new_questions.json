@@ -1,0 +1,1128 @@
+[{
+  "id": "6893a4fb3577ea263f764ae6",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "MCQ",
+  "question_field": "The main purpose of asset allocation is to:",
+  "explanation": "Asset allocation spreads money among assets that behave differently (equities, debt, gold). This mix offsets the risks of one asset with the stability of others, aiming for an overall balance between growth and safety.",
+  "hint": "Are you thinking about how mixing assets can smooth out ups and downs?",
+  "answers": {
+    "answer_1": "Balance risk-return",
+    "answer_2": "Reduce tax liability",
+    "answer_3": "Pick top stocks",
+    "answer_4": "Track the market"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  }
+},
+{
+  "id": "6893a4fb3577ea263f764ae7",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "MCQ",
+  "question_field": "Which asset class is traditionally used as a protective hedge during periods of market uncertainty?",
+  "explanation": "Gold historically retains value and even appreciates when markets fall, making it a common hedge to protect portfolios in turbulent times.",
+  "hint": "Which asset is often called a “safe haven” in crises?",
+  "answers": {
+    "answer_1": "Gold",
+    "answer_2": "Equities",
+    "answer_3": "High-yield bonds",
+    "answer_4": "Cryptocurrencies"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  }
+},
+{
+  "id": "6893a4fb3577ea263f764ae8",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "FILL_BLANK",
+  "question_field": "Smart investing begins with ______ rather than simply picking individual stocks.",
+  "explanation": "Deciding the proportion of funds that go into equities, debt, gold, etc., is called asset allocation; it sets the foundation for risk and return, making it the first and most critical step in a sound investment plan.",
+  "hint": "What step determines how much money you place in each asset class?",
+  "answers": {
+    "answer_1": "asset allocation",
+    "answer_2": "market timing",
+    "answer_3": "day trading",
+    "answer_4": "tax-loss harvesting"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  }
+},
+{
+  "id": "6893a4fb3577ea263f764ae9",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "FILL_BLANK",
+  "question_field": "In a diversified portfolio, the asset that primarily acts as a protective hedge during turbulent markets is ______.",
+  "explanation": "Gold tends to retain value or even appreciate when equity markets fall, so it is commonly used to shield portfolios from market uncertainty, unlike equities or most other assets.",
+  "hint": "Which asset is traditionally viewed as a “safe-haven” in crises?",
+  "answers": {
+    "answer_1": "gold",
+    "answer_2": "equities",
+    "answer_3": "government bonds",
+    "answer_4": "real estate"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.736Z"
+  }
+},
+{
+  "id": "6893a4fb3577ea263f764aea",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.737Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "TRUE_FALSE",
+  "question_field": "Diversifying a portfolio across equities, debt, and gold can help it keep growing even when one of those markets declines, because each asset class tends to behave differently.",
+  "explanation": "Equities, debt, and gold have low-to-moderate correlations; when one lags, another may hold or gain, smoothing overall performance.",
+  "hint": "Do all asset classes move in the same direction at the same time?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.737Z"
+  }
+},
+{
+  "id": "6893a4fb3577ea263f764aeb",
+  "last_updated": {
+    "$date": "2025-08-06T18:54:51.737Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "question_type": "TRUE_FALSE",
+  "question_field": "Gold is mainly included in an asset-allocation plan to act as a hedge in uncertain times, not to chase the same high-growth potential as equities.",
+  "explanation": "Gold’s historical role is wealth preservation during volatility; it generally offers lower growth than equities but protects purchasing power when risk assets fall.",
+  "hint": "What purpose does gold traditionally serve when markets become fearful?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:54:51.737Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b31",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "MCQ",
+  "question_field": "Someone with a 30-year investment horizon wants to maximise long-term growth. Which asset class should generally receive the largest allocation?",
+  "explanation": "A multi-decade horizon allows an investor to ride out equity volatility and benefit from their historically superior long-term returns. Short-term debt, cash, or gold usually offer lower growth potential and are favoured more for capital preservation than for accumulation.",
+  "hint": "Does a longer horizon give you time to recover from market swings?",
+  "answers": {
+    "answer_1": "Equities",
+    "answer_2": "Cash equivalents",
+    "answer_3": "Short-term debt funds",
+    "answer_4": "Physical gold"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b32",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "MCQ",
+  "question_field": "Why do many investors shift part of their portfolio from equities to debt instruments and gold as they near retirement?",
+  "explanation": "As retirement approaches, the time available to recover from large market drops shrinks. Prioritising capital preservation over aggressive growth therefore leads investors to increase holdings in lower-volatility assets such as bonds and gold.",
+  "hint": "What becomes more important when you’ll soon need the money?",
+  "answers": {
+    "answer_1": "To preserve capital",
+    "answer_2": "To chase higher returns",
+    "answer_3": "To exploit tax loopholes",
+    "answer_4": "To meet regulatory rules"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b33",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "FILL_BLANK",
+  "question_field": "A longer investment time horizon generally allows an investor to place a larger share of their portfolio in __________ to seek higher long-term returns.",
+  "explanation": "With many years available to recover from short-term market swings, younger investors can afford more volatility and therefore tilt toward equities, which historically provide superior long-run growth compared with fixed-income or cash alternatives.",
+  "hint": "What asset class is usually considered riskier but offers greater growth potential over decades?",
+  "answers": {
+    "answer_1": "Equities",
+    "answer_2": "Debt",
+    "answer_3": "Cash",
+    "answer_4": "Gold"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b34",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "FILL_BLANK",
+  "question_field": "As retirement approaches, it is generally wise to increase exposure to __________ in order to better preserve capital and reduce portfolio volatility.",
+  "explanation": "Near retirement, the priority shifts from maximum growth to capital protection and income generation; allocating more to debt instruments (bonds, fixed-income funds) helps dampen volatility and safeguards accumulated savings.",
+  "hint": "Which asset class is commonly viewed as lower-risk because it pays fixed interest and has priority in the capital structure?",
+  "answers": {
+    "answer_1": "Debt",
+    "answer_2": "Small-cap stocks",
+    "answer_3": "Cryptocurrency",
+    "answer_4": "Venture capital"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b35",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "TRUE_FALSE",
+  "question_field": "For a typical investor, having 40 years until retirement justifies holding a higher proportion of equities than having only 10 years left.",
+  "explanation": "With a longer horizon, short-term market swings have more time to recover, so greater equity exposure is appropriate to pursue higher long-run returns. A short horizon requires more capital preservation.",
+  "hint": "How does the time available to recover from market drops affect the risk you can take?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a5c03577ea263f764b36",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "question_type": "TRUE_FALSE",
+  "question_field": "When designing asset allocation, factors such as age, personal goals, and risk comfort are secondary; the only essential consideration is maximising expected return.",
+  "explanation": "Asset allocation must balance return against the investor’s risk tolerance, goals, and time horizon. Ignoring these factors can leave the portfolio mismatched to the investor’s needs.",
+  "hint": "Is selecting the highest-return option always suitable if it risks exceeding one’s comfort for loss?",
+  "answers": {
+    "answer_1": "False",
+    "answer_2": "True"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:08.585Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b72",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "MCQ",
+  "question_field": "Why is periodic rebalancing considered essential in a long-term investment portfolio?",
+  "explanation": "When one asset class (e.g., equities) outgrows the others, the portfolio’s risk profile drifts from the original plan. Rebalancing restores the target allocation, keeping risk and expected return aligned with the investor’s goals.",
+  "hint": "What happens to portfolio risk when one asset class becomes too large?",
+  "answers": {
+    "answer_1": "To maintain the intended risk level",
+    "answer_2": "To outperform market indices",
+    "answer_3": "To minimize brokerage commissions",
+    "answer_4": "To exploit short-term price swings"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b73",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "MCQ",
+  "question_field": "A common guideline suggests you should review and potentially rebalance your portfolio at what interval?",
+  "explanation": "Checking allocations semi-annually or annually is frequent enough to correct meaningful drifts without incurring excessive trading costs, ensuring the portfolio stays on its planned risk/return path.",
+  "hint": "Is there a middle ground between reacting weekly and waiting many years?",
+  "answers": {
+    "answer_1": "Every 6–12 months",
+    "answer_2": "Every week",
+    "answer_3": "Every 5 years",
+    "answer_4": "Only during market crashes"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b74",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "FILL_BLANK",
+  "question_field": "Rebalancing is the practice of shifting money out of assets that have become ______ relative to your target allocation in order to restore your desired mix of risk and return.",
+  "explanation": "When an asset class—such as stocks—grows faster than planned, it represents a larger share of the portfolio and increases overall risk. Rebalancing trims this overweight portion and reallocates the proceeds to other assets.",
+  "hint": "Which word describes an asset class that now takes up more of the portfolio than originally intended?",
+  "answers": {
+    "answer_1": "overweight",
+    "answer_2": "illiquid",
+    "answer_3": "tax-exempt",
+    "answer_4": "undervalued"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b75",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "FILL_BLANK",
+  "question_field": "A typical guideline suggests reviewing and potentially rebalancing a diversified portfolio every ______ months.",
+  "explanation": "Checking the portfolio semi-annually or annually helps ensure allocations have not drifted too far from targets, keeping risk and return expectations on track.",
+  "hint": "Think of a schedule that is neither too frequent (monthly) nor too infrequent (every few years).",
+  "answers": {
+    "answer_1": "6–12",
+    "answer_2": "1–2",
+    "answer_3": "24",
+    "answer_4": "48"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b76",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "TRUE_FALSE",
+  "question_field": "If one asset class in your portfolio grows far beyond the percentage you originally intended, you should keep it as is to capture even more growth, rather than moving money into other asset classes.",
+  "explanation": "Allowing an over-grown asset class to remain overweight increases portfolio risk beyond your original plan. Rebalancing—shifting some funds from that asset class into others (e.g., bonds)—realigns the portfolio with your target allocation and keeps risk in check.",
+  "hint": "Has the asset’s share of your portfolio drifted away from your target allocation?",
+  "answers": {
+    "answer_1": "False",
+    "answer_2": "True"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a6173577ea263f764b77",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "question_type": "TRUE_FALSE",
+  "question_field": "Reviewing and, if necessary, rebalancing your portfolio every six to twelve months helps keep your risk and return profile aligned with your goals.",
+  "explanation": "Periodic reviews (about twice a year) let you see whether market movements have pushed your portfolio off target and give you the opportunity to rebalance, maintaining the risk level you originally intended.",
+  "hint": "Is there a recommended regular interval for portfolio check-ups?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:35.956Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764b9c",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "asset-allocation",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "MCQ",
+  "question_field": "In the compound-interest formula \\(A = P(1+r)^{t}\\), which variable has the greatest leverage on the final amount?",
+  "explanation": "Time is in the exponent, so every extra period multiplies growth exponentially, whereas larger \\(P\\) or \\(r\\) only scale or stretch the curve linearly relative to that exponential effect.",
+  "hint": "Which part of the formula is raised to a power?",
+  "answers": {
+    "answer_1": "Time \\(t\\)",
+    "answer_2": "Principal \\(P\\)",
+    "answer_3": "Interest rate \\(r\\)",
+    "answer_4": "Growth factor \\((1+r)\\)"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764b9d",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "MCQ",
+  "question_field": "Two investors both earn the same annual return. • Investor A puts ₹5 000 aside today and leaves it for 25 years. • Investor B waits 15 years, then invests ₹20 000 for the remaining 10 years. Who ends with more money?",
+  "explanation": "Even though Investor B contributes four times more, the shorter compounding period (10 years) cannot catch up with the 25 years of growth enjoyed by Investor A; time outweighs size.",
+  "hint": "Does a longer runway or a larger aircraft fly farther in compounding?",
+  "answers": {
+    "answer_1": "Investor A",
+    "answer_2": "Investor B",
+    "answer_3": "They tie",
+    "answer_4": "Impossible to know"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764b9e",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "FILL_BLANK",
+  "question_field": "The process by which investment earnings start generating their own earnings over time is called _______.",
+  "explanation": "Compounding refers to “returns earning returns,” making it the engine of long-term growth.",
+  "hint": "What word describes interest being earned on previously earned interest?",
+  "answers": {
+    "answer_1": "Compounding",
+    "answer_2": "Inflation",
+    "answer_3": "Arbitrage",
+    "answer_4": "Depreciation"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764b9f",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "FILL_BLANK",
+  "question_field": "Starting to invest early—even with small amounts—beats waiting for more money later because ______ is the most critical factor in growth.",
+  "explanation": "More years in the market give compounding greater room to operate, so time—not merely the size of each contribution—drives the larger final value.",
+  "hint": "Which variable in “compound interest” can you never get back once it has passed?",
+  "answers": {
+    "answer_1": "Time",
+    "answer_2": "Luck",
+    "answer_3": "Taxes",
+    "answer_4": "Inflation"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764ba0",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "TRUE_FALSE",
+  "question_field": "Statement: “Because of the power of compounding, investing ₹5,000 today and letting it grow for 25 years can end up producing more money than investing ₹20,000 ten years from now and letting it grow for only 15 years.”",
+  "explanation": "Compounding depends on both the rate of return and, critically, the length of time those returns can compound. A smaller amount that compounds for a longer period can surpass a larger lump-sum that has much less time to grow.",
+  "hint": "How does the number of compounding periods influence the final amount?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a67f3577ea263f764ba1",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "question_type": "TRUE_FALSE",
+  "question_field": "Statement: “Waiting until you have a sizeable sum before you begin investing is usually the best way to maximize long-term wealth.”",
+  "explanation": "Delaying sacrifices valuable compounding periods. Starting early with modest contributions allows gains to compound upon themselves for longer, often resulting in greater wealth than a late, large contribution.",
+  "hint": "Is there any advantage to allowing even small returns to start compounding sooner rather than later?",
+  "answers": {
+    "answer_1": "False",
+    "answer_2": "True"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:19.900Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bc8",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "MCQ",
+  "question_field": "If inflation averages 6 % per year while your savings account yields 4 %, what happens to your real purchasing power?",
+  "explanation": "Real return ≈ nominal return – inflation (4 % – 6 % = –2 %). A negative real return means purchasing power shrinks by about 2 % each year.",
+  "hint": "Have you compared the return rate to the inflation rate?",
+  "answers": {
+    "answer_1": "Falls 2 % yearly",
+    "answer_2": "Grows 2 % yearly",
+    "answer_3": "Stays unchanged",
+    "answer_4": "Doubles in 12 yrs"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bc9",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "MCQ",
+  "question_field": "Which primary objective separates investing from merely parking money in a low-interest savings account?",
+  "explanation": "The key purpose of investing is to earn a return that exceeds inflation, thereby preserving and ideally increasing real wealth; simple saving focuses on safety, not growth.",
+  "hint": "What must your money do to keep its buying power over time?",
+  "answers": {
+    "answer_1": "Outpacing inflation",
+    "answer_2": "Zero risk",
+    "answer_3": "Fixed interest",
+    "answer_4": "Hoarding cash"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bca",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "FILL_BLANK",
+  "question_field": "Fill in the blank: The gradual decrease in the purchasing power of money—caused by a general rise in prices—is called __________.",
+  "explanation": "Inflation is the economic phenomenon where prices of goods and services rise over time, meaning each unit of currency buys fewer goods and services. This is exactly what erodes the value of idle savings.",
+  "hint": "What do we call the overall rise in prices that makes things cost more each year?",
+  "answers": {
+    "answer_1": "inflation",
+    "answer_2": "depreciation",
+    "answer_3": "deflation",
+    "answer_4": "interest"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bcb",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "FILL_BLANK",
+  "question_field": "Fill in the blank: To preserve purchasing power, the return on your savings or investments should be __________ than the rate of inflation.",
+  "explanation": "If your money grows at a rate greater than inflation, its real (inflation-adjusted) value increases, ensuring you can buy at least the same basket of goods in the future. Growth that matches or lags inflation means lost purchasing power.",
+  "hint": "Do you want your money’s growth to beat, match, or trail rising prices?",
+  "answers": {
+    "answer_1": "higher",
+    "answer_2": "lower",
+    "answer_3": "equal",
+    "answer_4": "zero"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bcc",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "TRUE_FALSE",
+  "question_field": "True or False? Whenever the annual interest rate paid by your savings account is lower than the annual inflation rate, the purchasing power of the money in that account will decrease over time.",
+  "explanation": "The real (inflation-adjusted) return is roughly the nominal return minus the inflation rate. If the nominal return is smaller than inflation, this difference is negative, so your money buys less each year even though the rupee balance may grow.",
+  "hint": "Which number must be bigger—interest rate or inflation—for your buying power to rise?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a6ee3577ea263f764bcd",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "question_type": "TRUE_FALSE",
+  "question_field": "True or False? If inflation averages 5 % per year, keeping ₹100 in cash (and earning no interest) for three years will reduce its purchasing power to below ₹85.",
+  "explanation": "Purchasing power after three years is \n\\( \\frac{₹100}{(1+0.05)^3} \\approx ₹86.4 \\). \nAlthough the value falls, it remains above ₹85.",
+  "hint": "Can you calculate the compounded effect of three successive 5 % price increases?",
+  "answers": {
+    "answer_1": "False",
+    "answer_2": "True"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:10.194Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764bff",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "MCQ",
+  "question_field": "What core advantage does starting to invest early give you when markets fluctuate?",
+  "explanation": "A long horizon lets temporary price swings average out, so short-term drops have little effect on the eventual outcome.",
+  "hint": "Which factor can’t be lost in a single bad month?",
+  "answers": {
+    "answer_1": "Long time horizon",
+    "answer_2": "Frequent trading",
+    "answer_3": "Insider tips",
+    "answer_4": "High-risk bets"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764c00",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "MCQ",
+  "question_field": "Which behaviour best applies the rule “It’s time in the market, not timing the market”?",
+  "explanation": "Regular investing keeps money compounding regardless of short-term noise, whereas trying to predict highs and lows violates the principle.",
+  "hint": "Are you focusing on a habit or a prediction?",
+  "answers": {
+    "answer_1": "Consistent contributions",
+    "answer_2": "Selling at highs",
+    "answer_3": "Leveraged day trading",
+    "answer_4": "Tracking headlines"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764c01",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "FILL_BLANK",
+  "question_field": "Fill in the blank: “The key isn’t __________ the market; it’s time in the market.”",
+  "explanation": "The core message is that attempting to “time” ups and downs is far less effective than remaining invested over long periods.",
+  "hint": "What do many traders try (often unsuccessfully) to do with short-term price swings?",
+  "answers": {
+    "answer_1": "timing",
+    "answer_2": "beating",
+    "answer_3": "predicting",
+    "answer_4": "exiting"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764c02",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "FILL_BLANK",
+  "question_field": "Fill in the blank: Starting to invest early gives you the advantage of __________, which helps smooth out short-term market noise.",
+  "explanation": "A longer horizon allows compounding and reduces the impact of day-to-day volatility, so “time” is the powerful benefit of early, consistent investing.",
+  "hint": "Which resource grows automatically just by beginning sooner?",
+  "answers": {
+    "answer_1": "time",
+    "answer_2": "luck",
+    "answer_3": "leverage",
+    "answer_4": "diversification"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764c03",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "TRUE_FALSE",
+  "question_field": "True or False: Over a long investment horizon (e.g., 10–20 years), short-term market dips have relatively little impact on the final outcome because time tends to smooth out volatility.",
+  "explanation": "The longer money stays invested, the more individual ups and downs are averaged out, so temporary declines matter less to the overall return.",
+  "hint": "Over decades, do isolated monthly swings dominate the final result?",
+  "answers": {
+    "answer_1": "True",
+    "answer_2": "False"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+},
+{
+  "id": "6893a74e3577ea263f764c04",
+  "last_updated": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "gallery_ids": [],
+  "playlist_ids": [],
+  "section_id": "money-management",
+  "question_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "question_type": "TRUE_FALSE",
+  "question_field": "True or False: Building wealth through investing mainly requires accurately predicting when to buy and sell (i.e., timing the market).",
+  "explanation": "Consistent, early investing and staying invested (“time in the market”) are more important than trying to forecast perfect entry and exit points.",
+  "hint": "Is success attributed to precise predictions or to staying invested over time?",
+  "answers": {
+    "answer_1": "False",
+    "answer_2": "True"
+  },
+  "correct_answer_key": "answer_1",
+  "is_draft": false,
+  "published": true,
+  "is_reported": false,
+  "private_account": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:04:46.063Z"
+  }
+}]

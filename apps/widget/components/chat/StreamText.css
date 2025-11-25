@@ -1,0 +1,22 @@
+.stream-text {
+  line-height: 1.5;
+  font-family: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.stream-text__cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  opacity: 1;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}

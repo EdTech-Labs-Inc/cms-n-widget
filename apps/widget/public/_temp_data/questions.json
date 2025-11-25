@@ -1,0 +1,3471 @@
+[{
+    "id": "67ec26dc3c7122fd8c20bea9",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "MCQ",
+    "question_field": "Why do companies issue stocks?",
+    "explanation": "Companies issue stocks to raise money, allowing them to grow and expand operations.",
+    "hint": "Consider the reason companies need funds for growth.",
+    "answers": {
+      "answer_1": "Raise capital",
+      "answer_2": "Dilute market",
+      "answer_3": "Secure loan",
+      "answer_4": "Set regulation"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec26dc3c7122fd8c20beaa",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"A stock, also known as a share or ______, represents ownership in a business.\"",
+    "explanation": "The correct answer is \"equity\" because the text clearly states that a stock is also known as equity, signifying ownership in a business.",
+    "hint": "Think of another word for ownership interest in a company.",
+    "answers": {
+      "answer_1": "equity",
+      "answer_2": "bond",
+      "answer_3": "debt",
+      "answer_4": "asset"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec26dc3c7122fd8c20bead",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False? The price of a company’s stock remains constant because it is determined solely by the company's overall value.",
+    "explanation": "This statement is false because while the company’s value is a factor, the stock price fluctuates due to market assessments, supply and demand, and various external factors.",
+    "hint": "Consider that stock prices change over time based on market dynamics and investor sentiment, not just the intrinsic value of the company.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec26dc3c7122fd8c20beab",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"Companies sell shares to raise money to support and ______ their operations.\"",
+    "explanation": "The correct answer is \"grow\" because companies raise funds through shares to expand and develop their operations further, as mentioned in the text.",
+    "hint": "Consider the natural business goal after receiving investment funds.",
+    "answers": {
+      "answer_1": "grow",
+      "answer_2": "shrink",
+      "answer_3": "reduce",
+      "answer_4": "stagnate"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec26dc3c7122fd8c20bea8",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "MCQ",
+    "question_field": "What does a stock represent?",
+    "explanation": "A stock gives you a piece of ownership in the company, meaning you own a part of it.",
+    "hint": "Think about what it means to hold a share in a business.",
+    "answers": {
+      "answer_1": "Ownership in company",
+      "answer_2": "Company loan",
+      "answer_3": "Future profit",
+      "answer_4": "Market commodity"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec26dc3c7122fd8c20beac",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False? A stock, also known as a share or equity, represents a form of ownership in a business and is traded on stock exchanges.",
+    "explanation": "This statement is true because a stock indeed represents partial ownership in a company, and stocks are bought and sold on exchanges.",
+    "hint": "Remember that owning a stock means you own part of the company, not just a product or service from the company.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:12.267Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": []
+  },
+  {
+    "id": "67ec284bf85bc741de213125",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "FILL_BLANK",
+    "question_field": "Passive investing refers to investments that track the performance of a __________.",
+    "explanation": "The correct answer is \"market index\" because passive investing is designed to mirror the performance of a whole index rather than attempting to beat it.",
+    "hint": "Think of what an ETF typically follows in the market.",
+    "answers": {
+      "answer_1": "market index",
+      "answer_2": "active fund",
+      "answer_3": "stock sector",
+      "answer_4": "price trend"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec284bf85bc741de213128",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Active investing always guarantees better returns than passive investing by deliberately selecting stocks or bonds.",
+    "explanation": "This is correct because, although active investing involves targeted strategies in an attempt to outperform the market, there is no guarantee that it will always yield better returns than the index tracked by passive investing.",
+    "hint": "Think about the inherent risk and uncertainties in trying to beat the market consistently.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec284bf85bc741de213126",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "FILL_BLANK",
+    "question_field": "Active investing, where professionals take deliberate positions to outperform the market, is typically found in __________.",
+    "explanation": "The correct answer is \"mutual funds\" because active investing strategies are commonly implemented through mutual funds managed by professionals aiming to exceed market returns.",
+    "hint": "Consider which investment vehicle involves active management by professionals.",
+    "answers": {
+      "answer_1": "mutual funds",
+      "answer_2": "ETFs",
+      "answer_3": "annuities",
+      "answer_4": "certificates"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec284bf85bc741de213124",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "MCQ",
+    "question_field": "What is the primary goal of active investing?",
+    "explanation": "Active investing aims to outperform the market through deliberate and researched investment decisions by professionals.",
+    "hint": "Consider which strategy involves professionals trying to improve returns beyond a standard benchmark.",
+    "answers": {
+      "answer_1": "Beat market index",
+      "answer_2": "Replicate index",
+      "answer_3": "Cut fees low",
+      "answer_4": "Secure fixed income"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec284bf85bc741de213123",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "MCQ",
+    "question_field": "What best describes passive investing?",
+    "explanation": "Passive investing involves buying vehicles like ETFs that replicate a market index's performance without frequent trading.",
+    "hint": "Think about strategies that follow trends without active management.",
+    "answers": {
+      "answer_1": "Index tracking ETFs",
+      "answer_2": "Stock picking funds",
+      "answer_3": "Tactical trading",
+      "answer_4": "High-frequency trading"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec284bf85bc741de213127",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Passive investing involves purchasing an ETF that is designed to mirror the performance of a market index.",
+    "explanation": "This is correct because passive investing means tracking the performance of a market index, and ETFs are a common vehicle for this strategy.",
+    "hint": "Recall that passive investing is about mirroring, not beating, the market index performance.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:19.081Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213553",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "MCQ",
+    "question_field": "Which feature attracts investors to ETFs?",
+    "explanation": "The correct answer is A) Low fees, tax efficient. Investors are drawn to ETFs due to their low fees, tax efficiency, and ease of trading, making them an attractive investment option.",
+    "hint": "Consider the benefits mentioned such as low fees and better tax management.",
+    "answers": {
+      "answer_1": "Low fees, tax efficient",
+      "answer_2": "High fee structure",
+      "answer_3": "Illiquid market trades",
+      "answer_4": "Limited asset range"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213557",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False? \"ETFs are known for their high fees and poor tax efficiency, making them less attractive for investors compared to other investment vehicles.\"",
+    "explanation": "The statement is false because ETFs are popular for their low fees and tax efficiency, which are some of the main advantages that attract investors.",
+    "hint": "Think about the benefits that make ETFs appealing as explained in the text.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213556",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False? \"An ETF, which stands for exchange-traded fund, allows investors to gain exposure to a diversified basket of stocks, bonds, and other assets, similar to how a basket of pens represents different companies.\"",
+    "explanation": "The statement is true because an ETF bundles various securities into one fund, offering diversification much like a basket containing various company “pens”.",
+    "hint": "Remember how the basket of pens was used as an analogy for a collection of different investments.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False",
+      "answer_3": "",
+      "answer_4": ""
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213555",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"Investors are attracted to ETFs due to their low ______, tax efficiency, and ease of trading.\"",
+    "explanation": "The text cites low fees as one of the key benefits of ETFs, which is why \"fees\" is the correct answer.",
+    "hint": "Consider what characteristic reduces the expense for ETF investors.",
+    "answers": {
+      "answer_1": "fees",
+      "answer_2": "risks",
+      "answer_3": "costs",
+      "answer_4": "volumes"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213554",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"An ETF is an investment fund that holds a basket of ______, bonds, and other assets.\"",
+    "explanation": "The text explains that ETFs hold a basket consisting of stocks, as well as bonds and other assets, making \"stocks\" the correct answer.",
+    "hint": "Think of a company’s stock as a single pen among many in a basket.",
+    "answers": {
+      "answer_1": "stocks",
+      "answer_2": "bonds",
+      "answer_3": "indexes",
+      "answer_4": "options"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec2d33f85bc741de213552",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "question_type": "MCQ",
+    "question_field": "What does ETF stand for?",
+    "explanation": "The correct answer is A) Exchange-Traded Fund. An ETF is an investment fund that holds a basket of stocks, bonds, and other assets and trades like a stock.",
+    "hint": "Think about an investment vehicle that holds a collection of assets.",
+    "answers": {
+      "answer_1": "Exchange-Traded Fund",
+      "answer_2": "Equity Tender Fund",
+      "answer_3": "Exclusive Traded Fund",
+      "answer_4": "Exchange Total Fund"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:15.905Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c21986b",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "MCQ",
+    "question_field": "What is the main advantage of using dollar-cost averaging?",
+    "explanation": "Dollar-cost averaging helps balance your average cost per share over time by buying more shares when prices are low and fewer when prices are high.",
+    "hint": "Consider how consistent investment transfers cost fluctuations into an averaged purchase price.",
+    "answers": {
+      "answer_1": "Balances cost per share",
+      "answer_2": "Predicts market moves",
+      "answer_3": "Guarantees high returns",
+      "answer_4": "Avoids market risk"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c21986f",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "TRUE_FALSE",
+    "question_field": "In a dollar-cost averaging strategy, investing a fixed amount like 100 pounds every month results in buying the same number of shares each month regardless of market conditions.",
+    "explanation": "With dollar-cost averaging, the number of shares purchased varies because when the market price is high, the same fixed amount buys fewer shares, and when the market price is low, it buys more shares. This fluctuation helps balance the average cost per share over time.",
+    "hint": "Consider how the number of shares bought changes with the price of the asset.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c21986e",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "FILL_BLANK",
+    "question_field": "When share prices decline, your fixed investment buys __________ shares.",
+    "explanation": "“More shares” is correct because, under dollar-cost averaging, falling prices allow the same fixed amount to purchase a greater quantity of shares, thereby reducing the average cost per share.",
+    "hint": "Think about how a fixed sum of money gets you more units when prices drop.",
+    "answers": {
+      "answer_1": "more shares",
+      "answer_2": "fewer shares",
+      "answer_3": "equal shares",
+      "answer_4": "limited shares"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c21986d",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "FILL_BLANK",
+    "question_field": "Investing a fixed amount on a regular basis, regardless of market fluctuations, is called __________.",
+    "explanation": "Dollar-cost averaging is correct because it describes the strategy of purchasing a fixed investment amount consistently over time, which automatically takes advantage of market fluctuations.",
+    "hint": "This method involves buying more shares when prices are low and fewer when prices are high.",
+    "answers": {
+      "answer_1": "dollar-cost averaging",
+      "answer_2": "market timing",
+      "answer_3": "asset allocation",
+      "answer_4": "buy and hold"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c219870",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Dollar-cost averaging helps to lower the average cost per share by naturally taking advantage of market fluctuations, because more shares are bought when prices are low and fewer are bought when prices are high.",
+    "explanation": "The essence of dollar-cost averaging is that, by consistently investing a fixed amount, you automatically buy more shares when prices are lower and fewer shares when prices are higher. This strategy can reduce the overall average cost per share over the long term.",
+    "hint": "Think about how the fixed investment amount interacts with varying market prices over time.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec329692165c078c21986c",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "question_type": "MCQ",
+    "question_field": "When share prices are high in a dollar-cost averaging strategy, what happens?",
+    "explanation": "With a fixed investment amount, high share prices mean each unit costs more, so you end up purchasing fewer shares.",
+    "hint": "Reflect on the fixed amount spent and the inverse relationship with share quantity as prices rise.",
+    "answers": {
+      "answer_1": "Buys fewer shares",
+      "answer_2": "Buys more shares",
+      "answer_3": "Buys equal shares",
+      "answer_4": "Buys recovering shares"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:14.993Z"
+    },
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ]
+  },
+  {
+    "id": "67ec33e1f85bc741de213acf",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "MCQ",
+    "question_field": "Which statement best describes monetary policy?",
+    "explanation": "Monetary policy involves a central bank’s use of tools to regulate the amount of money available in an economy and influence economic growth.",
+    "hint": "Think about which tool is used to manage economic activity without altering fiscal policies.",
+    "answers": {
+      "answer_1": "Control money supply",
+      "answer_2": "Increase tax rates",
+      "answer_3": "Regulate trade deals",
+      "answer_4": "Manage government spending"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "67ec33e1f85bc741de213ad0",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "MCQ",
+    "question_field": "Which option accurately characterizes an expansionary monetary policy?",
+    "explanation": "An expansionary monetary policy aims to boost economic activity by increasing the money supply, often achieved by lowering interest rates, which encourages borrowing and spending.",
+    "hint": "Consider how the central bank would stimulate a slowing economy.",
+    "answers": {
+      "answer_1": "Lower interest rates",
+      "answer_2": "Raise interest rates",
+      "answer_3": "Increase reserve requirements",
+      "answer_4": "Reduce government expenditure"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "67ec33e1f85bc741de213ad2",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "FILL_BLANK",
+    "question_field": "An ______ monetary policy is used to stimulate economic activity during a slowdown.",
+    "explanation": "An expansionary monetary policy is designed to boost economic activity by increasing the money supply and lowering interest rates, which supports spending and investment during economic downturns.",
+    "hint": "Think about which policy lowers interest rates and increases liquidity to boost economic growth.",
+    "answers": {
+      "answer_1": "expansionary",
+      "answer_2": "contractionary",
+      "answer_3": "neutral",
+      "answer_4": "stabilization"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "67ec33e1f85bc741de213ad4",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: One of the primary goals of monetary policy is to promote maximum employment, maintain stable prices, and ensure moderate long-term interest rates.",
+    "explanation": "This statement accurately summarizes the core objectives of monetary policy. Central banks use monetary policy tools to achieve these goals by managing the money supply and adjusting interest rates to foster an environment of economic stability and growth.",
+    "hint": "Reflect on the standard targets that central banks frequently mention when discussing policy objectives.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "67ec33e1f85bc741de213ad1",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "FILL_BLANK",
+    "question_field": "The primary goal of monetary policy is to control the ______ in an economy.",
+    "explanation": "Monetary policy primarily involves controlling the money supply, which in turn influences economic growth, inflation, and overall economic stability.",
+    "hint": "Consider what the central bank adjusts to regulate overall economic activity.",
+    "answers": {
+      "answer_1": "money supply",
+      "answer_2": "interest rate",
+      "answer_3": "bank reserves",
+      "answer_4": "government debt"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "67ec33e1f85bc741de213ad3",
+    "last_updated": {
+      "$date": "2025-04-01T19:39:44.288Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: When an economy is experiencing a slowdown, a central bank should adopt a contractionary monetary policy—characterized by increasing interest rates and restricting the money supply—to boost economic activity.",
+    "explanation": "Contractionary monetary policy is used to slow down economic growth and tame inflation by increasing interest rates and limiting the money supply. In a slowdown, however, central banks typically use expansionary policy—reducing interest rates and increasing the money supply—to stimulate economic activity.",
+    "hint": "Consider which monetary policy is designed to boost growth and which one is used to cool down an overheated economy.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": false,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:45.312Z"
+    }
+  },
+  {
+    "id": "68066e92260729265c7d2d7b",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:05.985Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "MCQ",
+    "question_field": "How does reducing the U.S. trade deficit potentially affect debt financing?",
+    "explanation": "The text explains that reducing the trade deficit leads to less foreign financing, which is risky since foreign investors hold about one-third of U.S. debt.",
+    "hint": "Recall the immutable law linking the current account deficit to foreign financing.",
+    "answers": {
+      "answer_1": "Loss of foreign funding",
+      "answer_2": "Boost in investor trust",
+      "answer_3": "Rise in domestic savings",
+      "answer_4": "Lower inflation"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68066e92260729265c7d2d7c",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:06.055Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "MCQ",
+    "question_field": "What constraint limits central banks from using aggressive expansionary policies?",
+    "explanation": "The article notes that global supply chains cannot be quickly rewired, leading to supply shocks that hinder growth and restrict central banks’ ability to expand support.",
+    "hint": "Think about the factor that, due to global disruption, increases inflation and slows growth.",
+    "answers": {
+      "answer_1": "Supply chain disruptions",
+      "answer_2": "AI-driven returns",
+      "answer_3": "U.S. stock rally",
+      "answer_4": "Tariff hikes"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68066e92260729265c7d2d7d",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:06.136Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "FILL_BLANK",
+    "question_field": "According to the text, reducing the trade deficit without a corresponding fall in ______ can undermine the U.S.'s ability to finance its debt.",
+    "explanation": "The correct answer is \"foreign financing\" because the text explains that the current account deficit cannot be reduced without a corresponding fall in foreign financing, which is essential for financing the U.S. debt.",
+    "hint": "Look for the economic law linking the current account deficit to a specific type of financing mentioned in the text.",
+    "answers": {
+      "answer_1": "foreign financing",
+      "answer_2": "domestic spending",
+      "answer_3": "capital reserves",
+      "answer_4": "government assets"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68066e92260729265c7d2d7e",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:06.205Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "FILL_BLANK",
+    "question_field": "Global supply chains cannot be ______ without significant disruption, limiting central banks' ability to support economic growth.",
+    "explanation": "The correct answer is \"rewired quickly\" because the text argues that global supply chains cannot be reconfigured rapidly without causing major disturbances, emphasizing the slow pace of supply chain adjustments.",
+    "hint": "Focus on the specific expression used to describe how quickly supply chains can adapt, as stated in the text.",
+    "answers": {
+      "answer_1": "rewired quickly",
+      "answer_2": "rearranged swiftly",
+      "answer_3": "shifted rapidly",
+      "answer_4": "altered slowly"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68066e92260729265c7d2d7f",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:06.269Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Reducing the U.S. trade deficit could potentially undermine the country's ability to finance its debt because a smaller trade deficit leads to reduced foreign financing.",
+    "explanation": "This statement is true. The text explains that one immutable economic law is that the current account deficit cannot shrink without a corresponding decline in foreign financing. Since foreign investors account for about one-third of U.S. debt, reducing the trade deficit might erode investor confidence and jeopardize debt financing.",
+    "hint": "Consider how changes in foreign financing can directly impact the capability to service large national debts.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68066e92260729265c7d2d80",
+    "last_updated": {
+      "$date": "2025-05-05T22:15:06.335Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "question_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Global supply chains can be rewired quickly without massive disruptions, meaning central banks can easily support economic expansion without worrying about unexpected supply shocks.",
+    "explanation": "This statement is false. The text clearly states that global supply chains cannot be reconfigured rapidly without significant disruption. Such disruptions can lead to supply shocks that slow economic growth and push up inflation, thereby limiting the central banks' capacity to stimulate economic expansion.",
+    "hint": "Reflect on the pandemic period when reconfiguring supply chains resulted in noticeable supply shocks and increased inflation.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:13:06.390Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ]
+  },
+  {
+    "id": "68067a989bcc7dac397d9df9",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "MCQ",
+    "question_field": "Which of the following is NOT mentioned as a guardrail for predicting policy changes?",
+    "explanation": "The text describes guardrails such as market volatility, financial risks, pushback from various sources, and a country’s willingness to engage. Voter turnout was not mentioned as a factor.",
+    "hint": "Review the list of factors that act as checks on the administration’s policy stance.",
+    "answers": {
+      "answer_1": "Voter turnout",
+      "answer_2": "Market volatility",
+      "answer_3": "Financial risks",
+      "answer_4": "Pushback from groups"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    }
+  },
+  {
+    "id": "68067a989bcc7dac397d9dfa",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "MCQ",
+    "question_field": "Which policy measure discussed is explicitly designed to generate government revenue?",
+    "explanation": "The transcript notes that a more universal 10% tariff is intended to generate much-needed revenue for the government, distinguishing it from tariffs aimed at reshoring or leveraging trade imbalances.",
+    "hint": "Think about which measure applies broadly rather than targeting specific sectors.",
+    "answers": {
+      "answer_1": "Universal tariff",
+      "answer_2": "Reshoring tariffs",
+      "answer_3": "Sector-specific tariffs",
+      "answer_4": "Country-specific negotiations"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    }
+  },
+  {
+    "id": "68067a989bcc7dac397d9dfb",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: The first type of policy measure mentioned in the transcript is a tariff on strategic sectors, where a ______% tariff was imposed on autos, auto parts, steel, and aluminum.",
+    "explanation": "The transcript clearly states that a 25% tariff was imposed on these sectors to support reshoring, making 25% the correct answer.",
+    "hint": "Recall the specific percentage mentioned for the initial tariffs on strategic sectors.",
+    "answers": {
+      "answer_1": "25%",
+      "answer_2": "20%",
+      "answer_3": "15%",
+      "answer_4": "30%"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    }
+  },
+  {
+    "id": "68067a989bcc7dac397d9dfc",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: Due to heightened policy uncertainty and the lack of adequate checks on the administration’s maximal policymaking stance, the technical investment horizon was shortened from a 6–12 month period to a ______-month period.",
+    "explanation": "The text states that the investment horizon was reduced to 3 months in response to policy uncertainties, which is why 3 is the correct answer.",
+    "hint": "Identify the adjusted near-term investment period mentioned as a response to higher uncertainty.",
+    "answers": {
+      "answer_1": "3",
+      "answer_2": "6",
+      "answer_3": "9",
+      "answer_4": "12"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.145Z"
+    }
+  },
+  {
+    "id": "68067a989bcc7dac397d9dfd",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.146Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "TRUE_FALSE",
+    "question_field": "The speaker indicates that although near-term risk asset performance will likely be pressured by policy uncertainty, over a six‐ to twelve‐month horizon, market fundamentals are expected to prevail and support a more optimistic technical investment outlook.",
+    "explanation": "The text explains that despite near-term challenges from policy uncertainty and volatility, the speaker is positively inclined toward the medium-term (6–12 months) outlook because underlying fundamentals should reassert themselves.",
+    "hint": "Consider how the speaker contrasts short-term pressures with longer-term fundamental strengths.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.146Z"
+    }
+  },
+  {
+    "id": "68067a989bcc7dac397d9dfe",
+    "last_updated": {
+      "$date": "2025-04-21T17:04:24.146Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "question_type": "TRUE_FALSE",
+    "question_field": "The speaker states that the second policy measure—a universal 10% tariff—is implemented solely to penalize strategic sectors contributing to trade deficits.",
+    "explanation": "Although the text describes a 10% universal tariff as one of the policy measures, it is clearly explained to be designed to generate much-needed revenue, not to penalize strategic sectors.",
+    "hint": "Reflect on the intended purpose of each policy measure mentioned and what revenue generation implies.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:24.146Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30df9",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "MCQ",
+    "question_field": "Which key reform simplified India's tax system?",
+    "explanation": "The GST replaced a myriad of older taxes, streamlining the tax system and easing business operations in India.",
+    "hint": "Think about the reform known for consolidating multiple taxes into one.",
+    "answers": {
+      "answer_1": "GST",
+      "answer_2": "IBC Code",
+      "answer_3": "Digital India",
+      "answer_4": "Smart Cities"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30dfa",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "MCQ",
+    "question_field": "Which initiative primarily fuels India’s digital economy growth?",
+    "explanation": "The Digital India campaign has significantly increased internet access, spurring growth in e-commerce, fintech, and overall digital innovation.",
+    "hint": "Consider the campaign that enhanced online connectivity and tech expansion.",
+    "answers": {
+      "answer_1": "Digital India",
+      "answer_2": "Global Investment",
+      "answer_3": "Infrastructure Boost",
+      "answer_4": "Youth Workforce"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30dfb",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"By rolling out the GST, India replaced a myriad of ______.\"",
+    "explanation": "The correct answer \"old taxes\" directly reflects the text's explanation that GST replaced many pre-existing taxes, thereby simplifying the tax system.",
+    "hint": "Consider what the GST eliminated to simplify business operations.",
+    "answers": {
+      "answer_1": "old taxes",
+      "answer_2": "state fees",
+      "answer_3": "new tariffs",
+      "answer_4": "regional levies"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30dfc",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: \"India's greatest asset is its young, educated ______.\"",
+    "explanation": "\"Workforce\" is the right answer because the text emphasizes that India’s youthful, skilled labor force drives increased spending and productivity, fueling long-term growth.",
+    "hint": "Think about the human resource that powers economic productivity and development.",
+    "answers": {
+      "answer_1": "workforce",
+      "answer_2": "investors",
+      "answer_3": "citizens",
+      "answer_4": "population"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30dfd",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "TRUE_FALSE",
+    "question_field": "The implementation of the Goods and Services Tax (GST) and the Insolvency and Bankruptcy Code (IBC) are key economic reforms that have helped simplify doing business in India and boost investor confidence.",
+    "explanation": "This is correct because the text clearly states that both GST and IBC were introduced as smart economic reforms that replaced older taxes and helped struggling businesses, thereby improving overall business ease and investor confidence.",
+    "hint": "Recall which reforms were mentioned specifically as initiatives that made doing business easier and aided investment.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "680995e686d29c05a0c30dfe",
+    "last_updated": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "playlist_ids": [],
+    "question_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "question_type": "TRUE_FALSE",
+    "question_field": "India’s economic growth is primarily fueled by an aging workforce with a declining youth population, which contrasts with many other emerging economies.",
+    "explanation": "This statement is false because India’s growth is driven by its young, educated workforce that is powered by a demographic edge, not an aging workforce. The text emphasizes that this youthful asset contributes to increased spending, productivity, and long-term growth.",
+    "hint": "Consider the demographic description provided and think about which age group is highlighted as India's key asset.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:42.445Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f5546417d",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "MCQ",
+    "question_field": "Which of the following is a primary goal of rebalancing your portfolio?",
+    "explanation": "The text emphasizes that rebalancing is used to maintain the desired risk level by keeping your portfolio aligned with your target asset allocation even after market fluctuations.",
+    "hint": "Think about managing how risk spreads across investments.",
+    "answers": {
+      "answer_1": "Maintain risk levels",
+      "answer_2": "Increase asset risk",
+      "answer_3": "Boost trading fees",
+      "answer_4": "Eliminate diversity"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f5546417e",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "MCQ",
+    "question_field": "How does rebalancing promote disciplined investing?",
+    "explanation": "Rebalancing encourages a disciplined investing approach by prompting you to sell assets that have performed well and buy those that have underperformed, essentially buying low and selling high.",
+    "hint": "Consider the classic investment adage on market timing.",
+    "answers": {
+      "answer_1": "Buy low, sell high",
+      "answer_2": "Buy high, sell low",
+      "answer_3": "Hold unchanged assets",
+      "answer_4": "Increase dividend focus"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f5546417f",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "FILL_BLANK",
+    "question_field": "Rebalancing adjusts the asset proportions in your portfolio to match your ________ allocation.",
+    "explanation": "The correct answer is “target allocation” because rebalancing is meant to restore your portfolio to its originally planned mix, ensuring that it remains aligned with your risk tolerance and investment goals.",
+    "hint": "Think about the allocation you initially decided on.",
+    "answers": {
+      "answer_1": "target allocation",
+      "answer_2": "market allocation",
+      "answer_3": "risk allocation",
+      "answer_4": "growth allocation"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f55464180",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "FILL_BLANK",
+    "question_field": "Rebalancing promotes disciplined investing by prompting you to ________, ensuring you buy undervalued assets and sell overvalued ones.",
+    "explanation": "The correct answer is “buy low sell high” because rebalancing forces an investor to sell assets that have done well and buy those that haven't, a fundamental principle of disciplined investing.",
+    "hint": "Consider the strategy that involves purchasing at lower prices and selling at higher ones.",
+    "answers": {
+      "answer_1": "buy low sell high",
+      "answer_2": "hold long term",
+      "answer_3": "time the market",
+      "answer_4": "trade frequently"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f55464181",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Rebalancing involves selling assets that have underperformed and buying assets that have overperformed in order to maximize short-term gains.",
+    "explanation": "The correct answer is False because rebalancing actually involves selling assets that have performed well (and thus have grown to a larger portion of your portfolio) and buying more of those that have underperformed to return to your original target allocation. This disciplined approach helps maintain your desired risk level and diversification rather than chasing short-term gains.",
+    "hint": "Think about whether the process of rebalancing is about exploiting short-term market performance trends or maintaining a consistent risk profile over time.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809be5d155f676f55464182",
+    "last_updated": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "question_type": "TRUE_FALSE",
+    "question_field": "One of the main purposes of rebalancing is to ensure that your portfolio remains aligned with both your original target asset allocation and any evolving changes in your risk tolerance and financial goals.",
+    "explanation": "The correct answer is True because rebalancing helps maintain the proportions of various assets to reflect your initial investment strategy and also adapts to changes in your risk tolerance and financial goals over time. This ensures that your portfolio remains diversified and aligned with your overall investment objectives.",
+    "hint": "Consider how a well-managed portfolio should adjust not only to market fluctuations but also to the changing circumstances of an investor’s life.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:21.849Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e1",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "MCQ",
+    "question_field": "When selling assets in a taxable account during rebalancing, which strategy helps offset capital gains?",
+    "explanation": "Tax-loss harvesting is used to offset capital gains by realizing losses, thereby reducing the tax burden from selling assets in a taxable account.",
+    "hint": "Consider the method that uses investment losses to balance gains for tax purposes.",
+    "answers": {
+      "answer_1": "Tax-loss harvesting",
+      "answer_2": "Automatic selling",
+      "answer_3": "Increased leverage",
+      "answer_4": "Higher diversification"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e2",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "MCQ",
+    "question_field": "Which approach minimizes tax implications by avoiding asset sales when rebalancing a portfolio?",
+    "explanation": "Using new contributions to allocate funds to underperforming assets helps realign the portfolio without triggering capital gains, thereby minimizing tax implications.",
+    "hint": "Focus on a strategy that adds to underperforming assets rather than selling existing ones.",
+    "answers": {
+      "answer_1": "New contributions",
+      "answer_2": "Market timing",
+      "answer_3": "Impulsive trades",
+      "answer_4": "Asset pooling"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e3",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: When rebalancing in taxable accounts, consider using ______ to offset capital gains with losses.",
+    "explanation": "The correct answer is \"tax-loss harvesting\" because this strategy involves selling securities at a loss to offset the gains from other investments, thereby reducing taxable income.",
+    "hint": "Think of a method that turns losses into a tax benefit.",
+    "answers": {
+      "answer_1": "tax-loss harvesting",
+      "answer_2": "dollar averaging",
+      "answer_3": "asset reallocation",
+      "answer_4": "automated rebalancing"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e4",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "FILL_BLANK",
+    "question_field": "Fill in the blank: Instead of selling assets, adjust your portfolio by applying new ______.",
+    "explanation": "The correct answer is \"contributions\" because adding new funds to underperforming assets helps realign your portfolio without triggering additional taxes from selling existing assets.",
+    "hint": "This is the money you invest regularly rather than money you pull out.",
+    "answers": {
+      "answer_1": "contributions",
+      "answer_2": "dividends",
+      "answer_3": "withdrawals",
+      "answer_4": "credits"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.614Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e5",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.615Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Using new contributions to buy underperforming assets instead of selling existing assets during rebalancing is advisable because it helps avoid triggering capital gains taxes.",
+    "explanation": "The educational text emphasizes using new contributions to rebalance rather than selling assets. This strategy can help maintain your target allocation while avoiding the potential capital gains tax incurred from selling assets in taxable accounts.",
+    "hint": "Consider the purpose of minimizing tax implications when rebalancing a portfolio.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.615Z"
+    }
+  },
+  {
+    "id": "6809bee6155f676f554641e6",
+    "last_updated": {
+      "$date": "2025-04-24T04:32:38.615Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Automated rebalancing completely eliminates the need to consider transaction fees and the tax implications associated with rebalancing.",
+    "explanation": "Although automated rebalancing offers discipline and convenience, the educational text clearly states that investors must still be mindful of transaction fees and tax implications when rebalancing. Automated services do not remove these concerns; they simply implement the rebalancing process consistently.",
+    "hint": "Think about whether any automated process can remove inherent costs like fees or taxes.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:38.615Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f4",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "MCQ",
+    "question_field": "In a bull market, which action best captures the recommended strategy?",
+    "explanation": "The educational text depicts bull markets as moments to \"ride the wave\" by investing in growth stocks, particularly in innovative sectors such as technology, health care, and consumer goods. Riding momentum is analogous to catching a powerful wave in surfing.",
+    "hint": "Think of bull markets as opportunities to catch the wave—not to slow down with defensive moves.",
+    "answers": {
+      "answer_1": "Ride momentum",
+      "answer_2": "Hold cash",
+      "answer_3": "Emphasize bonds",
+      "answer_4": "Focus on dividends"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f5",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "MCQ",
+    "question_field": "Which strategy is most advisable during bear markets according to the text?",
+    "explanation": "In bear markets, the text recommends a defensive approach by focusing on defensive stocks—including utilities, health care, and consumer staples—which offer stability and regular income while reducing risk exposure.",
+    "hint": "Consider which sectors are typically more resilient during economic downturns.",
+    "answers": {
+      "answer_1": "Invest in utilities",
+      "answer_2": "Buy growth stocks",
+      "answer_3": "Increase leverage",
+      "answer_4": "Emphasize tech"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f6",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "FILL_BLANK",
+    "question_field": "In bull markets, investors are advised to focus on ______ stocks to ride market momentum.",
+    "explanation": "In booming markets, growth stocks—often in sectors like technology and consumer goods—tend to profit from optimism and innovation, making them ideal for riding the upward momentum.",
+    "hint": "Think about which stocks are known for rapid revenue increases and future potential.",
+    "answers": {
+      "answer_1": "growth stocks",
+      "answer_2": "defensive stocks",
+      "answer_3": "cyclical stocks",
+      "answer_4": "value stocks"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f7",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "FILL_BLANK",
+    "question_field": "In bear markets, preserving capital often means shifting towards investing in ______ stocks.",
+    "explanation": "Defensive stocks, such as those in utilities and health care, provide stability and regular income, which is crucial when the economy slows and uncertainty prevails.",
+    "hint": "Look for stock types known for stability and consistent dividends during downturns.",
+    "answers": {
+      "answer_1": "defensive stocks",
+      "answer_2": "growth stocks",
+      "answer_3": "momentum stocks",
+      "answer_4": "speculative stocks"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f8",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: Investors should adjust their strategies based on market conditions by riding momentum and picking growth stocks in bull markets while shifting to defensive stocks and reducing risky positions in bear markets.",
+    "explanation": "This statement is true because the text emphasizes that in bull markets, you should capitalize on optimism by investing in growth sectors and leveraging momentum, while in bear markets, defensive strategies—such as investing in stable sectors and reducing exposure to high-risk assets—are key to preserving capital.",
+    "hint": "Think of the analogy comparing bull markets to surfing a powerful wave versus bear markets as rough water where cautious maneuvering is necessary.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c33056be1f300f4640f9",
+    "last_updated": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: It is advisable to constantly adjust your portfolio based on every minor market fluctuation and to react immediately by selling investments to avoid potential losses.",
+    "explanation": "This statement is false because the text advises maintaining balance, following trends without overreacting, and managing emotions. It warns against panic selling and obsessively monitoring every market move, recommending instead regular, thoughtful rebalancing and a long-term focus.",
+    "hint": "Remember the advice to stay calm, use strategies like dollar cost averaging, and avoid emotional, knee-jerk responses to short-term market changes.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:50:56.045Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640da",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "MCQ",
+    "question_field": "Which factor would discourage an investor from adopting an aggressive risk profile?",
+    "explanation": "A short time horizon means there is limited time to recover from potential losses, making it unsuitable for riskier, aggressive investments.",
+    "hint": "Consider the amount of time available to ride out market fluctuations.",
+    "answers": {
+      "answer_1": "Short time horizon",
+      "answer_2": "Long time horizon",
+      "answer_3": "Stable income",
+      "answer_4": "High financial knowledge"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640db",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "MCQ",
+    "question_field": "What is the primary purpose of assessing a risk profile in investing?",
+    "explanation": "A risk profile measures your willingness and ability to take on risk, ensuring that your investments align with your comfort level, financial situation, and investment goals.",
+    "hint": "Focus on how well your investments reflect your personal risk tolerance and objectives.",
+    "answers": {
+      "answer_1": "Matching investments to personal comfort",
+      "answer_2": "Predicting market movements",
+      "answer_3": "Maximizing tax exemptions",
+      "answer_4": "Converting currencies"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640dc",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "FILL_BLANK",
+    "question_field": "Investors nearing retirement typically adopt a ______ risk profile to safeguard their capital.",
+    "explanation": "A conservative risk profile focuses on preserving capital by investing in low‐risk assets, which makes it ideal for those who are risk‐averse or nearing retirement.",
+    "hint": "Think of the profile that avoids high volatility and prioritizes stability.",
+    "answers": {
+      "answer_1": "conservative",
+      "answer_2": "aggressive",
+      "answer_3": "speculative",
+      "answer_4": "moderate"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640dd",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "FILL_BLANK",
+    "question_field": "For designing an effective investment strategy, key factors to assess include your financial knowledge, ______ horizon, and investment goals.",
+    "explanation": "The term “time horizon” is crucial because longer time horizons typically allow investors to take on more risk, while shorter ones require safer options to preserve capital.",
+    "hint": "It represents the period over which you plan to invest.",
+    "answers": {
+      "answer_1": "time horizon",
+      "answer_2": "credit term",
+      "answer_3": "asset mix",
+      "answer_4": "market trend"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640de",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "TRUE_FALSE",
+    "question_field": "A risk profile assessment incorporates factors such as financial knowledge, time horizon, financial situation, risk tolerance, and investment goals to ensure that an investor’s portfolio matches their personal needs and comfort with market fluctuations.",
+    "explanation": "This statement is true because the text explains that a risk profile is based on a comprehensive analysis—including financial knowledge, time horizon, financial situation, risk tolerance, and investment goals—to help build a balanced investment strategy that aligns with personal needs and comfort with market volatility.",
+    "hint": "Think about all the elements mentioned in the text that contribute to determining one’s risk profile.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "6809c6f2e56eb897654640df",
+    "last_updated": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Once established, an individual’s risk profile remains fixed throughout their investment journey and does not change regardless of life events or shifts in financial circumstances.",
+    "explanation": "This statement is false because the text clearly states that an individual's risk profile can change due to life events, new goals, or shifts in financial situations, and therefore it is important to regularly review and adjust one’s investment strategy accordingly.",
+    "hint": "Consider whether the text mentions any conditions under which one's risk profile might need to be reassessed.",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.503Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fd9",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "MCQ",
+    "question_field": "Which economic mechanism best describes a downturn that arises when factories exhaust tariff-induced stockpiles and cannot secure new inputs, even though consumer demand stays solid?",
+    "explanation": "The shortage of production inputs limits output; the drag originates on the supply side, not from falling demand.",
+    "hint": "Where does the bottleneck occur—buyers’ wallets or producers’ materials?",
+    "answers": {
+      "answer_1": "Supply-driven contraction",
+      "answer_2": "Demand-driven recession",
+      "answer_3": "Monetary tightening shock",
+      "answer_4": "Fiscal austerity gap"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fda",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "MCQ",
+    "question_field": "What was the immediate, measurable effect on first-quarter data after tariffs jumped on April 2?",
+    "explanation": "Firms front-loaded component purchases before duties took effect, pushing imports to a record and enlarging inventories.",
+    "hint": "How would businesses react if they feared later shipments would be costlier?",
+    "answers": {
+      "answer_1": "Record import surge and swollen inventories",
+      "answer_2": "Sharp drop in inventories",
+      "answer_3": "Sudden surge in exports",
+      "answer_4": "Collapse in consumer spending"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fdb",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "FILL_BLANK",
+    "question_field": "When inventories built up before a tariff increase are finally depleted and factories lack essential inputs, economists describe the resulting slowdown as a ________.",
+    "explanation": "The contraction is triggered by a shortage of supply (inputs), not by falling demand, so it is labeled 'supply-driven.'",
+    "hint": "Is the bottleneck coming from demand weakening or from inputs running short?",
+    "answers": {
+      "answer_1": "supply-driven contraction",
+      "answer_2": "demand-side recession",
+      "answer_3": "stagflation phase",
+      "answer_4": "cyclical slowdown"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fdc",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "FILL_BLANK",
+    "question_field": "Once factories run out of pre-tariff stockpiles and production stalls, ________ is expected to decline even if consumer demand stays firm.",
+    "explanation": "With production dropping, the output component of GDP contracts, pulling overall GDP lower despite steady demand.",
+    "hint": "Which broad measure of national output shrinks when production falls?",
+    "answers": {
+      "answer_1": "gross domestic product",
+      "answer_2": "consumer confidence",
+      "answer_3": "unemployment rate",
+      "answer_4": "inflation rate"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fdd",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "TRUE_FALSE",
+    "question_field": "A “supply-driven contraction” can cause GDP to fall even when consumer demand is still solid, because factories lack the imported inputs needed to keep production running.",
+    "explanation": "The video explains that once the emergency stockpiles of imported components are depleted, factories cannot meet demand, production stalls, and GDP declines—despite healthy consumption.",
+    "hint": "Is the contraction triggered by weaker demand or by missing supplies?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fcd569b80a814af0a5fde",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "question_type": "TRUE_FALSE",
+    "question_field": "The record surge in first-quarter imports occurred because firms deliberately slowed their orders to avoid building excess inventories in the face of higher tariffs.",
+    "explanation": "Firms did the opposite—they accelerated (not slowed) their orders to bring components in before tariff hikes took effect, which temporarily swelled inventories.",
+    "hint": "Did companies import sooner or later to dodge the tariff increase?",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:06.418Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6083",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "MCQ",
+    "question_field": "A new tariff raises firms’ input costs while simultaneously cutting their output. For a central bank, this most clearly creates which macroeconomic situation?",
+    "explanation": "Tariffs lift prices (inflation pressure) yet suppress real growth, forcing policymakers to choose between supporting activity or restraining prices—classic stagflation.",
+    "hint": "What if inflation rises while growth falls—does that sound like one problem or two at once?",
+    "answers": {
+      "answer_1": "Stagflationary dilemma",
+      "answer_2": "Pure demand shock",
+      "answer_3": "Liquidity trap",
+      "answer_4": "Deflationary spiral"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6084",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "MCQ",
+    "question_field": "When the term premium on long-dated Treasury yields rises, it mainly reflects:",
+    "explanation": "The term premium is the extra yield investors demand for bearing uncertainty about future rates and inflation; a higher premium shows they want more return for that risk.",
+    "hint": "Why would investors need extra yield to hold long bonds instead of rolling short bills?",
+    "answers": {
+      "answer_1": "Greater compensation for interest-rate risk",
+      "answer_2": "Imminent rate cuts",
+      "answer_3": "Falling inflation views",
+      "answer_4": "Shrinking fiscal deficits"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6085",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "FILL_BLANK",
+    "question_field": "Tariffs that “add cost pressure and restrict output simultaneously” force policymakers to confront a _____ trade-off between growth and inflation.",
+    "explanation": "When costs rise (inflation risk) while output falls (growth risk), the opposing goals of the Fed’s dual mandate collide more intensely, making the trade-off sharper than usual.",
+    "hint": "Are policymakers finding the balance easier or harder under these twin pressures?",
+    "answers": {
+      "answer_1": "sharper trade-off",
+      "answer_2": "looser balance",
+      "answer_3": "neutral stance",
+      "answer_4": "single objective"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6086",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "FILL_BLANK",
+    "question_field": "Futures markets cited in the text priced in just one quarter-point move—equivalent to about _____ basis points—of Fed rate cuts by July.",
+    "explanation": "A quarter-point change equals 0.25 percentage points, or 25 basis points. Futures therefore implied only a single 25 bps cut rather than multiple cuts.",
+    "hint": "How many basis points make up a single “quarter-point” change in the policy rate?",
+    "answers": {
+      "answer_1": "25",
+      "answer_2": "50",
+      "answer_3": "75",
+      "answer_4": "0"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6087",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: A tariff that both raises firms’ input costs and lowers their output capacity is considered a negative supply-side shock, and such a shock usually heightens the central bank’s trade-off between supporting growth and controlling inflation.",
+    "explanation": "Because the shock reduces potential supply, it pushes prices up (inflationary) while simultaneously slowing real activity (disinflationary for growth). The central bank therefore faces conflicting objectives—tighter policy curbs inflation but hurts growth, while looser policy aids growth but fuels prices.",
+    "hint": "Ask yourself whether the shock shifts the aggregate supply curve and what that does to both prices and output.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fce649b80a814af0a6088",
+    "last_updated": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: An increase in the term premium embedded in long-term Treasury yields, holding expectations of future short-term rates constant, effectively tightens overall financial conditions and thus can substitute for some degree of policy-rate hikes.",
+    "explanation": "The term premium is the extra yield investors demand for holding long-dated bonds. A higher term premium lifts long-term borrowing costs, which can slow investment and spending even if the central bank’s policy rate is unchanged. Hence monetary conditions become tighter.",
+    "hint": "Consider whether borrowers care only about the Fed funds rate or about the total yield they must pay on longer-term debt.",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:08:36.856Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6ccd",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "MCQ",
+    "question_field": "In investing, market volatility is primarily viewed as a measure of:",
+    "explanation": "Volatility tracks how widely and unpredictably prices swing; larger swings imply greater uncertainty, which investors interpret as higher risk.",
+    "hint": "What does a bumpy ride in prices usually signal to investors?",
+    "answers": {
+      "answer_1": "Risk",
+      "answer_2": "Liquidity",
+      "answer_3": "Dividend income",
+      "answer_4": "Market size"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6cce",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "MCQ",
+    "question_field": "Which type of investor is generally best suited to hold high-volatility assets?",
+    "explanation": "A long time horizon lets investors ride out large price swings, increasing the chance of benefiting from the higher potential returns often linked with more volatile assets.",
+    "hint": "How does the length of your journey affect your tolerance for a turbulent flight?",
+    "answers": {
+      "answer_1": "An investor with decades until their goal",
+      "answer_2": "Someone five years from retirement",
+      "answer_3": "A short-term day trader",
+      "answer_4": "A conservative income seeker"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6ccf",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "FILL_BLANK",
+    "question_field": "Market __________ is the term investors use to describe how sharply and unpredictably prices move over time.",
+    "explanation": "Volatility captures the size and frequency of price swings—just as turbulence causes an aircraft to jolt up and down. Liquidity, momentum, and yield refer to entirely different market concepts.",
+    "hint": "What word did the video compare to “turbulence” in the stock market?",
+    "answers": {
+      "answer_1": "Volatility",
+      "answer_2": "Liquidity",
+      "answer_3": "Momentum",
+      "answer_4": "Yield"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6cd0",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "FILL_BLANK",
+    "question_field": "An investor who is decades from retirement and comfortable with bumps in the market may choose assets with _____ volatility in pursuit of greater long-term rewards.",
+    "explanation": "Long time horizons let investors ride out short-term price swings; therefore, higher-volatility assets can be suitable because they historically carry higher potential returns. Zero, minimal, or negative volatility assets would contradict the idea of embracing risk for possible growth.",
+    "hint": "If you have time to recover from turbulence, do you avoid or accept bigger swings?",
+    "answers": {
+      "answer_1": "Higher",
+      "answer_2": "Zero",
+      "answer_3": "Minimal",
+      "answer_4": "Negative"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6cd1",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Market volatility quantifies the size of price swings regardless of whether prices move up or down.",
+    "explanation": "Volatility is a statistical measure (e.g., standard deviation) of the dispersion of returns. It captures how far prices deviate from their average, not the direction of those moves. Large moves upward and downward are both counted toward higher volatility.",
+    "hint": "Are we measuring “which way” prices move, or “how far” they move?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd4a1c3007a461e0a6cd2",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "question_type": "TRUE_FALSE",
+    "question_field": "All else equal, an investor who is only a few years from retirement is usually better served by high-volatility assets than by low-volatility assets.",
+    "explanation": "A short time horizon leaves little room to recover from sharp drops. Low-volatility assets typically align better with near-term goals because their steadier prices reduce the risk of large, untimely losses. High-volatility assets are more appropriate when the investor has decades to ride out fluctuations.",
+    "hint": "If you have limited time before needing the money, can you comfortably wait out a severe price swing?",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:13.971Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d40",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "MCQ",
+    "question_field": "If an asset’s implied volatility jumps while its historical volatility stays roughly unchanged, what is the most reasonable interpretation?",
+    "explanation": "Historical volatility looks backward at actual price moves; implied volatility looks forward via option prices. A rise in implied volatility relative to unchanged historical volatility means option traders are pricing in bigger upcoming moves, even though recent price action hasn’t changed.",
+    "hint": "What does implied volatility “imply” about the future?",
+    "answers": {
+      "answer_1": "Traders expect larger future swings",
+      "answer_2": "Past volatility was overstated",
+      "answer_3": "Option time decay accelerated",
+      "answer_4": "Dividend yield will fall"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d41",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "MCQ",
+    "question_field": "The VIX is nicknamed the “fear gauge.” A sudden drop in the VIX most often signals:",
+    "explanation": "The VIX tracks 30-day expected volatility for the S&P 500 via option prices. Lower expected volatility suggests traders are relaxed about near-term risk; this can reflect calm—or even complacency—rather than fear.",
+    "hint": "Does less expected volatility mean more or less fear?",
+    "answers": {
+      "answer_1": "Growing complacency/calm",
+      "answer_2": "Rising market uncertainty",
+      "answer_3": "Higher interest‐rate expectations",
+      "answer_4": "Declining option liquidity"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d42",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "FILL_BLANK",
+    "question_field": "The type of volatility inferred from option prices—reflecting traders’ expectations about future price swings—is known as _______ volatility.",
+    "explanation": "Option premiums embed the market’s consensus about upcoming price variability; the figure backed out of those premiums is called implied volatility.",
+    "hint": "Where do traders reveal what they think will happen, not what already happened?",
+    "answers": {
+      "answer_1": "Implied",
+      "answer_2": "Historical",
+      "answer_3": "Realized",
+      "answer_4": "Intrinsic"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d43",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "FILL_BLANK",
+    "question_field": "The VIX index, nicknamed the “fear gauge,” measures the expected 30-day volatility of the _______.",
+    "explanation": "The VIX is calculated from S&P 500 (SPX) option prices, so it specifically represents the market’s forecast of that index’s near-term volatility.",
+    "hint": "Which broad U.S. large-cap index is most often treated as the market’s primary benchmark?",
+    "answers": {
+      "answer_1": "S&P 500",
+      "answer_2": "Dow Jones Industrial Average",
+      "answer_3": "NASDAQ-100",
+      "answer_4": "Russell 2000"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d44",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Statement: “Implied volatility is calculated from an asset’s past price movements, so it describes what has already happened.”",
+    "explanation": "Implied volatility is extracted from current options prices and represents the market’s expectation of future (not past) price swings. Past price movements are captured by historical volatility, not implied volatility.",
+    "hint": "Does “implied” refer to future expectations or to recorded history?",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "681fd527c3007a461e0a6d45",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "question_type": "TRUE_FALSE",
+    "question_field": "Statement: “When the VIX index jumps sharply, it usually indicates that traders anticipate larger-than-usual fluctuations in the S&P 500 over the next 30 days.”",
+    "explanation": "The VIX is built from option prices on the S&P 500 and reflects the market’s forecast of 30-day volatility. A rising VIX signals growing uncertainty and a belief that bigger moves lie ahead.",
+    "hint": "What nickname does the VIX carry, and why?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:27.092Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048bd",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "MCQ",
+    "question_field": "Sticky inflation makes it difficult for the Federal Reserve to:",
+    "explanation": "When inflation stays high, cutting rates would risk intensifying price pressures. Therefore, the Fed is constrained from easing policy, keeping borrowing costs elevated and market volatility higher.",
+    "hint": "If prices keep rising, can the Fed safely make money cheaper?",
+    "answers": {
+      "answer_1": "Lower interest rates",
+      "answer_2": "Expand quantitative easing",
+      "answer_3": "Peg the dollar to gold",
+      "answer_4": "Ignore labor-market data"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048be",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "MCQ",
+    "question_field": "After a temporary tariff pause, firms may still face growth headwinds primarily because of:",
+    "explanation": "Rearranging global supply chains requires new contracts, logistics, and capital investment—processes that take time and money. These “time-to-build” lags mean economic drag can persist even if headline tariffs fall.",
+    "hint": "Can factories and logistics networks be moved overnight?",
+    "answers": {
+      "answer_1": "Supply-chain adjustment lags",
+      "answer_2": "Immediate currency revaluation",
+      "answer_3": "A liquidity trap",
+      "answer_4": "Wage-price spirals"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048bf",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "FILL_BLANK",
+    "question_field": "Inflation means that the same dollar buys ___ goods and services than before.",
+    "explanation": "With inflation, overall price levels rise, so each dollar has less purchasing power—it can purchase fewer items or less of a service.",
+    "hint": "Ask yourself, does rising prices strengthen or weaken the dollar’s purchasing power?",
+    "answers": {
+      "answer_1": "fewer",
+      "answer_2": "more",
+      "answer_3": "the same amount of",
+      "answer_4": "higher-quality"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048c0",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "FILL_BLANK",
+    "question_field": "Shifting global supply chains in response to new tariffs is generally ___ and ___.",
+    "explanation": "Re-routing manufacturing, securing new suppliers, and adjusting logistics require time and capital, making the process both slow and expensive.",
+    "hint": "Think about the practical effort and expense involved in moving factories or renegotiating supplier contracts.",
+    "answers": {
+      "answer_1": "slow and costly",
+      "answer_2": "rapid and inexpensive",
+      "answer_3": "instant and profitable",
+      "answer_4": "efficient and revenue-neutral"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048c1",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: Because shifting supply chains is inherently slow and costly, a lower effective tariff rate (around 10 – 15 %) does not guarantee that individual quarters will avoid tariff-driven economic slowdowns.",
+    "explanation": "Even if the overall (cumulative) drag on growth is modest when tariffs settle near 10–15 %, the adjustment period still disrupts production and logistics. These transitional frictions can weigh on activity in specific quarters, so slowdowns may still appear.",
+    "hint": "Are short-run disruptions always removed just because the long-run rate becomes smaller?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "6822983c69262c96570048c2",
+    "last_updated": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: Persistently high inflation limits the Federal Reserve’s ability to cut interest rates, which can keep borrowing costs elevated and market volatility higher.",
+    "explanation": "The Fed’s dual mandate obliges it to control inflation. If inflation remains “sticky,” lowering rates would risk fueling further price rises, so policymakers hold rates higher for longer. Higher policy rates filter into costlier borrowing and often more volatile financial markets.",
+    "hint": "What happens to the Fed’s policy options when inflation is above target?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:20.518Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003173",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "MCQ",
+    "question_field": "A central bank unexpectedly trims its policy rate by 25 basis points and strikes a new trade deal with a major partner. According to standard market logic, which immediate reaction is most likely?",
+    "explanation": "Lower policy rates reduce borrowing costs and raise the present value of future cash-flows, while a trade deal improves growth prospects—both factors typically lift share prices.",
+    "hint": "What usually happens to stock prices when borrowing becomes cheaper?",
+    "answers": {
+      "answer_1": "Domestic equities rise",
+      "answer_2": "Bond yields surge",
+      "answer_3": "Local currency soars",
+      "answer_4": "Equity volatility collapses"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003174",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "MCQ",
+    "question_field": "A manufacturer chooses to absorb higher raw-material costs instead of raising its selling price. Which profitability metric is most directly pressured?",
+    "explanation": "Raw-material costs fall under cost of goods sold; if selling prices stay fixed, COGS rises and gross profit (sales – COGS) shrinks, compressing the gross margin before operating or financing items are considered.",
+    "hint": "Which margin sits right above operating expenses on the income statement?",
+    "answers": {
+      "answer_1": "Gross margin squeezed",
+      "answer_2": "Revenue per unit rises",
+      "answer_3": "EBITDA margin expands",
+      "answer_4": "Net sales jump"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003175",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "FILL_BLANK",
+    "question_field": "A 25-basis-point move in an interest rate is equal to a change of ____ percentage points.",
+    "explanation": "One basis point equals 0.01 percentage points. Therefore, 25 bp × 0.01 = 0.25 percentage points (¼ of a percent).",
+    "hint": "Is there a rule that converts basis points into hundredths of a percent?",
+    "answers": {
+      "answer_1": "0.25",
+      "answer_2": "2.5",
+      "answer_3": "0.025",
+      "answer_4": "25"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003176",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "FILL_BLANK",
+    "question_field": "If the 2-year U.S. Treasury yield is 3.89 % and the 10-year yield is 4.39 %, the spread between them is roughly ____ basis points.",
+    "explanation": "The spread is 4.39 % − 3.89 % = 0.50 percentage points; converting 0.50 percentage points to basis points (×100) gives 50 bp.",
+    "hint": "How many basis points are in one-half of a percent?",
+    "answers": {
+      "answer_1": "50",
+      "answer_2": "5",
+      "answer_3": "0.5",
+      "answer_4": "500"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003177",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: A 25-basis-point change in an interest-rate target is exactly equivalent to a 0.25 percentage-point change in that rate.",
+    "explanation": "There are 100 basis points in one percentage point. Therefore, 25 basis points ÷ 100 = 0.25 percentage points.",
+    "hint": "How many basis points make up 1 %?",
+    "answers": {
+      "answer_1": "True",
+      "answer_2": "False"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  },
+  {
+    "id": "682298bd3fb6b41c8f003178",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "gallery_ids": [],
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "question_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "question_type": "TRUE_FALSE",
+    "question_field": "True or False: If the 2-year U.S. Treasury yield is 3.89 % and the 10-year yield is 4.39 %, the yield curve is inverted.",
+    "explanation": "A yield curve is called “inverted” only when shorter-term yields exceed longer-term yields. Here, the longer-term (10-year) yield is higher than the shorter-term (2-year) yield, so the curve is still upward-sloping, not inverted.",
+    "hint": "In an inversion, which maturity—short or long—has the higher yield?",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "is_draft": false,
+    "published": true,
+    "is_reported": false,
+    "private_account": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:29.196Z"
+    }
+  }]
+  

@@ -1,0 +1,2239 @@
+[{
+    "id": "67ec26d73c7122fd8c20be92",
+    "last_updated": {
+      "$date": "2025-04-01T17:48:12.060Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "statement": "Alternate term for stock?",
+    "answers": {
+      "answer_1": "Share or equity",
+      "answer_2": "Commodity asset"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:07.093Z"
+    },
+    "appears_at": 11880
+  },
+  {
+    "id": "67ec26d73c7122fd8c20be95",
+    "last_updated": {
+      "$date": "2025-04-01T17:48:12.342Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "statement": "Build wealth",
+    "answers": {
+      "answer_1": "Investing stocks",
+      "answer_2": "Quick profit"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:07.093Z"
+    },
+    "appears_at": 34209
+  },
+  {
+    "id": "67ec26d73c7122fd8c20be93",
+    "last_updated": {
+      "$date": "2025-04-01T17:48:12.150Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "statement": "Where are stocks traded?",
+    "answers": {
+      "answer_1": "On exchanges",
+      "answer_2": "In vaults"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:07.093Z"
+    },
+    "appears_at": 24459
+  },
+  {
+    "id": "67ec26d73c7122fd8c20be94",
+    "last_updated": {
+      "$date": "2025-04-01T17:48:12.242Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "statement": "Companies sell shares",
+    "answers": {
+      "answer_1": "To raise money",
+      "answer_2": "To cut costs"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:07.093Z"
+    },
+    "appears_at": 15319
+  },
+  {
+    "id": "67ec26d73c7122fd8c20be91",
+    "last_updated": {
+      "$date": "2025-04-01T17:48:11.969Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec26a492165c078c218ab8",
+    "statement": "What is a stock?",
+    "answers": {
+      "answer_1": "Business ownership",
+      "answer_2": "Company loan"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:48:07.093Z"
+    },
+    "appears_at": 11880
+  },
+  {
+    "id": "67ec2845f85bc741de21310b",
+    "last_updated": {
+      "$date": "2025-04-01T17:54:17.670Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "statement": "Which funds track index?",
+    "answers": {
+      "answer_1": "ETFs",
+      "answer_2": "Mutual funds"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:13.483Z"
+    },
+    "appears_at": 18959
+  },
+  {
+    "id": "67ec2845f85bc741de21310f",
+    "last_updated": {
+      "$date": "2025-04-01T17:54:18.019Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "statement": "Active investing",
+    "answers": {
+      "answer_1": "Outperform market",
+      "answer_2": "Index tracking"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:13.483Z"
+    },
+    "appears_at": 30059
+  },
+  {
+    "id": "67ec2845f85bc741de213110",
+    "last_updated": {
+      "$date": "2025-04-01T17:54:18.114Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec280c92165c078c218c20",
+    "statement": "Passive investing tracks ____.",
+    "answers": {
+      "answer_1": "market index",
+      "answer_2": "mutual funds"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T17:54:13.483Z"
+    },
+    "appears_at": 12329
+  },
+  {
+    "id": "67ec2d3df85bc741de21356b",
+    "last_updated": {
+      "$date": "2025-04-01T18:22:27.916Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "statement": "ETF",
+    "answers": {
+      "answer_1": "Basket of assets",
+      "answer_2": "Single company asset"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:25.333Z"
+    },
+    "appears_at": 29639
+  },
+  {
+    "id": "67ec2d3df85bc741de21356e",
+    "last_updated": {
+      "$date": "2025-04-01T18:20:24.640Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "statement": "ETF has ____ fees.",
+    "answers": {
+      "answer_1": "low",
+      "answer_2": "high"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:25.333Z"
+    },
+    "appears_at": 18790
+  },
+  {
+    "id": "67ec2d3df85bc741de213567",
+    "last_updated": {
+      "$date": "2025-04-01T18:15:39.425Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "statement": "What is an ETF?",
+    "answers": {
+      "answer_1": "Exchange-traded fund",
+      "answer_2": "Extra trading fund"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:25.333Z"
+    },
+    "appears_at": 7039
+  },
+  {
+    "id": "67ec2d3df85bc741de213568",
+    "last_updated": {
+      "$date": "2025-04-01T18:19:37.204Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "statement": "ETF holds what assets?",
+    "answers": {
+      "answer_1": "Stocks, Bonds + Other Assets",
+      "answer_2": "Only stocks"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:25.333Z"
+    },
+    "appears_at": 13399
+  },
+  {
+    "id": "67ec2d3df85bc741de21356a",
+    "last_updated": {
+      "$date": "2025-04-01T18:21:38.383Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec2d0592165c078c219206",
+    "statement": "ETF analogous to what?",
+    "answers": {
+      "answer_1": "Basket of pens",
+      "answer_2": "Single pen"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:15:25.333Z"
+    },
+    "appears_at": 29639
+  },
+  {
+    "id": "67ec32a592165c078c219880",
+    "last_updated": {
+      "$date": "2025-04-01T18:38:35.417Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "statement": "Dollar-cost averaging",
+    "answers": {
+      "answer_1": "Balances average cost",
+      "answer_2": "Raises cost risk"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:29.682Z"
+    },
+    "appears_at": 32404
+  },
+  {
+    "id": "67ec32a592165c078c219881",
+    "last_updated": {
+      "$date": "2025-04-01T18:38:35.509Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "statement": "Fixed amount added ____.",
+    "answers": {
+      "answer_1": "Consistently",
+      "answer_2": "Randomly"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:29.682Z"
+    },
+    "appears_at": 9390
+  },
+  {
+    "id": "67ec32a592165c078c21987f",
+    "last_updated": {
+      "$date": "2025-04-01T18:40:43.280Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec3266bc387234a120f261",
+    "statement": "High prices buy ____ shares.",
+    "answers": {
+      "answer_1": "Fewer shares",
+      "answer_2": "More shares"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:38:29.682Z"
+    },
+    "appears_at": 22674
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae8",
+    "last_updated": {
+      "$date": "2025-04-01T18:43:58.422Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Monetary policy controls ____",
+    "answers": {
+      "answer_1": "money supply",
+      "answer_2": "public debt"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 15189
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae5",
+    "last_updated": {
+      "$date": "2025-04-01T18:43:58.149Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Contractionary policy does?",
+    "answers": {
+      "answer_1": "limit growth",
+      "answer_2": "boost spending"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 47665
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae4",
+    "last_updated": {
+      "$date": "2025-04-01T18:46:02.552Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Expansionary policy does?",
+    "answers": {
+      "answer_1": "boost economy",
+      "answer_2": "limit growth"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 40735
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae9",
+    "last_updated": {
+      "$date": "2025-04-01T18:43:58.511Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Policy aims for ____",
+    "answers": {
+      "answer_1": "stable prices",
+      "answer_2": "high profits"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 54345
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae3",
+    "last_updated": {
+      "$date": "2025-04-01T18:43:57.968Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Policy controls what?",
+    "answers": {
+      "answer_1": "money supply",
+      "answer_2": "govt spending"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 15189
+  },
+  {
+    "id": "67ec33e9f85bc741de213ae6",
+    "last_updated": {
+      "$date": "2025-04-01T18:43:58.239Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "67ec33a53c7122fd8c20c32b",
+    "statement": "Term/Concept: Central bank",
+    "answers": {
+      "answer_1": "regulates money",
+      "answer_2": "taxes revenue"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-01T18:43:53.103Z"
+    },
+    "appears_at": 26120
+  },
+  {
+    "id": "68066e80260729265c7d2d63",
+    "last_updated": {
+      "$date": "2025-04-21T16:12:51.044Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "statement": "What followed Treasury sell-off?",
+    "answers": {
+      "answer_1": "Tariff pause",
+      "answer_2": "Debt growth"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:12:48.201Z"
+    },
+    "appears_at": 120870
+  },
+  {
+    "id": "68066e80260729265c7d2d64",
+    "last_updated": {
+      "$date": "2025-04-21T16:36:56.955Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "statement": "Current account deficit can’t be reduced without",
+    "answers": {
+      "answer_1": "Same fall in Foreign financing",
+      "answer_2": "Greater fall in foreign financing "
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:12:48.201Z"
+    },
+    "appears_at": 72410
+  },
+  {
+    "id": "68066e80260729265c7d2d65",
+    "last_updated": {
+      "$date": "2025-04-21T16:40:14.845Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "statement": "Megaforce currently driving returns: ",
+    "answers": {
+      "answer_1": "AI",
+      "answer_2": "Cloud Computing "
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:12:48.201Z"
+    },
+    "appears_at": 140669
+  },
+  {
+    "id": "680670fb9bcc7dac397d9ad2",
+    "last_updated": {
+      "$date": "2025-04-21T16:25:16.071Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "appears_at": 14010,
+    "statement": "Colliding Megaforces: Geopolitical fragmentation & ______ ",
+    "answers": {
+      "answer_1": "Future of Finance",
+      "answer_2": "Tariffs"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:23:23.367Z"
+    }
+  },
+  {
+    "id": "680673d8260729265c7d2e51",
+    "last_updated": {
+      "$date": "2025-04-21T16:35:36.387Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "appears_at": 41479,
+    "statement": "Fragile equilibrium driven by large debt, _____",
+    "answers": {
+      "answer_1": "Higher inflation + higher interest rates",
+      "answer_2": "Higher Taxes + lower inflation "
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:35:36.387Z"
+    }
+  },
+  {
+    "id": "6806755d9bcc7dac397d9bf3",
+    "last_updated": {
+      "$date": "2025-04-21T16:42:05.754Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68066e2a9bcc7dac397d9a41",
+    "appears_at": 102150,
+    "statement": "Portion of US debt held by foreign investors ",
+    "answers": {
+      "answer_1": "1/3",
+      "answer_2": "1/4"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T16:42:05.754Z"
+    }
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e0e",
+    "last_updated": {
+      "$date": "2025-04-21T18:32:26.873Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "Already received a 25% tariff?",
+    "answers": {
+      "answer_1": "Autos, Steel & Aluminium",
+      "answer_2": "Electronic gadgets"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 77180
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e0f",
+    "last_updated": {
+      "$date": "2025-04-21T18:36:30.924Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "Investment horizon reduced to …",
+    "answers": {
+      "answer_1": "Three months",
+      "answer_2": "Six months"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 144029
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e10",
+    "last_updated": {
+      "$date": "2025-04-21T17:09:14.893Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "More rewarding to:",
+    "answers": {
+      "answer_1": "Establish Guardrails",
+      "answer_2": "Try to predict the next policy moves"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 33349
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e11",
+    "last_updated": {
+      "$date": "2025-04-21T18:33:14.761Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "Universal tariff to generate revenue ",
+    "answers": {
+      "answer_1": "10%",
+      "answer_2": "25%"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 85730
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e12",
+    "last_updated": {
+      "$date": "2025-04-21T18:34:28.067Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "Purpose of Country-specific negotiations",
+    "answers": {
+      "answer_1": "Reduce trade imbalance",
+      "answer_2": "Boost market stability"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 101019
+  },
+  {
+    "id": "68067a9e9bcc7dac397d9e14",
+    "last_updated": {
+      "$date": "2025-04-21T18:35:32.562Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "statement": "With the uncertainty, risk assets should experience __.",
+    "answers": {
+      "answer_1": "Pressure",
+      "answer_2": "Growth"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T17:04:30.804Z"
+    },
+    "appears_at": 119120
+  },
+  {
+    "id": "680690b49bcc7dac397da9e3",
+    "last_updated": {
+      "$date": "2025-04-21T18:39:31.863Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "appears_at": 197410,
+    "statement": "Outlook on US equities",
+    "answers": {
+      "answer_1": "Modestly Positive",
+      "answer_2": "Modestly Negative"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T18:38:44.903Z"
+    }
+  },
+  {
+    "id": "680691299bcc7dac397daa11",
+    "last_updated": {
+      "$date": "2025-04-21T18:41:27.170Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "68067a13260729265c7d2eb6",
+    "appears_at": 219975,
+    "statement": "Alternative safe haven to long duration US Treasuries?",
+    "answers": {
+      "answer_1": "Gold",
+      "answer_2": "Bitcoin"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-21T18:40:41.449Z"
+    }
+  },
+  {
+    "id": "6808ae219bcc7dac397e3a76",
+    "last_updated": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6808adea3c3119bc3b7dd255",
+    "statement": "Ideal grassland pH?",
+    "answers": {
+      "answer_1": "6 to 6.5",
+      "answer_2": "7 to 8"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    }
+  },
+  {
+    "id": "6808ae219bcc7dac397e3a77",
+    "last_updated": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6808adea3c3119bc3b7dd255",
+    "statement": "pH below 7 is?",
+    "answers": {
+      "answer_1": "Acidic",
+      "answer_2": "Alkaline"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    }
+  },
+  {
+    "id": "6808ae219bcc7dac397e3a78",
+    "last_updated": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6808adea3c3119bc3b7dd255",
+    "statement": "Sandstone",
+    "answers": {
+      "answer_1": "Acidic soil",
+      "answer_2": "Optimal pH"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    }
+  },
+  {
+    "id": "6808ae219bcc7dac397e3a79",
+    "last_updated": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6808adea3c3119bc3b7dd255",
+    "statement": "pH measures ____ ions.",
+    "answers": {
+      "answer_1": "hydrogen",
+      "answer_2": "oxygen"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    }
+  },
+  {
+    "id": "6808ae219bcc7dac397e3a7a",
+    "last_updated": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6808adea3c3119bc3b7dd255",
+    "statement": "Parent rock influences?",
+    "answers": {
+      "answer_1": "soil traits",
+      "answer_2": "climate shifts"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-23T09:08:49.929Z"
+    }
+  },
+  {
+    "id": "6809835c764e608092994050",
+    "last_updated": {
+      "$date": "2025-04-24T00:33:54.450Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809830a764e608092994023",
+    "statement": "Maintain long-term ______.",
+    "answers": {
+      "answer_1": "focus",
+      "answer_2": "risk"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T00:18:36.776Z"
+    },
+    "appears_at": 81370
+  },
+  {
+    "id": "680995ea86d29c05a0c30e05",
+    "last_updated": {
+      "$date": "2025-04-24T04:42:58.323Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "What replaced old taxes?",
+    "answers": {
+      "answer_1": "GST",
+      "answer_2": "IBC"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 20379
+  },
+  {
+    "id": "680995ea86d29c05a0c30e07",
+    "last_updated": {
+      "$date": "2025-04-24T04:45:42.519Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "What record investment hit?",
+    "answers": {
+      "answer_1": "FDI",
+      "answer_2": "GST"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 58389
+  },
+  {
+    "id": "680995ea86d29c05a0c30e08",
+    "last_updated": {
+      "$date": "2025-04-24T04:44:59.725Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "Digital India brought about",
+    "answers": {
+      "answer_1": "Internet boom",
+      "answer_2": "Outdated cables"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 37930
+  },
+  {
+    "id": "680995ea86d29c05a0c30e09",
+    "last_updated": {
+      "$date": "2025-04-24T04:43:42.358Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "IBC led to",
+    "answers": {
+      "answer_1": "Business bounce-back",
+      "answer_2": "Economic slowdown"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 30420
+  },
+  {
+    "id": "680995ea86d29c05a0c30e0a",
+    "last_updated": {
+      "$date": "2025-04-24T04:46:34.176Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "India’s greatest asset is ____.",
+    "answers": {
+      "answer_1": "young, educated  workforce",
+      "answer_2": "big industry"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 95250
+  },
+  {
+    "id": "680995ea86d29c05a0c30e0b",
+    "last_updated": {
+      "$date": "2025-04-24T04:45:56.017Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809955f86d29c05a0c30dcf",
+    "statement": "Infrastructure connects ____.",
+    "answers": {
+      "answer_1": "cities smoothly",
+      "answer_2": "taxes repeatedly"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T01:37:46.255Z"
+    },
+    "appears_at": 81779
+  },
+  {
+    "id": "6809be61155f676f5546418f",
+    "last_updated": {
+      "$date": "2025-04-24T04:34:34.861Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "statement": "What is rebalancing?",
+    "answers": {
+      "answer_1": "Adjusts asset proportions",
+      "answer_2": "Ignores market goals"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:25.702Z"
+    },
+    "appears_at": 27680
+  },
+  {
+    "id": "6809be61155f676f55464190",
+    "last_updated": {
+      "$date": "2025-04-24T04:34:56.547Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "statement": "Portfolio risk management?",
+    "answers": {
+      "answer_1": "Maintains desired risk",
+      "answer_2": "Increases risk exposure"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:25.702Z"
+    },
+    "appears_at": 58169
+  },
+  {
+    "id": "6809be61155f676f55464191",
+    "last_updated": {
+      "$date": "2025-04-24T04:35:04.701Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "statement": "Diversification",
+    "answers": {
+      "answer_1": "Spreads risk",
+      "answer_2": "Concentrates assets"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:25.702Z"
+    },
+    "appears_at": 71940
+  },
+  {
+    "id": "6809be61155f676f55464192",
+    "last_updated": {
+      "$date": "2025-04-24T04:35:20.981Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "statement": "Portfolio rebalancing ensures ____.",
+    "answers": {
+      "answer_1": "proper diversification",
+      "answer_2": "random allocation"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:25.702Z"
+    },
+    "appears_at": 89199
+  },
+  {
+    "id": "6809be61155f676f55464193",
+    "last_updated": {
+      "$date": "2025-04-24T04:35:30.935Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809bdc7155f676f5546416a",
+    "statement": "Rebalancing promotes ____ investing.",
+    "answers": {
+      "answer_1": "disciplined investing",
+      "answer_2": "impulsive investing"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:30:25.702Z"
+    },
+    "appears_at": 98300
+  },
+  {
+    "id": "6809bef5155f676f554641f3",
+    "last_updated": {
+      "$date": "2025-04-24T04:37:15.366Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "statement": "Tax-loss harvesting purpose?",
+    "answers": {
+      "answer_1": "Offset gains with losses",
+      "answer_2": "Increase taxes"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:53.466Z"
+    },
+    "appears_at": 15779
+  },
+  {
+    "id": "6809bef5155f676f554641f4",
+    "last_updated": {
+      "$date": "2025-04-24T04:37:46.662Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "statement": "Benefit of automating rebalancing?",
+    "answers": {
+      "answer_1": "Maintain allocation",
+      "answer_2": "Delay adjustments"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:53.466Z"
+    },
+    "appears_at": 23940
+  },
+  {
+    "id": "6809bef5155f676f554641f5",
+    "last_updated": {
+      "$date": "2025-04-24T04:42:23.619Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "statement": "Use new ____ instead of selling assets",
+    "answers": {
+      "answer_1": "Contributions",
+      "answer_2": "Sell holdings"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:53.466Z"
+    },
+    "appears_at": 76459
+  },
+  {
+    "id": "6809bef5155f676f554641f6",
+    "last_updated": {
+      "$date": "2025-04-24T04:39:43.858Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "statement": "Clear goals",
+    "answers": {
+      "answer_1": "Define objectives",
+      "answer_2": "Ignore strategy"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:53.466Z"
+    },
+    "appears_at": 44950
+  },
+  {
+    "id": "6809bef5155f676f554641f8",
+    "last_updated": {
+      "$date": "2025-04-24T04:40:19.939Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809be50155f676f5546417a",
+    "statement": "Rebalancing avoids ______ decisions.",
+    "answers": {
+      "answer_1": "impulsive",
+      "answer_2": "hasty"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:32:53.466Z"
+    },
+    "appears_at": 54400
+  },
+  {
+    "id": "6809c33756be1f300f464107",
+    "last_updated": {
+      "$date": "2025-04-24T05:07:38.167Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "statement": "Bull markets favour?",
+    "answers": {
+      "answer_1": "Growth stocks",
+      "answer_2": "Defensive stocks"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:51:03.213Z"
+    },
+    "appears_at": 41150
+  },
+  {
+    "id": "6809c33756be1f300f464108",
+    "last_updated": {
+      "$date": "2025-04-24T05:08:37.473Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "statement": "Bear markets",
+    "answers": {
+      "answer_1": "Play defense",
+      "answer_2": "Ride momentum"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:51:03.213Z"
+    },
+    "appears_at": 62169
+  },
+  {
+    "id": "6809c33756be1f300f464109",
+    "last_updated": {
+      "$date": "2025-04-24T05:08:54.491Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "statement": "Diversification",
+    "answers": {
+      "answer_1": "Risk reduction",
+      "answer_2": "Risk increase"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:51:03.213Z"
+    },
+    "appears_at": 102410
+  },
+  {
+    "id": "6809c33756be1f300f46410a",
+    "last_updated": {
+      "$date": "2025-04-24T05:08:27.416Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "statement": "Leverage  magnifies _____",
+    "answers": {
+      "answer_1": "risk",
+      "answer_2": "gains"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:51:03.213Z"
+    },
+    "appears_at": 55500
+  },
+  {
+    "id": "6809c33756be1f300f46410b",
+    "last_updated": {
+      "$date": "2025-04-24T05:09:44.769Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c28c155f676f55464250",
+    "statement": "Investments require regular _____",
+    "answers": {
+      "answer_1": "rebalance",
+      "answer_2": "Selling"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T04:51:03.213Z"
+    },
+    "appears_at": 135809
+  },
+  {
+    "id": "6809c6f2e56eb897654640d1",
+    "last_updated": {
+      "$date": "2025-04-24T05:07:06.172Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": "Shorter time horizon requires?",
+    "answers": {
+      "answer_1": "Safer investments",
+      "answer_2": "Riskier investments"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 66029
+  },
+  {
+    "id": "6809c6f2e56eb897654640d2",
+    "last_updated": {
+      "$date": "2025-04-24T05:16:29.297Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": "What shifts risk profile?",
+    "answers": {
+      "answer_1": "Life events, new goal, changes in finances",
+      "answer_2": "Fixed strategy"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 152759
+  },
+  {
+    "id": "6809c6f2e56eb897654640d3",
+    "last_updated": {
+      "$date": "2025-04-24T05:14:52.127Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": "Time Horizon Vs. Risk Appetite ",
+    "answers": {
+      "answer_1": "Longer allows risk",
+      "answer_2": "Shorter calls safety"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 99410
+  },
+  {
+    "id": "6809c6f2e56eb897654640d4",
+    "last_updated": {
+      "$date": "2025-04-24T05:15:33.803Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": " Conservative profile",
+    "answers": {
+      "answer_1": "Low-risk investments",
+      "answer_2": "Aggressive gains"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 119379
+  },
+  {
+    "id": "6809c6f2e56eb897654640d5",
+    "last_updated": {
+      "$date": "2025-04-24T05:11:18.405Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": "Risk profile measures ____",
+    "answers": {
+      "answer_1": "Willingness and ability to take on risk",
+      "answer_2": "Only returns"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 7820
+  },
+  {
+    "id": "6809c6f2e56eb897654640d7",
+    "last_updated": {
+      "$date": "2025-04-24T05:12:39.177Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6809c618155f676f5546425e",
+    "statement": "Indian investors need ____",
+    "answers": {
+      "answer_1": "Clear risk profile",
+      "answer_2": "Complex strategies"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-04-24T05:06:58.137Z"
+    },
+    "appears_at": 40610
+  },
+  {
+    "id": "681fcd709b80a814af0a5fef",
+    "last_updated": {
+      "$date": "2025-05-10T22:18:08.256Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "appears_at": 4760,
+    "statement": "Tariffs now cause?",
+    "answers": {
+      "answer_1": "Economic drag",
+      "answer_2": "Headline risk"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    }
+  },
+  {
+    "id": "681fcd709b80a814af0a5ff0",
+    "last_updated": {
+      "$date": "2025-05-10T22:19:55.274Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "appears_at": 13760,
+    "statement": "Tariffs led to ",
+    "answers": {
+      "answer_1": "Record High Q1 imports ",
+      "answer_2": "Record low Q1 imports"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    }
+  },
+  {
+    "id": "681fcd709b80a814af0a5ff1",
+    "last_updated": {
+      "$date": "2025-05-10T22:21:16.100Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "appears_at": 26170,
+    "statement": "Consumer demand is ______",
+    "answers": {
+      "answer_1": "Healthy",
+      "answer_2": "Dropping"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    }
+  },
+  {
+    "id": "681fcd709b80a814af0a5ff2",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "appears_at": 36500,
+    "statement": "Economists call this?",
+    "answers": {
+      "answer_1": "Supply contraction",
+      "answer_2": "Demand contraction"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    }
+  },
+  {
+    "id": "681fcd709b80a814af0a5ff3",
+    "last_updated": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fcd019b80a814af0a5fc0",
+    "appears_at": 42200,
+    "statement": "Monthly data becomes?",
+    "answers": {
+      "answer_1": "Volatile",
+      "answer_2": "Steady"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:04:32.656Z"
+    }
+  },
+  {
+    "id": "681fce949b80a814af0a6099",
+    "last_updated": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "appears_at": 6929,
+    "statement": "Inflation risks refuse to ___",
+    "answers": {
+      "answer_1": "disappear",
+      "answer_2": "fading"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    }
+  },
+  {
+    "id": "681fce949b80a814af0a609a",
+    "last_updated": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "appears_at": 16729,
+    "statement": "GDP was ___",
+    "answers": {
+      "answer_1": "soft",
+      "answer_2": "sharper"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    }
+  },
+  {
+    "id": "681fce949b80a814af0a609b",
+    "last_updated": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "appears_at": 24370,
+    "statement": "Tariffs add ___ pressure",
+    "answers": {
+      "answer_1": "cost",
+      "answer_2": "demand"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    }
+  },
+  {
+    "id": "681fce949b80a814af0a609c",
+    "last_updated": {
+      "$date": "2025-05-10T22:25:08.483Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "appears_at": 29860,
+    "statement": "Yields hover around? ",
+    "answers": {
+      "answer_1": "4.31%",
+      "answer_2": "3%"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    }
+  },
+  {
+    "id": "681fce949b80a814af0a609d",
+    "last_updated": {
+      "$date": "2025-05-10T22:27:01.400Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fce1a3fb94371b00a7534",
+    "appears_at": 44470,
+    "statement": "Futures price ______ point cut by July ",
+    "answers": {
+      "answer_1": "single quarter",
+      "answer_2": "Single"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:09:24.090Z"
+    }
+  },
+  {
+    "id": "681fd4c1c3007a461e0a6ce0",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "appears_at": 11829,
+    "statement": "Turbulence is ___",
+    "answers": {
+      "answer_1": "volatility",
+      "answer_2": "risk"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    }
+  },
+  {
+    "id": "681fd4c1c3007a461e0a6ce1",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:15.106Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "appears_at": 15899,
+    "statement": "High volatility signals?",
+    "answers": {
+      "answer_1": "large, unpredictable price swings",
+      "answer_2": "smaller movements"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    }
+  },
+  {
+    "id": "681fd4c1c3007a461e0a6ce2",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:29.590Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "appears_at": 19409,
+    "statement": "Low volatility means ___",
+    "answers": {
+      "answer_1": "smaller, steadier movements",
+      "answer_2": "large swings"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    }
+  },
+  {
+    "id": "681fd4c1c3007a461e0a6ce3",
+    "last_updated": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "appears_at": 24850,
+    "statement": "Yardstick for risk?",
+    "answers": {
+      "answer_1": "volatility",
+      "answer_2": "reward"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    }
+  },
+  {
+    "id": "681fd4c1c3007a461e0a6ce4",
+    "last_updated": {
+      "$date": "2025-05-10T22:38:02.341Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd45a9b80a814af0a63ab",
+    "appears_at": 40819,
+    "statement": "Near retirement prefer?",
+    "answers": {
+      "answer_1": "quieter ride, lower risk",
+      "answer_2": "higher swings, higher risk"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:35:45.473Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d55",
+    "last_updated": {
+      "$date": "2025-05-10T22:39:11.827Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 9250,
+    "statement": "Volatility is guessed",
+    "answers": {
+      "answer_1": "False",
+      "answer_2": "True"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d56",
+    "last_updated": {
+      "$date": "2025-05-10T22:39:52.829Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 16459,
+    "statement": "Implied volatility  is derived from ___ prices",
+    "answers": {
+      "answer_1": "options",
+      "answer_2": "bond"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d57",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 25819,
+    "statement": "Higher implied volatility?",
+    "answers": {
+      "answer_1": "bigger swings",
+      "answer_2": "smaller swings"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d58",
+    "last_updated": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 30649,
+    "statement": "VIX nickname?",
+    "answers": {
+      "answer_1": "fear gauge",
+      "answer_2": "speed meter"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d59",
+    "last_updated": {
+      "$date": "2025-05-10T22:41:15.176Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 36340,
+    "statement": "VIX tracks ___",
+    "answers": {
+      "answer_1": "30 day volatility of S&P",
+      "answer_2": "90 day volatility of S&P"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "681fd52fc3007a461e0a6d5a",
+    "last_updated": {
+      "$date": "2025-05-10T22:41:38.972Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "681fd4bf6b4fb670a60a7d2d",
+    "appears_at": 44650,
+    "statement": "Rising VIX signals?",
+    "answers": {
+      "answer_1": "uncertainty",
+      "answer_2": "calm"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-10T22:37:35.926Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048cf",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:50.261Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 6389,
+    "statement": "Tariffs paused ______",
+    "answers": {
+      "answer_1": "90 days",
+      "answer_2": "60 days"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048d0",
+    "last_updated": {
+      "$date": "2025-05-13T00:57:26.030Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 13670,
+    "statement": "Shifting supply chains is slow and   ______",
+    "answers": {
+      "answer_1": "Costly",
+      "answer_2": "Cheap"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048d1",
+    "last_updated": {
+      "$date": "2025-05-13T00:58:15.198Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 26590,
+    "statement": "Effective tariff   rate will likely settle around _____",
+    "answers": {
+      "answer_1": "10-15%",
+      "answer_2": "30-35%"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048d2",
+    "last_updated": {
+      "$date": "2025-05-13T00:58:36.955Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 32880,
+    "statement": "Watching which print?",
+    "answers": {
+      "answer_1": "US CPI",
+      "answer_2": "US PPI"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048d3",
+    "last_updated": {
+      "$date": "2025-05-13T01:00:00.332Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 37580,
+    "statement": "_______ means the same dollar buys less.",
+    "answers": {
+      "answer_1": "Inflation",
+      "answer_2": "Stagflation"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "6822984c69262c96570048d4",
+    "last_updated": {
+      "$date": "2025-05-13T01:01:09.515Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "682297e769262c96570048ae",
+    "appears_at": 42150,
+    "statement": "If inflation is sticky, the fed has _____ less room to lower rates.",
+    "answers": {
+      "answer_1": "Less",
+      "answer_2": "More"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:54:36.414Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f003185",
+    "last_updated": {
+      "$date": "2025-05-13T00:56:49.752Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 10350,
+    "statement": "US equities?",
+    "answers": {
+      "answer_1": "slipped",
+      "answer_2": "rose"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.752Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f003186",
+    "last_updated": {
+      "$date": "2025-05-13T01:02:56.762Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 14670,
+    "statement": "S&P 500 is ___",
+    "answers": {
+      "answer_1": "8% under February     peak",
+      "answer_2": "8% over February         peak"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.752Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f003187",
+    "last_updated": {
+      "$date": "2025-05-13T01:04:09.112Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 27829,
+    "statement": "FTSE250 movement?",
+    "answers": {
+      "answer_1": "gained",
+      "answer_2": "fell"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.752Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f003188",
+    "last_updated": {
+      "$date": "2025-05-13T01:04:22.428Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 36439,
+    "statement": "Treasury yields?",
+    "answers": {
+      "answer_1": "steady",
+      "answer_2": "spiked"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.752Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f003189",
+    "last_updated": {
+      "$date": "2025-05-13T01:04:36.321Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 41150,
+    "statement": "Yield",
+    "answers": {
+      "answer_1": "annual interest",
+      "answer_2": "stock price"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.753Z"
+    }
+  },
+  {
+    "id": "682298d13fb6b41c8f00318c",
+    "last_updated": {
+      "$date": "2025-05-13T01:06:29.951Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "bubble_source": "VIDEO",
+    "source_id": "6822985269262c96570048ea",
+    "appears_at": 57200,
+    "statement": "Corporate Capital Spending _____ estimates",
+    "answers": {
+      "answer_1": "below",
+      "answer_2": "above"
+    },
+    "correct_answer_key": "answer_1",
+    "published": true,
+    "difficulty": 0,
+    "difficulty_uncertainty": 1,
+    "created_at": {
+      "$date": "2025-05-13T00:56:49.753Z"
+    }
+  }]

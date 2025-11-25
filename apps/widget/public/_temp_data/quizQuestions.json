@@ -1,0 +1,146 @@
+[
+  {
+    "id": "int-1",
+    "level": "intermediate",
+    "question": "What is the primary benefit of diversifying your investment portfolio?",
+    "options": [
+      "To maximize returns in a single asset class",
+      "To reduce overall risk by spreading investments",
+      "To avoid paying taxes on gains",
+      "To guarantee profits in all market conditions"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "int-2",
+    "level": "intermediate",
+    "question": "What does a company's P/E ratio (Price-to-Earnings) tell you?",
+    "options": [
+      "How much profit the company makes per employee",
+      "The company's total market value",
+      "How much investors are willing to pay per dollar of earnings",
+      "The company's dividend payout rate"
+    ],
+    "correctAnswer": 2
+  },
+  {
+    "id": "int-3",
+    "level": "intermediate",
+    "question": "What happens to bond prices when interest rates rise?",
+    "options": [
+      "Bond prices typically increase",
+      "Bond prices typically decrease",
+      "Bond prices remain unchanged",
+      "Bond prices double"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "int-4",
+    "level": "intermediate",
+    "question": "What is dollar-cost averaging?",
+    "options": [
+      "Investing all your money at once when prices are low",
+      "Investing a fixed amount regularly regardless of market conditions",
+      "Only buying stocks that cost less than $100",
+      "Averaging the cost of multiple purchases in one day"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "adv-1",
+    "level": "advanced",
+    "question": "What is the Sharpe ratio used to measure?",
+    "options": [
+      "The volatility of a stock price over time",
+      "Risk-adjusted return of an investment",
+      "The correlation between two assets",
+      "The dividend yield of a portfolio"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "adv-2",
+    "level": "advanced",
+    "question": "In options trading, what does 'theta' represent?",
+    "options": [
+      "The rate of change in option value relative to the underlying asset",
+      "The time decay of an option's value",
+      "The sensitivity to volatility changes",
+      "The option's intrinsic value"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "adv-3",
+    "level": "advanced",
+    "question": "What is the primary purpose of a covered call strategy?",
+    "options": [
+      "To speculate on market downturns",
+      "To generate income from stocks you own while limiting upside",
+      "To hedge against currency fluctuations",
+      "To leverage your position with borrowed funds"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "adv-4",
+    "level": "advanced",
+    "question": "What does beta measure in portfolio theory?",
+    "options": [
+      "The total return of an investment",
+      "A stock's volatility relative to the overall market",
+      "The dividend growth rate",
+      "The inflation-adjusted return"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "beg-1",
+    "level": "beginner",
+    "question": "What is a stock?",
+    "options": [
+      "A type of savings account",
+      "Ownership share in a company",
+      "A government bond",
+      "A type of insurance policy"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "beg-2",
+    "level": "beginner",
+    "question": "What does it mean when a stock pays dividends?",
+    "options": [
+      "The stock price goes up automatically",
+      "The company shares profits with shareholders",
+      "You must sell your shares immediately",
+      "The company is going bankrupt"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "beg-3",
+    "level": "beginner",
+    "question": "What is the main purpose of a savings account?",
+    "options": [
+      "To invest in the stock market",
+      "To store money safely while earning modest interest",
+      "To buy cryptocurrency",
+      "To trade foreign currencies"
+    ],
+    "correctAnswer": 1
+  },
+  {
+    "id": "beg-4",
+    "level": "beginner",
+    "question": "What is compound interest?",
+    "options": [
+      "Interest paid only on the original amount",
+      "Interest calculated on both the initial amount and accumulated interest",
+      "A type of bank fee",
+      "Interest that only applies to loans"
+    ],
+    "correctAnswer": 1
+  }
+]

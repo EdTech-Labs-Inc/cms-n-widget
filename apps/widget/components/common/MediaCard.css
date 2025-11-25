@@ -1,0 +1,254 @@
+/* Base styles for MediaCard */
+.media-card {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.media-card:hover {
+  transform: scale(1.02);
+}
+
+.media-card:active {
+  transform: scale(0.98);
+}
+
+/* Thumbnail Container */
+.media-card__thumbnail-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.media-card__thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Play Icon */
+.media-card__play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.media-card:hover .media-card__play-icon {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Completed Overlay */
+.media-card__completed-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-card__check-icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* Duration Badge */
+.media-card__duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Difficulty Indicator */
+.media-card__difficulty {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.media-card__difficulty--beginner {
+}
+
+.media-card__difficulty--intermediate {
+}
+
+.media-card__difficulty--advanced {
+}
+
+/* Progress Bar */
+.media-card__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.media-card__progress-bar {
+  height: 100%;
+  background: var(--primary-color, #3b82f6);
+  transition: width 0.3s ease;
+}
+
+/* Info Section */
+.media-card__info {
+  padding: 0 4px;
+}
+
+.media-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 4px 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+/* Metadata */
+.media-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.media-card__views,
+.media-card__read-time {
+  white-space: nowrap;
+}
+
+.media-card__new-indicator {
+  width: 6px;
+  height: 6px;
+  background: var(--primary-color, #3b82f6);
+  border-radius: 50%;
+}
+
+/* Variant-specific styles */
+
+/* Article Cards - Horizontal Layout */
+.media-card--article {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.media-card--article:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--gold-secondary);
+  transform: scale(1.01);
+  box-shadow: 0 8px 24px rgba(217, 156, 87, 0.15);
+}
+
+.media-card--article .media-card__thumbnail-container {
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+
+.media-card--article .media-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+
+.media-card--article .media-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  -webkit-line-clamp: 3;
+}
+
+.media-card--article .media-card__meta {
+  margin-top: auto;
+}
+
+.media-card--article .media-card__read-time {
+  background: rgba(217, 156, 87, 0.15);
+  border: 1px solid rgba(217, 156, 87, 0.3);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.media-card--podcast .media-card__thumbnail-container {
+  aspect-ratio: 1;
+  border-radius: 12px;
+}
+
+/* Mobile responsive for articles */
+@media (max-width: 640px) {
+  .media-card--article {
+    gap: 16px;
+    padding: 12px;
+  }
+
+  .media-card--article .media-card__thumbnail-container {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+  }
+
+  .media-card--article .media-card__title {
+    font-size: 16px;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .media-card__title {
+  }
+  
+  .media-card__meta {
+  }
+}

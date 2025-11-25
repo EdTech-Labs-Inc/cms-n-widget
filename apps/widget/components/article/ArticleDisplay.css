@@ -1,0 +1,862 @@
+.article-reader {
+  min-height: 100vh;
+  background: var(--navy-primary);
+  color: white;
+}
+
+.article-reader * {
+  color: white;
+}
+
+.floating-back-button {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.floating-back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--gold-secondary);
+  transform: scale(1.1);
+}
+
+.floating-back-button-icon {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  color: white;
+  flex-shrink: 0;
+}
+
+
+
+.article-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.article-hero {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-body {
+  padding: 0 24px;
+}
+
+.article-reader .article-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold-secondary);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.article-meta span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 500;
+}
+
+.read-time {
+  position: relative;
+}
+
+.read-time::after {
+  content: '•';
+  position: absolute;
+  right: -12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.article-text {
+  font-size: 17px;
+  line-height: 1.8;
+  color: white;
+}
+
+.article-text p {
+  margin-bottom: 24px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+}
+
+/* Enhanced paragraph spacing for better readability */
+.article-text p + p {
+  margin-top: 20px;
+}
+
+/* First paragraph special styling */
+.article-text .article-first-paragraph {
+  font-size: 18px;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 28px;
+}
+
+/* Enhanced heading spacing */
+.article-text .article-heading-enhanced {
+  margin-top: 48px;
+  margin-bottom: 24px;
+  scroll-margin-top: 80px;
+}
+
+.article-text h2.article-heading-enhanced {
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(217, 156, 87, 0.2);
+}
+
+/* Enhanced list styling */
+.article-text .article-list-enhanced {
+  margin: 24px 0;
+  padding-left: 28px;
+}
+
+.article-text .article-list-enhanced li {
+  margin-bottom: 12px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.article-text .article-list-enhanced li::marker {
+  color: var(--gold-secondary);
+  font-weight: 600;
+}
+
+.intro {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.article-text h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold-secondary);
+  margin-top: 40px;
+  margin-bottom: 20px;
+  letter-spacing: -0.3px;
+}
+
+.article-text h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+.method-step {
+  background: rgba(40, 132, 200, 0.08);
+  border-left: 3px solid var(--blue-accent);
+  padding: 20px 24px;
+  margin: 24px 0;
+  border-radius: 0 8px 8px 0;
+  border: 1px solid rgba(40, 132, 200, 0.2);
+}
+
+.method-step h3 {
+  margin-top: 0;
+  color: var(--blue-accent);
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.method-step p {
+  margin-bottom: 0;
+  color: white;
+}
+
+.section-intro {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin: 40px 0 28px;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--purple-light) 0%, var(--blue-light) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(100, 2, 176, 0.2);
+}
+
+.mutual-fund-benefit {
+  margin: 32px 0;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.mutual-fund-benefit:hover {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mutual-fund-benefit h3 {
+  color: var(--gold-secondary);
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.mutual-fund-benefit p {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.mutual-fund-benefit p:last-child {
+  margin-bottom: 0;
+}
+
+.bottom-line {
+  margin-top: 40px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-top: 2px solid rgba(217, 156, 87, 0.3);
+  padding-top: 24px;
+}
+
+.bottom-line h2 {
+  color: var(--gold-secondary);
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+.bottom-line p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.bottom-line p:last-child {
+  margin-bottom: 0;
+}
+
+/* Section dividers */
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 40px 0;
+}
+
+/* Asset Cards */
+.asset-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.asset-card {
+  background: none;
+  border: none;
+  border-left: 3px solid var(--gold-secondary);
+  padding: 16px 0 16px 20px;
+  transition: all 0.2s ease;
+}
+
+.asset-card:hover {
+  transform: translateX(4px);
+}
+
+.asset-card h3 {
+  color: var(--gold-secondary);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.asset-benefit,
+.asset-tradeoff {
+  margin-bottom: 8px;
+}
+
+.asset-benefit:last-child,
+.asset-tradeoff:last-child {
+  margin-bottom: 0;
+}
+
+.benefit-label,
+.tradeoff-label {
+  display: inline;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 6px;
+}
+
+.benefit-text {
+  color: white;
+  font-weight: 400;
+}
+
+.tradeoff-text {
+  color: white;
+  font-weight: 400;
+}
+
+/* Decision Cards */
+.decision-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.decision-card {
+  background: none;
+  border: none;
+  border-left: 3px solid var(--blue-accent);
+  padding: 16px 0 16px 20px;
+  transition: all 0.2s ease;
+}
+
+.decision-card:hover {
+  transform: translateX(4px);
+}
+
+.decision-card h3 {
+  color: var(--blue-accent);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.decision-question,
+.decision-outcome {
+  margin-bottom: 8px;
+}
+
+.decision-outcome:last-child {
+  margin-bottom: 0;
+}
+
+.question-label,
+.outcome-label {
+  display: inline;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 6px;
+}
+
+.question-text {
+  color: white;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.outcome-text {
+  color: white;
+  font-weight: 400;
+}
+
+/* Pitfall Cards */
+.pitfall-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.pitfall-card {
+  background: none;
+  border: none;
+  border-left: 3px solid var(--gold-secondary);
+  padding: 16px 0 16px 20px;
+  transition: all 0.2s ease;
+}
+
+.pitfall-card:hover {
+  transform: translateX(4px);
+}
+
+.pitfall-card h3 {
+  color: var(--gold-secondary);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.pitfall-problem,
+.pitfall-solution {
+  margin-bottom: 8px;
+}
+
+.pitfall-solution:last-child {
+  margin-bottom: 0;
+}
+
+.problem-label,
+.solution-label {
+  display: inline;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 6px;
+}
+
+.problem-text {
+  color: white;
+  font-weight: 400;
+}
+
+.solution-text {
+  color: white;
+  font-weight: 400;
+}
+
+/* Allocation benefits */
+.allocation-benefit {
+  margin: 16px 0;
+  padding: 16px 0 16px 20px;
+  background: none;
+  border: none;
+  border-left: 3px solid var(--blue-accent);
+  transition: all 0.2s ease;
+}
+
+.allocation-benefit:hover {
+  transform: translateX(4px);
+}
+
+.allocation-benefit h3 {
+  color: var(--blue-accent);
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.allocation-benefit p {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* Investor archetypes */
+.investor-archetype {
+  margin: 16px 0;
+  padding: 16px 0 16px 20px;
+  background: none;
+  border: none;
+  border-left: 3px solid var(--purple-accent);
+  transition: all 0.2s ease;
+}
+
+.investor-archetype:hover {
+  transform: translateX(4px);
+}
+
+.investor-archetype h3 {
+  color: var(--purple-accent);
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.investor-archetype p {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* Rebalancing points */
+.rebalancing-point {
+  margin: 16px 0;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.rebalancing-point h3 {
+  color: var(--gold-secondary);
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: 600;
+  display: inline;
+}
+
+.rebalancing-point p {
+  color: white;
+  margin-bottom: 0;
+  display: inline;
+  margin-left: 6px;
+  line-height: 1.6;
+}
+
+/* Disclaimer */
+.disclaimer {
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.disclaimer p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .floating-back-button {
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .article-hero {
+    height: 200px;
+  }
+  
+  .article-reader .article-title {
+    font-size: 26px;
+  }
+  
+  .article-body {
+    padding: 0 20px;
+  }
+  
+  .article-text {
+    font-size: 16px;
+  }
+  
+  .method-step,
+  .mutual-fund-benefit,
+  .allocation-benefit,
+  .investor-archetype,
+  .rebalancing-point,
+  .asset-card,
+  .decision-card,
+  .pitfall-card {
+    padding: 16px 20px;
+  }
+  
+  .bottom-line {
+    padding: 24px 20px;
+  }
+
+  .asset-card h3,
+  .decision-card h3,
+  .pitfall-card h3 {
+    font-size: 18px;
+  }
+
+  .benefit-label,
+  .tradeoff-label,
+  .question-label,
+  .outcome-label,
+  .problem-label,
+  .solution-label {
+    font-size: 12px;
+  }
+
+  .asset-cards,
+  .decision-cards,
+  .pitfall-cards {
+    gap: 16px;
+  }
+
+  .section-divider {
+    margin: 32px 0;
+  }
+}
+
+/* Benefit Cards - for mobile-friendly table replacement */
+.benefit-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 24px 0;
+}
+
+.benefit-card {
+  background: linear-gradient(135deg, var(--gold-light) 0%, rgba(217, 156, 87, 0.05) 100%);
+  border: 1px solid var(--gold-secondary);
+  border-left: 4px solid var(--gold-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  box-shadow: 0 6px 20px rgba(217, 156, 87, 0.3);
+  transform: translateY(-2px);
+}
+
+.benefit-card h3 {
+  color: var(--gold-secondary);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.benefit-card p {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Playbook Steps */
+.playbook-step {
+  margin: 24px 0;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--purple-light) 0%, var(--blue-light) 100%);
+  border: 1px solid var(--purple-accent);
+  border-left: 4px solid var(--purple-accent);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.playbook-step:hover {
+  box-shadow: 0 6px 20px rgba(100, 2, 176, 0.3);
+  transform: translateX(4px);
+}
+
+.playbook-step h3 {
+  color: var(--purple-accent);
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.playbook-step p {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Pitfall Quotes */
+.pitfall-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 24px 0;
+}
+
+.pitfall-quote {
+  background: rgba(40, 132, 200, 0.08);
+  border: 2px solid rgba(40, 132, 200, 0.3);
+  border-left: 6px solid var(--blue-accent);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.pitfall-quote::before {
+  content: '"';
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 48px;
+  color: var(--blue-accent);
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0.3;
+}
+
+.pitfall-quote:hover {
+  box-shadow: 0 6px 20px rgba(40, 132, 200, 0.3);
+  transform: translateY(-2px);
+}
+
+.pitfall-quote h3 {
+  color: var(--blue-accent);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  padding-left: 32px;
+}
+
+.pitfall-quote p {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-size: 16px;
+  padding-left: 32px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .benefit-card,
+  .playbook-step,
+  .pitfall-quote {
+    padding: 16px 20px;
+  }
+
+  .benefit-card h3,
+  .playbook-step h3,
+  .pitfall-quote h3 {
+    font-size: 18px;
+  }
+
+  .benefit-card p,
+  .playbook-step p,
+  .pitfall-quote p {
+    font-size: 15px;
+  }
+
+  .pitfall-quote::before {
+    font-size: 36px;
+    top: 12px;
+    left: 12px;
+  }
+
+  .pitfall-quote h3,
+  .pitfall-quote p {
+    padding-left: 24px;
+  }
+
+  .benefit-cards,
+  .pitfall-quotes {
+    gap: 16px;
+  }
+}
+
+/* Quiz Section */
+.article-quiz-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 2px solid rgba(217, 156, 87, 0.3);
+  display: flex;
+  justify-content: center;
+}
+
+.article-quiz-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 16px;
+  padding: 18px 32px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.article-quiz-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+.article-quiz-button:active {
+  transform: translateY(0);
+}
+
+.article-quiz-button-icon {
+  font-size: 24px;
+}
+
+.article-quiz-button-text {
+  font-size: 18px;
+}
+
+.article-quiz-button-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .article-quiz-section {
+    margin-top: 40px;
+    padding-top: 28px;
+  }
+
+  .article-quiz-button {
+    padding: 16px 28px;
+    font-size: 16px;
+  }
+
+  .article-quiz-button-icon {
+    font-size: 22px;
+  }
+
+  .article-quiz-button-text {
+    font-size: 16px;
+  }
+
+  .article-quiz-button-count {
+    font-size: 13px;
+    padding: 3px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-quiz-button {
+    padding: 14px 24px;
+    gap: 10px;
+  }
+
+  .article-quiz-button-icon {
+    font-size: 20px;
+  }
+
+  .article-quiz-button-text {
+    font-size: 15px;
+  }
+
+  .article-quiz-button-count {
+    font-size: 12px;
+  }
+}

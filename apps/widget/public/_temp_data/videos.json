@@ -1,0 +1,628 @@
+[{
+    "id": "67ec26a492165c078c218ab8",
+    "last_updated": {
+      "$date": "2025-07-17T09:59:15.886Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "What is a stock?",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/67ec26a492165c078c218ab8/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1743529644/_edeo/db_production/backend_production/67ec268e92165c078c218a99/67ec26a492165c078c218ab8/thumbnails/wrwba2buzlz3zybni5el.jpg",
+    "cleaned_transcript": "If you don't know what a stock is and you're embarrassed about that, don't sweat it—I'm here to explain it in under a minute. Be sure to follow us because we care about your financial well-being.\n\nA stock, also known as a share or equity, represents ownership in a business. Companies sell shares to raise money to support and grow their operations. People like you buy stocks with the hope that the company's success will lead to an increase in the value of your initial investment.\n\nStocks are bought and sold on exchanges, and the price of a company's shares is driven by many factors, fluctuating as the market assesses the company's value. Investing in stocks can be a great way to build wealth over time, so start investing today!",
+    "captions": false,
+    "length": 35520,
+    "view_count": 28,
+    "like_count": 2,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 1,
+    "completes_count": 6,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-01T17:47:16.181Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "67ec280c92165c078c218c20",
+    "last_updated": {
+      "$date": "2025-07-17T10:00:34.114Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Active Versus Index Investing",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/67ec280c92165c078c218c20/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1743530004/_edeo/db_production/backend_production/67ec268e92165c078c218a99/67ec280c92165c078c218c20/thumbnails/nxipalptsulqrwtlwmg2.jpg",
+    "cleaned_transcript": "Things you might assume you know—but probably don't. Today, we're going to talk about active versus passive investing, also known as index investing. \n\nPassive investing refers to investments that track the performance of a market index. These are often packaged as ETFs, or exchange-traded funds. Active investing, on the other hand, is a strategy in which professionals take deliberate positions in stocks or bonds with the goal of outperforming the market index. These are typically found in mutual funds.\n\nThe great news is that you don't have to choose just one strategy—both can help you progress toward your financial goals. Make sure to follow BlackRock because we've got you covered.",
+    "captions": false,
+    "length": 43349,
+    "view_count": 41,
+    "like_count": 1,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 1,
+    "completes_count": 3,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-01T17:53:16.106Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "67ec2d0592165c078c219206",
+    "last_updated": {
+      "$date": "2025-07-17T10:01:05.156Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "ETF’s Explained",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/67ec2d0592165c078c219206/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1743531273/_edeo/db_production/backend_production/67ec268e92165c078c218a99/67ec2d0592165c078c219206/thumbnails/e4zzzrd3zyeq3r99hrti.jpg",
+    "cleaned_transcript": "ETF Explained: What even is an ETF? ETF stands for exchange-traded fund. Essentially, an ETF is an investment fund that holds a basket of stocks, bonds, and other assets. Investors are drawn to ETFs because of their low fees, tax efficiency, and ease of trading.\n\nThink of it like this: imagine that this pen represents a single company that you can invest in, much like a stock. Now, when you have a basket of these pens, you're investing in a basket of companies—just like an ETF.\n\nFollow for more.",
+    "captions": false,
+    "length": 31430,
+    "view_count": 12,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 4,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-01T18:14:29.244Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "67ec3266bc387234a120f261",
+    "last_updated": {
+      "$date": "2025-07-17T11:36:05.652Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Cost Averaging",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/67ec3266bc387234a120f261/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1743532655/_edeo/db_production/backend_production/67ec268e92165c078c218a99/67ec3266bc387234a120f261/thumbnails/nsliq81zcjkxs8spnces.jpg",
+    "cleaned_transcript": "There's a simple strategy used by many successful investors that we're going to explain. It's the practice of adding a fixed amount to your investment fund on a consistent basis. This approach is known as dollar-cost averaging (or pound-cost averaging, euro-cost averaging—whatever currency you use). \n\nFor example, imagine you invest 100 pounds every month. When share prices are high, your 100 pounds will buy fewer shares; when the market is down, your money will buy more. Over time, this strategy balances your average cost per share by taking advantage of fluctuating prices.\n\nFollow us to learn more helpful financial education tips.",
+    "captions": false,
+    "length": 36090,
+    "view_count": 11,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 1,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-01T18:37:26.978Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "67ec33a53c7122fd8c20c32b",
+    "last_updated": {
+      "$date": "2025-07-17T11:36:02.179Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Monetary Policy",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/67ec33a53c7122fd8c20c32b/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1743532976/_edeo/db_production/backend_production/67ec268e92165c078c218a99/67ec33a53c7122fd8c20c32b/thumbnails/jro7mglmlyxnqaxd4ip6.jpg",
+    "cleaned_transcript": "I'm going to tell you what monetary policy is, the different types of monetary policy, and their goals—in just under 60 seconds. So don't go anywhere; let's get into it.\n\nMonetary policy is the control of the amount of money available in an economy and the channels through which money is supplied. Basically, it's a set of tools used by a country's central bank to regulate the total money supply, foster economic growth, and implement strategies such as adjusting interest rates and altering bank reserve requirements.\n\nNow, let's discuss the different types of monetary policy. They are generally perceived as being either expansionary or contractionary, depending on the level of activity within the economy. An expansionary policy seeks to boost economic activity when the economy is experiencing a slowdown, whereas a contractionary policy increases interest rates and limits the money supply to slow growth and reduce inflation.\n\nFinally, let's talk about the goals of monetary policy: promote maximum employment, maintain stable prices, and ensure moderate long-term interest rates.\n\nThat was a lot in just under a minute—thanks for sticking around! Be sure to follow BlackRock on TikTok for more insights.",
+    "captions": false,
+    "length": 59169,
+    "view_count": 7,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-01T18:42:45.570Z"
+    },
+    "playlist_ids": [
+      "67ec26ccbc387234a120ecf7"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "68066e2a9bcc7dac397d9a41",
+    "last_updated": {
+      "$date": "2025-07-17T11:37:00.847Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "When economic rules start to bind",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/68066e2a9bcc7dac397d9a41/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745251894/_edeo/db_production/backend_production/67ec268e92165c078c218a99/68066e2a9bcc7dac397d9a41/thumbnails/tqgo4tyunfv3vkyxahvf.jpg",
+    "cleaned_transcript": "We've argued for years that megaforces are transforming the world. Recently, geopolitical fragmentation and the future of finance have collided, raising big questions about global markets—such as, where will long-term U.S. bond yields settle? \n\nIn 2021, we maintained that a combination of higher inflation, higher interest rates, and a large U.S. debt creates a fragile equilibrium—one that is especially vulnerable to shifts in investor confidence. The unusual surge in Treasury yields, alongside falling U.S. stocks and a weakening dollar, has brought that fragile balance into sharp focus.\n\nIt is almost impossible to predict the ultimate outcome of this transformation, and unpredictable trade talks make it even harder. Nonetheless, immutable economic laws limit the range of possible outcomes. One such law is that the current account deficit cannot be reduced without a corresponding fall in foreign financing. Thus, reducing the trade deficit could undermine the U.S.'s ability to finance its debt, particularly if it erodes foreign investor confidence; after all, foreign investors currently hold about one-third of U.S. debt, a factor that risks driving bond yields even higher.\n\nAnother unyielding law is that global supply chains cannot be rewired quickly without significant disruption. We expect supply shocks to slow growth and push up inflation—just as they did during the pandemic—thereby limiting what central banks can do to support economic expansion.\n\nWe've already seen these economic laws spurring policy adjustments in the U.S. The recent Treasury sell-off was swiftly followed by a 90-day pause on most tariffs, while concerns over supply chains prompted quick exemptions for some electronics.\n\nIn a world of many feasible outcomes, we remain nimble by tracking the economic laws that will govern U.S. policy. We focus on themes more than asset classes. For now, we see the AI megaforce driving returns—mostly in the U.S.—while also identifying selective opportunities in Europe and maintaining an underweight position in U.S. long-term treasuries.",
+    "captions": false,
+    "length": 146660,
+    "view_count": 18,
+    "like_count": 1,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 1,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-21T16:11:22.960Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "68067a13260729265c7d2eb6",
+    "last_updated": {
+      "$date": "2025-05-12T11:55:17.398Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Our take on the US Tariff pause",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/68067a13260729265c7d2eb6/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745254955/_edeo/db_production/backend_production/67ec268e92165c078c218a99/68067a13260729265c7d2eb6/thumbnails/cgydngceo5nesah2jykf.jpg",
+    "cleaned_transcript": "Here’s a cleaned-up version of the transcript:\n\nI’d like to share three points on how I’m thinking about markets right now.\n\nWe are experiencing a huge amount of policy uncertainty; in fact, it has become nearly impossible to predict policy changes. Rather than trying to forecast specific moves, we find it more rewarding to establish guardrails that help us understand what could potentially prompt the administration to alter its course. These guardrails take into account market volatility, financial risks, pushback from various sources, and a country’s willingness to engage. We believe that these factors can serve as a check on the administration’s maximal policymaking stance, thereby easing the risk of a near-term financial accident.\n\nThe first type of policy measure involves tariffs on strategic sectors to support the reshoring of activities. We have already seen a 25% tariff imposed on autos, auto parts, steel, and aluminum. Likely candidates for future tariffs include semiconductors, pharmaceuticals, copper, and lumber. The second type is a more universal 10% tariff designed to generate much-needed revenue for the government. The third type involves country-specific negotiations with those nations that have a significant trade surplus with the US, likely intended to provide leverage to reduce the trade imbalance.\n\nWe have noted that in the near term, due to policy uncertainty, risk assets will likely come under pressure. However, over the longer term, fundamentals should prevail, making us more positive over a six- to twelve-month horizon. After April 2nd, aside from the huge amount of policy uncertainty, what worried us most was the apparent lack of checks on the administration’s maximal policymaking stance. This uncertainty led us to shorten our technical investment horizon from 6–12 months to 3 months, placing more emphasis on near-term hunkering down. At the time, we acknowledged that we did not know how long or short this period would last.\n\nThen, last week, my biggest takeaway was that there were indeed checks on the administration’s maximal policymaking stance. Although looking ahead there will continue to be uncertainty, volatility, and a barrage of policy headlines, the reality that these checks exist has given us the confidence to resume using a 6–12 month horizon for technical investing, where we are more optimistic.\n\nCurrently, we are modestly positive on US equities—especially after the year-to-date drawdown—and we hold a similar, modestly positive view on Japanese equities on a currency-hedged basis. We are selectively favoring sector-specific opportunities, such as European banks, and increasing our positions in long-duration US Treasuries. Traditionally seen as safe-haven assets, these treasuries have not performed as expected in this new regime of high debt and inflationary pressures. In fact, gold has emerged as a better diversifier for portfolios in this environment.",
+    "captions": false,
+    "length": 220059,
+    "view_count": 12,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-21T17:02:11.711Z"
+    },
+    "playlist_ids": [
+      "68066e643c3119bc3b7d66fd"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "6809955f86d29c05a0c30dcf",
+    "last_updated": {
+      "$date": "2025-04-24T04:53:11.974Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "What’s fueling India’s Economic Rise?",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6809955f86d29c05a0c30dcf/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745458531/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6809955f86d29c05a0c30dcf/thumbnails/izqsosmpxddtgz0htxam.jpg",
+    "cleaned_transcript": "What's fueling India's economic rise? Here are five key drivers powering one of the world's fastest-growing economies:\n\n1. Smart Economic Reforms. India made doing business easier by rolling out the Goods and Services Tax (GST), which replaced a myriad of old taxes. In addition, the Insolvency and Bankruptcy Code (IBC) has helped struggling businesses bounce back while boosting investor confidence.\n\n2. A Digital Revolution. Thanks to the Digital India campaign, internet access is booming. From e-commerce to fintech, India's digital economy is exploding, fueled by its tech-savvy, young population.\n\n3. Big Global Investment. In 2022, India hit a record $49.94 billion in foreign direct investment. Sectors such as technology, manufacturing, and services are thriving, attracting increased interest from global investors.\n\n4. Building Big Infrastructure. Major upgrades in highways, railways, airports, and other facilities are making it easier to do business, connect cities, and modernize urban life. Today, smart cities are no longer just ideas—they are becoming realities.\n\n5. The Youth Powerhouse. India's greatest asset is its young, educated workforce. This demographic edge means increased spending, higher productivity, and a strong engine for long-term growth.\n\nWhether you're an investor, an entrepreneur, or simply watching global trends, India's growth story is being written right now.",
+    "captions": false,
+    "length": 111819,
+    "view_count": 7,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-24T01:35:27.141Z"
+    },
+    "playlist_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "6809bdc7155f676f5546416a",
+    "last_updated": {
+      "$date": "2025-07-28T18:10:06.640Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Rebalancing  Part 1",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6809bdc7155f676f5546416a/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745468893/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6809bdc7155f676f5546416a/thumbnails/sdxr4cs34gi7inq0ultm.jpg",
+    "cleaned_transcript": "What is rebalancing? Rebalancing involves adjusting the proportions of different assets in your portfolio to match your original target allocation. This process ensures that your portfolio remains aligned with your risk tolerance and investment goals.\n\nWhy is rebalancing important? There are several key reasons:\n\n1. Maintaining risk levels over time: The value of different assets in your portfolio can change due to market fluctuations. This may cause your portfolio to become more heavily weighted in certain assets, increasing your overall risk. Rebalancing helps bring your portfolio back in line with your desired risk level.\n\n2. Ensuring diversification: A well-diversified portfolio spreads risk across various asset classes. As some investments grow faster than others, your portfolio may become less diversified. Rebalancing restores your portfolio’s intended diversification, reducing the impact of any single investment's poor performance.\n\n3. Promoting disciplined investing: Rebalancing encourages a disciplined approach by forcing you to buy low and sell high. When you rebalance, you sell assets that have performed well and buy those that have underperformed, helping you take advantage of market opportunities.\n\n4. Aligning with evolving goals: Your financial goals and risk tolerance may change over time. Regular rebalancing ensures that your portfolio continues to reflect your evolving needs and objectives.\n\nStay tuned for the next video to continue learning about rebalancing.",
+    "captions": false,
+    "length": 128500,
+    "view_count": 40,
+    "like_count": 2,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 1,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-24T04:27:51.429Z"
+    },
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "6809be50155f676f5546417a",
+    "last_updated": {
+      "$date": "2025-07-17T08:53:48.816Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Rebalancing Part 2: Considerations",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6809be50155f676f5546417a/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745469031/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6809be50155f676f5546417a/thumbnails/ca2erlugjyjcdcxrlxcz.jpg",
+    "cleaned_transcript": "Be mindful of the tax implications of rebalancing, especially in taxable accounts. Selling assets can trigger capital gains taxes, so consider strategies like tax-loss harvesting to offset gains with losses.\n\nAutomate rebalancing when possible. Many financial institutions offer automated rebalancing services that help maintain your target allocation without the need for manual intervention, ensuring a disciplined approach to investing.\n\nHere are some best practices for rebalancing:\n\n1. Set clear goals: Define your investment objectives and risk tolerance before establishing your target allocation.\n2. Stay disciplined: Stick to your rebalancing strategy and avoid making impulsive decisions based on short-term market movements.\n3. Be consistent: Regularly review and rebalance your portfolio according to your chosen schedule or triggers.\n4. Minimize costs: Consider transaction fees and tax implications when rebalancing so as not to erode your returns.\n5. Use new contributions instead of selling assets: Allocate new contributions to underperforming assets to bring your portfolio back in line with your target allocation.\n\nIn summary, rebalancing is a vital aspect of maintaining a healthy and well-diversified investment portfolio. By regularly adjusting your asset allocation, you can manage risk, ensure diversification, and stay aligned with your financial goals. Start implementing these rebalancing strategies today to keep your portfolio on track and achieve long-term financial success.",
+    "captions": false,
+    "length": 110209,
+    "view_count": 11,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-24T04:30:08.314Z"
+    },
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "6809c28c155f676f55464250",
+    "last_updated": {
+      "$date": "2025-07-17T08:54:47.744Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Investing is like Surfing 🏄‍♂️ ",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6809c28c155f676f55464250/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745470107/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6809c28c155f676f55464250/thumbnails/igc1v1si3wfvwjxjl57d.jpg",
+    "cleaned_transcript": "Investing is like surfing. In bull markets, stocks rise, optimism is high, and the economy is strong—just like catching a powerful wave. In bear markets, stocks fall, pessimism spreads, and the economy slows, much like navigating rough waters. This matters because if you don't adjust your strategy, you might miss out on gains or face bigger losses.\n\nBalance is key. In bull markets, you must ride the momentum. Pick growth stocks and choose innovative companies in sectors such as technology, health care, and consumer goods. Rotate sectors by investing in industries that thrive during economic expansions, like industrials and consumer discretionary. Use leverage wisely: while borrowing can increase gains, it also magnifies risk, so only leverage if you’re comfortable with higher risk.\n\nDuring bear markets, playing defense is crucial. Consider defensive stocks—utilities, health care, and consumer staples—that offer stability and regular income. Advanced investors might profit from market declines through short selling or inverse ETFs, but these strategies carry higher risks. In such conditions, it’s advisable to preserve capital by reducing risky investments, holding more cash, or focusing on bonds and dividend-paying stocks.\n\nDiversification and regular adjustment of your portfolio are essential. Spread your investments across stocks, bonds, real estate, and commodities to reduce risk. Regularly adjust your portfolio based on market conditions to keep it aligned with your financial goals.\n\nFollow trends and manage your emotions. Use tools like moving averages to spot market trends, and invest consistently rather than emotionally—dollar cost averaging can be a useful strategy. Stay calm and avoid panic selling.\n\nThink long term: focus on long-term goals rather than short-term market fluctuations. Regularly review and rebalance your portfolio to maintain an optimal mix of investments.\n\nQuick Tips:\n• Stay informed but avoid obsessing over every market move.\n• Mix active and passive investment strategies.\n• Rebalance your portfolio annually.\n• Remember, markets go up and down—how you react is what counts.\n\nInvest smartly, and you'll go far.",
+    "captions": false,
+    "length": 156520,
+    "view_count": 11,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 1,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-24T04:48:12.513Z"
+    },
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "6809c618155f676f5546425e",
+    "last_updated": {
+      "$date": "2025-07-17T07:43:44.052Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Risk Profiling",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6809c618155f676f5546425e/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1745471030/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6809c618155f676f5546425e/thumbnails/jh5yynpiahzwuebltrs2.jpg",
+    "cleaned_transcript": "A risk profile measures your willingness and ability to take on risk when investing. It helps identify suitable investments based on your risk tolerance, financial situation, goals, and time horizon.\n\nWhy It Matters:\nKnowing your risk profile helps build a balanced investment strategy. It ensures that your investments match your comfort level and goals, which can help you avoid stress and potential losses. For Indian investors, having a clear risk profile simplifies the process of navigating complex financial options and tailoring decisions to personal needs.\n\nHow to Assess Your Risk Profile:\n\n1. Financial Knowledge:\n   • Evaluate your understanding of markets and risk. \n   • Experienced investors may be more comfortable accepting higher risks, while beginners might prefer a more cautious approach.\n\n2. Time Horizon:\n   • Longer time frames generally allow for more risk.\n   • Shorter time horizons require safer investments to preserve capital.\n\n3. Financial Situation:\n   • A stable income and low debt levels allow for more risk.\n   • A tighter financial situation calls for a more conservative approach.\n\n4. Risk Tolerance:\n   • Assess your comfort level with market fluctuations.\n   • Your risk tolerance is influenced by personality, past experiences, and financial knowledge.\n\n5. Investment Goals:\n   • Define both short-term and long-term goals.\n   • Goals with longer timelines may support taking on more risk.\n\n6. Use Profiling Tools:\n   • Many financial institutions offer tools that assess your profile based on factors like your goals and risk tolerance.\n\nCommon Risk Profiles:\n\n• Conservative: \n  – Focus on preserving capital by investing in low-risk assets such as bonds or fixed deposits.\n  – Ideal for risk-averse individuals or those nearing retirement.\n\n• Moderate:\n  – A blend of low- and high-risk assets that is suitable for mid-career investors with some savings and a moderate tolerance for risk.\n\n• Aggressive:\n  – Involves high-risk investments that aim for potentially high returns.\n  – Best for younger investors with long investment horizons and minimal debt.\n\nCan Your Risk Profile Change?\nYes, your risk profile can change due to life events, new goals, or shifts in your financial situation. It is important to adjust your investment strategy regularly to ensure that it remains aligned with your evolving needs.\n\nBottom Line:\nUnderstanding your risk profile is essential to balancing risk and return. Use available tools and expert advice to stay on track, and review your profile regularly as your life evolves.",
+    "captions": false,
+    "length": 221259,
+    "view_count": 10,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "created_at": {
+      "$date": "2025-04-24T05:03:20.067Z"
+    },
+    "playlist_ids": [
+      "680981fc7d4a4a787f99422d"
+    ],
+    "gallery_ids": [],
+    "generated_by": "CREATOR",
+    "interest_ids": []
+  },
+  {
+    "id": "681fcd019b80a814af0a5fc0",
+    "last_updated": {
+      "$date": "2025-07-28T18:13:16.066Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Weekly Commentary, May 5th. Pt 1",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/681fcd019b80a814af0a5fc0/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1746914569/_edeo/db_production/backend_production/67ec268e92165c078c218a99/681fcd019b80a814af0a5fc0/thumbnails/o7zifhwhdoew0xgt9sqr.jpg",
+    "cleaned_transcript": "US–China tariffs are no longer just a headline risk—they have become a measurable economic drag. When duties jumped on April 2, firms rushed to bring components in early, driving first-quarter imports to a record high and swelling inventories. This scramble creates a distinct pattern: once the stockpiles are used up, factories lack the inputs they need, production stalls, and gross domestic product declines, even though consumer demand remains healthy.\n\nEconomists refer to this phenomenon as a supply-driven contraction, and BlackRock now anticipates one later this year if the current tariff schedule remains in place. While it doesn't resemble a classic business cycle recession, it will likely contribute to volatility in monthly economic data.\n\nConsider your own supply chain. The essential items you use every day are built with parts that cross the Pacific. Recognizing this dependency is the first step toward understanding why growth could wobble through 2025 and why policymakers are monitoring port traffic and inventory numbers so closely.",
+    "captions": false,
+    "length": 58220,
+    "view_count": 31,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-10T22:02:41.304Z"
+    },
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  },
+  {
+    "id": "681fce1a3fb94371b00a7534",
+    "last_updated": {
+      "$date": "2025-07-28T18:10:34.366Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Weekly Commentary May 5th, Pt. 2",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/681fce1a3fb94371b00a7534/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1746914850/_edeo/db_production/backend_production/67ec268e92165c078c218a99/681fce1a3fb94371b00a7534/thumbnails/ctp8gufshae3nb6nehav.jpg",
+    "cleaned_transcript": "Growth indicators are fading while inflation risks refuse to disappear, leaving the Federal Reserve with a difficult choice. First-quarter GDP was already soft before tariffs took effect, yet the latest payroll report beat expectations and lifted U.S. equities 3% for the week. Tariffs now add cost pressure and restrict output simultaneously—a combination that economists describe as a sharper policy trade-off. Long-term Treasury yields hover around 4.31%, reflecting a higher term premium. Futures still price in a single quarter-point rate cut by July, but BlackRock's research suggests the Fed may deliver less easing than markets hope because the inflation side of the mandate is stubborn. \n\nIf you were sitting at the policy table, would you lean toward growth support or price stability? The answer is not academic. Each new data release is likely to jolt both bond yields and equity volatility in the months ahead.",
+    "captions": false,
+    "length": 56750,
+    "view_count": 16,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 1,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-10T22:07:22.748Z"
+    },
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  },
+  {
+    "id": "681fd45a9b80a814af0a63ab",
+    "last_updated": {
+      "$date": "2025-07-28T18:09:56.094Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Understanding Volatility ",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/681fd45a9b80a814af0a63ab/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1746916450/_edeo/db_production/backend_production/67ec268e92165c078c218a99/681fd45a9b80a814af0a63ab/thumbnails/jxuw4vrcykfp0gol8pl7.jpg",
+    "cleaned_transcript": "Think of the stock market like an aircraft in flight. When the ride is smooth, prices glide steadily; when turbulence hits, they lurch up and down. That turbulence is market volatility. High volatility signals large, unpredictable price swings, while low volatility means movements are smaller and steadier.\n\nWhy does that matter? Because in investing, volatility is the most common yardstick for risk. A share that drifts 5% a year is far less demanding on the nerves than one that can jump or drop 30%. If retirement is close, you probably prefer the quieter ride. But if you're decades away and can stomach bumps, higher volatility assets may reward your patience.\n\nAsk yourself: how much volatility can you truly live with? Knowing the answer is the first step to building a portfolio that matches your goals.",
+    "captions": false,
+    "length": 49790,
+    "view_count": 15,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 1,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-10T22:34:02.127Z"
+    },
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  },
+  {
+    "id": "681fd4bf6b4fb670a60a7d2d",
+    "last_updated": {
+      "$date": "2025-07-17T09:13:33.094Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Measuring Market Turbulence",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/681fd4bf6b4fb670a60a7d2d/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1746916557/_edeo/db_production/backend_production/67ec268e92165c078c218a99/681fd4bf6b4fb670a60a7d2d/thumbnails/tkb4f5r7hpi4kdfqvt9s.jpg",
+    "cleaned_transcript": "Volatility isn't guessed—it's measured. First comes historical volatility, which gauges how wildly an asset’s price has moved in the past. It tells you just how bumpy the recent ride has been. Next is implied volatility, derived from options prices; in effect, options traders vote on how shaky they expect the future to be. Higher implied volatility indicates that traders are bracing for bigger swings ahead. Then there's the VIX index, often nicknamed the \"fear gauge.\" The VIX tracks the expected 30-day volatility of the S&P 500: a rising VIX usually signals growing uncertainty, while a falling number points to relative calm—or sometimes even complacency. Keep an eye on all three. Together, they reveal whether markets are simply breathing, nervously pacing, or running a marathon, and they help investors adjust their risk before the headlines force a decision.",
+    "captions": false,
+    "length": 56040,
+    "view_count": 10,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 1,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-10T22:35:43.155Z"
+    },
+    "playlist_ids": [
+      "681fd3869b80a814af0a6344"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  },
+  {
+    "id": "682297e769262c96570048ae",
+    "last_updated": {
+      "$date": "2025-07-28T18:13:09.412Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "Weekly Commentary May 12th",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/682297e769262c96570048ae/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1747097583/_edeo/db_production/backend_production/67ec268e92165c078c218a99/682297e769262c96570048ae/thumbnails/nbevls30iyolzalpdgdd.jpg",
+    "cleaned_transcript": "Last week’s US–China accord paused the trade fight by trimming tariffs for 90 days. That reduces headline risk, yet the hard rule remains: shifting supply chains is slow and costly. We still expect tariff-driven slowdowns in some quarters, though our team believes that the cumulative hit to 2025 growth may be limited because the effective tariff rate will likely settle near 10 to 15%.\n\nWe are watching the next US CPI report for signs that these tariffs might nudge goods prices higher. Remember, inflation means that the same dollar buys less. If inflation remains sticky, the Federal Reserve will have less room to lower rates, keeping borrowing costs high and market volatility alive.\n\nMeanwhile, global investors are positioning selectively, favoring developed market stocks tied to durable mega forces such as artificial intelligence and infrastructure.",
+    "captions": false,
+    "length": 57759,
+    "view_count": 9,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-13T00:52:55.295Z"
+    },
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  },
+  {
+    "id": "6822985269262c96570048ea",
+    "last_updated": {
+      "$date": "2025-07-28T18:13:09.687Z"
+    },
+    "creator_id": "67ec268e92165c078c218a99",
+    "title": "How Markets Digested last weeks headlines",
+    "uploading": false,
+    "video_url": "https://dql6cktprs97r.cloudfront.net/67ec268e92165c078c218a99/6822985269262c96570048ea/video.mp4",
+    "video_thumbnail_url": "https://res.cloudinary.com/dphekriyz/image/upload/v1747097688/_edeo/db_production/backend_production/67ec268e92165c078c218a99/6822985269262c96570048ea/thumbnails/udetlgtfel5w6oygm8qs.jpg",
+    "cleaned_transcript": "Here's a cleaned-up version of the transcript:\n\n\"Here's how the markets digested those headlines. U.S. equities slipped after a brief tech surge amid talk that Washington may relax limits on AI chip exports. The S&P 500 remains 8% below its February peak.\n\nAcross the Atlantic, the FTSE 250 gained more than 1%, helped by a 25-basis-point rate cut from the Bank of England—the equivalent of 0.25%—and a fresh trade deal with the United States.\n\nIn the bond market, the yields on 2-year and 10-year U.S. Treasury bonds barely moved, holding near 3.89% and 4.39% respectively. (Yield is simply the annual interest investors demand for lending money to the government.)\n\nInside corporate earnings, three trends stood out. Companies are outlining timelines to relocate production, many are absorbing higher input costs rather than passing them on, and about 60% now forecast capital spending below Wall Street estimates.\"",
+    "captions": false,
+    "length": 57330,
+    "view_count": 8,
+    "like_count": 0,
+    "comment_count": 0,
+    "share_count": 0,
+    "bookmark_count": 0,
+    "completes_count": 0,
+    "is_reported": false,
+    "published": true,
+    "is_draft": false,
+    "private_account": false,
+    "difficulty": 50,
+    "difficulty_uncertainty": 100,
+    "generated_by": "CREATOR",
+    "created_at": {
+      "$date": "2025-05-13T00:54:42.297Z"
+    },
+    "playlist_ids": [
+      "681fc9cb62167f85bc0a78a7"
+    ],
+    "gallery_ids": [],
+    "interest_ids": []
+  }]
+  

@@ -1,0 +1,196 @@
+/* Login Page Design - Matching Learning Hub Style */
+
+.login-page {
+  min-height: 100vh;
+  background: var(--navy-primary);
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.login-page,
+.login-page * {
+  color: white;
+}
+
+/* Header */
+.login-header {
+  padding: 16px 24px;
+  background: var(--navy-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.jio-logo-img {
+  height: 32px;
+  width: auto;
+}
+
+/* Content */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 40px 24px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.login-card {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Welcome Section */
+.login-welcome {
+  margin-bottom: 48px;
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 12px 0;
+  color: var(--gold-secondary);
+}
+
+.login-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--gold-secondary);
+  box-shadow: 0 0 0 3px rgba(217, 156, 87, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Button */
+.login-button {
+  background: var(--gold-secondary);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(217, 156, 87, 0.4);
+}
+
+.login-button:hover {
+  background: #c88a2f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(217, 156, 87, 0.6);
+}
+
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(217, 156, 87, 0.4);
+}
+
+/* Error Message */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: rgba(239, 68, 68, 0.9);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 640px) {
+  .login-content {
+    padding: 32px 16px;
+  }
+  
+  .login-title {
+    font-size: 24px;
+  }
+  
+  .login-subtitle {
+    font-size: 14px;
+  }
+  
+  .login-welcome {
+    margin-bottom: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-content {
+    padding: 24px 12px;
+  }
+  
+  .login-title {
+    font-size: 20px;
+  }
+  
+  .login-welcome {
+    margin-bottom: 32px;
+  }
+}

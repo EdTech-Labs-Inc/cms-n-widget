@@ -1,0 +1,506 @@
+[{
+  "id": "6893a52a3577ea263f764af4",
+  "last_updated": {
+    "$date": "2025-08-06T18:55:38.582Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "appears_at": 10310,
+  "statement": "Smart investing starts with ___",
+  "answers": {
+    "answer_1": "asset allocation",
+    "answer_2": "stock picking"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  }
+},
+{
+  "id": "6893a52a3577ea263f764af5",
+  "last_updated": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "appears_at": 22489,
+  "statement": "Equities are",
+  "answers": {
+    "answer_1": "risky",
+    "answer_2": "stable"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  }
+},
+{
+  "id": "6893a52a3577ea263f764af6",
+  "last_updated": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "appears_at": 25420,
+  "statement": "Debt gives ___ returns",
+  "answers": {
+    "answer_1": "steady",
+    "answer_2": "volatile"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  }
+},
+{
+  "id": "6893a52a3577ea263f764af7",
+  "last_updated": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a48a3577ea263f764acb",
+  "appears_at": 28440,
+  "statement": "Gold when times are ___",
+  "answers": {
+    "answer_1": "uncertain",
+    "answer_2": "stable"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:55:38.583Z"
+  }
+},
+{
+  "id": "6893a5d83577ea263f764b3f",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "appears_at": 7569,
+  "statement": "Time horizon and risk tolerance?",
+  "answers": {
+    "answer_1": "Different",
+    "answer_2": "Same"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  }
+},
+{
+  "id": "6893a5d83577ea263f764b40",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "appears_at": 11070,
+  "statement": "Young investors have ___.",
+  "answers": {
+    "answer_1": "time",
+    "answer_2": "debt"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  }
+},
+{
+  "id": "6893a5d83577ea263f764b41",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "appears_at": 15770,
+  "statement": "Higher returns asset?",
+  "answers": {
+    "answer_1": "Equities",
+    "answer_2": "Debt"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  }
+},
+{
+  "id": "6893a5d83577ea263f764b42",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "appears_at": 21929,
+  "statement": "Shift into ___.",
+  "answers": {
+    "answer_1": "Debt and gold",
+    "answer_2": "Equities"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  }
+},
+{
+  "id": "6893a5d83577ea263f764b43",
+  "last_updated": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5213577ea263f764af2",
+  "appears_at": 26780,
+  "statement": "Asset allocation should ___.",
+  "answers": {
+    "answer_1": "change",
+    "answer_2": "stay"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:58:32.593Z"
+  }
+},
+{
+  "id": "6893a62e3577ea263f764b80",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "appears_at": 3230,
+  "statement": "What might be out of balance?",
+  "answers": {
+    "answer_1": "Portfolio",
+    "answer_2": "Income"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  }
+},
+{
+  "id": "6893a62e3577ea263f764b81",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "appears_at": 14730,
+  "statement": "More equities mean?",
+  "answers": {
+    "answer_1": "more risk",
+    "answer_2": "less risk"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  }
+},
+{
+  "id": "6893a62e3577ea263f764b84",
+  "last_updated": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a5b23577ea263f764b2f",
+  "appears_at": 32270,
+  "statement": "Review every?",
+  "answers": {
+    "answer_1": "6-12 months",
+    "answer_2": "2-3 years"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T18:59:58.192Z"
+  }
+},
+{
+  "id": "6893a6a33577ea263f764ba9",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "appears_at": 8270,
+  "statement": "Time is money's ___",
+  "answers": {
+    "answer_1": "best friend",
+    "answer_2": "worst foe"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  }
+},
+{
+  "id": "6893a6a33577ea263f764baa",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "appears_at": 16719,
+  "statement": "Returns earn ___",
+  "answers": {
+    "answer_1": "returns",
+    "answer_2": "fees"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  }
+},
+{
+  "id": "6893a6a33577ea263f764bab",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "appears_at": 18940,
+  "statement": "Magic of what?",
+  "answers": {
+    "answer_1": "compounding",
+    "answer_2": "spending"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  }
+},
+{
+  "id": "6893a6a33577ea263f764bad",
+  "last_updated": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6163577ea263f764b70",
+  "appears_at": 34080,
+  "statement": "Start with what you ___",
+  "answers": {
+    "answer_1": "have",
+    "answer_2": "want"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:01:55.529Z"
+  }
+},
+{
+  "id": "6893a6ef3577ea263f764bd4",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "appears_at": 4630,
+  "statement": "Value is",
+  "answers": {
+    "answer_1": "decreasing",
+    "answer_2": "increasing"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  }
+},
+{
+  "id": "6893a6ef3577ea263f764bd5",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "appears_at": 6989,
+  "statement": "Why?",
+  "answers": {
+    "answer_1": "inflation",
+    "answer_2": "savings"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  }
+},
+{
+  "id": "6893a6ef3577ea263f764bd8",
+  "last_updated": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a66f3577ea263f764b97",
+  "appears_at": 33049,
+  "statement": "Investing protects",
+  "answers": {
+    "answer_1": "future lifestyle",
+    "answer_2": "current lifestyle"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:03:11.034Z"
+  }
+},
+{
+  "id": "6893a7643577ea263f764c0b",
+  "last_updated": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "appears_at": 5510,
+  "statement": "Markets can?",
+  "answers": {
+    "answer_1": "rise and fall",
+    "answer_2": "only rise"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  }
+},
+{
+  "id": "6893a7643577ea263f764c0c",
+  "last_updated": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "appears_at": 11960,
+  "statement": "Investing early gives you ___",
+  "answers": {
+    "answer_1": "time",
+    "answer_2": "money"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  }
+},
+{
+  "id": "6893a7643577ea263f764c0d",
+  "last_updated": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "appears_at": 14750,
+  "statement": "Time helps?",
+  "answers": {
+    "answer_1": "smooth noise",
+    "answer_2": "create noise"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  }
+},
+{
+  "id": "6893a7643577ea263f764c0f",
+  "last_updated": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  },
+  "creator_id": "6893a4663577ea263f764ac0",
+  "bubble_source": "VIDEO",
+  "source_id": "6893a6de3577ea263f764bc4",
+  "appears_at": 39200,
+  "statement": "Key is?",
+  "answers": {
+    "answer_1": "time in market",
+    "answer_2": "timing the market"
+  },
+  "correct_answer_key": "answer_1",
+  "published": true,
+  "difficulty": 0,
+  "difficulty_uncertainty": 1,
+  "created_at": {
+    "$date": "2025-08-06T19:05:08.444Z"
+  }
+}]
