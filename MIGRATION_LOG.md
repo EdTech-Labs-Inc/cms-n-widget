@@ -149,10 +149,19 @@ This decision follows the "Option 3: Deprecate" path outlined in the migration p
 
 ## Upcoming Phases
 
-### Phase 12: Infrastructure & Deployment
+### ⏸️ Phase 12: Infrastructure & Deployment (SKIPPED FOR NOW)
+
+**Decision Date:** 2025-11-25
+**Decision:** Skip for now - Will configure SST and deployment later
+
+### Rationale:
+
+SST configuration and deployment setup will be handled in a separate phase after core migration is complete. This includes:
 - SST configuration
 - Documentation updates
 - Root package.json configuration
+
+---
 
 ### Phase 13: Environment & Secrets Setup
 - Create .env.example files
