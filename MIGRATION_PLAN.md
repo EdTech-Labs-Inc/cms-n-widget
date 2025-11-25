@@ -641,9 +641,12 @@ git commit -m "Phase 4: Media services (refactored, prompts removed, schema upda
    cp old-code/apps/backend/lib/config/database.ts apps/backend/lib/config/
    cp old-code/apps/backend/lib/config/queue.ts apps/backend/lib/config/
    cp old-code/apps/backend/lib/config/constants.ts apps/backend/lib/config/
+   cp old-code/apps/backend/lib/config/storage.ts apps/backend/lib/config/
    ```
 
    **⚠️ Heygen Characters:** Review old-code version (8 TODOs), copy selectively
+
+   **⚠️ Storage Config:** The `storage.ts` file is required by `storage.service.ts` (Phase 3). It contains S3 bucket configuration and file paths.
 
 2. **Controllers**
    ```bash
