@@ -1894,21 +1894,17 @@ git commit -m "Phase 12: Infrastructure and deployment configuration (cleaned)"
    4. See `SST_SECRETS.md` for SST-specific secret management
    ```
 
-5. **SST Secrets Reference**
+5. **SST Secrets Reference** ⏸️ **SKIPPED**
 
-   Review `SST_SECRETS.md` for secrets that should be set via SST:
-   ```bash
-   # Example SST secret commands (don't run yet):
-   sst secret set OPENAI_API_KEY "your-key"
-   sst secret set HEYGEN_API_KEY "your-key"
-   # ... etc
-   ```
+   ~~Review `SST_SECRETS.md` for secrets that should be set via SST~~
+
+   **Skipped for now** - SST secrets configuration deferred to Phase 12 (Infrastructure & Deployment)
 
 **🔴 Critical Reminders:**
 - ❌ DO NOT commit actual .env files
 - ✅ DO commit .env.example files
 - ✅ Document all required variables
-- ✅ Use SST secrets for production
+- ⏸️ ~~Use SST secrets for production~~ (deferred to Phase 12)
 
 **Git Commit:**
 ```bash
@@ -2582,7 +2578,7 @@ Use this checklist to track migration progress:
 - [x] Phase 10: Widget App
 - [x] Phase 11: Frontend App (Decision) - **SKIPPED** ⏭️
 - [ ] Phase 12: Infrastructure & Deployment - **SKIPPED FOR NOW** ⏸️
-- [ ] Phase 13: Environment & Secrets
+- [x] Phase 13: Environment & Secrets (SST parts skipped)
 - [ ] Phase 14: Final Audit & Testing
 
 **Migration Started:** [Date]

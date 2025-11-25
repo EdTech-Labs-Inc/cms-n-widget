@@ -20,6 +20,10 @@ out/
 .env.production.local
 .env.prod
 
+# But track example files
+!.env.example
+!.env*.example
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
