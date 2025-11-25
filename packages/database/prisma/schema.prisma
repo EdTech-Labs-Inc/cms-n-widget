@@ -126,12 +126,13 @@ model Article {
   approvedBy   String?
   submissions  Submission[]
 
-  userId  String
-  profile Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  @@index([profileId])
   @@index([organizationId])
   @@map("articles")
 }
@@ -284,7 +285,7 @@ model VideoOutput {
   submagicTemplate      String? // e.g., "Ella", "Sara", "Daniel", "Tracy"
   enableCaptions        Boolean @default(true)
   enableMagicZooms      Boolean @default(true)
-  enableMagicBrolls     Boolean @default(true
+  enableMagicBrolls     Boolean @default(true)
   magicBrollsPercentage Int?    @default(40) // 0-100
 
   // Approval tracking

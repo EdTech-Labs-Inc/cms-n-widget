@@ -221,12 +221,19 @@ git commit -m "Phase 1: Foundation - shared packages and configuration"
 
 **🔴 Flagged Issues (Resolved):**
 - ✅ JSON columns for bubbles/questions normalized
+- ✅ Inconsistent `userId` vs `profileId` naming - RESOLVED: Article now uses `profileId` consistently
 - ⚠️ Soft delete functionality still not implemented (future enhancement)
-- ⚠️ Inconsistent `userId` vs `profileId` naming (Article uses userId, others use profileId)
 
-**Decision Point:** Do you want to:
-- [ ] Standardize to `profileId` everywhere? (requires changing Article model)
-- [ ] Keep as-is for now?
+**Decision Made:** ✅ Standardized to `profileId` everywhere
+- Article model updated from `userId` to `profileId`
+- Added index on Article.profileId for query performance
+- Migration created: `20251125121919_standardize_article_profileid`
+
+**⚠️ IMPORTANT for Later Phases:**
+When migrating code that references Article model, update all occurrences:
+- Change `article.userId` → `article.profileId`
+- Change `userId: profile.id` → `profileId: profile.id` in create/update operations
+- Update any queries filtering by `userId` to use `profileId` instead
 
 **Git Commit:**
 ```bash
@@ -1989,7 +1996,7 @@ git commit -m "Phase 13: Environment configuration templates and documentation"
     ## Known Issues / Future Work
 
     - [ ] Soft delete not implemented (all deletes are hard cascades)
-    - [ ] Inconsistent userId vs profileId naming
+    - [x] ~~Inconsistent userId vs profileId naming~~ (RESOLVED - Article standardized to profileId)
     - [ ] No test coverage (should add tests)
     - [ ] Some large components could be split further
     - [ ] Prompt management system needs implementation (currently config-based)
@@ -2066,7 +2073,7 @@ git commit -m "Phase 14: Final audit, build verification, and migration summary"
 
 4. **Known Issues (Future Work):**
    - No soft delete functionality
-   - Inconsistent `userId` vs `profileId` naming
+   - ✅ ~~Inconsistent `userId` vs `profileId` naming~~ (RESOLVED - Article now uses `profileId`)
    - InteractivePodcastOutput.segments still JSON (consider normalizing)
    - PodcastOutput.segments still JSON (consider normalizing)
 
