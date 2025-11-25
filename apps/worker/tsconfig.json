@@ -1,0 +1,53 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "lib": ["ES2022"],
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "rootDir": "../../",
+      "strict": false,
+      "noImplicitAny": false,
+      "strictNullChecks": false,
+      "strictPropertyInitialization": false,
+      "noEmitOnError": false,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "declaration": false,
+      "sourceMap": true,
+      "types": ["node"],
+      "paths": {
+        "@/*": ["../backend/*"],
+        "@/lib/*": ["../backend/lib/*"],
+        "@/types/*": ["../backend/types/*"],
+        "@repo/database": ["../../packages/database/src"],
+        "@repo/types": ["../../packages/types/src"],
+        "@repo/config": ["../../packages/config/src"],
+        "@repo/logging": ["../../packages/logging/src"]
+      }
+    },
+    "include": [
+      "src/**/*",
+      "../backend/lib/**/*",
+      "../../packages/database/src/**/*",
+      "../../packages/types/src/**/*",
+      "../../packages/config/src/**/*",
+      "../../packages/logging/src/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+      "dist",
+      "../backend/app",
+      "../backend/components",
+      "../backend/frontend-lib",
+      "../backend/lib/api",
+      "../backend/lib/controllers",
+      "../backend/lib/services/profile.service.ts",
+      "../backend/lib/services/core/file-extraction.service.ts",
+      "../backend/lib/supabase",
+      "../../packages/database/prisma"
+    ]
+  }
