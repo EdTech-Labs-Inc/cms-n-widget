@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { aiTaggingService } from '../ai-tagging.service';
 import { prisma } from '../../config/database';
 import { QuizQuestionsSchema } from '@/types/schemas';
@@ -52,14 +52,16 @@ export class QuizService {
       };
       const languageName = languageMap[languageToUse] || 'English';
 
-      // Generate quiz questions using OpenAI
-      const prompt = `generate_quiz_questions_prompt`;
-
-      const result = await openaiService.generateStructured({
-        prompt,
+      // Generate quiz questions using Agenta + OpenAI
+      const result = await agentaOpenAIService.generateStructured({
+        promptSlug: 'generate_quiz_questions_prompt',
+        variables: {
+          articleTitle: article.title,
+          articleContent: article.content,
+          language: languageName,
+        },
         schema: QuizQuestionsSchema,
         schemaName: 'QuizQuestions',
-        systemPrompt: `generate_quiz_questions_system_prompt`,
         temperature: 0.7,
       });
 

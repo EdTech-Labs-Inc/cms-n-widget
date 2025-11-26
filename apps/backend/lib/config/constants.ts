@@ -57,6 +57,14 @@ export const config = {
     webhookUrl: process.env.SUBMAGIC_WEBHOOK_URL || "https://snoopy-moonishly-robbin.ngrok-free.dev",
   },
 
+  // Agenta (Prompt Management)
+  agenta: {
+    apiKey: process.env.AGENTA_API_KEY || "",
+    baseUrl: process.env.AGENTA_BASE_URL || "https://cloud.agenta.ai",
+    environment: process.env.AGENTA_ENVIRONMENT || "production",
+    cacheTTL: parseInt(process.env.AGENTA_CACHE_TTL || "900000", 10), // 15 minutes
+  },
+
   // Storage (S3/R2)
   // Note: In production with SST, credentials are not needed (uses IAM role)
   // For local development, you can set S3_ACCESS_KEY and S3_SECRET_KEY in .env
@@ -96,6 +104,7 @@ export function validateConfig() {
     "ELEVENLABS_API_KEY",
     "HEYGEN_API_KEY",
     "SUBMAGIC_API_KEY",
+    "AGENTA_API_KEY",
   ];
 
   if (config.nodeEnv === "production") {

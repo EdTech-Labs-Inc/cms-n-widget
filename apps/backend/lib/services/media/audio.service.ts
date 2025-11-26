@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { elevenlabsService } from '../external/elevenlabs.service';
 import { storageService } from '../core/storage.service';
 import { aiTaggingService } from '../ai-tagging.service';
@@ -111,7 +111,7 @@ export class AudioService {
   }
 
   /**
-   * Convert article content to a speakable script
+   * Convert article content to a speakable script using Agenta prompts
    * Removes markdown formatting, fixes headings, ensures natural flow
    */
   private async generateSpeakableScript(title: string, content: string, language: string): Promise<string> {
@@ -123,11 +123,13 @@ export class AudioService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_speakable_script_prompt`;
-
-    return await openaiService.generateText({
-      prompt,
-      systemPrompt: `generate_speakable_script_system_prompt`,
+    return await agentaOpenAIService.generateText({
+      promptSlug: 'generate_speakable_script_prompt',
+      variables: {
+        title,
+        content,
+        language: languageName,
+      },
       temperature: 0.3, // Lower temperature for more consistent output
     });
   }

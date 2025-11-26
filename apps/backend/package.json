@@ -17,6 +17,7 @@
     "@aws-sdk/s3-request-presigner": "^3.668.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.20.0",
+    "@repo/agenta": "*",
     "@repo/config": "*",
     "@repo/database": "*",
     "@repo/interactive-podcast-player": "*",

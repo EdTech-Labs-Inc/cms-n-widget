@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { elevenlabsService } from '../external/elevenlabs.service';
 import { storageService } from '../core/storage.service';
 import { aiTaggingService } from '../ai-tagging.service';
@@ -175,11 +175,13 @@ export class InteractivePodcastGeneratorService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_interactive_podcast_title_prompt`;
-
-    const title = await openaiService.generateText({
-      prompt,
-      systemPrompt: `generate_interactive_podcast_title_system_prompt`,
+    const title = await agentaOpenAIService.generateText({
+      promptSlug: 'generate_interactive_podcast_title_prompt',
+      variables: {
+        articleTitle,
+        articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
       maxTokens: 50,
     });
@@ -203,11 +205,13 @@ export class InteractivePodcastGeneratorService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_interactive_podcast_script_prompt`;
-
-    const script = await openaiService.generateText({
-      prompt,
-      systemPrompt: `generate_interactive_podcast_script_system_prompt`,
+    const script = await agentaOpenAIService.generateText({
+      promptSlug: 'generate_interactive_podcast_script_prompt',
+      variables: {
+        articleTitle,
+        articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
       maxTokens: 1200,
     });

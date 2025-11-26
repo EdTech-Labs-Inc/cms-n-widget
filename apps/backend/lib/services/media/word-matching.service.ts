@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { z } from 'zod';
 import { logger } from '@repo/logging';
 
@@ -42,13 +42,15 @@ export class WordMatchingService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_interactive_words_prompt`;
-
-    const result = await openaiService.generateStructured({
-      prompt,
+    const result = await agentaOpenAIService.generateStructured({
+      promptSlug: 'generate_interactive_words_prompt',
+      variables: {
+        script,
+        articleContent,
+        language: languageName,
+      },
       schema: InteractiveWordsResponseSchema,
       schemaName: 'InteractiveWords',
-      systemPrompt: `generate_interactive_words_system_prompt`,
       temperature: 0.7,
     });
 

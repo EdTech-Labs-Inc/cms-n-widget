@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { elevenlabsService } from '../external/elevenlabs.service';
 import { storageService } from '../core/storage.service';
 import { aiTaggingService } from '../ai-tagging.service';
@@ -131,7 +131,7 @@ export class PodcastService {
   }
 
   /**
-   * Generate an engaging podcast title using OpenAI
+   * Generate an engaging podcast title using Agenta prompts
    */
   private async generatePodcastTitle(articleTitle: string, articleContent: string, language: string): Promise<string> {
     const languageMap: Record<string, string> = {
@@ -142,11 +142,13 @@ export class PodcastService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_podcast_title_prompt`;
-
-    const title = await openaiService.generateText({
-      prompt,
-      systemPrompt: `generate_podcast_title_system_prompt`,
+    const title = await agentaOpenAIService.generateText({
+      promptSlug: 'generate_podcast_title_prompt',
+      variables: {
+        articleTitle,
+        articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
       maxTokens: 50,
     });
@@ -155,7 +157,7 @@ export class PodcastService {
   }
 
   /**
-   * Generate podcast transcript with interviewer + guest format
+   * Generate podcast transcript with interviewer + guest format using Agenta prompts
    */
   private async generatePodcastTranscript(title: string, content: string, language: string) {
     const languageMap: Record<string, string> = {
@@ -166,13 +168,15 @@ export class PodcastService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_podcast_transcript_prompt`;
-
-    const result = await openaiService.generateStructured({
-      prompt,
+    const result = await agentaOpenAIService.generateStructured({
+      promptSlug: 'generate_podcast_transcript_prompt',
+      variables: {
+        title,
+        content,
+        language: languageName,
+      },
       schema: PodcastTranscriptSchema,
       schemaName: 'PodcastTranscript',
-      systemPrompt: `generate_podcast_transcript_system_prompt`,
       temperature: 0.8, // Higher creativity for natural conversation
     });
 

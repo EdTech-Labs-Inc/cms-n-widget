@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { prisma } from '../../config/database';
 import { VideoBubblesSchema } from '@/types/schemas';
 import { VideoBubble } from '@/types/media.types';
@@ -57,17 +57,21 @@ export class BubbleGeneratorService {
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        const prompt = `regenerate_single_bubble_prompt`;
-
         const SingleBubbleSchema = VideoBubblesSchema.extend({
           bubbles: VideoBubblesSchema.shape.bubbles.min(1).max(1),
         });
 
-        const result = await openaiService.generateStructured({
-          prompt,
+        const result = await agentaOpenAIService.generateStructured({
+          promptSlug: 'regenerate_single_bubble_prompt',
+          variables: {
+            appearsAt: String(appearsAt),
+            script,
+            articleContent,
+            durationSeconds: String(durationSeconds),
+            language: languageName,
+          },
           schema: SingleBubbleSchema,
           schemaName: 'SingleBubble',
-          systemPrompt: `regenerate_single_bubble_system_prompt`,
           temperature: 0.6,
         });
 
@@ -115,13 +119,18 @@ export class BubbleGeneratorService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_video_bubbles_prompt`;
-
-    const result = await openaiService.generateStructured({
-      prompt,
+    const result = await agentaOpenAIService.generateStructured({
+      promptSlug: 'generate_video_bubbles_prompt',
+      variables: {
+        script,
+        articleContent,
+        transcript,
+        durationSeconds: String(durationSeconds),
+        language: languageName,
+        wordTimings: JSON.stringify(wordTimings),
+      },
       schema: VideoBubblesSchema,
       schemaName: 'VideoBubbles',
-      systemPrompt: `generate_video_bubbles_system_prompt`,
       temperature: 0.6,
     });
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { openaiClientService } from './openai-client.service';
+import { agentaOpenAIService } from './agenta-openai.service';
 
 /**
  * Content Regeneration Service - Domain-specific content generation
@@ -10,40 +10,30 @@ import { openaiClientService } from './openai-client.service';
  * - Podcast transcript regeneration
  * - Interactive podcast script regeneration
  *
- *  NOTE: This service currently contains embedded AI prompts.
- * TODO: Move prompts to @repo/config for better maintainability.
- *
- * Uses the OpenAI Client Service for all API calls.
+ * Uses Agenta for prompt management and OpenAI for execution.
  */
 export class ContentRegenerationService {
   /**
    * Clean article content by removing fluff and extract the actual title
    * Removes non-article content from the beginning and end (like headers, footers, metadata)
    * and extracts the most appropriate title from the article
-   *
-   *  TODO: Move prompt to @repo/config
    */
   async cleanArticleContent(params: {
     rawContent: string;
-    model?: string;
   }): Promise<{ title: string; cleanedContent: string }> {
     const schema = z.object({
       title: z.string().describe('The actual title of the article extracted from the content'),
       cleanedContent: z.string().describe('The article content with fluff removed from the top and bottom'),
     });
 
-    // � TODO: Externalize this prompt to @repo/config
-    const prompt = `clean_article_content_prompt`;
-
-    const systemPrompt = 'clean_article_content_system_prompt';
-
-    const result = await openaiClientService.generateStructured({
-      prompt,
+    const result = await agentaOpenAIService.generateStructured({
+      promptSlug: 'clean_article_content_prompt',
+      variables: {
+        rawContent: params.rawContent,
+      },
       schema,
       schemaName: 'CleanedArticle',
-      model: params.model,
       temperature: 0.3,
-      systemPrompt,
     });
 
     return result as { title: string; cleanedContent: string };
@@ -52,8 +42,6 @@ export class ContentRegenerationService {
   /**
    * Regenerate video script with user guidance
    * Takes the original script, user prompt guidance, and article context to create an improved version
-   *
-   * � TODO: Move prompts to @repo/config
    */
   async regenerateVideoScript(params: {
     originalScript: string;
@@ -71,14 +59,15 @@ export class ContentRegenerationService {
     };
     const languageName = languageMap[language] || 'English';
 
-    // � TODO: Externalize this prompt to @repo/config
-    const prompt = `regenerate_video_script_prompt`;
-
-    const systemPrompt = `regenerate_video_script_system_prompt`;
-
-    return await openaiClientService.generateText({
-      prompt,
-      systemPrompt,
+    return await agentaOpenAIService.generateText({
+      promptSlug: 'regenerate_video_script_prompt',
+      variables: {
+        originalScript: params.originalScript,
+        promptGuidance: params.promptGuidance,
+        articleTitle: params.articleTitle,
+        articleContent: params.articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
     });
   }
@@ -86,8 +75,6 @@ export class ContentRegenerationService {
   /**
    * Regenerate podcast transcript with user guidance
    * Takes the original transcript segments, user prompt guidance, and article context to create an improved version
-   *
-   * � TODO: Move prompts to @repo/config
    */
   async regeneratePodcastTranscript(params: {
     originalTranscript: string; // JSON string of segments
@@ -116,14 +103,15 @@ export class ContentRegenerationService {
       readableTranscript = params.originalTranscript;
     }
 
-    // � TODO: Externalize this prompt to @repo/config
-    const prompt = `regenerate_podcast_transcript_prompt`;
-
-    const systemPrompt = `regenerate_podcast_transcript_system_prompt`;
-
-    const result = await openaiClientService.generateText({
-      prompt,
-      systemPrompt,
+    const result = await agentaOpenAIService.generateText({
+      promptSlug: 'regenerate_podcast_transcript_prompt',
+      variables: {
+        originalTranscript: readableTranscript,
+        promptGuidance: params.promptGuidance,
+        articleTitle: params.articleTitle,
+        articleContent: params.articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
     });
 
@@ -138,8 +126,6 @@ export class ContentRegenerationService {
   /**
    * Regenerate interactive podcast script with user guidance
    * Takes the original script, user prompt guidance, and article context to create an improved version
-   *
-   * � TODO: Move prompts to @repo/config
    */
   async regenerateInteractivePodcastScript(params: {
     originalScript: string;
@@ -157,14 +143,15 @@ export class ContentRegenerationService {
     };
     const languageName = languageMap[language] || 'English';
 
-    // � TODO: Externalize this prompt to @repo/config
-    const prompt = `regenerate_interactive_podcast_script_prompt`;
-
-    const systemPrompt = `regenerate_interactive_podcast_script_system_prompt`;
-
-    return await openaiClientService.generateText({
-      prompt,
-      systemPrompt,
+    return await agentaOpenAIService.generateText({
+      promptSlug: 'regenerate_interactive_podcast_script_prompt',
+      variables: {
+        originalScript: params.originalScript,
+        promptGuidance: params.promptGuidance,
+        articleTitle: params.articleTitle,
+        articleContent: params.articleContent,
+        language: languageName,
+      },
       temperature: 0.7,
     });
   }

@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { heygenService } from '../external/heygen.service';
 import { prisma } from '../../config/database';
 import { VideoScriptsSchema } from '@/types/schemas';
@@ -141,7 +141,7 @@ export class VideoGeneratorService {
   }
 
   /**
-   * Generate video scripts from article
+   * Generate video scripts from article using Agenta prompts
    */
   private async generateVideoScripts(title: string, content: string, language: string = 'ENGLISH') {
     const languageMap: Record<string, string> = {
@@ -152,13 +152,15 @@ export class VideoGeneratorService {
     };
     const languageName = languageMap[language] || 'English';
 
-    const prompt = `generate_video_scripts_prompt`;
-
-    return await openaiService.generateStructured({
-      prompt,
+    return await agentaOpenAIService.generateStructured({
+      promptSlug: 'generate_video_scripts_prompt',
+      variables: {
+        title,
+        content,
+        language: languageName,
+      },
       schema: VideoScriptsSchema,
       schemaName: 'VideoScripts',
-      systemPrompt: `generate_video_scripts_system_prompt`,
       temperature: 0.7,
     });
   }
