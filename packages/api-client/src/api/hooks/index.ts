@@ -42,6 +42,9 @@ export * from './media-hooks';
 // Thumbnail hooks
 export * from './thumbnail-hooks';
 
+// HeyGen hooks
+export * from './heygen-hooks';
+
 // Query Keys
 export const queryKeys = {
   articles: ['articles'] as const,

@@ -267,7 +267,7 @@ export default function OrgQuizEditPage() {
   // Transform data for preview
   const quizQuestions: Question[] = (quiz.questions as any[]).map((q: any) => ({
     type: q.type,
-    question: q.question,
+    question: q.prompt,
     explanation: q.explanation || undefined,
     options: q.options || undefined,
     correctAnswer: q.correctAnswer,
@@ -353,14 +353,14 @@ export default function OrgQuizEditPage() {
                         {isEditing ? (
                           <>
                             <textarea
-                              value={editableQuestion.question}
-                              onChange={(e) => handleQuestionFieldChange(index, 'question', e.target.value)}
+                              value={editableQuestion.prompt}
+                              onChange={(e) => handleQuestionFieldChange(index, 'prompt', e.target.value)}
                               className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary font-medium mb-4 focus:outline-none focus:ring-2 focus:ring-blue-accent/50"
                               rows={2}
                             />
 
                             {/* Editable answers */}
-                            {editableQuestion.type === 'MCQ' && editableQuestion.options && (
+                            {editableQuestion.type === 'MULTIPLE_CHOICE' && editableQuestion.options && (
                               <div className="space-y-2 mb-4">
                                 {editableQuestion.options.map((option, optIdx) => (
                                   <div key={optIdx} className="space-y-1">
@@ -377,6 +377,33 @@ export default function OrgQuizEditPage() {
                                     />
                                   </div>
                                 ))}
+                              </div>
+                            )}
+
+                            {editableQuestion.type === 'TRUE_FALSE' && (
+                              <div className="space-y-2 mb-4">
+                                <label className="text-xs text-text-muted">Correct Answer</label>
+                                <div className="flex gap-2">
+                                  {['True', 'False'].map((option, optIdx) => {
+                                    const isSelected = (optIdx === 0 && editableQuestion.correctAnswer === true) ||
+                                                      (optIdx === 1 && editableQuestion.correctAnswer === false);
+                                    return (
+                                      <button
+                                        key={option}
+                                        type="button"
+                                        onClick={() => handleQuestionFieldChange(index, 'correctAnswer', optIdx === 0)}
+                                        className={`flex-1 p-3 rounded-xl transition-colors ${
+                                          isSelected
+                                            ? 'bg-success/20 border border-success/50 text-success'
+                                            : 'bg-white-10 text-text-primary hover:bg-white-20'
+                                        }`}
+                                      >
+                                        {option}
+                                        {isSelected && <CheckCircle2 className="w-4 h-4 inline ml-2" />}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
                               </div>
                             )}
 
@@ -404,10 +431,10 @@ export default function OrgQuizEditPage() {
                           </>
                         ) : (
                           <>
-                            <p className="text-text-primary font-medium mb-4">{question.question}</p>
+                            <p className="text-text-primary font-medium mb-4">{question.prompt}</p>
 
                             {/* Display answers based on type */}
-                            {question.type === 'MCQ' && question.options && (
+                            {question.type === 'MULTIPLE_CHOICE' && question.options && (
                               <div className="space-y-2 mb-4">
                                 {question.options.map((option, optIdx) => (
                                   <div
@@ -424,6 +451,30 @@ export default function OrgQuizEditPage() {
                                     )}
                                   </div>
                                 ))}
+                              </div>
+                            )}
+
+                            {question.type === 'TRUE_FALSE' && (
+                              <div className="space-y-2 mb-4">
+                                {['True', 'False'].map((option, optIdx) => {
+                                  const isCorrect = (optIdx === 0 && question.correctAnswer === true) ||
+                                                   (optIdx === 1 && question.correctAnswer === false);
+                                  return (
+                                    <div
+                                      key={option}
+                                      className={`p-3 rounded-xl ${
+                                        isCorrect
+                                          ? 'bg-success/20 border border-success/50'
+                                          : 'bg-white-10'
+                                      }`}
+                                    >
+                                      <span className="text-text-primary">{option}</span>
+                                      {isCorrect && (
+                                        <CheckCircle2 className="w-4 h-4 text-success inline ml-2" />
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
                             )}
 

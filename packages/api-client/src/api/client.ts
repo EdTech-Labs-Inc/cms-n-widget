@@ -353,8 +353,32 @@ export const submissionsApi = {
   },
 };
 
+// HeyGen Avatar Types
+export interface ProcessedAvatar {
+  id: string;
+  name: string;
+  type: 'avatar' | 'talking_photo';
+  previewUrl: string;
+  voiceId: string;
+}
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface AvatarsResponse {
+  avatars: ProcessedAvatar[];
+  pagination: PaginationMeta;
+}
+
 // HeyGen API - No org scoping needed (global config)
 export const heygenApi = {
+  /**
+   * @deprecated Use getAvatars() instead - fetches dynamic avatars from HeyGen API
+   */
   getCharacters: async (): Promise<Array<{
     id: string;
     name: string;
@@ -374,6 +398,31 @@ export const heygenApi = {
       description?: string;
     }>>>('/api/heygen/characters');
     return data.data || [];
+  },
+
+  /**
+   * Fetch paginated avatars from HeyGen (cached server-side for 24 hours)
+   */
+  getAvatars: async (page: number = 1, limit: number = 12): Promise<AvatarsResponse> => {
+    console.log('🎭 [API Client] getAvatars() called with page:', page, 'limit:', limit);
+    try {
+      const { data } = await apiClient.get<ApiResponse<AvatarsResponse>>(
+        `/api/heygen/avatars?page=${page}&limit=${limit}`
+      );
+      console.log('🎭 [API Client] Response:', data);
+      return data.data || { avatars: [], pagination: { page: 1, limit: 12, total: 0, totalPages: 0 } };
+    } catch (error) {
+      console.error('🎭 [API Client] Error fetching avatars:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Force refresh the avatar cache (admin use)
+   */
+  refreshAvatarCache: async (): Promise<{ totalAvatars: number }> => {
+    const { data } = await apiClient.post<ApiResponse<{ totalAvatars: number }>>('/api/heygen/avatars');
+    return data.data || { totalAvatars: 0 };
   },
 };
 

@@ -337,6 +337,17 @@ export interface CreateArticleRequest {
   content: string;
 }
 
+export interface VideoCustomizationConfig {
+  characterId: string;
+  characterType: 'avatar' | 'talking_photo';
+  voiceId: string;
+  enableCaptions: boolean;
+  captionTemplate: string;
+  enableMagicZooms: boolean;
+  enableMagicBrolls: boolean;
+  magicBrollsPercentage: number;
+}
+
 export interface CreateSubmissionRequest {
   articleId: string;
   language?: Language;
@@ -345,6 +356,7 @@ export interface CreateSubmissionRequest {
   generateVideo?: boolean;
   generateQuiz?: boolean;
   generateInteractivePodcast?: boolean;
+  videoCustomization?: VideoCustomizationConfig;
 }
 
 export interface CreateTagRequest {

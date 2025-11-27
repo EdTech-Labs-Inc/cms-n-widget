@@ -64,7 +64,7 @@ export class VideoGeneratorService {
       // Step 2: Create VideoOutput for each script and initiate HeyGen videos
       let processedCount = 0;
 
-      for (const scriptData of scriptList) {
+      for (const scriptData of scriptList.slice(0, 1)) {
         const { title, script } = scriptData;
 
         // Check if VideoOutput already exists (created by submission.service with customization)
@@ -103,12 +103,47 @@ export class VideoGeneratorService {
 
         // Initiate HeyGen video creation (non-blocking)
         // Use character configuration from VideoOutput if set, otherwise use defaults
+        // Fetch avatar details to get correct voice if not already set
+        let voiceId = videoOutput.heygenVoiceId || undefined;
+
+        if (!voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar') {
+          try {
+            logger.info('Fetching avatar details for voice ID', {
+              avatarId: videoOutput.heygenCharacterId
+            });
+            const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
+            if (avatarDetails.data?.default_voice?.voice_id) {
+              voiceId = avatarDetails.data.default_voice.voice_id;
+              logger.info('Got voice ID from avatar details', { voiceId });
+
+              // Update the VideoOutput with the fetched voice ID for future reference
+              await prisma.videoOutput.update({
+                where: { id: videoOutput.id },
+                data: { heygenVoiceId: voiceId },
+              });
+            }
+          } catch (error) {
+            logger.warn('Failed to fetch avatar details for voice, will use defaults', {
+              avatarId: videoOutput.heygenCharacterId,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            });
+          }
+        }
+
+        logger.info('Calling HeyGen with VideoOutput settings', {
+          videoOutputId: videoOutput.id,
+          heygenCharacterType: videoOutput.heygenCharacterType ?? 'not set (will use defaults)',
+          heygenCharacterId: videoOutput.heygenCharacterId ?? 'not set (will use defaults)',
+          heygenVoiceId: voiceId ?? 'not set (will use defaults)',
+          scriptLength: script.length,
+          title,
+        });
         const { videoId } = await heygenService.generateVideo({
           script,
           title,
           characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
           characterId: videoOutput.heygenCharacterId || undefined,
-          voiceId: videoOutput.heygenVoiceId || undefined,
+          voiceId,
         });
 
         logger.info('HeyGen video initiated', {
@@ -208,12 +243,47 @@ export class VideoGeneratorService {
 
       // Initiate HeyGen video creation with the edited script
       // Use existing character configuration if set
+      // Fetch avatar details to get correct voice if not already set
+      let voiceId = videoOutput.heygenVoiceId || undefined;
+
+      if (!voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar') {
+        try {
+          logger.info('Regenerate: Fetching avatar details for voice ID', {
+            avatarId: videoOutput.heygenCharacterId
+          });
+          const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
+          if (avatarDetails.data?.default_voice?.voice_id) {
+            voiceId = avatarDetails.data.default_voice.voice_id;
+            logger.info('Regenerate: Got voice ID from avatar details', { voiceId });
+
+            // Update the VideoOutput with the fetched voice ID for future reference
+            await prisma.videoOutput.update({
+              where: { id: videoOutput.id },
+              data: { heygenVoiceId: voiceId },
+            });
+          }
+        } catch (error) {
+          logger.warn('Regenerate: Failed to fetch avatar details for voice, will use defaults', {
+            avatarId: videoOutput.heygenCharacterId,
+            error: error instanceof Error ? error.message : 'Unknown error',
+          });
+        }
+      }
+
+      logger.info('Regenerate: Calling HeyGen with VideoOutput settings', {
+        videoOutputId: videoOutput.id,
+        heygenCharacterType: videoOutput.heygenCharacterType ?? 'not set (will use defaults)',
+        heygenCharacterId: videoOutput.heygenCharacterId ?? 'not set (will use defaults)',
+        heygenVoiceId: voiceId ?? 'not set (will use defaults)',
+        scriptLength: videoOutput.script.length,
+        title: videoOutput.title || videoOutput.submission.article.title,
+      });
       const { videoId } = await heygenService.generateVideo({
         script: videoOutput.script,
         title: videoOutput.title || videoOutput.submission.article.title,
         characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
         characterId: videoOutput.heygenCharacterId || undefined,
-        voiceId: videoOutput.heygenVoiceId || undefined,
+        voiceId,
       });
 
       logger.info('HeyGen video initiated for regeneration', {

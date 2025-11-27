@@ -49,7 +49,8 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/api/join") || // Skip for join workflows
     request.nextUrl.pathname.startsWith("/api/join-requests") || // Skip for join request management (has own auth)
     request.nextUrl.pathname.startsWith("/api/auth/user-with-org") || // Skip for auth checks
-    request.nextUrl.pathname.startsWith("/api/org") // Skip for org-scoped API routes (have own auth)
+    request.nextUrl.pathname.startsWith("/api/org") || // Skip for org-scoped API routes (have own auth)
+    request.nextUrl.pathname.startsWith("/api/heygen") // Skip for HeyGen avatar/character APIs (public data)
   ) {
     return supabaseResponse;
   }

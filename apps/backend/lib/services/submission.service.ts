@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/config/database';
 import { queueService } from './core/queue.service';
 import { aiTaggingService } from './ai-tagging.service';
-import { getCharacterById } from '@/lib/config/heygen-characters';
 import { logger } from '@repo/logging';
 
 /**
@@ -28,6 +27,8 @@ export class SubmissionService {
     generateInteractivePodcast?: boolean;
     videoCustomization?: {
       characterId: string;
+      characterType: 'avatar' | 'talking_photo';
+      voiceId: string;
       enableCaptions: boolean;
       captionTemplate: string;
       enableMagicZooms: boolean;
@@ -160,12 +161,18 @@ export class SubmissionService {
           let magicBrollsPercentage: number | undefined;
 
           if (params.videoCustomization) {
-            const character = getCharacterById(params.videoCustomization.characterId);
-            if (character) {
-              characterType = character.type;
-              characterId = character.characterId;
-              voiceId = character.voiceId;
-            }
+            logger.info('Video customization received', {
+              characterId: params.videoCustomization.characterId,
+              characterType: params.videoCustomization.characterType,
+              voiceId: params.videoCustomization.voiceId,
+              enableCaptions: params.videoCustomization.enableCaptions,
+              captionTemplate: params.videoCustomization.captionTemplate,
+            });
+
+            // Use character details directly from frontend (dynamic HeyGen avatars)
+            characterType = params.videoCustomization.characterType;
+            characterId = params.videoCustomization.characterId;
+            voiceId = params.videoCustomization.voiceId;
             submagicTemplate = params.videoCustomization.captionTemplate;
             enableCaptions = params.videoCustomization.enableCaptions;
             enableMagicZooms = params.videoCustomization.enableMagicZooms;

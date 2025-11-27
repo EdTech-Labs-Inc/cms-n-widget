@@ -14,13 +14,13 @@ export default function OrgArticleEditPage() {
   const toast = useToast();
 
   // Data fetching
-  const { data: article, isLoading } = useArticle(articleId, orgSlug);
+  const { data: article, isLoading } = useArticle(orgSlug, articleId);
 
   // Mutations
-  const approveArticle = useApproveArticle();
-  const unapproveArticle = useUnapproveArticle();
-  const regenerateArticleThumbnail = useRegenerateArticleThumbnail();
-  const uploadArticleThumbnail = useUploadArticleThumbnail();
+  const approveArticle = useApproveArticle(orgSlug);
+  const unapproveArticle = useUnapproveArticle(orgSlug);
+  const regenerateArticleThumbnail = useRegenerateArticleThumbnail(orgSlug);
+  const uploadArticleThumbnail = useUploadArticleThumbnail(orgSlug);
 
   // Loading state
   if (isLoading) {
@@ -46,23 +46,17 @@ export default function OrgArticleEditPage() {
 
   // Approval handlers
   const handleApprove = () => {
-    approveArticle.mutate(
-      { articleId, orgSlug },
-      {
-        onSuccess: () => toast.success('Article approved', 'Article has been approved'),
-        onError: (error: any) => toast.error('Failed to approve article', error?.message || 'Please try again'),
-      }
-    );
+    approveArticle.mutate(articleId, {
+      onSuccess: () => toast.success('Article approved', 'Article has been approved'),
+      onError: (error: any) => toast.error('Failed to approve article', error?.message || 'Please try again'),
+    });
   };
 
   const handleUnapprove = () => {
-    unapproveArticle.mutate(
-      { articleId, orgSlug },
-      {
-        onSuccess: () => toast.success('Approval withdrawn', 'Article approval has been withdrawn'),
-        onError: (error: any) => toast.error('Failed to withdraw approval', error?.message || 'Please try again'),
-      }
-    );
+    unapproveArticle.mutate(articleId, {
+      onSuccess: () => toast.success('Approval withdrawn', 'Article approval has been withdrawn'),
+      onError: (error: any) => toast.error('Failed to withdraw approval', error?.message || 'Please try again'),
+    });
   };
 
   return (
@@ -163,12 +157,12 @@ export default function OrgArticleEditPage() {
           }}
           regenerateMutation={{
             mutate: (data: { prompt: string }, options?: any) =>
-              regenerateArticleThumbnail.mutate({ articleId, prompt: data.prompt, orgSlug }, options),
+              regenerateArticleThumbnail.mutate({ articleId, prompt: data.prompt }, options),
             isPending: regenerateArticleThumbnail.isPending,
           }}
           uploadMutation={{
             mutate: (file: File, options?: any) =>
-              uploadArticleThumbnail.mutate({ articleId, file, orgSlug }, options),
+              uploadArticleThumbnail.mutate({ articleId, file }, options),
             isPending: uploadArticleThumbnail.isPending,
           }}
         />

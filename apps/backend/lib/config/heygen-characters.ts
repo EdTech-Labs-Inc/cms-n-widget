@@ -23,21 +23,21 @@ export interface HeyGenCharacter {
 
 export const HEYGEN_CHARACTERS: HeyGenCharacter[] = [
   {
-    id: 'male-presenter',
+    id: 'male-presenter1', // Must match frontend VideoCustomization.tsx
     name: 'Kumar',
-    type: 'avatar', // TODO: YOU FILL: 'talking_photo' or 'avatar'
-    characterId: 'e69958ae5fa94733ba44a81ccf677ec4', // TODO: YOU FILL: talking_photo_id or avatar_id from HeyGen
-    voiceId: '4ecb08e33f7f4259bd544aaeae2fd946', // TODO: YOU FILL: voice_id from HeyGen
-    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/kumar_pmhhyp.webp', // TODO: YOU FILL: URL to thumbnail image (e.g., from S3 or /public folder)
+    type: 'avatar',
+    characterId: 'e69958ae5fa94733ba44a81ccf677ec4',
+    voiceId: '4ecb08e33f7f4259bd544aaeae2fd946',
+    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/kumar_pmhhyp.webp',
     description: 'Professional male voice and character',
   },
   {
-    id: 'female-presenter',
+    id: 'female-presenter1', // Must match frontend VideoCustomization.tsx
     name: 'Isha',
-    type: 'avatar', // TODO: YOU FILL: 'talking_photo' or 'avatar'
-    characterId: 'e97bd13f43bd460c8fb5fa27eeb294f9', // TODO: YOU FILL: talking_photo_id or avatar_id from HeyGen
-    voiceId: 'GTSr2w7ea6G4HPatP97G', // TODO: YOU FILL: voice_id from HeyGen
-    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/isha_ltch9d.webp', // TODO: YOU FILL: URL to thumbnail image (e.g., from S3 or /public folder)
+    type: 'avatar',
+    characterId: 'e97bd13f43bd460c8fb5fa27eeb294f9',
+    voiceId: 'GTSr2w7ea6G4HPatP97G',
+    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/isha_ltch9d.webp',
     description: 'Professional female voice and character',
   },
 ];
