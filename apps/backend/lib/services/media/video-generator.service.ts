@@ -1,7 +1,7 @@
 import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { heygenService } from '../external/heygen.service';
 import { prisma } from '../../config/database';
-import { VideoScriptsSchema } from '@/types/schemas';
+import { VideoScriptsSchema } from '@repo/types';
 import { logger } from '@repo/logging';
 
 /**
@@ -155,9 +155,9 @@ export class VideoGeneratorService {
     return await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_video_scripts_prompt',
       variables: {
-        title,
-        content,
-        language: languageName,
+        articleTitle: title,
+        articleContent: content,
+        languageName,
       },
       schema: VideoScriptsSchema,
       schemaName: 'VideoScripts',

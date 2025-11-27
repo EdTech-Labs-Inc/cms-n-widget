@@ -66,7 +66,7 @@ export class ContentRegenerationService {
         promptGuidance: params.promptGuidance,
         articleTitle: params.articleTitle,
         articleContent: params.articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
     });
@@ -106,11 +106,11 @@ export class ContentRegenerationService {
     const result = await agentaOpenAIService.generateText({
       promptSlug: 'regenerate_podcast_transcript_prompt',
       variables: {
-        originalTranscript: readableTranscript,
+        readableTranscript,
         promptGuidance: params.promptGuidance,
         articleTitle: params.articleTitle,
         articleContent: params.articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
     });
@@ -150,7 +150,7 @@ export class ContentRegenerationService {
         promptGuidance: params.promptGuidance,
         articleTitle: params.articleTitle,
         articleContent: params.articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
     });

@@ -9,11 +9,11 @@ import Link from 'next/link';
 type ApprovalStatus = 'all' | 'approved' | 'pending';
 
 interface ArticleListProps {
-  orgSlug?: string;
+  orgSlug: string;
 }
 
 export function ArticleList({ orgSlug }: ArticleListProps) {
-  const { data: articles = [], isLoading, error } = useArticles();
+  const { data: articles = [], isLoading, error } = useArticles(orgSlug);
   const basePath = orgSlug ? `/org/${orgSlug}` : '';
   const [approvalFilter, setApprovalFilter] = useState<ApprovalStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');

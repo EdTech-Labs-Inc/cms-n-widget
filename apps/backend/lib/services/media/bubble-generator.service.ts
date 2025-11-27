@@ -1,7 +1,6 @@
 import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { prisma } from '../../config/database';
-import { VideoBubblesSchema } from '@/types/schemas';
-import { VideoBubble } from '@/types/media.types';
+import { VideoBubblesSchema, VideoBubble } from '@repo/types';
 import { logger } from '@repo/logging';
 
 /**
@@ -65,10 +64,10 @@ export class BubbleGeneratorService {
           promptSlug: 'regenerate_single_bubble_prompt',
           variables: {
             appearsAt: String(appearsAt),
-            script,
+            videoScript: script,
             articleContent,
             durationSeconds: String(durationSeconds),
-            language: languageName,
+            languageName,
           },
           schema: SingleBubbleSchema,
           schemaName: 'SingleBubble',
@@ -122,12 +121,10 @@ export class BubbleGeneratorService {
     const result = await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_video_bubbles_prompt',
       variables: {
-        script,
         articleContent,
-        transcript,
-        durationSeconds: String(durationSeconds),
-        language: languageName,
-        wordTimings: JSON.stringify(wordTimings),
+        durationMilliseconds: String(durationSeconds * 1000),
+        languageName,
+        videoScript: JSON.stringify(wordTimings),
       },
       schema: VideoBubblesSchema,
       schemaName: 'VideoBubbles',

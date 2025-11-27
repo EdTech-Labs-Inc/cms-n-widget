@@ -1,0 +1,57 @@
+/**
+ * HeyGen Character Configuration
+ *
+ * Defines available characters (avatars or talking photos) for video generation.
+ * Each character has a specific type, character ID, and voice ID from HeyGen.
+ *
+ * YOU NEED TO FILL IN:
+ * - type: 'talking_photo' or 'avatar'
+ * - characterId: talking_photo_id or avatar_id from HeyGen
+ * - voiceId: voice_id from HeyGen
+ * - photoUrl: URL to character thumbnail image
+ */
+
+export interface HeyGenCharacter {
+  id: string; // Unique identifier (e.g., 'male-presenter', 'female-presenter')
+  name: string; // Display name shown to users
+  type: 'talking_photo' | 'avatar'; // HeyGen character type
+  characterId: string; // talking_photo_id or avatar_id from HeyGen
+  voiceId: string; // voice_id from HeyGen
+  photoUrl: string; // URL to character thumbnail (you'll fill these in)
+  description?: string; // Optional description
+}
+
+export const HEYGEN_CHARACTERS: HeyGenCharacter[] = [
+  {
+    id: 'male-presenter',
+    name: 'Kumar',
+    type: 'avatar', // TODO: YOU FILL: 'talking_photo' or 'avatar'
+    characterId: 'e69958ae5fa94733ba44a81ccf677ec4', // TODO: YOU FILL: talking_photo_id or avatar_id from HeyGen
+    voiceId: '4ecb08e33f7f4259bd544aaeae2fd946', // TODO: YOU FILL: voice_id from HeyGen
+    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/kumar_pmhhyp.webp', // TODO: YOU FILL: URL to thumbnail image (e.g., from S3 or /public folder)
+    description: 'Professional male voice and character',
+  },
+  {
+    id: 'female-presenter',
+    name: 'Isha',
+    type: 'avatar', // TODO: YOU FILL: 'talking_photo' or 'avatar'
+    characterId: 'e97bd13f43bd460c8fb5fa27eeb294f9', // TODO: YOU FILL: talking_photo_id or avatar_id from HeyGen
+    voiceId: 'GTSr2w7ea6G4HPatP97G', // TODO: YOU FILL: voice_id from HeyGen
+    photoUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761123680/isha_ltch9d.webp', // TODO: YOU FILL: URL to thumbnail image (e.g., from S3 or /public folder)
+    description: 'Professional female voice and character',
+  },
+];
+
+/**
+ * Get a character by ID
+ */
+export function getCharacterById(id: string): HeyGenCharacter | undefined {
+  return HEYGEN_CHARACTERS.find((char) => char.id === id);
+}
+
+/**
+ * Get the default character (first in the list)
+ */
+export function getDefaultCharacter(): HeyGenCharacter {
+  return HEYGEN_CHARACTERS[0];
+}

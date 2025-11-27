@@ -93,7 +93,7 @@ function QuizPlayer({ questions, onClose, showCloseButton = true, disableOverlay
       case 'MULTIPLE_CHOICE':
         return (
           <div className="quiz-options">
-            {currentQuestion.options?.map((option, index) => {
+            {currentQuestion.options?.map((option: string, index: number) => {
               const isSelected = currentAnswer?.selectedAnswer === index
               const isCorrect = index === currentQuestion.correctAnswer
               const showCorrectAnswer = currentAnswer && !currentAnswer.isCorrect && isCorrect

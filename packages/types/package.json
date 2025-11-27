@@ -10,10 +10,14 @@
     "./organization": "./src/organization.types.ts",
     "./player": "./src/player.types.ts",
     "./api": "./src/api.types.ts",
-    "./common": "./src/common.types.ts"
+    "./common": "./src/common.types.ts",
+    "./schemas": "./src/schemas.ts"
   },
   "scripts": {
     "lint": "echo 'No linting configured for types package'"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

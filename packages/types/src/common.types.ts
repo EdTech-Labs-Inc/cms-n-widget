@@ -207,5 +207,5 @@ export function isArray<T = any>(value: any): value is T[] {
 }
 
 export function isPromise<T = any>(value: any): value is Promise<T> {
-  return value instanceof Promise || (isObject(value) && typeof value.then === 'function');
+  return value instanceof Promise || (isObject(value) && typeof (value as any).then === 'function');
 }

@@ -4,51 +4,51 @@ import type { CreateArticleRequest } from '../../api.types';
 
 // Query Keys
 export const articleQueryKeys = {
-  articles: ['articles'] as const,
-  article: (id: string) => ['articles', id] as const,
+  articles: (orgSlug: string) => ['articles', orgSlug] as const,
+  article: (orgSlug: string, id: string) => ['articles', orgSlug, id] as const,
 };
 
 // Article Hooks
 
-export function useArticles() {
+export function useArticles(orgSlug: string) {
   return useQuery({
-    queryKey: articleQueryKeys.articles,
-    queryFn: articlesApi.getAll,
+    queryKey: articleQueryKeys.articles(orgSlug),
+    queryFn: () => articlesApi.getAll(orgSlug),
+    enabled: !!orgSlug,
   });
 }
 
-export function useArticle(id: string, orgSlug?: string) {
+export function useArticle(orgSlug: string, id: string) {
   return useQuery({
-    queryKey: articleQueryKeys.article(id),
-    queryFn: () => orgSlug ? articlesApi.getByIdInOrg(id, orgSlug) : articlesApi.getById(id),
-    enabled: !!id,
+    queryKey: articleQueryKeys.article(orgSlug, id),
+    queryFn: () => articlesApi.getById(orgSlug, id),
+    enabled: !!orgSlug && !!id,
   });
 }
 
-export function useCreateArticle() {
+export function useCreateArticle(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateArticleRequest) => articlesApi.create(data),
+    mutationFn: (data: CreateArticleRequest) => articlesApi.create(orgSlug, data),
     onSuccess: () => {
       // Invalidate articles list to refetch
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles(orgSlug) });
     },
   });
 }
 
 // Article approval hooks
-export function useApproveArticle() {
+export function useApproveArticle(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ articleId, orgSlug }: { articleId: string; orgSlug?: string }) =>
-      orgSlug ? articlesApi.approveArticleInOrg(articleId, orgSlug) : articlesApi.approveArticle(articleId),
-    onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
-      const previousArticle = queryClient.getQueryData(articleQueryKeys.article(variables.articleId));
+    mutationFn: (articleId: string) => articlesApi.approveArticle(orgSlug, articleId),
+    onMutate: async (articleId) => {
+      await queryClient.cancelQueries({ queryKey: articleQueryKeys.article(orgSlug, articleId) });
+      const previousArticle = queryClient.getQueryData(articleQueryKeys.article(orgSlug, articleId));
 
-      queryClient.setQueryData(articleQueryKeys.article(variables.articleId), (old: any) => {
+      queryClient.setQueryData(articleQueryKeys.article(orgSlug, articleId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -59,29 +59,28 @@ export function useApproveArticle() {
 
       return { previousArticle };
     },
-    onError: (err, variables, context: any) => {
+    onError: (err, articleId, context: any) => {
       if (context?.previousArticle) {
-        queryClient.setQueryData(articleQueryKeys.article(variables.articleId), context.previousArticle);
+        queryClient.setQueryData(articleQueryKeys.article(orgSlug, articleId), context.previousArticle);
       }
     },
-    onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles });
+    onSettled: (_, __, articleId) => {
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(orgSlug, articleId) });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles(orgSlug) });
     },
   });
 }
 
-export function useUnapproveArticle() {
+export function useUnapproveArticle(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ articleId, orgSlug }: { articleId: string; orgSlug?: string }) =>
-      orgSlug ? articlesApi.unapproveArticleInOrg(articleId, orgSlug) : articlesApi.unapproveArticle(articleId),
-    onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
-      const previousArticle = queryClient.getQueryData(articleQueryKeys.article(variables.articleId));
+    mutationFn: (articleId: string) => articlesApi.unapproveArticle(orgSlug, articleId),
+    onMutate: async (articleId) => {
+      await queryClient.cancelQueries({ queryKey: articleQueryKeys.article(orgSlug, articleId) });
+      const previousArticle = queryClient.getQueryData(articleQueryKeys.article(orgSlug, articleId));
 
-      queryClient.setQueryData(articleQueryKeys.article(variables.articleId), (old: any) => {
+      queryClient.setQueryData(articleQueryKeys.article(orgSlug, articleId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -93,39 +92,39 @@ export function useUnapproveArticle() {
 
       return { previousArticle };
     },
-    onError: (err, variables, context: any) => {
+    onError: (err, articleId, context: any) => {
       if (context?.previousArticle) {
-        queryClient.setQueryData(articleQueryKeys.article(variables.articleId), context.previousArticle);
+        queryClient.setQueryData(articleQueryKeys.article(orgSlug, articleId), context.previousArticle);
       }
     },
-    onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles });
+    onSettled: (_, __, articleId) => {
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(orgSlug, articleId) });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.articles(orgSlug) });
     },
   });
 }
 
 // Article Thumbnails
-export function useRegenerateArticleThumbnail() {
+export function useRegenerateArticleThumbnail(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ articleId, prompt, orgSlug }: { articleId: string; prompt: string; orgSlug?: string }) =>
-      orgSlug ? articlesApi.regenerateThumbnailInOrg(articleId, orgSlug, prompt) : articlesApi.regenerateThumbnail(articleId, prompt),
+    mutationFn: ({ articleId, prompt }: { articleId: string; prompt: string }) =>
+      articlesApi.regenerateThumbnail(orgSlug, articleId, prompt),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(orgSlug, variables.articleId) });
     },
   });
 }
 
-export function useUploadArticleThumbnail() {
+export function useUploadArticleThumbnail(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ articleId, file, orgSlug }: { articleId: string; file: File; orgSlug?: string }) =>
-      orgSlug ? articlesApi.uploadThumbnailInOrg(articleId, orgSlug, file) : articlesApi.uploadThumbnail(articleId, file),
+    mutationFn: ({ articleId, file }: { articleId: string; file: File }) =>
+      articlesApi.uploadThumbnail(orgSlug, articleId, file),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(variables.articleId) });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article(orgSlug, variables.articleId) });
     },
   });
 }

@@ -268,7 +268,7 @@ export async function POST(
         title,
         content,
         category: mediaConfig.category as any || 'EVERGREEN',
-        userId: user.id,
+        profileId: user.id,
         organizationId: org.id, // Always set organizationId
       },
     });

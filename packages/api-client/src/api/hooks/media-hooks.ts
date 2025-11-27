@@ -2,42 +2,42 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { submissionsApi } from '../client';
 
 // Query Keys
-const submissionQueryKey = (id: string) => ['submissions', id] as const;
+const submissionQueryKey = (orgSlug: string, id: string) => ['submissions', orgSlug, id] as const;
 
 // Media Regeneration Hooks
 
-export function useRegenerateVideoMedia() {
+export function useRegenerateVideoMedia(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ submissionId, videoId, videoCustomization }: { submissionId: string; videoId: string; videoCustomization?: any }) =>
-      submissionsApi.regenerateVideoMedia(submissionId, videoId, videoCustomization),
+      submissionsApi.regenerateVideoMedia(orgSlug, submissionId, videoId, videoCustomization),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useRegeneratePodcastMedia() {
+export function useRegeneratePodcastMedia(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ submissionId, podcastId }: { submissionId: string; podcastId: string }) =>
-      submissionsApi.regeneratePodcastMedia(submissionId, podcastId),
+      submissionsApi.regeneratePodcastMedia(orgSlug, submissionId, podcastId),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useRegenerateInteractivePodcastMedia() {
+export function useRegenerateInteractivePodcastMedia(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) =>
-      submissionsApi.regenerateInteractivePodcastMedia(submissionId, ipId),
+      submissionsApi.regenerateInteractivePodcastMedia(orgSlug, submissionId, ipId),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }

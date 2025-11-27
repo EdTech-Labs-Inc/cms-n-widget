@@ -1,4 +1,4 @@
-import { openaiService } from '../external/openai.service';
+import { openaiClientService } from '../external/openai-client.service';
 import { storageService } from '../core/storage.service';
 import { logger } from '@repo/logging';
 
@@ -40,7 +40,7 @@ export class ThumbnailService {
       logger.info('Generating thumbnail', { resourceType, title });
 
       // Step 1: Generate image with GPT-Image-1 (falls back to DALL-E 3 automatically)
-      const tempImageUrl = await openaiService.generateImage({
+      const tempImageUrl = await openaiClientService.generateImage({
         title,
         customPrompt: 'for an Indian finance app',
         size: '1024x1024', // Square format works for all use cases
@@ -163,7 +163,7 @@ export class ThumbnailService {
       }
 
       // Generate image with GPT-Image-1 (falls back to DALL-E 3 automatically)
-      const tempImageUrl = await openaiService.generateImage({
+      const tempImageUrl = await openaiClientService.generateImage({
         title,
         customPrompt: enhancedPrompt,
         size: '1024x1024',

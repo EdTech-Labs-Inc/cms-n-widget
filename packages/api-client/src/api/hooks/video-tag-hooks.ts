@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { submissionsApi } from '../client';
 
 // Query Keys
-const submissionQueryKey = (id: string) => ['submissions', id] as const;
+const submissionQueryKey = (orgSlug: string, id: string) => ['submissions', orgSlug, id] as const;
 
 // Tag Management Hooks - Video
 
-export function useAddVideoTag() {
+export function useAddVideoTag(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -18,16 +18,16 @@ export function useAddVideoTag() {
       submissionId: string;
       videoId: string;
       tagId: string;
-    }) => submissionsApi.addVideoTag(submissionId, videoId, { tagId }),
+    }) => submissionsApi.addVideoTag(orgSlug, submissionId, videoId, { tagId }),
     onMutate: async (variables) => {
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
 
       // Snapshot previous value
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
       // Optimistically update to the new value
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -47,26 +47,27 @@ export function useAddVideoTag() {
     onError: (err, variables, context: any) => {
       // Rollback on error
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
       // Always refetch after error or success
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useRemoveVideoTag() {
+export function useRemoveVideoTag(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, videoId, tagId }: { submissionId: string; videoId: string; tagId: string }) => submissionsApi.removeVideoTag(submissionId, videoId, tagId),
+    mutationFn: ({ submissionId, videoId, tagId }: { submissionId: string; videoId: string; tagId: string }) =>
+      submissionsApi.removeVideoTag(orgSlug, submissionId, videoId, tagId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -85,11 +86,11 @@ export function useRemoveVideoTag() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }

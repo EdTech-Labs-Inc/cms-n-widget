@@ -67,6 +67,13 @@ export class AgentaOpenAIService {
         variableKeys: Object.keys(params.variables),
       });
 
+      // Log full interpolated prompts for debugging
+      logger.info('Agenta prompt after interpolation', {
+        promptSlug: params.promptSlug,
+        systemPrompt: interpolatedSystemPrompt,
+        userPrompt: interpolatedUserPrompt,
+      });
+
       // Execute with OpenAI using Agenta's model
       const result = await openaiClientService.generateStructured({
         prompt: interpolatedUserPrompt,
@@ -121,6 +128,13 @@ export class AgentaOpenAIService {
         promptSlug: params.promptSlug,
         model: promptConfig.model,
         variableKeys: Object.keys(params.variables),
+      });
+
+      // Log full interpolated prompts for debugging
+      logger.info('Agenta prompt after interpolation', {
+        promptSlug: params.promptSlug,
+        systemPrompt: interpolatedSystemPrompt,
+        userPrompt: interpolatedUserPrompt,
       });
 
       // Execute with OpenAI using Agenta's model

@@ -67,7 +67,6 @@ export class SubmissionService {
         const submission = await prisma.submission.create({
           data: {
             articleId: params.articleId,
-            ...(params.organizationId && { organizationId: params.organizationId }),
             status: 'PENDING',
             language: language as any, // Prisma enum
             generateAudio: params.generateAudio ?? true,

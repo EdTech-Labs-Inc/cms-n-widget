@@ -117,15 +117,15 @@ export default function OrgQuizEditPage() {
   const [editableQuestions, setEditableQuestions] = useState<QuizQuestion[]>([]);
 
   // Data fetching
-  const { data: submission, isLoading: submissionLoading } = useSubmission(submissionId);
-  const { data: allTags = [], isLoading: tagsLoading } = useTags();
+  const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
+  const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
 
   // Mutations
-  const addQuizTag = useAddQuizTag();
-  const removeQuizTag = useRemoveQuizTag();
-  const updateQuiz = useUpdateQuiz();
-  const approveQuiz = useApproveQuiz();
-  const unapproveQuiz = useUnapproveQuiz();
+  const addQuizTag = useAddQuizTag(orgSlug);
+  const removeQuizTag = useRemoveQuizTag(orgSlug);
+  const updateQuiz = useUpdateQuiz(orgSlug);
+  const approveQuiz = useApproveQuiz(orgSlug);
+  const unapproveQuiz = useUnapproveQuiz(orgSlug);
 
   // Loading state
   if (submissionLoading || tagsLoading) {

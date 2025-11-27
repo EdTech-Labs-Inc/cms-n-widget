@@ -4,7 +4,7 @@ import { storageService } from '../core/storage.service';
 import { aiTaggingService } from '../ai-tagging.service';
 import { thumbnailService } from './thumbnail.service';
 import { prisma } from '../../config/database';
-import { PodcastTranscript, PodcastTranscriptSchema } from '@/types/schemas';
+import { PodcastTranscript, PodcastTranscriptSchema } from '@repo/types';
 import ffmpeg from 'fluent-ffmpeg';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -147,7 +147,7 @@ export class PodcastService {
       variables: {
         articleTitle,
         articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
       maxTokens: 50,
@@ -171,9 +171,9 @@ export class PodcastService {
     const result = await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_podcast_transcript_prompt',
       variables: {
-        title,
-        content,
-        language: languageName,
+        articleTitle: title,
+        articleContent: content,
+        languageName,
       },
       schema: PodcastTranscriptSchema,
       schemaName: 'PodcastTranscript',

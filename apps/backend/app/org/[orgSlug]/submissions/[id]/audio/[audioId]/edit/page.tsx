@@ -110,14 +110,14 @@ export default function OrgAudioEditPage() {
   const toast = useToast();
 
   // Data fetching
-  const { data: submission, isLoading: submissionLoading } = useSubmission(submissionId);
-  const { data: allTags = [], isLoading: tagsLoading } = useTags();
+  const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
+  const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
 
   // Mutations
-  const addAudioTag = useAddAudioTag();
-  const removeAudioTag = useRemoveAudioTag();
-  const approveAudio = useApproveAudio();
-  const unapproveAudio = useUnapproveAudio();
+  const addAudioTag = useAddAudioTag(orgSlug);
+  const removeAudioTag = useRemoveAudioTag(orgSlug);
+  const approveAudio = useApproveAudio(orgSlug);
+  const unapproveAudio = useUnapproveAudio(orgSlug);
 
   // Loading state
   if (submissionLoading || tagsLoading) {

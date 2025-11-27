@@ -119,19 +119,19 @@ export default function OrgPodcastEditPage() {
   const toast = useToast();
 
   // Data fetching
-  const { data: submission, isLoading: submissionLoading } = useSubmission(submissionId);
-  const { data: allTags = [], isLoading: tagsLoading } = useTags();
+  const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
+  const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
 
   // Mutations
-  const addPodcastTag = useAddPodcastTag();
-  const removePodcastTag = useRemovePodcastTag();
-  const updatePodcastScript = useUpdatePodcastScript();
-  const regeneratePodcastScript = useRegeneratePodcastScript();
-  const regeneratePodcastMedia = useRegeneratePodcastMedia();
-  const approvePodcast = useApprovePodcast();
-  const unapprovePodcast = useUnapprovePodcast();
-  const regeneratePodcastThumbnail = useRegeneratePodcastThumbnail();
-  const uploadPodcastThumbnail = useUploadPodcastThumbnail();
+  const addPodcastTag = useAddPodcastTag(orgSlug);
+  const removePodcastTag = useRemovePodcastTag(orgSlug);
+  const updatePodcastScript = useUpdatePodcastScript(orgSlug);
+  const regeneratePodcastScript = useRegeneratePodcastScript(orgSlug);
+  const regeneratePodcastMedia = useRegeneratePodcastMedia(orgSlug);
+  const approvePodcast = useApprovePodcast(orgSlug);
+  const unapprovePodcast = useUnapprovePodcast(orgSlug);
+  const regeneratePodcastThumbnail = useRegeneratePodcastThumbnail(orgSlug);
+  const uploadPodcastThumbnail = useUploadPodcastThumbnail(orgSlug);
 
   // Loading state
   if (submissionLoading || tagsLoading) {

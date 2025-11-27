@@ -68,6 +68,9 @@ export class AgentaClient {
    * @returns The interpolated string
    */
   interpolate(template: string, variables: Record<string, string>): string {
+    if (!template) {
+      return '';
+    }
     let result = template;
     for (const [key, value] of Object.entries(variables)) {
       // Replace all occurrences of {{key}} with value
@@ -124,7 +127,17 @@ export class AgentaClient {
           throw new Error(`Agenta API error (${response.status}): ${errorText}`);
         }
 
-        return await response.json() as AgentaFetchResponse;
+        const data = await response.json();
+
+        // Validate response structure
+        if (!data?.params?.prompt) {
+          console.error('[Agenta] Invalid response structure for', slug, ':', JSON.stringify(data, null, 2));
+          throw new Error(
+            `Agenta returned invalid response structure - missing params.prompt. Response keys: ${Object.keys(data || {}).join(', ')}`
+          );
+        }
+
+        return data as AgentaFetchResponse;
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
 
@@ -146,13 +159,44 @@ export class AgentaClient {
    * Parse the Agenta API response into a usable format
    */
   private parseResponse(response: AgentaFetchResponse): AgentaPromptConfig {
-    const { prompt } = response.params;
+    const { params } = response;
+
+    if (!params) {
+      throw new Error('Agenta response missing params object');
+    }
+
+    const { prompt } = params;
+
+    if (!prompt) {
+      throw new Error('Agenta response missing prompt configuration');
+    }
+
+    // Try dedicated fields first, fall back to messages array
+    let systemPrompt = prompt.system_prompt;
+    let userPrompt = prompt.user_prompt;
+
+    if ((systemPrompt === undefined || userPrompt === undefined) && prompt.messages?.length > 0) {
+      for (const msg of prompt.messages) {
+        if (msg.role === 'system' && systemPrompt === undefined) {
+          systemPrompt = msg.content;
+        } else if (msg.role === 'user' && userPrompt === undefined) {
+          userPrompt = msg.content;
+        }
+      }
+    }
+
+    if (!userPrompt) {
+      throw new Error(
+        `Agenta prompt missing user_prompt. ` +
+        `Available fields: user_prompt=${!!prompt.user_prompt}, system_prompt=${!!prompt.system_prompt}, messages=${prompt.messages?.length ?? 0}`
+      );
+    }
 
     return {
-      systemPrompt: prompt.system_prompt,
-      userPrompt: prompt.user_prompt,
-      inputKeys: prompt.input_keys,
-      model: prompt.llm_config.model,
+      systemPrompt: systemPrompt ?? '',
+      userPrompt,
+      inputKeys: prompt.input_keys ?? [],
+      model: prompt.llm_config?.model ?? 'gpt-4o',
     };
   }
 

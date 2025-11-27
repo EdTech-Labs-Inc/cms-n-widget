@@ -15,8 +15,8 @@ export default function OrgLibraryPage() {
   const [activeFilter, setActiveFilter] = useState<MediaType>('all');
   const [approvalFilter, setApprovalFilter] = useState<ApprovalStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const { data, isLoading } = useSubmissions(1, 100, true);
-  const { data: articles = [], isLoading: articlesLoading } = useArticles();
+  const { data, isLoading } = useSubmissions(orgSlug, 1, 100, true);
+  const { data: articles = [], isLoading: articlesLoading } = useArticles(orgSlug);
 
   // Extract all media items from submissions
   const allVideos =

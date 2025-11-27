@@ -2,20 +2,21 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { submissionsApi } from '../client';
 
 // Query Keys
-const submissionQueryKey = (id: string) => ['submissions', id] as const;
+const submissionQueryKey = (orgSlug: string, id: string) => ['submissions', orgSlug, id] as const;
 
 // Approval Hooks
 
-export function useApproveAudio() {
+export function useApproveAudio(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, audioId }: { submissionId: string; audioId: string }) => submissionsApi.approveAudio(submissionId, audioId),
+    mutationFn: ({ submissionId, audioId }: { submissionId: string; audioId: string }) =>
+      submissionsApi.approveAudio(orgSlug, submissionId, audioId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -27,25 +28,26 @@ export function useApproveAudio() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useUnapproveAudio() {
+export function useUnapproveAudio(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, audioId }: { submissionId: string; audioId: string }) => submissionsApi.unapproveAudio(submissionId, audioId),
+    mutationFn: ({ submissionId, audioId }: { submissionId: string; audioId: string }) =>
+      submissionsApi.unapproveAudio(orgSlug, submissionId, audioId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -57,25 +59,26 @@ export function useUnapproveAudio() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useApprovePodcast() {
+export function useApprovePodcast(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, podcastId }: { submissionId: string; podcastId: string }) => submissionsApi.approvePodcast(submissionId, podcastId),
+    mutationFn: ({ submissionId, podcastId }: { submissionId: string; podcastId: string }) =>
+      submissionsApi.approvePodcast(orgSlug, submissionId, podcastId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -87,25 +90,26 @@ export function useApprovePodcast() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useUnapprovePodcast() {
+export function useUnapprovePodcast(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, podcastId }: { submissionId: string; podcastId: string }) => submissionsApi.unapprovePodcast(submissionId, podcastId),
+    mutationFn: ({ submissionId, podcastId }: { submissionId: string; podcastId: string }) =>
+      submissionsApi.unapprovePodcast(orgSlug, submissionId, podcastId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -117,25 +121,26 @@ export function useUnapprovePodcast() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useApproveVideo() {
+export function useApproveVideo(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, videoId }: { submissionId: string; videoId: string }) => submissionsApi.approveVideo(submissionId, videoId),
+    mutationFn: ({ submissionId, videoId }: { submissionId: string; videoId: string }) =>
+      submissionsApi.approveVideo(orgSlug, submissionId, videoId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -147,25 +152,26 @@ export function useApproveVideo() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useUnapproveVideo() {
+export function useUnapproveVideo(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, videoId }: { submissionId: string; videoId: string }) => submissionsApi.unapproveVideo(submissionId, videoId),
+    mutationFn: ({ submissionId, videoId }: { submissionId: string; videoId: string }) =>
+      submissionsApi.unapproveVideo(orgSlug, submissionId, videoId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -177,25 +183,26 @@ export function useUnapproveVideo() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useApproveQuiz() {
+export function useApproveQuiz(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, quizId }: { submissionId: string; quizId: string }) => submissionsApi.approveQuiz(submissionId, quizId),
+    mutationFn: ({ submissionId, quizId }: { submissionId: string; quizId: string }) =>
+      submissionsApi.approveQuiz(orgSlug, submissionId, quizId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -207,25 +214,26 @@ export function useApproveQuiz() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useUnapproveQuiz() {
+export function useUnapproveQuiz(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, quizId }: { submissionId: string; quizId: string }) => submissionsApi.unapproveQuiz(submissionId, quizId),
+    mutationFn: ({ submissionId, quizId }: { submissionId: string; quizId: string }) =>
+      submissionsApi.unapproveQuiz(orgSlug, submissionId, quizId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -237,25 +245,26 @@ export function useUnapproveQuiz() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useApproveInteractivePodcast() {
+export function useApproveInteractivePodcast(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) => submissionsApi.approveInteractivePodcast(submissionId, ipId),
+    mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) =>
+      submissionsApi.approveInteractivePodcast(orgSlug, submissionId, ipId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -269,25 +278,26 @@ export function useApproveInteractivePodcast() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }
 
-export function useUnapproveInteractivePodcast() {
+export function useUnapproveInteractivePodcast(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) => submissionsApi.unapproveInteractivePodcast(submissionId, ipId),
+    mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) =>
+      submissionsApi.unapproveInteractivePodcast(orgSlug, submissionId, ipId),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: submissionQueryKey(variables.submissionId) });
-      const previousSubmission = queryClient.getQueryData(submissionQueryKey(variables.submissionId));
+      await queryClient.cancelQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+      const previousSubmission = queryClient.getQueryData(submissionQueryKey(orgSlug, variables.submissionId));
 
-      queryClient.setQueryData(submissionQueryKey(variables.submissionId), (old: any) => {
+      queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -301,11 +311,11 @@ export function useUnapproveInteractivePodcast() {
     },
     onError: (err, variables, context: any) => {
       if (context?.previousSubmission) {
-        queryClient.setQueryData(submissionQueryKey(variables.submissionId), context.previousSubmission);
+        queryClient.setQueryData(submissionQueryKey(orgSlug, variables.submissionId), context.previousSubmission);
       }
     },
     onSettled: (_, __, variables) => {
-      queryClient.invalidateQueries({ queryKey: submissionQueryKey(variables.submissionId) });
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },
   });
 }

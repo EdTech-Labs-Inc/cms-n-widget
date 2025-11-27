@@ -45,7 +45,7 @@ export default function OrgSubmissionDetailPage() {
   const orgSlug = params.orgSlug as string;
   const submissionId = params.id as string;
 
-  const { data: submission, isLoading: submissionLoading, error: submissionError } = useSubmission(submissionId);
+  const { data: submission, isLoading: submissionLoading, error: submissionError } = useSubmission(orgSlug, submissionId);
 
   // Loading state
   if (submissionLoading) {

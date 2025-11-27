@@ -122,19 +122,19 @@ export default function OrgInteractivePodcastEditPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   // Data fetching
-  const { data: submission, isLoading: submissionLoading } = useSubmission(submissionId);
-  const { data: allTags = [], isLoading: tagsLoading } = useTags();
+  const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
+  const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
 
   // Mutations
-  const addInteractivePodcastTag = useAddInteractivePodcastTag();
-  const removeInteractivePodcastTag = useRemoveInteractivePodcastTag();
-  const updateInteractivePodcastScript = useUpdateInteractivePodcastScript();
-  const regenerateInteractivePodcastScript = useRegenerateInteractivePodcastScript();
-  const regenerateInteractivePodcastMedia = useRegenerateInteractivePodcastMedia();
-  const approveInteractivePodcast = useApproveInteractivePodcast();
-  const unapproveInteractivePodcast = useUnapproveInteractivePodcast();
-  const regenerateInteractivePodcastThumbnail = useRegenerateInteractivePodcastThumbnail();
-  const uploadInteractivePodcastThumbnail = useUploadInteractivePodcastThumbnail();
+  const addInteractivePodcastTag = useAddInteractivePodcastTag(orgSlug);
+  const removeInteractivePodcastTag = useRemoveInteractivePodcastTag(orgSlug);
+  const updateInteractivePodcastScript = useUpdateInteractivePodcastScript(orgSlug);
+  const regenerateInteractivePodcastScript = useRegenerateInteractivePodcastScript(orgSlug);
+  const regenerateInteractivePodcastMedia = useRegenerateInteractivePodcastMedia(orgSlug);
+  const approveInteractivePodcast = useApproveInteractivePodcast(orgSlug);
+  const unapproveInteractivePodcast = useUnapproveInteractivePodcast(orgSlug);
+  const regenerateInteractivePodcastThumbnail = useRegenerateInteractivePodcastThumbnail(orgSlug);
+  const uploadInteractivePodcastThumbnail = useUploadInteractivePodcastThumbnail(orgSlug);
 
   // Loading state
   if (submissionLoading || tagsLoading) {

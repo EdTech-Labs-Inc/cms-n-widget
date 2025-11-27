@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/config/database";
-import { openaiService } from "./external/openai.service";
+import { openaiClientService } from "./external/openai-client.service";
 import { tagService } from "./tag.service";
 import { z } from "zod";
 import { logger } from '@repo/logging';
@@ -70,7 +70,7 @@ ${tagList}
 Select the tag IDs that are most relevant to this content.`;
 
     try {
-      const result = await openaiService.generateStructured({
+      const result = await openaiClientService.generateStructured({
         prompt,
         schema: TagSelectionSchema,
         schemaName: "TagSelection",

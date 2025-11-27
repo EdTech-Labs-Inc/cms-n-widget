@@ -8,7 +8,7 @@ import { Clock, CheckCircle2, Loader2, Plus, FolderOpen } from 'lucide-react';
 export default function OrgDashboardPage() {
   const params = useParams();
   const orgSlug = params.orgSlug as string;
-  const { data, isLoading } = useSubmissions(1, 8, true);
+  const { data, isLoading } = useSubmissions(orgSlug, 1, 8, true);
 
   const recentProjects = data?.submissions?.slice(0, 6) || [];
   const processingProjects = data?.submissions?.filter(

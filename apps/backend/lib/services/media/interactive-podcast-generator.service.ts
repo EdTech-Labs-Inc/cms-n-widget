@@ -180,7 +180,7 @@ export class InteractivePodcastGeneratorService {
       variables: {
         articleTitle,
         articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
       maxTokens: 50,
@@ -210,7 +210,7 @@ export class InteractivePodcastGeneratorService {
       variables: {
         articleTitle,
         articleContent,
-        language: languageName,
+        languageName,
       },
       temperature: 0.7,
       maxTokens: 1200,

@@ -45,9 +45,9 @@ export class WordMatchingService {
     const result = await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_interactive_words_prompt',
       variables: {
-        script,
+        videoScript: script,
         articleContent,
-        language: languageName,
+        languageName,
       },
       schema: InteractiveWordsResponseSchema,
       schemaName: 'InteractiveWords',

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { logger } from '@repo/logging';
 import type {
   Article,
   Submission,
@@ -18,32 +17,24 @@ import type {
   InteractivePodcastOutputTag,
 } from '../api.types';
 
-// const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-
 export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 300000, // 30 seconds
+  timeout: 300000, // 5 minutes
 });
 
 // Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    logger.info('API request initiated', {
-      method: config.method?.toUpperCase(),
-      url: config.url,
-      baseURL: config.baseURL,
-      headers: config.headers,
-    });
-    // Add auth token here if needed in the future
+    // Browser-safe logging
+    if (typeof window === 'undefined') {
+      console.log('[API] Request:', config.method?.toUpperCase(), config.url);
+    }
     return config;
   },
   (error) => {
-    logger.error('API request error', {
-      error: error.message,
-      stack: error.stack,
-    });
+    console.error('[API] Request error:', error.message);
     return Promise.reject(error);
   },
 );
@@ -51,91 +42,46 @@ apiClient.interceptors.request.use(
 // Response interceptor
 apiClient.interceptors.response.use(
   (response) => {
-    logger.info('API response received', {
-      status: response.status,
-      statusText: response.statusText,
-      url: response.config.url,
-      dataPreview: typeof response.data === 'object' ? JSON.stringify(response.data).substring(0, 200) : String(response.data).substring(0, 200),
-    });
+    // Browser-safe logging (minimal in browser)
+    if (typeof window === 'undefined') {
+      console.log('[API] Response:', response.status, response.config.url);
+    }
     return response;
   },
   (error) => {
-    logger.error('API response error', {
-      error: error.message,
-      stack: error.stack,
-    });
-    // Handle errors globally
+    console.error('[API] Response error:', error.message);
     if (error.response) {
-      // Server responded with error status
-      logger.error('Server error response', {
-        status: error.response.status,
-        statusText: error.response.statusText,
-        data: error.response.data,
-        headers: error.response.headers,
-      });
-    } else if (error.request) {
-      // Request made but no response
-      logger.error('No response received', {
-        message: error.message,
-        request: error.request,
-      });
-    } else {
-      // Something else happened
-      logger.error('Error setting up request', {
-        message: error.message,
-      });
+      console.error('[API] Server error:', error.response.status, error.response.statusText);
     }
     return Promise.reject(error);
   },
 );
 
-// Articles API
+// Articles API - All methods require orgSlug for org-scoped routes
 export const articlesApi = {
-  getAll: async (): Promise<Article[]> => {
-    const { data } = await apiClient.get<ApiResponse<Article[]>>('/api/articles');
+  getAll: async (orgSlug: string): Promise<Article[]> => {
+    const { data } = await apiClient.get<ApiResponse<Article[]>>(`/api/org/${orgSlug}/articles`);
     return data.data || [];
   },
 
-  getById: async (id: string): Promise<Article> => {
-    const { data } = await apiClient.get<ApiResponse<Article>>(`/api/articles/${id}`);
-    if (!data.data) throw new Error('Article not found');
-    return data.data;
-  },
-
-  getByIdInOrg: async (id: string, orgSlug: string): Promise<Article> => {
+  getById: async (orgSlug: string, id: string): Promise<Article> => {
     const { data } = await apiClient.get<ApiResponse<Article>>(`/api/org/${orgSlug}/articles/${id}`);
     if (!data.data) throw new Error('Article not found');
     return data.data;
   },
 
-  create: async (payload: CreateArticleRequest): Promise<Article> => {
-    const { data } = await apiClient.post<ApiResponse<Article>>('/api/articles', payload);
+  create: async (orgSlug: string, payload: CreateArticleRequest): Promise<Article> => {
+    const { data } = await apiClient.post<ApiResponse<Article>>(`/api/org/${orgSlug}/articles`, payload);
     if (!data.data) throw new Error('Failed to create article');
     return data.data;
   },
 
-  regenerateThumbnail: async (id: string, prompt: string) => {
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/articles/${id}/regenerate-thumbnail`, { prompt });
-    return data.data;
-  },
-
-  regenerateThumbnailInOrg: async (id: string, orgSlug: string, prompt: string) => {
+  regenerateThumbnail: async (orgSlug: string, id: string, prompt: string) => {
     const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/articles/${id}/regenerate-thumbnail`, { prompt });
     return data.data;
   },
 
-  uploadThumbnail: async (id: string, file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/articles/${id}/upload-thumbnail`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return data.data;
-  },
-
-  uploadThumbnailInOrg: async (id: string, orgSlug: string, file: File) => {
+  uploadThumbnail: async (orgSlug: string, id: string, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
     const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/articles/${id}/upload-thumbnail`, formData, {
@@ -146,39 +92,30 @@ export const articlesApi = {
     return data.data;
   },
 
-  approveArticle: async (articleId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/articles/${articleId}/approve`);
-    return data.data;
-  },
-
-  approveArticleInOrg: async (articleId: string, orgSlug: string) => {
+  approveArticle: async (orgSlug: string, articleId: string) => {
     const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/articles/${articleId}/approve`);
     return data.data;
   },
 
-  unapproveArticle: async (articleId: string) => {
-    const { data} = await apiClient.patch<ApiResponse<any>>(`/api/articles/${articleId}/unapprove`);
-    return data.data;
-  },
-
-  unapproveArticleInOrg: async (articleId: string, orgSlug: string) => {
+  unapproveArticle: async (orgSlug: string, articleId: string) => {
     const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/articles/${articleId}/unapprove`);
     return data.data;
   },
 };
 
-// Submissions API
+// Submissions API - All methods require orgSlug for org-scoped routes
 export const submissionsApi = {
   getAll: async (
+    orgSlug: string,
     page: number = 1,
     limit: number = 20,
-    includeOuputs = false,
+    includeOutputs = false,
   ): Promise<{
     submissions: Submission[];
     pagination: { page: number; limit: number; total: number; totalPages: number };
     stats: { totalCompleted: number; totalProcessing: number; totalFailed: number };
   }> => {
-    const { data } = await apiClient.get<any>(`/api/submissions?page=${page}&limit=${limit}&includeOutputs=${includeOuputs}`);
+    const { data } = await apiClient.get<any>(`/api/org/${orgSlug}/submissions?page=${page}&limit=${limit}&includeOutputs=${includeOutputs}`);
     return {
       submissions: data.submissions || [],
       pagination: data.pagination,
@@ -186,194 +123,194 @@ export const submissionsApi = {
     };
   },
 
-  getById: async (id: string): Promise<Submission> => {
-    const { data } = await apiClient.get<ApiResponse<Submission>>(`/api/submissions/${id}`);
+  getById: async (orgSlug: string, id: string): Promise<Submission> => {
+    const { data } = await apiClient.get<ApiResponse<Submission>>(`/api/org/${orgSlug}/submissions/${id}`);
     if (!data.data) throw new Error('Submission not found');
     return data.data;
   },
 
-  create: async (payload: CreateSubmissionRequest): Promise<Submission> => {
-    const { data } = await apiClient.post<any>('/api/submissions', payload);
+  create: async (orgSlug: string, payload: CreateSubmissionRequest): Promise<Submission> => {
+    const { data } = await apiClient.post<any>(`/api/org/${orgSlug}/submissions`, payload);
     const payloadData = data?.data;
     if (!payloadData) throw new Error('Failed to create submission');
     // Server currently returns an array of submissions; pick the first when a single language is used
     return Array.isArray(payloadData) ? payloadData[0] : payloadData;
   },
 
-  updateQuiz: async (submissionId: string, quizId: string, questions: any[]) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/quiz/${quizId}`, { questions });
+  updateQuiz: async (orgSlug: string, submissionId: string, quizId: string, questions: any[]) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/quiz/${quizId}`, { questions });
     return data.data;
   },
 
   // Tag Management - Audio
-  addAudioTag: async (submissionId: string, audioId: string, payload: AddTagRequest): Promise<AudioOutputTag> => {
-    const { data } = await apiClient.post<ApiResponse<AudioOutputTag>>(`/api/submissions/${submissionId}/audio/${audioId}/tags`, payload);
+  addAudioTag: async (orgSlug: string, submissionId: string, audioId: string, payload: AddTagRequest): Promise<AudioOutputTag> => {
+    const { data } = await apiClient.post<ApiResponse<AudioOutputTag>>(`/api/org/${orgSlug}/submissions/${submissionId}/audio/${audioId}/tags`, payload);
     if (!data.data) throw new Error('Failed to add tag');
     return data.data;
   },
 
-  removeAudioTag: async (submissionId: string, audioId: string, tagId: string): Promise<void> => {
-    await apiClient.delete(`/api/submissions/${submissionId}/audio/${audioId}/tags/${tagId}`);
+  removeAudioTag: async (orgSlug: string, submissionId: string, audioId: string, tagId: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/submissions/${submissionId}/audio/${audioId}/tags/${tagId}`);
   },
 
   // Tag Management - Podcast
-  addPodcastTag: async (submissionId: string, podcastId: string, payload: AddTagRequest): Promise<PodcastOutputTag> => {
-    const { data } = await apiClient.post<ApiResponse<PodcastOutputTag>>(`/api/submissions/${submissionId}/podcast/${podcastId}/tags`, payload);
+  addPodcastTag: async (orgSlug: string, submissionId: string, podcastId: string, payload: AddTagRequest): Promise<PodcastOutputTag> => {
+    const { data } = await apiClient.post<ApiResponse<PodcastOutputTag>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/tags`, payload);
     if (!data.data) throw new Error('Failed to add tag');
     return data.data;
   },
 
-  removePodcastTag: async (submissionId: string, podcastId: string, tagId: string): Promise<void> => {
-    await apiClient.delete(`/api/submissions/${submissionId}/podcast/${podcastId}/tags/${tagId}`);
+  removePodcastTag: async (orgSlug: string, submissionId: string, podcastId: string, tagId: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/tags/${tagId}`);
   },
 
   // Tag Management - Video
-  addVideoTag: async (submissionId: string, videoId: string, payload: AddTagRequest): Promise<VideoOutputTag> => {
-    const { data } = await apiClient.post<ApiResponse<VideoOutputTag>>(`/api/submissions/${submissionId}/video/${videoId}/tags`, payload);
+  addVideoTag: async (orgSlug: string, submissionId: string, videoId: string, payload: AddTagRequest): Promise<VideoOutputTag> => {
+    const { data } = await apiClient.post<ApiResponse<VideoOutputTag>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/tags`, payload);
     if (!data.data) throw new Error('Failed to add tag');
     return data.data;
   },
 
-  removeVideoTag: async (submissionId: string, videoId: string, tagId: string): Promise<void> => {
-    await apiClient.delete(`/api/submissions/${submissionId}/video/${videoId}/tags/${tagId}`);
+  removeVideoTag: async (orgSlug: string, submissionId: string, videoId: string, tagId: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/tags/${tagId}`);
   },
 
   // Tag Management - Interactive Podcast
-  addInteractivePodcastTag: async (submissionId: string, ipId: string, payload: AddTagRequest): Promise<InteractivePodcastOutputTag> => {
-    const { data } = await apiClient.post<ApiResponse<InteractivePodcastOutputTag>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/tags`, payload);
+  addInteractivePodcastTag: async (orgSlug: string, submissionId: string, ipId: string, payload: AddTagRequest): Promise<InteractivePodcastOutputTag> => {
+    const { data } = await apiClient.post<ApiResponse<InteractivePodcastOutputTag>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/tags`, payload);
     if (!data.data) throw new Error('Failed to add tag');
     return data.data;
   },
 
-  removeInteractivePodcastTag: async (submissionId: string, ipId: string, tagId: string): Promise<void> => {
-    await apiClient.delete(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/tags/${tagId}`);
+  removeInteractivePodcastTag: async (orgSlug: string, submissionId: string, ipId: string, tagId: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/tags/${tagId}`);
   },
 
   // Tag Management - Quiz
-  addQuizTag: async (submissionId: string, quizId: string, payload: AddTagRequest): Promise<QuizOutputTag> => {
-    const { data } = await apiClient.post<ApiResponse<QuizOutputTag>>(`/api/submissions/${submissionId}/quiz/${quizId}/tags`, payload);
+  addQuizTag: async (orgSlug: string, submissionId: string, quizId: string, payload: AddTagRequest): Promise<QuizOutputTag> => {
+    const { data } = await apiClient.post<ApiResponse<QuizOutputTag>>(`/api/org/${orgSlug}/submissions/${submissionId}/quiz/${quizId}/tags`, payload);
     if (!data.data) throw new Error('Failed to add tag');
     return data.data;
   },
 
-  removeQuizTag: async (submissionId: string, quizId: string, tagId: string): Promise<void> => {
-    await apiClient.delete(`/api/submissions/${submissionId}/quiz/${quizId}/tags/${tagId}`);
+  removeQuizTag: async (orgSlug: string, submissionId: string, quizId: string, tagId: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/submissions/${submissionId}/quiz/${quizId}/tags/${tagId}`);
   },
 
   // Content Updates
-  updateVideoOutput: async (submissionId: string, videoId: string, payload: any) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/video/${videoId}`, payload);
+  updateVideoOutput: async (orgSlug: string, submissionId: string, videoId: string, payload: any) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}`, payload);
     return data.data;
   },
 
   // Approval Methods
-  approveAudio: async (submissionId: string, audioId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/audio/${audioId}/approve`);
+  approveAudio: async (orgSlug: string, submissionId: string, audioId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/audio/${audioId}/approve`);
     return data.data;
   },
 
-  approvePodcast: async (submissionId: string, podcastId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/podcast/${podcastId}/approve`);
+  approvePodcast: async (orgSlug: string, submissionId: string, podcastId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/approve`);
     return data.data;
   },
 
-  approveVideo: async (submissionId: string, videoId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/video/${videoId}/approve`);
+  approveVideo: async (orgSlug: string, submissionId: string, videoId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/approve`);
     return data.data;
   },
 
-  approveQuiz: async (submissionId: string, quizId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/quiz/${quizId}/approve`);
+  approveQuiz: async (orgSlug: string, submissionId: string, quizId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/quiz/${quizId}/approve`);
     return data.data;
   },
 
-  approveInteractivePodcast: async (submissionId: string, ipId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/approve`);
+  approveInteractivePodcast: async (orgSlug: string, submissionId: string, ipId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/approve`);
     return data.data;
   },
 
   // Unapproval Methods
-  unapproveAudio: async (submissionId: string, audioId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/audio/${audioId}/unapprove`);
+  unapproveAudio: async (orgSlug: string, submissionId: string, audioId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/audio/${audioId}/unapprove`);
     return data.data;
   },
 
-  unapprovePodcast: async (submissionId: string, podcastId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/podcast/${podcastId}/unapprove`);
+  unapprovePodcast: async (orgSlug: string, submissionId: string, podcastId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/unapprove`);
     return data.data;
   },
 
-  unapproveVideo: async (submissionId: string, videoId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/video/${videoId}/unapprove`);
+  unapproveVideo: async (orgSlug: string, submissionId: string, videoId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/unapprove`);
     return data.data;
   },
 
-  unapproveQuiz: async (submissionId: string, quizId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/quiz/${quizId}/unapprove`);
+  unapproveQuiz: async (orgSlug: string, submissionId: string, quizId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/quiz/${quizId}/unapprove`);
     return data.data;
   },
 
-  unapproveInteractivePodcast: async (submissionId: string, ipId: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/unapprove`);
+  unapproveInteractivePodcast: async (orgSlug: string, submissionId: string, ipId: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/unapprove`);
     return data.data;
   },
 
   // Script Updates
-  updatePodcastScript: async (submissionId: string, podcastId: string, transcript: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/podcast/${podcastId}/script`, { transcript });
+  updatePodcastScript: async (orgSlug: string, submissionId: string, podcastId: string, transcript: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/script`, { transcript });
     return data.data;
   },
 
-  updateInteractivePodcastScript: async (submissionId: string, ipId: string, script: string) => {
-    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/script`, { script });
+  updateInteractivePodcastScript: async (orgSlug: string, submissionId: string, ipId: string, script: string) => {
+    const { data } = await apiClient.patch<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/script`, { script });
     return data.data;
   },
 
   // AI Script Regeneration
-  regenerateVideoScript: async (submissionId: string, videoId: string, promptGuidance: string) => {
-    const { data } = await apiClient.post<ApiResponse<any>>(`/api/submissions/${submissionId}/video/${videoId}/regenerate-script`, { promptGuidance });
+  regenerateVideoScript: async (orgSlug: string, submissionId: string, videoId: string, promptGuidance: string) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/regenerate-script`, { promptGuidance });
     return data.data;
   },
 
-  regeneratePodcastScript: async (submissionId: string, podcastId: string, promptGuidance: string) => {
-    const { data } = await apiClient.post<ApiResponse<any>>(`/api/submissions/${submissionId}/podcast/${podcastId}/regenerate-script`, { promptGuidance });
+  regeneratePodcastScript: async (orgSlug: string, submissionId: string, podcastId: string, promptGuidance: string) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/regenerate-script`, { promptGuidance });
     return data.data;
   },
 
-  regenerateInteractivePodcastScript: async (submissionId: string, ipId: string, promptGuidance: string) => {
-    const { data } = await apiClient.post<ApiResponse<any>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-script`, { promptGuidance });
+  regenerateInteractivePodcastScript: async (orgSlug: string, submissionId: string, ipId: string, promptGuidance: string) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-script`, { promptGuidance });
     return data.data;
   },
 
   // Media Regeneration
-  regenerateVideoMedia: async (submissionId: string, videoId: string, videoCustomization?: any) => {
+  regenerateVideoMedia: async (orgSlug: string, submissionId: string, videoId: string, videoCustomization?: any) => {
     const { data } = await apiClient.post<ApiResponse<any>>(
-      `/api/submissions/${submissionId}/video/${videoId}/regenerate-media`,
+      `/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/regenerate-media`,
       videoCustomization ? { videoCustomization } : {}
     );
     return data.data;
   },
 
-  regeneratePodcastMedia: async (submissionId: string, podcastId: string) => {
-    const { data } = await apiClient.post<ApiResponse<any>>(`/api/submissions/${submissionId}/podcast/${podcastId}/regenerate-media`);
+  regeneratePodcastMedia: async (orgSlug: string, submissionId: string, podcastId: string) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/regenerate-media`);
     return data.data;
   },
 
-  regenerateInteractivePodcastMedia: async (submissionId: string, ipId: string) => {
-    const { data } = await apiClient.post<ApiResponse<any>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-media`);
+  regenerateInteractivePodcastMedia: async (orgSlug: string, submissionId: string, ipId: string) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-media`);
     return data.data;
   },
 
   // Thumbnail management - Video
-  regenerateVideoThumbnail: async (submissionId: string, videoId: string, prompt: string) => {
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/video/${videoId}/regenerate-thumbnail`, { prompt });
+  regenerateVideoThumbnail: async (orgSlug: string, submissionId: string, videoId: string, prompt: string) => {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/regenerate-thumbnail`, { prompt });
     return data.data;
   },
 
-  uploadVideoThumbnail: async (submissionId: string, videoId: string, file: File) => {
+  uploadVideoThumbnail: async (orgSlug: string, submissionId: string, videoId: string, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/video/${videoId}/upload-thumbnail`, formData, {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/upload-thumbnail`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -382,15 +319,15 @@ export const submissionsApi = {
   },
 
   // Thumbnail management - Podcast
-  regeneratePodcastThumbnail: async (submissionId: string, podcastId: string, prompt: string) => {
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/podcast/${podcastId}/regenerate-thumbnail`, { prompt });
+  regeneratePodcastThumbnail: async (orgSlug: string, submissionId: string, podcastId: string, prompt: string) => {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/regenerate-thumbnail`, { prompt });
     return data.data;
   },
 
-  uploadPodcastThumbnail: async (submissionId: string, podcastId: string, file: File) => {
+  uploadPodcastThumbnail: async (orgSlug: string, submissionId: string, podcastId: string, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/podcast/${podcastId}/upload-thumbnail`, formData, {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/upload-thumbnail`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -399,15 +336,15 @@ export const submissionsApi = {
   },
 
   // Thumbnail management - Interactive Podcast
-  regenerateInteractivePodcastThumbnail: async (submissionId: string, ipId: string, prompt: string) => {
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-thumbnail`, { prompt });
+  regenerateInteractivePodcastThumbnail: async (orgSlug: string, submissionId: string, ipId: string, prompt: string) => {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-thumbnail`, { prompt });
     return data.data;
   },
 
-  uploadInteractivePodcastThumbnail: async (submissionId: string, ipId: string, file: File) => {
+  uploadInteractivePodcastThumbnail: async (orgSlug: string, submissionId: string, ipId: string, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/submissions/${submissionId}/interactive-podcast/${ipId}/upload-thumbnail`, formData, {
+    const { data } = await apiClient.post<ApiResponse<{ thumbnailUrl: string }>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/upload-thumbnail`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -416,7 +353,7 @@ export const submissionsApi = {
   },
 };
 
-// HeyGen API
+// HeyGen API - No org scoping needed (global config)
 export const heygenApi = {
   getCharacters: async (): Promise<Array<{
     id: string;
@@ -440,7 +377,7 @@ export const heygenApi = {
   },
 };
 
-// Submagic API
+// Submagic API - No org scoping needed (global config)
 export const submagicApi = {
   getTemplates: async (): Promise<string[]> => {
     const { data } = await apiClient.get<ApiResponse<string[]>>('/api/submagic/templates');
@@ -448,44 +385,44 @@ export const submagicApi = {
   },
 };
 
-// Tags API
+// Tags API - All methods require orgSlug for org-scoped routes
 export const tagsApi = {
-  getAll: async (): Promise<Tag[]> => {
-    const { data } = await apiClient.get<ApiResponse<Tag[]>>('/api/tags');
+  getAll: async (orgSlug: string): Promise<Tag[]> => {
+    const { data } = await apiClient.get<ApiResponse<Tag[]>>(`/api/org/${orgSlug}/tags`);
     return data.data || [];
   },
 
-  getById: async (id: string): Promise<Tag> => {
-    const { data } = await apiClient.get<ApiResponse<Tag>>(`/api/tags/${id}`);
+  getById: async (orgSlug: string, id: string): Promise<Tag> => {
+    const { data } = await apiClient.get<ApiResponse<Tag>>(`/api/org/${orgSlug}/tags/${id}`);
     if (!data.data) throw new Error('Tag not found');
     return data.data;
   },
 
-  getCategories: async (): Promise<string[]> => {
-    const { data } = await apiClient.get<ApiResponse<string[]>>('/api/tags/categories');
+  getCategories: async (orgSlug: string): Promise<string[]> => {
+    const { data } = await apiClient.get<ApiResponse<string[]>>(`/api/org/${orgSlug}/tags/categories`);
     return data.data || [];
   },
 
-  create: async (payload: CreateTagRequest): Promise<Tag> => {
-    const { data } = await apiClient.post<ApiResponse<Tag>>('/api/tags', payload);
+  create: async (orgSlug: string, payload: CreateTagRequest): Promise<Tag> => {
+    const { data } = await apiClient.post<ApiResponse<Tag>>(`/api/org/${orgSlug}/tags`, payload);
     if (!data.data) throw new Error('Failed to create tag');
     return data.data;
   },
 
-  bulkCreate: async (tags: CreateTagRequest[]): Promise<Tag[]> => {
-    const { data } = await apiClient.post<ApiResponse<Tag[]>>('/api/tags/bulk', { tags });
+  bulkCreate: async (orgSlug: string, tags: CreateTagRequest[]): Promise<Tag[]> => {
+    const { data } = await apiClient.post<ApiResponse<Tag[]>>(`/api/org/${orgSlug}/tags/bulk`, { tags });
     if (!data.data) throw new Error('Failed to create tags');
     return data.data;
   },
 
-  update: async (id: string, payload: UpdateTagRequest): Promise<Tag> => {
-    const { data } = await apiClient.patch<ApiResponse<Tag>>(`/api/tags/${id}`, payload);
+  update: async (orgSlug: string, id: string, payload: UpdateTagRequest): Promise<Tag> => {
+    const { data } = await apiClient.patch<ApiResponse<Tag>>(`/api/org/${orgSlug}/tags/${id}`, payload);
     if (!data.data) throw new Error('Failed to update tag');
     return data.data;
   },
 
-  delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/tags/${id}`);
+  delete: async (orgSlug: string, id: string): Promise<void> => {
+    await apiClient.delete(`/api/org/${orgSlug}/tags/${id}`);
   },
 };
 

@@ -1,7 +1,7 @@
 import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { aiTaggingService } from '../ai-tagging.service';
 import { prisma } from '../../config/database';
-import { QuizQuestionsSchema } from '@/types/schemas';
+import { QuizQuestionsSchema } from '@repo/types';
 import { logger } from '@repo/logging';
 
 /**
@@ -58,7 +58,7 @@ export class QuizService {
         variables: {
           articleTitle: article.title,
           articleContent: article.content,
-          language: languageName,
+          languageName, // Agenta prompt uses {{languageName}}
         },
         schema: QuizQuestionsSchema,
         schemaName: 'QuizQuestions',
@@ -66,13 +66,14 @@ export class QuizService {
       });
 
       // 🔴 CRITICAL SCHEMA UPDATE: Create QuizQuestion rows (not JSON)
+      // Note: Zod schema uses 'question' field, Prisma uses 'prompt'
       await prisma.quizQuestion.createMany({
         data: result.questions.map((q: any, index: number) => ({
           quizOutputId: outputId,
           order: index,
-          type: q.type,
-          prompt: q.prompt,
-          stem: q.stem,
+          type: q.type === 'MCQ' ? 'MULTIPLE_CHOICE' : q.type, // Map MCQ -> MULTIPLE_CHOICE for Prisma enum
+          prompt: q.question, // Zod schema returns 'question', Prisma expects 'prompt'
+          stem: null,
           options: q.options,
           correctAnswer: q.correctAnswer,
           explanation: q.explanation,

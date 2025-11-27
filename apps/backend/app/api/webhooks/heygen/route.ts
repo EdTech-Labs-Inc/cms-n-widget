@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { config } from '@/lib/config/constants';
-import { videoService } from '@/lib/services/media/video.service';
+import { videoWebhookService as videoService } from '@/lib/services/media/video-webhook.service';
 import { queueService } from '@/lib/services/core/queue.service';
 import { submagicService } from '@/lib/services/external/submagic.service';
 import { prisma } from '@/lib/config/database';

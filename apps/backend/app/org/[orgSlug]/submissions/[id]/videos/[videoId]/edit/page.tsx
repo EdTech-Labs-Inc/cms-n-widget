@@ -135,20 +135,20 @@ export default function OrgVideoEditPage() {
   });
 
   // Data fetching
-  const { data: submission, isLoading: submissionLoading } = useSubmission(submissionId);
-  const { data: allTags = [], isLoading: tagsLoading } = useTags();
+  const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
+  const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
 
   // Mutations
-  const addVideoTag = useAddVideoTag();
-  const removeVideoTag = useRemoveVideoTag();
-  const updateVideoOutput = useUpdateVideoOutput();
-  const updateVideoScript = useUpdateVideoScript();
-  const regenerateVideoScript = useRegenerateVideoScript();
-  const regenerateVideoMedia = useRegenerateVideoMedia();
-  const approveVideo = useApproveVideo();
-  const unapproveVideo = useUnapproveVideo();
-  const regenerateVideoThumbnail = useRegenerateVideoThumbnail();
-  const uploadVideoThumbnail = useUploadVideoThumbnail();
+  const addVideoTag = useAddVideoTag(orgSlug);
+  const removeVideoTag = useRemoveVideoTag(orgSlug);
+  const updateVideoOutput = useUpdateVideoOutput(orgSlug);
+  const updateVideoScript = useUpdateVideoScript(orgSlug);
+  const regenerateVideoScript = useRegenerateVideoScript(orgSlug);
+  const regenerateVideoMedia = useRegenerateVideoMedia(orgSlug);
+  const approveVideo = useApproveVideo(orgSlug);
+  const unapproveVideo = useUnapproveVideo(orgSlug);
+  const regenerateVideoThumbnail = useRegenerateVideoThumbnail(orgSlug);
+  const uploadVideoThumbnail = useUploadVideoThumbnail(orgSlug);
 
   // Initialize video customization from video record or defaults
   useEffect(() => {

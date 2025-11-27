@@ -126,9 +126,9 @@ export class AudioService {
     return await agentaOpenAIService.generateText({
       promptSlug: 'generate_speakable_script_prompt',
       variables: {
-        title,
-        content,
-        language: languageName,
+        articleTitle: title,
+        articleContent: content,
+        languageName,
       },
       temperature: 0.3, // Lower temperature for more consistent output
     });

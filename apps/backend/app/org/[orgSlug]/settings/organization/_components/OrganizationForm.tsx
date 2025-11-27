@@ -300,7 +300,7 @@ export function OrganizationForm({ organization, members, joinRequests, invitati
             </button>
           </div>
 
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             {invitations.length > 0 ? (
               invitations.map((invite) => (
                 <div key={invite.id} className="flex items-center justify-between p-4 bg-surface-secondary rounded-xl">
@@ -340,7 +340,7 @@ export function OrganizationForm({ organization, members, joinRequests, invitati
                 </p>
               </>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Danger Zone (Owner only) */}
@@ -364,14 +364,6 @@ export function OrganizationForm({ organization, members, joinRequests, invitati
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Implementation Note */}
-      <div className="mt-8 p-4 bg-blue-accent/10 border border-blue-accent/20 rounded-xl">
-        <p className="text-sm text-text-secondary">
-          <strong className="text-text-primary">Note:</strong> This page structure is complete.
-          Full functionality will be implemented when the organization management APIs are created in Phase 8.
-        </p>
       </div>
     </div>
   );

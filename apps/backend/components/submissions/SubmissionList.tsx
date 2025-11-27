@@ -39,11 +39,11 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 interface SubmissionListProps {
-  orgSlug?: string;
+  orgSlug: string;
 }
 
 export function SubmissionList({ orgSlug }: SubmissionListProps) {
-  const { data, isLoading, error } = useSubmissions(1, 20);
+  const { data, isLoading, error } = useSubmissions(orgSlug, 1, 20);
   const basePath = orgSlug ? `/org/${orgSlug}` : '';
 
   if (isLoading) {

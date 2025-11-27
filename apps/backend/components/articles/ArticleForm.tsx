@@ -14,7 +14,7 @@ import { LanguageSelector } from './LanguageSelector';
 import { ContentTypeSelector } from './ContentTypeSelector';
 
 interface ArticleFormProps {
-  orgSlug?: string;
+  orgSlug: string;
 }
 
 export function ArticleForm({ orgSlug }: ArticleFormProps) {
@@ -48,8 +48,8 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
     magicBrollsPercentage: 40,
   });
 
-  const { data: articles, isLoading: articlesLoading } = useArticles();
-  const createSubmission = useCreateSubmission();
+  const { data: articles, isLoading: articlesLoading } = useArticles(orgSlug);
+  const createSubmission = useCreateSubmission(orgSlug);
 
   // Check for article query parameter
   useEffect(() => {
@@ -165,10 +165,10 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
           formData.append('videoCustomization', JSON.stringify(videoCustomization));
         }
 
-        console.log('📤 [ArticleForm] Making POST request to /api/articles/upload');
+        console.log('📤 [ArticleForm] Making POST request to /api/org/' + orgSlug + '/articles/upload');
 
         // Await the response to get the submission ID
-        const response = await axios.post('/api/articles/upload', formData, {
+        const response = await axios.post(`/api/org/${orgSlug}/articles/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

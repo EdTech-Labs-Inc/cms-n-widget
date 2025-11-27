@@ -4,76 +4,78 @@ import type { CreateTagRequest, UpdateTagRequest } from '../../api.types';
 
 // Query Keys
 export const tagQueryKeys = {
-  tags: ['tags'] as const,
-  tag: (id: string) => ['tags', id] as const,
-  tagCategories: ['tags', 'categories'] as const,
+  tags: (orgSlug: string) => ['tags', orgSlug] as const,
+  tag: (orgSlug: string, id: string) => ['tags', orgSlug, id] as const,
+  tagCategories: (orgSlug: string) => ['tags', orgSlug, 'categories'] as const,
 };
 
 // Tag Hooks
 
-export function useTags() {
+export function useTags(orgSlug: string) {
   return useQuery({
-    queryKey: tagQueryKeys.tags,
-    queryFn: tagsApi.getAll,
+    queryKey: tagQueryKeys.tags(orgSlug),
+    queryFn: () => tagsApi.getAll(orgSlug),
+    enabled: !!orgSlug,
   });
 }
 
-export function useTag(id: string) {
+export function useTag(orgSlug: string, id: string) {
   return useQuery({
-    queryKey: tagQueryKeys.tag(id),
-    queryFn: () => tagsApi.getById(id),
-    enabled: !!id,
+    queryKey: tagQueryKeys.tag(orgSlug, id),
+    queryFn: () => tagsApi.getById(orgSlug, id),
+    enabled: !!orgSlug && !!id,
   });
 }
 
-export function useTagCategories() {
+export function useTagCategories(orgSlug: string) {
   return useQuery({
-    queryKey: tagQueryKeys.tagCategories,
-    queryFn: tagsApi.getCategories,
+    queryKey: tagQueryKeys.tagCategories(orgSlug),
+    queryFn: () => tagsApi.getCategories(orgSlug),
+    enabled: !!orgSlug,
   });
 }
 
-export function useCreateTag() {
+export function useCreateTag(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateTagRequest) => tagsApi.create(data),
+    mutationFn: (data: CreateTagRequest) => tagsApi.create(orgSlug, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags });
+      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags(orgSlug) });
     },
   });
 }
 
-export function useBulkCreateTags() {
+export function useBulkCreateTags(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (tags: CreateTagRequest[]) => tagsApi.bulkCreate(tags),
+    mutationFn: (tags: CreateTagRequest[]) => tagsApi.bulkCreate(orgSlug, tags),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags });
+      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags(orgSlug) });
     },
   });
 }
 
-export function useUpdateTag() {
+export function useUpdateTag(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateTagRequest }) => tagsApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateTagRequest }) => tagsApi.update(orgSlug, id, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags });
-      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tag(variables.id) });
+      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags(orgSlug) });
+      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tag(orgSlug, variables.id) });
     },
   });
 }
 
-export function useDeleteTag() {
+export function useDeleteTag(orgSlug: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => tagsApi.delete(id),
+    mutationFn: (id: string) => tagsApi.delete(orgSlug, id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags });
+      queryClient.invalidateQueries({ queryKey: tagQueryKeys.tags(orgSlug) });
     },
   });
 }

@@ -31,3 +31,8 @@ export * from './api.types';
 // COMMON TYPES
 // ============================================
 export * from './common.types';
+
+// ============================================
+// ZOD SCHEMAS (for AI structured outputs)
+// ============================================
+export * from './schemas';
