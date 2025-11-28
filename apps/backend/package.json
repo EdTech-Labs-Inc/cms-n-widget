@@ -18,6 +18,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.20.0",
     "@repo/agenta": "*",
+    "@repo/api-client": "*",
     "@repo/config": "*",
     "@repo/database": "*",
     "@repo/interactive-podcast-player": "*",
