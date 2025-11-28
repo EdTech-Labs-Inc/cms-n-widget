@@ -127,17 +127,17 @@ export class AgentaClient {
           throw new Error(`Agenta API error (${response.status}): ${errorText}`);
         }
 
-        const data = await response.json();
+        const data = await response.json() as Record<string, unknown>;
 
         // Validate response structure
-        if (!data?.params?.prompt) {
+        if (!(data?.params as Record<string, unknown>)?.prompt) {
           console.error('[Agenta] Invalid response structure for', slug, ':', JSON.stringify(data, null, 2));
           throw new Error(
             `Agenta returned invalid response structure - missing params.prompt. Response keys: ${Object.keys(data || {}).join(', ')}`
           );
         }
 
-        return data as AgentaFetchResponse;
+        return data as unknown as AgentaFetchResponse;
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
 
