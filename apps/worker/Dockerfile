@@ -52,13 +52,13 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 worker
 
-# Copy built worker and dependencies
+# Copy bundled worker (single file that includes all code except external deps)
 COPY --from=installer --chown=worker:nodejs /app/apps/worker/dist ./apps/worker/dist
-COPY --from=installer --chown=worker:nodejs /app/apps/backend/lib ./apps/backend/lib
+
+# Copy node_modules for runtime dependencies (prisma, bullmq, ioredis, fluent-ffmpeg, etc.)
 COPY --from=installer --chown=worker:nodejs /app/node_modules ./node_modules
-COPY --from=installer --chown=worker:nodejs /app/packages ./packages
 
 USER worker
 
-# Run the worker (the compiled output references backend/lib via relative paths)
-CMD ["node", "apps/worker/dist/apps/worker/src/index.js"]
+# Run the bundled worker
+CMD ["node", "apps/worker/dist/index.js"]
