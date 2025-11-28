@@ -9,7 +9,7 @@ const s3Config: any = {
 
 // Only add credentials if provided (for local development)
 // In production with SST, these won't be set and IAM role will be used
-if (process.env.S3_ACCESS_KEY && process.env.S3_SECRET_KEY) {
+if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
   s3Config.credentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
