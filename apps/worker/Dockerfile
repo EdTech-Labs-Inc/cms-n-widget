@@ -52,6 +52,9 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 worker
 
+# Create logs directory for Winston file transports
+RUN mkdir -p /app/logs && chown worker:nodejs /app/logs
+
 # Copy bundled worker (single file that includes all code except external deps)
 COPY --from=installer --chown=worker:nodejs /app/apps/worker/dist ./apps/worker/dist
 
