@@ -22,7 +22,6 @@
       "paths": {
         "@/*": ["../backend/*"],
         "@/lib/*": ["../backend/lib/*"],
-        "@/types/*": ["../backend/types/*"],
         "@repo/database": ["../../packages/database"],
         "@repo/types": ["../../packages/types/src"],
         "@repo/config": ["../../packages/config/src"],

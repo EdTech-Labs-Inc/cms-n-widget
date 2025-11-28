@@ -25,7 +25,6 @@ COPY --from=builder /app/out/full/ .
 
 # Copy backend lib (needed for worker compilation, not included by turbo prune)
 COPY apps/backend/lib ./apps/backend/lib
-COPY apps/backend/types ./apps/backend/types
 COPY apps/backend/tsconfig.json ./apps/backend/tsconfig.json
 
 # Copy shared packages source (for compilation)
