@@ -2,15 +2,10 @@
 /**
  * BullMQ Worker - Media Generation
  * Standalone worker process for processing background jobs
+ *
+ * Environment variables are set by the container in production.
+ * For local development, run with: tsx --env-file=../backend/.env src/index.ts
  */
-
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-
-// Load environment variables (in production, these are set by the container)
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: path.resolve(process.cwd(), '../backend/.env') });
-}
 
 import { Worker, Job } from 'bullmq';
 import { getWorkerRedisConnection, JobTypes } from '../../backend/lib/config/queue';
