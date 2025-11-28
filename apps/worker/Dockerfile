@@ -32,6 +32,7 @@ COPY packages/database ./packages/database
 COPY packages/types ./packages/types
 COPY packages/config ./packages/config
 COPY packages/logging ./packages/logging
+COPY packages/agenta ./packages/agenta
 
 # Generate Prisma client before building
 RUN npx prisma generate --schema=./packages/database/prisma/schema.prisma

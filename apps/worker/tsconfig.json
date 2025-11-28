@@ -25,7 +25,8 @@
         "@repo/database": ["../../packages/database"],
         "@repo/types": ["../../packages/types/src"],
         "@repo/config": ["../../packages/config/src"],
-        "@repo/logging": ["../../packages/logging/src"]
+        "@repo/logging": ["../../packages/logging/src"],
+        "@repo/agenta": ["../../packages/agenta/src"]
       }
     },
     "include": [
@@ -34,7 +35,8 @@
       "../../packages/database/**/*",
       "../../packages/types/src/**/*",
       "../../packages/config/src/**/*",
-      "../../packages/logging/src/**/*"
+      "../../packages/logging/src/**/*",
+      "../../packages/agenta/src/**/*"
     ],
     "exclude": [
       "node_modules",
