@@ -1,9 +1,5 @@
 // Configuration constants
-
-import { loadEnvConfig } from "@next/env";
-
-const projectDir = process.cwd();
-loadEnvConfig(projectDir + "/../backend");
+// Environment variables should be loaded by the entry point (Next.js or worker)
 
 export const config = {
   // Server

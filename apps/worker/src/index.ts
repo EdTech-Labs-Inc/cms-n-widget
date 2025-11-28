@@ -4,10 +4,13 @@
  * Standalone worker process for processing background jobs
  */
 
-import { loadEnvConfig } from '@next/env';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
-const projectDir = process.cwd();
-loadEnvConfig(projectDir + '/../backend');
+// Load environment variables (in production, these are set by the container)
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: path.resolve(process.cwd(), '../backend/.env') });
+}
 
 import { Worker, Job } from 'bullmq';
 import { getWorkerRedisConnection, JobTypes } from '../../backend/lib/config/queue';
