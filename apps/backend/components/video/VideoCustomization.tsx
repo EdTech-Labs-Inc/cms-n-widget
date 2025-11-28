@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSubmagicTemplates, useHeygenAvatars } from '@/lib/api/hooks';
-import { Loader2, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
 
 export interface VideoCustomizationConfig {
   characterId: string;
@@ -47,33 +47,47 @@ interface VideoCustomizationProps {
 }
 
 export function VideoCustomization({ value, onChange, disabled = false }: VideoCustomizationProps) {
-  console.log('🎭 [VideoCustomization] Component rendering');
   const { data: templates, isLoading: templatesLoading } = useSubmagicTemplates();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch avatars with pagination
+  // Fetch ALL avatars (pagination handled on frontend)
   const {
     data: avatarsData,
     isLoading: avatarsLoading,
     isError: avatarsError,
-    error: avatarsErrorDetails
-  } = useHeygenAvatars(currentPage, AVATARS_PER_PAGE);
+  } = useHeygenAvatars();
 
-  console.log('🎭 [VideoCustomization] Hook state:', {
-    isLoading: avatarsLoading,
-    isError: avatarsError,
-    error: avatarsErrorDetails,
-    dataExists: !!avatarsData,
-    avatarCount: avatarsData?.avatars?.length ?? 0,
-  });
+  const allAvatars = avatarsData?.avatars || [];
 
-  const avatars = avatarsData?.avatars || [];
-  const pagination = avatarsData?.pagination || { page: 1, limit: AVATARS_PER_PAGE, total: 0, totalPages: 0 };
+  // Filter avatars by search query
+  const filteredAvatars = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return allAvatars;
+    }
+    const query = searchQuery.toLowerCase().trim();
+    return allAvatars.filter(avatar =>
+      avatar.name.toLowerCase().includes(query) ||
+      avatar.type.toLowerCase().includes(query)
+    );
+  }, [allAvatars, searchQuery]);
+
+  // Calculate pagination on filtered results
+  const totalPages = Math.ceil(filteredAvatars.length / AVATARS_PER_PAGE);
+  const paginatedAvatars = useMemo(() => {
+    const startIndex = (currentPage - 1) * AVATARS_PER_PAGE;
+    return filteredAvatars.slice(startIndex, startIndex + AVATARS_PER_PAGE);
+  }, [filteredAvatars, currentPage]);
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   // Set default character when avatars load (if no character is set)
   useEffect(() => {
-    if (avatars.length > 0 && !value.characterId) {
-      const firstAvatar = avatars[0];
+    if (allAvatars.length > 0 && !value.characterId) {
+      const firstAvatar = allAvatars[0];
       onChange({
         ...value,
         characterId: firstAvatar.id,
@@ -81,7 +95,7 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
         voiceId: firstAvatar.voiceId
       });
     }
-  }, [avatars, value.characterId]);
+  }, [allAvatars, value.characterId]);
 
   const handleCharacterChange = (avatarId: string, characterType: 'avatar' | 'talking_photo', voiceId: string) => {
     onChange({ ...value, characterId: avatarId, characterType, voiceId });
@@ -114,7 +128,7 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
   };
 
   const handleNextPage = () => {
-    if (currentPage < pagination.totalPages) {
+    if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -136,87 +150,115 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
             Failed to load avatars. Please try again later.
           </div>
-        ) : avatars.length === 0 ? (
+        ) : allAvatars.length === 0 ? (
           <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm">
             No avatars available.
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-3">
-              {avatars.map((avatar) => (
-                <label
-                  key={avatar.id}
-                  className={`flex flex-col gap-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                    value.characterId === avatar.id
-                      ? 'bg-gold-light border-gold'
-                      : 'bg-white-10 border-transparent hover:bg-white-20'
-                  } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <input
-                    type="radio"
-                    name="character"
-                    value={avatar.id}
-                    checked={value.characterId === avatar.id}
-                    onChange={() => handleCharacterChange(avatar.id, avatar.type, avatar.voiceId)}
-                    className="sr-only"
-                    disabled={disabled}
-                  />
-                  <div className="flex items-center gap-3">
-                    {avatar.previewUrl ? (
-                      <img
-                        src={avatar.previewUrl}
-                        alt={avatar.name}
-                        className="w-12 h-12 rounded-lg object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg bg-gradient-purple flex items-center justify-center text-white font-bold">
-                        {avatar.name.charAt(0)}
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <div className="text-text-primary font-medium">{avatar.name}</div>
-                      <div className="text-xs text-text-muted capitalize">{avatar.type.replace('_', ' ')}</div>
-                    </div>
-                  </div>
-                </label>
-              ))}
+            {/* Search Input */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search avatars..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-white-10 border border-transparent rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-gold/50 transition-colors"
+                disabled={disabled}
+              />
             </div>
 
-            {/* Pagination Controls */}
-            {pagination.totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <button
-                  type="button"
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1 || disabled}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    currentPage === 1 || disabled
-                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                      : 'bg-white-10 text-text-primary hover:bg-white-20'
-                  }`}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  Previous
-                </button>
-
-                <span className="text-sm text-text-secondary">
-                  Page {pagination.page} of {pagination.totalPages}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={handleNextPage}
-                  disabled={currentPage === pagination.totalPages || disabled}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    currentPage === pagination.totalPages || disabled
-                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                      : 'bg-white-10 text-text-primary hover:bg-white-20'
-                  }`}
-                >
-                  Next
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+            {/* Avatar Grid */}
+            {filteredAvatars.length === 0 ? (
+              <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm text-center">
+                No avatars found matching "{searchQuery}"
               </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  {paginatedAvatars.map((avatar) => (
+                    <label
+                      key={avatar.id}
+                      className={`flex flex-col gap-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
+                        value.characterId === avatar.id
+                          ? 'bg-gold-light border-gold'
+                          : 'bg-white-10 border-transparent hover:bg-white-20'
+                      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <input
+                        type="radio"
+                        name="character"
+                        value={avatar.id}
+                        checked={value.characterId === avatar.id}
+                        onChange={() => handleCharacterChange(avatar.id, avatar.type, avatar.voiceId)}
+                        className="sr-only"
+                        disabled={disabled}
+                      />
+                      <div className="flex items-center gap-3">
+                        {avatar.previewUrl ? (
+                          <img
+                            src={avatar.previewUrl}
+                            alt={avatar.name}
+                            className="w-12 h-12 rounded-lg object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg bg-gradient-purple flex items-center justify-center text-white font-bold">
+                            {avatar.name.charAt(0)}
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <div className="text-text-primary font-medium">{avatar.name}</div>
+                          <div className="text-xs text-text-muted capitalize">{avatar.type.replace('_', ' ')}</div>
+                        </div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-4 mt-4">
+                    <button
+                      type="button"
+                      onClick={handlePreviousPage}
+                      disabled={currentPage === 1 || disabled}
+                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        currentPage === 1 || disabled
+                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                          : 'bg-white-10 text-text-primary hover:bg-white-20'
+                      }`}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      Previous
+                    </button>
+
+                    <span className="text-sm text-text-secondary">
+                      Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages || disabled}
+                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        currentPage === totalPages || disabled
+                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                          : 'bg-white-10 text-text-primary hover:bg-white-20'
+                      }`}
+                    >
+                      Next
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
+                {/* Results count */}
+                <div className="text-xs text-text-muted text-center mt-2">
+                  Showing {paginatedAvatars.length} of {filteredAvatars.length} avatars
+                  {searchQuery && ` (filtered from ${allAvatars.length} total)`}
+                </div>
+              </>
             )}
           </>
         )}

@@ -5,6 +5,17 @@ import { openaiService } from '@/lib/services/external/openai.service';
 import { prisma } from '@/lib/config/database';
 
 // Validation schemas
+export const VideoCustomizationSchema = z.object({
+  characterId: z.string(),
+  characterType: z.enum(['avatar', 'talking_photo']),
+  voiceId: z.string(),
+  enableCaptions: z.boolean(),
+  captionTemplate: z.string(),
+  enableMagicZooms: z.boolean(),
+  enableMagicBrolls: z.boolean(),
+  magicBrollsPercentage: z.number().min(0).max(100),
+}).optional();
+
 export const CreateSubmissionSchema = z.object({
   articleId: z.string().uuid('Invalid article ID'),
   organizationId: z.string().uuid('Invalid organization ID').optional(),
@@ -13,6 +24,7 @@ export const CreateSubmissionSchema = z.object({
   generateVideo: z.boolean().optional(),
   generateQuiz: z.boolean().optional(),
   generateInteractivePodcast: z.boolean().optional(),
+  videoCustomization: VideoCustomizationSchema,
 });
 
 export const UpdateQuizSchema = z.object({

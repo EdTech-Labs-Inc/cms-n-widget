@@ -371,7 +371,7 @@ export interface PaginationMeta {
 
 export interface AvatarsResponse {
   avatars: ProcessedAvatar[];
-  pagination: PaginationMeta;
+  total: number;
 }
 
 // HeyGen API - No org scoping needed (global config)
@@ -401,16 +401,15 @@ export const heygenApi = {
   },
 
   /**
-   * Fetch paginated avatars from HeyGen (cached server-side for 24 hours)
+   * Fetch all avatars from HeyGen (cached server-side for 24 hours)
+   * Pagination and search is handled on the frontend
    */
-  getAvatars: async (page: number = 1, limit: number = 12): Promise<AvatarsResponse> => {
-    console.log('🎭 [API Client] getAvatars() called with page:', page, 'limit:', limit);
+  getAvatars: async (): Promise<AvatarsResponse> => {
+    console.log('🎭 [API Client] getAvatars() called');
     try {
-      const { data } = await apiClient.get<ApiResponse<AvatarsResponse>>(
-        `/api/heygen/avatars?page=${page}&limit=${limit}`
-      );
+      const { data } = await apiClient.get<ApiResponse<AvatarsResponse>>('/api/heygen/avatars');
       console.log('🎭 [API Client] Response:', data);
-      return data.data || { avatars: [], pagination: { page: 1, limit: 12, total: 0, totalPages: 0 } };
+      return data.data || { avatars: [], total: 0 };
     } catch (error) {
       console.error('🎭 [API Client] Error fetching avatars:', error);
       throw error;

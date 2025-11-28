@@ -41,6 +41,8 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
   });
   const [videoCustomization, setVideoCustomization] = useState<VideoCustomizationConfig>({
     characterId: '',
+    characterType: 'avatar',
+    voiceId: '',
     enableCaptions: true,
     captionTemplate: 'Ella',
     enableMagicZooms: true,
@@ -127,6 +129,13 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
     if (selectedLanguages.length === 0) {
       console.error('❌ [ArticleForm] No languages selected');
       alert('Please select at least one language');
+      return;
+    }
+
+    // Validate video customization if video generation is enabled
+    if (contentOptions.generateVideo && !videoCustomization.characterId) {
+      console.error('❌ [ArticleForm] Video generation enabled but no character selected');
+      alert('Please wait for avatars to load and select a character for video generation');
       return;
     }
 
@@ -231,8 +240,8 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
         }
 
         // Navigate to the first submission's detail page
-        console.log('🔀 [ArticleForm] Navigating to submission detail page:', firstSubmission.data.id);
-        router.push(`${basePath}/submissions/${firstSubmission.data.id}`);
+        console.log('🔀 [ArticleForm] Navigating to submission detail page:', firstSubmission.id);
+        router.push(`${basePath}/submissions/${firstSubmission.id}`);
       }
     } catch (error) {
       console.error('❌ [ArticleForm] Error:', error);

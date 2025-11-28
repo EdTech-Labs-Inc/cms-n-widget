@@ -5,28 +5,25 @@ import { heygenApi, type AvatarsResponse } from '../client';
  * Query keys for HeyGen avatar queries
  */
 export const heygenQueryKeys = {
-  avatars: (page: number, limit: number) => ['heygen', 'avatars', page, limit] as const,
-  allAvatars: () => ['heygen', 'avatars'] as const,
+  avatars: () => ['heygen', 'avatars'] as const,
 };
 
 /**
- * Hook to fetch paginated avatars from HeyGen
+ * Hook to fetch all avatars from HeyGen
+ * Pagination and search filtering is handled on the frontend
  *
- * @param page - Page number (default: 1)
- * @param limit - Items per page (default: 12)
- * @returns React Query result with avatars and pagination info
+ * @returns React Query result with all avatars
  *
  * @example
- * const { data, isLoading, error } = useHeygenAvatars(1, 12);
+ * const { data, isLoading, error } = useHeygenAvatars();
  * // data.avatars - Array of ProcessedAvatar
- * // data.pagination - { page, limit, total, totalPages }
+ * // data.total - Total number of avatars
  */
-export function useHeygenAvatars(page: number = 1, limit: number = 12) {
+export function useHeygenAvatars() {
   return useQuery({
-    queryKey: heygenQueryKeys.avatars(page, limit),
-    queryFn: () => heygenApi.getAvatars(page, limit),
+    queryKey: heygenQueryKeys.avatars(),
+    queryFn: () => heygenApi.getAvatars(),
     staleTime: 1000 * 60 * 60, // 1 hour client-side cache (server caches for 24h)
-    placeholderData: (previousData) => previousData, // Keep showing previous data while fetching new page
   });
 }
 
@@ -46,7 +43,7 @@ export function useRefreshAvatarCache() {
     mutationFn: () => heygenApi.refreshAvatarCache(),
     onSuccess: () => {
       // Invalidate all avatar queries to refetch with fresh data
-      queryClient.invalidateQueries({ queryKey: heygenQueryKeys.allAvatars() });
+      queryClient.invalidateQueries({ queryKey: heygenQueryKeys.avatars() });
     },
   });
 }

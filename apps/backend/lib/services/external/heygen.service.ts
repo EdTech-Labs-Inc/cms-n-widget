@@ -87,8 +87,23 @@ export class HeyGenService {
 
   /**
    * Get the default character configuration
+   * Falls back to avatar if talking_photo is configured but ID is empty
    */
   getDefaultCharacterConfig(): { type: CharacterType; id: string } {
+    // If configured for talking_photo but no ID, fall back to avatar
+    if (this.defaultCharacterType === 'talking_photo' && !this.defaultTalkingPhotoId) {
+      if (this.defaultAvatarId) {
+        return { type: 'avatar', id: this.defaultAvatarId };
+      }
+    }
+
+    // If configured for avatar but no ID, try talking_photo
+    if (this.defaultCharacterType === 'avatar' && !this.defaultAvatarId) {
+      if (this.defaultTalkingPhotoId) {
+        return { type: 'talking_photo', id: this.defaultTalkingPhotoId };
+      }
+    }
+
     return {
       type: this.defaultCharacterType,
       id: this.defaultCharacterType === 'talking_photo'
