@@ -40,15 +40,16 @@ export interface HeyGenAvatarListResponse {
 export interface HeyGenAvatarDetailsResponse {
   error: null | string;
   data: {
-    avatar_id: string;
-    avatar_name: string;
+    type: string;
+    id: string;
+    name: string;
     preview_image_url: string;
     preview_video_url?: string;
     gender?: string;
-    default_voice?: {
-      voice_id: string;
-      name?: string;
-    };
+    premium?: boolean;
+    is_public?: boolean;
+    default_voice_id?: string; // Flat string field, not nested object
+    tags?: string[];
   };
 }
 
@@ -355,8 +356,8 @@ export class HeyGenService {
 
       logger.info('HeyGen avatar details fetched successfully', {
         avatarId,
-        hasDefaultVoice: !!response.data?.data?.default_voice,
-        defaultVoiceId: response.data?.data?.default_voice?.voice_id,
+        hasDefaultVoice: !!response.data?.data?.default_voice_id,
+        defaultVoiceId: response.data?.data?.default_voice_id,
         fullData: response.data?.data,
       });
 

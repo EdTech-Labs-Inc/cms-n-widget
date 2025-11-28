@@ -106,14 +106,36 @@ export class VideoGeneratorService {
         // Fetch avatar details to get correct voice if not already set
         let voiceId = videoOutput.heygenVoiceId || undefined;
 
+        // DEBUG: Log the initial state before voice lookup
+        logger.info('🔍 DEBUG: Voice lookup initial state', {
+          videoOutputId: videoOutput.id,
+          heygenVoiceId_raw: videoOutput.heygenVoiceId,
+          heygenVoiceId_afterCoercion: voiceId,
+          heygenCharacterId: videoOutput.heygenCharacterId,
+          heygenCharacterType: videoOutput.heygenCharacterType,
+          willFetchDetails: !voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar',
+        });
+
         if (!voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar') {
           try {
             logger.info('Fetching avatar details for voice ID', {
               avatarId: videoOutput.heygenCharacterId
             });
             const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
-            if (avatarDetails.data?.default_voice?.voice_id) {
-              voiceId = avatarDetails.data.default_voice.voice_id;
+
+            // DEBUG: Log the full response from getAvatarDetails
+            logger.info('🔍 DEBUG: Full avatar details response', {
+              avatarId: videoOutput.heygenCharacterId,
+              fullResponse: JSON.stringify(avatarDetails, null, 2),
+              hasData: !!avatarDetails.data,
+              // HeyGen returns default_voice_id as a flat string, not nested object
+              defaultVoiceId: (avatarDetails.data as any)?.default_voice_id,
+            });
+
+            // HeyGen API returns default_voice_id as a flat string field
+            const fetchedVoiceId = (avatarDetails.data as any)?.default_voice_id;
+            if (fetchedVoiceId) {
+              voiceId = fetchedVoiceId;
               logger.info('Got voice ID from avatar details', { voiceId });
 
               // Update the VideoOutput with the fetched voice ID for future reference
@@ -121,6 +143,8 @@ export class VideoGeneratorService {
                 where: { id: videoOutput.id },
                 data: { heygenVoiceId: voiceId },
               });
+            } else {
+              logger.warn('🔍 DEBUG: No default_voice.voice_id found in avatar details');
             }
           } catch (error) {
             logger.warn('Failed to fetch avatar details for voice, will use defaults', {
@@ -128,7 +152,18 @@ export class VideoGeneratorService {
               error: error instanceof Error ? error.message : 'Unknown error',
             });
           }
+        } else if (!voiceId) {
+          logger.info('🔍 DEBUG: Voice lookup skipped - conditions not met', {
+            reason: !videoOutput.heygenCharacterId ? 'No characterId' :
+                    videoOutput.heygenCharacterType !== 'avatar' ? `CharacterType is ${videoOutput.heygenCharacterType}, not avatar` :
+                    'Unknown reason',
+          });
         }
+
+        // DEBUG: Log final voiceId before sending to HeyGen
+        logger.info('🔍 DEBUG: Final voiceId before HeyGen call', {
+          voiceId: voiceId ?? '(undefined - will use default)',
+        });
 
         logger.info('Calling HeyGen with VideoOutput settings', {
           videoOutputId: videoOutput.id,
@@ -252,8 +287,10 @@ export class VideoGeneratorService {
             avatarId: videoOutput.heygenCharacterId
           });
           const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
-          if (avatarDetails.data?.default_voice?.voice_id) {
-            voiceId = avatarDetails.data.default_voice.voice_id;
+          // HeyGen API returns default_voice_id as a flat string field
+          const fetchedVoiceId = (avatarDetails.data as any)?.default_voice_id;
+          if (fetchedVoiceId) {
+            voiceId = fetchedVoiceId;
             logger.info('Regenerate: Got voice ID from avatar details', { voiceId });
 
             // Update the VideoOutput with the fetched voice ID for future reference
