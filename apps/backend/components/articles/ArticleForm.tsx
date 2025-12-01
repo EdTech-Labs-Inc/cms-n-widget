@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { X, Loader2, Sparkles } from 'lucide-react';
 import axios from 'axios';
 import { useArticles, useCreateSubmission } from '@/lib/api/hooks';
-import { VideoCustomization, VideoCustomizationConfig } from '@/components/video/VideoCustomization';
 import { UploadLoadingModal } from './UploadLoadingModal';
 import { FileUploadSection } from './FileUploadSection';
 import { CategorySelector } from './CategorySelector';
@@ -38,16 +37,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
     generatePodcast: true,
     generateQuiz: true,
     generateInteractivePodcast: true,
-  });
-  const [videoCustomization, setVideoCustomization] = useState<VideoCustomizationConfig>({
-    characterId: '',
-    characterType: 'avatar',
-    voiceId: '',
-    enableCaptions: true,
-    captionTemplate: 'Ella',
-    enableMagicZooms: true,
-    enableMagicBrolls: true,
-    magicBrollsPercentage: 40,
   });
 
   const { data: articles, isLoading: articlesLoading } = useArticles(orgSlug);
@@ -132,13 +121,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
       return;
     }
 
-    // Validate video customization if video generation is enabled
-    if (contentOptions.generateVideo && !videoCustomization.characterId) {
-      console.error('❌ [ArticleForm] Video generation enabled but no character selected');
-      alert('Please wait for avatars to load and select a character for video generation');
-      return;
-    }
-
     setIsUploading(true);
 
     try {
@@ -167,11 +149,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
         if (thumbnailMode === 'custom-upload' && customThumbnailFile) {
           formData.append('customThumbnail', customThumbnailFile);
           formData.append('skipThumbnailGeneration', 'true');
-        }
-
-        // Add video customization if video generation is enabled
-        if (contentOptions.generateVideo) {
-          formData.append('videoCustomization', JSON.stringify(videoCustomization));
         }
 
         console.log('📤 [ArticleForm] Making POST request to /api/org/' + orgSlug + '/articles/upload');
@@ -217,7 +194,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
           generateVideo: contentOptions.generateVideo,
           generateQuiz: contentOptions.generateQuiz,
           generateInteractivePodcast: contentOptions.generateInteractivePodcast,
-          videoCustomization: contentOptions.generateVideo ? videoCustomization : undefined,
         } as any);
 
         console.log('✅ [ArticleForm] First submission created:', firstSubmission);
@@ -233,7 +209,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
             generateVideo: contentOptions.generateVideo,
             generateQuiz: contentOptions.generateQuiz,
             generateInteractivePodcast: contentOptions.generateInteractivePodcast,
-            videoCustomization: contentOptions.generateVideo ? videoCustomization : undefined,
           } as any).catch((error) => {
             console.error(`❌ [ArticleForm] Failed to create submission for ${language}:`, error);
           });
@@ -308,22 +283,6 @@ export function ArticleForm({ orgSlug }: ArticleFormProps) {
         onContentToggle={handleContentToggle}
         isDisabled={isUploading}
       />
-
-      {/* Video Customization - Only show if video generation is checked */}
-      {contentOptions.generateVideo && (
-        <div>
-          <label className="block text-text-secondary text-sm font-medium mb-3">
-            Video Customization
-          </label>
-          <div className="p-6 rounded-2xl bg-white-10 border-2 border-white-20">
-            <VideoCustomization
-              value={videoCustomization}
-              onChange={setVideoCustomization}
-              disabled={isUploading}
-            />
-          </div>
-        </div>
-      )}
 
       <div className="flex justify-end gap-4">
         <button

@@ -440,7 +440,7 @@ interface SingleVoiceSelectorProps {
 
 | # | Task | Files | Status |
 |---|------|-------|--------|
-| G1 | Update ArticleForm - remove VideoCustomization | `apps/backend/components/articles/ArticleForm.tsx` | ⏳ Skipped (optional - form already works) |
+| G1 | Update ArticleForm - remove VideoCustomization | `apps/backend/components/articles/ArticleForm.tsx` | ✅ Done |
 | G2 | Update MediaCard - add SCRIPT_READY status | `apps/backend/components/media/MediaCard.tsx` | ✅ Done |
 | G3 | Create VoiceSelector component | `apps/backend/components/audio/VoiceSelector.tsx` | ✅ Done |
 
