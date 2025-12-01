@@ -407,6 +407,8 @@ export async function POST(
     }
 
     // Auto-create submissions with selected media types and languages
+    // Note: Script-first flow - video/podcast/interactive podcast will generate scripts first,
+    // user configures media settings (character, voice) on edit page before triggering full generation
     console.log('🎬 [API] Creating submissions...');
     const submissions = await submissionService.createSubmission({
       articleId: article.id,
@@ -417,7 +419,7 @@ export async function POST(
       generateVideo: mediaConfig.generateVideo,
       generateQuiz: mediaConfig.generateQuiz,
       generateInteractivePodcast: mediaConfig.generateInteractivePodcast,
-      videoCustomization: mediaConfig.videoCustomization,
+      // videoCustomization removed - now configured on edit page after script review
     });
 
     console.log(`🚀 Auto-created ${submissions.length} submission(s) for article ${article.id}`);

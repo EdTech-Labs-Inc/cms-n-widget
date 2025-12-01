@@ -282,7 +282,7 @@ export const submissionsApi = {
     return data.data;
   },
 
-  // Media Regeneration
+  // Media Regeneration (for COMPLETED outputs - regenerate with edited script)
   regenerateVideoMedia: async (orgSlug: string, submissionId: string, videoId: string, videoCustomization?: any) => {
     const { data } = await apiClient.post<ApiResponse<any>>(
       `/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/regenerate-media`,
@@ -298,6 +298,60 @@ export const submissionsApi = {
 
   regenerateInteractivePodcastMedia: async (orgSlug: string, submissionId: string, ipId: string) => {
     const { data } = await apiClient.post<ApiResponse<any>>(`/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/regenerate-media`);
+    return data.data;
+  },
+
+  // Media Generation from Script (for SCRIPT_READY outputs - first-time generation after script review)
+  generateVideoMedia: async (
+    orgSlug: string,
+    submissionId: string,
+    videoId: string,
+    videoCustomization: {
+      characterId: string;
+      characterType: 'avatar' | 'talking_photo';
+      voiceId?: string;
+      enableCaptions?: boolean;
+      captionTemplate?: string;
+      enableMagicZooms?: boolean;
+      enableMagicBrolls?: boolean;
+      magicBrollsPercentage?: number;
+    }
+  ) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(
+      `/api/org/${orgSlug}/submissions/${submissionId}/video/${videoId}/generate-media`,
+      { videoCustomization }
+    );
+    return data.data;
+  },
+
+  generatePodcastMedia: async (
+    orgSlug: string,
+    submissionId: string,
+    podcastId: string,
+    voiceSelection?: {
+      interviewerVoiceId?: string;
+      guestVoiceId?: string;
+    }
+  ) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(
+      `/api/org/${orgSlug}/submissions/${submissionId}/podcast/${podcastId}/generate-media`,
+      voiceSelection ? { voiceSelection } : {}
+    );
+    return data.data;
+  },
+
+  generateInteractivePodcastMedia: async (
+    orgSlug: string,
+    submissionId: string,
+    ipId: string,
+    voiceSelection?: {
+      voiceId?: string;
+    }
+  ) => {
+    const { data } = await apiClient.post<ApiResponse<any>>(
+      `/api/org/${orgSlug}/submissions/${submissionId}/interactive-podcast/${ipId}/generate-media`,
+      voiceSelection ? { voiceSelection } : {}
+    );
     return data.data;
   },
 

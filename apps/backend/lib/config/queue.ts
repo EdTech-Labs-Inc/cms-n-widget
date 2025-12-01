@@ -173,4 +173,14 @@ export enum JobTypes {
   GENERATE_INTERACTIVE_PODCAST = 'generate-interactive-podcast', // Requires podcast to exist
   GENERATE_ARTICLE_THUMBNAIL = 'generate-article-thumbnail', // Generate thumbnail for article
   PROCESS_VIDEO_COMPLETION = 'process-video-completion', // Process completed HeyGen video (transcribe, generate bubbles)
+
+  // Script-only generation (new decoupled flow)
+  GENERATE_VIDEO_SCRIPT = 'generate-video-script', // Generate video script only (no HeyGen)
+  GENERATE_PODCAST_TRANSCRIPT = 'generate-podcast-transcript', // Generate podcast transcript only (no audio)
+  GENERATE_INTERACTIVE_PODCAST_SCRIPT = 'generate-interactive-podcast-script', // Generate interactive podcast script only
+
+  // Media generation from approved script
+  GENERATE_VIDEO_FROM_SCRIPT = 'generate-video-from-script', // Generate HeyGen video from approved script
+  GENERATE_PODCAST_FROM_TRANSCRIPT = 'generate-podcast-from-transcript', // Generate podcast audio from approved transcript
+  GENERATE_INTERACTIVE_PODCAST_FROM_SCRIPT = 'generate-interactive-podcast-from-script', // Generate interactive podcast from approved script
 }

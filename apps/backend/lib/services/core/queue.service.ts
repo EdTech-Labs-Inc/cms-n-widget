@@ -165,6 +165,153 @@ export class QueueService {
     );
   }
 
+  // ============================================
+  // SCRIPT-ONLY GENERATION JOBS (Decoupled Flow)
+  // ============================================
+
+  /**
+   * Add a job to generate video script only (no HeyGen call)
+   */
+  async addVideoScriptGenerationJob(data: {
+    articleId: string;
+    submissionId: string;
+    outputId: string;
+    language: string;
+    organizationId: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_VIDEO_SCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 2000,
+        },
+      }
+    );
+  }
+
+  /**
+   * Add a job to generate podcast transcript only (no audio generation)
+   */
+  async addPodcastTranscriptGenerationJob(data: {
+    articleId: string;
+    submissionId: string;
+    outputId: string;
+    language: string;
+    organizationId: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_PODCAST_TRANSCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 2000,
+        },
+      }
+    );
+  }
+
+  /**
+   * Add a job to generate interactive podcast script only (no audio generation)
+   */
+  async addInteractivePodcastScriptGenerationJob(data: {
+    articleId: string;
+    submissionId: string;
+    outputId: string;
+    language: string;
+    organizationId: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_INTERACTIVE_PODCAST_SCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 2000,
+        },
+      }
+    );
+  }
+
+  // ============================================
+  // MEDIA-FROM-SCRIPT GENERATION JOBS
+  // ============================================
+
+  /**
+   * Add a job to generate HeyGen video from approved script
+   */
+  async addVideoMediaGenerationJob(data: {
+    videoOutputId: string;
+    submissionId: string;
+    organizationId: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_VIDEO_FROM_SCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
+  /**
+   * Add a job to generate podcast audio from approved transcript
+   */
+  async addPodcastMediaGenerationJob(data: {
+    podcastOutputId: string;
+    submissionId: string;
+    organizationId: string;
+    voiceSelection?: {
+      interviewerVoiceId?: string;
+      guestVoiceId?: string;
+    };
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_PODCAST_FROM_TRANSCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
+  /**
+   * Add a job to generate interactive podcast from approved script
+   */
+  async addInteractivePodcastMediaGenerationJob(data: {
+    interactivePodcastOutputId: string;
+    submissionId: string;
+    organizationId: string;
+    voiceSelection?: {
+      voiceId?: string;
+    };
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_INTERACTIVE_PODCAST_FROM_SCRIPT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
   /**
    * Get job status
    */

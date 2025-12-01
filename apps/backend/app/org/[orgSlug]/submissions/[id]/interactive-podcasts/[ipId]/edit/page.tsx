@@ -11,6 +11,7 @@ import {
   useUpdateInteractivePodcastScript,
   useRegenerateInteractivePodcastScript,
   useRegenerateInteractivePodcastMedia,
+  useGenerateInteractivePodcastMedia,
   useApproveInteractivePodcast,
   useUnapproveInteractivePodcast,
   useRegenerateInteractivePodcastThumbnail,
@@ -26,6 +27,7 @@ import { AIPromptBox } from '@/components/script-editor/AIPromptBox';
 import { RegenerateMediaButton } from '@/components/script-editor/RegenerateMediaButton';
 import { ThumbnailManager } from '@/components/media/ThumbnailManager';
 import { InteractivePodcastAudioPlayer } from '@/components/media/InteractivePodcastAudioPlayer';
+import { VoiceSelector, getDefaultInteractivePodcastVoice, type SingleVoiceSelection } from '@/components/audio/VoiceSelector';
 
 interface TagManagerProps {
   tags: Tag[];
@@ -121,6 +123,9 @@ export default function OrgInteractivePodcastEditPage() {
   const toast = useToast();
   const [showPreview, setShowPreview] = useState(false);
 
+  // State for voice selection
+  const [voiceSelection, setVoiceSelection] = useState<SingleVoiceSelection>(getDefaultInteractivePodcastVoice);
+
   // Data fetching
   const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
   const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
@@ -131,6 +136,7 @@ export default function OrgInteractivePodcastEditPage() {
   const updateInteractivePodcastScript = useUpdateInteractivePodcastScript(orgSlug);
   const regenerateInteractivePodcastScript = useRegenerateInteractivePodcastScript(orgSlug);
   const regenerateInteractivePodcastMedia = useRegenerateInteractivePodcastMedia(orgSlug);
+  const generateInteractivePodcastMedia = useGenerateInteractivePodcastMedia(orgSlug);
   const approveInteractivePodcast = useApproveInteractivePodcast(orgSlug);
   const unapproveInteractivePodcast = useUnapproveInteractivePodcast(orgSlug);
   const regenerateInteractivePodcastThumbnail = useRegenerateInteractivePodcastThumbnail(orgSlug);
@@ -286,6 +292,32 @@ export default function OrgInteractivePodcastEditPage() {
     );
   };
 
+  // Handler for generating interactive podcast from script (SCRIPT_READY → PROCESSING)
+  const handleGenerateInteractivePodcast = () => {
+    generateInteractivePodcastMedia.mutate(
+      {
+        submissionId,
+        ipId,
+        voiceSelection: {
+          voiceId: voiceSelection.voiceId,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success('Interactive podcast generation started', 'Your audio and interactive questions are being generated. This may take 3-6 minutes.');
+        },
+        onError: (error: any) => {
+          toast.error('Failed to generate interactive podcast', error?.message || 'Please try again');
+        },
+      }
+    );
+  };
+
+  // Status helpers
+  const isScriptReady = interactivePodcast.status === 'SCRIPT_READY';
+  const isProcessing = interactivePodcast.status === 'PROCESSING' || interactivePodcast.status === 'PENDING';
+  const isCompleted = interactivePodcast.status === 'COMPLETED';
+
   // Transform data for preview
   const podcastData: PodcastData = {
     podcastId: interactivePodcast.id,
@@ -303,29 +335,63 @@ export default function OrgInteractivePodcastEditPage() {
         backUrl={`/org/${orgSlug}/submissions/${submissionId}`}
         isApproved={interactivePodcast.isApproved}
         approvedAt={interactivePodcast.approvedAt}
-        onApprove={handleApprove}
-        onUnapprove={handleUnapprove}
+        onApprove={isCompleted ? handleApprove : undefined}
+        onUnapprove={isCompleted ? handleUnapprove : undefined}
         isApproving={approveInteractivePodcast.isPending || unapproveInteractivePodcast.isPending}
       >
       <div className="space-y-6">
-        {/* Tags Section */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
-          <TagManager
-            tags={interactivePodcastTags}
-            availableTags={allTags}
-            onAddTag={handleAddTag}
-            onRemoveTag={handleRemoveTag}
-            isLoading={addInteractivePodcastTag.isPending || removeInteractivePodcastTag.isPending}
-          />
-        </div>
+        {/* Status Banner for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-amber-500 rounded-full" />
+              <div>
+                <h3 className="text-amber-500 font-medium">Script Ready for Review</h3>
+                <p className="text-text-secondary text-sm">
+                  Review and edit the script below, then generate the interactive podcast.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Processing Banner */}
+        {isProcessing && (
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+              <div>
+                <h3 className="text-blue-500 font-medium">Interactive Podcast Processing</h3>
+                <p className="text-text-secondary text-sm">
+                  Your audio and interactive questions are being generated. This may take 3-6 minutes.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tags Section - Only show for COMPLETED */}
+        {isCompleted && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
+            <TagManager
+              tags={interactivePodcastTags}
+              availableTags={allTags}
+              onAddTag={handleAddTag}
+              onRemoveTag={handleRemoveTag}
+              isLoading={addInteractivePodcastTag.isPending || removeInteractivePodcastTag.isPending}
+            />
+          </div>
+        )}
 
         {/* Script Editor Section */}
         {currentScript && (
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">Interactive Podcast Script</h2>
             <p className="text-text-secondary text-sm mb-4">
-              Edit the narration script. Save your changes and then regenerate the audio with interactive questions if needed.
+              {isScriptReady
+                ? 'Review and edit the generated script. Once satisfied, configure voice settings below and generate the interactive podcast.'
+                : 'Edit the narration script. Save your changes and then regenerate the audio with interactive questions if needed.'}
             </p>
             <ScriptEditor
               initialScript={currentScript}
@@ -334,52 +400,97 @@ export default function OrgInteractivePodcastEditPage() {
               label="Script"
               placeholder="Enter interactive podcast script..."
               rows={12}
+              disabled={isProcessing}
             />
-            <AIPromptBox
-              onRegenerate={handleRegenerateScript}
-              isRegenerating={regenerateInteractivePodcastScript.isPending}
-              label="AI Script Improvement"
-              placeholder="Describe how you want to improve the interactive podcast script..."
-            />
-            <RegenerateMediaButton
-              onRegenerate={handleRegenerateMedia}
-              isRegenerating={regenerateInteractivePodcastMedia.isPending || interactivePodcast.status === 'PROCESSING' || interactivePodcast.status === 'PENDING'}
-              mediaType="interactive-podcast"
-              disabled={interactivePodcast.status === 'PROCESSING' || interactivePodcast.status === 'PENDING'}
-            />
+            {!isProcessing && (
+              <AIPromptBox
+                onRegenerate={handleRegenerateScript}
+                isRegenerating={regenerateInteractivePodcastScript.isPending}
+                label="AI Script Improvement"
+                placeholder="Describe how you want to improve the interactive podcast script..."
+              />
+            )}
+
+            {/* For COMPLETED interactive podcasts - show regenerate media button */}
+            {isCompleted && (
+              <RegenerateMediaButton
+                onRegenerate={handleRegenerateMedia}
+                isRegenerating={regenerateInteractivePodcastMedia.isPending || isProcessing}
+                mediaType="interactive-podcast"
+                disabled={isProcessing}
+              />
+            )}
           </div>
         )}
 
-        {/* Interactive Podcast Audio */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Interactive Audio</h2>
-          <p className="text-text-secondary mb-3">
-            Audio narration with interactive segments for enhanced learning
-          </p>
-          <InteractivePodcastAudioPlayer output={interactivePodcast} />
-        </div>
+        {/* Voice Selection for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Voice Settings</h2>
+            <p className="text-text-secondary text-sm mb-4">
+              Choose a voice for the podcast narrator.
+            </p>
+            <VoiceSelector
+              mode="single"
+              value={voiceSelection}
+              onChange={(value) => setVoiceSelection(value as SingleVoiceSelection)}
+              disabled={isProcessing || generateInteractivePodcastMedia.isPending}
+            />
 
-        {/* Thumbnail Manager */}
-        <ThumbnailManager
-          thumbnailUrl={interactivePodcast.thumbnailUrl}
-          itemTitle={interactivePodcast.title || submission.article?.title || 'Interactive Podcast'}
-          onRegenerateSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          onUploadSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          regenerateMutation={{
-            mutate: (data: { prompt: string }, options?: any) =>
-              regenerateInteractivePodcastThumbnail.mutate({ submissionId, ipId, prompt: data.prompt }, options),
-            isPending: regenerateInteractivePodcastThumbnail.isPending,
-          }}
-          uploadMutation={{
-            mutate: (file: File, options?: any) =>
-              uploadInteractivePodcastThumbnail.mutate({ submissionId, ipId, file }, options),
-            isPending: uploadInteractivePodcastThumbnail.isPending,
-          }}
-        />
+            {/* Generate Interactive Podcast Button */}
+            <div className="mt-6 pt-6 border-t border-white-10">
+              <button
+                onClick={handleGenerateInteractivePodcast}
+                disabled={generateInteractivePodcastMedia.isPending}
+                className="w-full py-3 px-4 bg-gradient-purple text-white font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {generateInteractivePodcastMedia.isPending ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Generating Interactive Podcast...
+                  </>
+                ) : (
+                  'Generate Interactive Podcast'
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Interactive Podcast Audio - Only show when COMPLETED */}
+        {isCompleted && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Interactive Audio</h2>
+            <p className="text-text-secondary mb-3">
+              Audio narration with interactive segments for enhanced learning
+            </p>
+            <InteractivePodcastAudioPlayer output={interactivePodcast} />
+          </div>
+        )}
+
+        {/* Thumbnail Manager - Only show when COMPLETED */}
+        {isCompleted && (
+          <ThumbnailManager
+            thumbnailUrl={interactivePodcast.thumbnailUrl}
+            itemTitle={interactivePodcast.title || submission.article?.title || 'Interactive Podcast'}
+            onRegenerateSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            onUploadSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            regenerateMutation={{
+              mutate: (data: { prompt: string }, options?: any) =>
+                regenerateInteractivePodcastThumbnail.mutate({ submissionId, ipId, prompt: data.prompt }, options),
+              isPending: regenerateInteractivePodcastThumbnail.isPending,
+            }}
+            uploadMutation={{
+              mutate: (file: File, options?: any) =>
+                uploadInteractivePodcastThumbnail.mutate({ submissionId, ipId, file }, options),
+              isPending: uploadInteractivePodcastThumbnail.isPending,
+            }}
+          />
+        )}
       </div>
     </MediaEditLayout>
 

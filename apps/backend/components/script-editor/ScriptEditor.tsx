@@ -12,6 +12,7 @@ interface ScriptEditorProps {
   label?: string;
   placeholder?: string;
   rows?: number;
+  disabled?: boolean;
 }
 
 export function ScriptEditor({
@@ -23,6 +24,7 @@ export function ScriptEditor({
   label = 'Script',
   placeholder = 'Enter your script here...',
   rows = 8,
+  disabled = false,
 }: ScriptEditorProps) {
   const [script, setScript] = useState(initialScript);
   const [hasChanges, setHasChanges] = useState(false);
@@ -79,8 +81,8 @@ export function ScriptEditor({
           isOverLimit ? 'border-error' : 'border-white-20'
         } rounded-lg text-text-primary focus:outline-none focus:ring-2 ${
           isOverLimit ? 'focus:ring-error/50' : 'focus:ring-blue-accent/50'
-        } font-mono text-sm leading-relaxed resize-y`}
-        disabled={isSaving}
+        } font-mono text-sm leading-relaxed resize-y disabled:opacity-50 disabled:cursor-not-allowed`}
+        disabled={isSaving || disabled}
       />
 
       {isOverLimit && (
