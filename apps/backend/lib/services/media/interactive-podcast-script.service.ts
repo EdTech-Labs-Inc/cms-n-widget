@@ -115,6 +115,7 @@ export class InteractivePodcastScriptService {
       MARATHI: 'Marathi',
       HINDI: 'Hindi',
       BENGALI: 'Bengali',
+      GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
 
@@ -145,6 +146,7 @@ export class InteractivePodcastScriptService {
       MARATHI: 'Marathi',
       HINDI: 'Hindi',
       BENGALI: 'Bengali',
+      GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
 

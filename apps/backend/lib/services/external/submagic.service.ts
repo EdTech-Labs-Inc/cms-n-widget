@@ -34,6 +34,8 @@ export class SubmagicService {
         return { code: 'hi', note: 'Using Hindi captions (Submagic limitation)' };
       case 'BENGALI':
         return { code: 'hi', note: 'Using Hindi captions (Submagic limitation)' };
+      case 'GUJARATI':
+        return { code: 'hi', note: 'Using Hindi captions (Submagic limitation)' };
       default:
         return { code: 'en', note: 'Defaulting to English captions' };
     }

@@ -8,7 +8,7 @@
 // ENUMS & BASE TYPES
 // ============================================
 
-export type Language = 'ENGLISH' | 'MARATHI' | 'HINDI' | 'BENGALI';
+export type Language = 'ENGLISH' | 'MARATHI' | 'HINDI' | 'BENGALI' | 'GUJARATI';
 export type ContentCategory = 'EVERGREEN' | 'PERIODIC_UPDATES' | 'MARKET_UPDATES';
 export type OutputStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 export type SubmissionStatus =
