@@ -283,11 +283,11 @@ export class SubmissionService {
 
     const inclusion = includeOutputs
       ? {
-          audioOutputs: true,
-          podcastOutputs: true,
-          videoOutputs: true,
-          quizOutputs: true,
-          interactivePodcastOutputs: true,
+          audioOutputs: { include: { tags: { include: { tag: true } } } },
+          podcastOutputs: { include: { tags: { include: { tag: true } } } },
+          videoOutputs: { include: { tags: { include: { tag: true } } } },
+          quizOutputs: { include: { tags: { include: { tag: true } } } },
+          interactivePodcastOutputs: { include: { tags: { include: { tag: true } } } },
         }
       : {};
 
@@ -309,6 +309,7 @@ export class SubmissionService {
             select: {
               id: true,
               title: true,
+              category: true,
             },
           },
           ...inclusion,
