@@ -2,6 +2,7 @@ import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { prisma } from '../../config/database';
 import { VideoScriptsSchema } from '@repo/types';
 import { logger } from '@repo/logging';
+import { getVideoCountForPrompt } from '@repo/config/limits';
 
 /**
  * Video Script Service - Generate video scripts only (no HeyGen)
@@ -97,6 +98,7 @@ export class VideoScriptService {
 
   /**
    * Generate video scripts from article using Agenta prompts
+   * Uses environment-based videoCount to save API credits in dev
    */
   private async generateVideoScripts(title: string, content: string, language: string = 'ENGLISH') {
     const languageMap: Record<string, string> = {
@@ -107,6 +109,12 @@ export class VideoScriptService {
       GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
+    const videoCount = getVideoCountForPrompt();
+
+    logger.info('Requesting video scripts from AI', {
+      videoCount,
+      language: languageName
+    });
 
     return await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_video_scripts_prompt',
@@ -114,6 +122,7 @@ export class VideoScriptService {
         articleTitle: title,
         articleContent: content,
         languageName,
+        videoCount,
       },
       schema: VideoScriptsSchema,
       schemaName: 'VideoScripts',

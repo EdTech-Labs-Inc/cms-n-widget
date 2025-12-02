@@ -3,6 +3,7 @@ import { heygenService } from '../external/heygen.service';
 import { prisma } from '../../config/database';
 import { VideoScriptsSchema } from '@repo/types';
 import { logger } from '@repo/logging';
+import { getMaxVideosPerSubmission, getVideoCountForPrompt } from '@repo/config/limits';
 
 /**
  * Video Generator Service - Generate videos from articles
@@ -58,13 +59,20 @@ export class VideoGeneratorService {
       // Step 1: Generate video scripts (1-3 videos)
       const { videos: scriptList } = await this.generateVideoScripts(article.title, article.content, languageToUse);
 
-      logger.info('Generated video scripts', { scriptCount: scriptList.length });
+      // Apply environment-based limit (dev = 1, prod = unlimited)
+      const maxVideos = getMaxVideosPerSubmission();
+      const scriptsToProcess = maxVideos ? scriptList.slice(0, maxVideos) : scriptList;
 
+      logger.info('Generated video scripts', {
+        scriptCount: scriptList.length,
+        maxVideos: maxVideos ?? 'unlimited',
+        scriptsToProcess: scriptsToProcess.length
+      });
 
       // Step 2: Create VideoOutput for each script and initiate HeyGen videos
       let processedCount = 0;
 
-      for (const scriptData of scriptList.slice(0, 1)) {
+      for (const scriptData of scriptsToProcess) {
         const { title, script } = scriptData;
 
         // Check if VideoOutput already exists (created by submission.service with customization)
@@ -212,6 +220,7 @@ export class VideoGeneratorService {
 
   /**
    * Generate video scripts from article using Agenta prompts
+   * Uses environment-based videoCount to save API credits in dev
    */
   private async generateVideoScripts(title: string, content: string, language: string = 'ENGLISH') {
     const languageMap: Record<string, string> = {
@@ -222,6 +231,12 @@ export class VideoGeneratorService {
       GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
+    const videoCount = getVideoCountForPrompt();
+
+    logger.info('Requesting video scripts from AI', {
+      videoCount,
+      language: languageName
+    });
 
     return await agentaOpenAIService.generateStructured({
       promptSlug: 'generate_video_scripts_prompt',
@@ -229,6 +244,7 @@ export class VideoGeneratorService {
         articleTitle: title,
         articleContent: content,
         languageName,
+        videoCount,
       },
       schema: VideoScriptsSchema,
       schemaName: 'VideoScripts',

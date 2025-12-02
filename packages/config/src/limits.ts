@@ -6,6 +6,8 @@
  * and maintains quality/readability
  */
 
+import { isDevelopment } from './constants';
+
 /**
  * Video script character limits
  */
@@ -26,6 +28,47 @@ export const VIDEO_SCRIPT_LIMITS = {
    */
   OPTIMAL_SCRIPT_LENGTH: 800,
 } as const;
+
+/**
+ * Video generation limits per submission
+ * Controls how many videos are generated/processed per article submission
+ */
+export const VIDEO_GENERATION_LIMITS = {
+  /**
+   * Max videos per submission in development
+   * Saves HeyGen and OpenAI API credits during testing
+   */
+  DEV_MAX_VIDEOS_PER_SUBMISSION: 1,
+
+  /**
+   * Max videos per submission in production
+   * null = no limit, uses all generated scripts
+   */
+  PROD_MAX_VIDEOS_PER_SUBMISSION: null as number | null,
+
+  /**
+   * Default number of video scripts to request in production
+   */
+  PROD_DEFAULT_VIDEO_COUNT: 3,
+} as const;
+
+/**
+ * Get the maximum number of videos to generate per submission
+ * Returns null for no limit (production) or a number (development)
+ */
+export function getMaxVideosPerSubmission(): number | null {
+  return isDevelopment()
+    ? VIDEO_GENERATION_LIMITS.DEV_MAX_VIDEOS_PER_SUBMISSION
+    : VIDEO_GENERATION_LIMITS.PROD_MAX_VIDEOS_PER_SUBMISSION;
+}
+
+/**
+ * Get the video count to request from the AI prompt
+ */
+export function getVideoCountForPrompt(): string {
+  const maxVideos = getMaxVideosPerSubmission();
+  return maxVideos?.toString() ?? VIDEO_GENERATION_LIMITS.PROD_DEFAULT_VIDEO_COUNT.toString();
+}
 
 /**
  * Video bubble (quiz question) character limits
