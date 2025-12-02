@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { SupportWidget } from '../support/SupportWidget';
+import { useFeatureFlags } from '@/lib/api/hooks';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,11 +18,14 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { data: featureFlags } = useFeatureFlags();
 
   // If no user, don't show sidebar (login page, etc.)
   if (!user) {
     return <>{children}</>;
   }
+
+  const showSupportWidget = featureFlags?.support_widget_enabled ?? false;
 
   return (
     <div className="dashboard-layout">
@@ -46,6 +51,9 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           {children}
         </div>
       </main>
+
+      {/* Support Widget - conditionally rendered based on feature flag */}
+      {showSupportWidget && <SupportWidget user={user} />}
     </div>
   );
 }

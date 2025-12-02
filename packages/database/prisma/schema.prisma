@@ -22,11 +22,12 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  members      OrganizationMember[]
-  articles     Article[]
-  tags         Tag[]
-  invites      OrganizationInvite[]
-  joinRequests JoinRequest[]
+  members         OrganizationMember[]
+  articles        Article[]
+  tags            Tag[]
+  invites         OrganizationInvite[]
+  joinRequests    JoinRequest[]
+  supportFeedback SupportFeedback[]
 
   @@map("organizations")
 }
@@ -105,6 +106,7 @@ model Profile {
   articles               Article[]
   organizationMembership OrganizationMember?
   joinRequests           JoinRequest[]
+  supportFeedback        SupportFeedback[]
 
   @@map("profiles")
 }
@@ -554,4 +556,60 @@ model QuizOutputTag {
 
   @@unique([quizOutputId, tagId])
   @@map("quiz_output_tags")
+}
+
+// ============================================
+// FEATURE FLAGS
+// ============================================
+
+model FeatureFlag {
+  id          String   @id @default(uuid())
+  key         String   @unique // e.g., "support_widget_enabled"
+  enabled     Boolean  @default(false)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+// ============================================
+// SUPPORT FEEDBACK
+// ============================================
+
+model SupportFeedback {
+  id             String          @id @default(uuid())
+  profileId      String?
+  profile        Profile?        @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  organizationId String?
+  organization   Organization?   @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  type           FeedbackType
+  subject        String          @db.VarChar(255)
+  message        String          @db.Text
+  email          String?         // Optional contact email if not logged in
+  pageUrl        String?         @db.VarChar(500)
+
+  status         FeedbackStatus  @default(PENDING)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([profileId])
+  @@index([organizationId])
+  @@index([status])
+  @@map("support_feedback")
+}
+
+enum FeedbackType {
+  QUESTION
+  BUG_REPORT
+  FEATURE_REQUEST
+  GENERAL
+}
+
+enum FeedbackStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
 }

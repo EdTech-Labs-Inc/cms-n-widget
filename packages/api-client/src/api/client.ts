@@ -528,4 +528,12 @@ export const tagsApi = {
   },
 };
 
+// Feature Flags API
+export const featureFlagsApi = {
+  getAll: async (): Promise<Record<string, boolean>> => {
+    const { data } = await apiClient.get<{ flags: Record<string, boolean> }>('/api/feature-flags');
+    return data.flags || {};
+  },
+};
+
 export default apiClient;
