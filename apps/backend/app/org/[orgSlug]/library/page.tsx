@@ -1,95 +1,161 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { useSubmissions, useArticles } from '@/lib/api/hooks';
-import { Search, Loader2 } from 'lucide-react';
+import { useSubmissions, useArticles, useTags } from '@/lib/api/hooks';
+import { Search, Loader2, X } from 'lucide-react';
 import { MediaCard } from '@/components/media/MediaCard';
+import { FilterDropdown } from '@/components/ui/FilterDropdown';
+import type { Tag } from '@repo/api-client';
 
-type MediaType = 'all' | 'videos' | 'podcasts' | 'audio' | 'quizzes' | 'articles';
-type ApprovalStatus = 'all' | 'approved' | 'pending';
+type OutputStatus = 'PENDING' | 'PROCESSING' | 'SCRIPT_READY' | 'COMPLETED' | 'FAILED';
+
+interface MediaItem {
+  type: 'video' | 'podcast' | 'audio' | 'quiz' | 'article';
+  id: string;
+  title: string;
+  thumbnailUrl?: string;
+  duration: string | null;
+  articleTitle?: string;
+  submissionId?: string;
+  articleId?: string;
+  isApproved?: boolean;
+  status: OutputStatus;
+  createdAt: string;
+  tags: Tag[];
+  category?: string;
+}
 
 export default function OrgLibraryPage() {
   const params = useParams();
   const orgSlug = params.orgSlug as string;
-  const [activeFilter, setActiveFilter] = useState<MediaType>('all');
-  const [approvalFilter, setApprovalFilter] = useState<ApprovalStatus>('all');
+
+  // Filter state
+  const [approvalFilter, setApprovalFilter] = useState<string>(''); // single-select: '' | 'approved' | 'unapproved'
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Data fetching
   const { data, isLoading } = useSubmissions(orgSlug, 1, 100, true);
   const { data: articles = [], isLoading: articlesLoading } = useArticles(orgSlug);
+  const { data: orgTags = [] } = useTags(orgSlug);
 
-  // Extract all media items from submissions
-  const allVideos =
+  // Build a map of articleId -> unique tags from all outputs
+  const articleTagsMap = useMemo(() => {
+    const map = new Map<string, Tag[]>();
+    data?.submissions?.forEach((sub) => {
+      if (!sub.article) return;
+      const articleId = sub.article.id;
+      const existingTags = map.get(articleId) || [];
+
+      // Collect all tags from all output types (only from COMPLETED outputs)
+      const allOutputTags: Tag[] = [
+        ...(sub.videoOutputs?.filter((o) => o.status === 'COMPLETED').flatMap((o) => o.tags?.map((t) => t.tag) || []) || []),
+        ...(sub.audioOutputs?.filter((o) => o.status === 'COMPLETED').flatMap((o) => o.tags?.map((t) => t.tag) || []) || []),
+        ...(sub.podcastOutputs?.filter((o) => o.status === 'COMPLETED').flatMap((o) => o.tags?.map((t) => t.tag) || []) || []),
+        ...(sub.quizOutputs?.filter((o) => o.status === 'COMPLETED').flatMap((o) => o.tags?.map((t) => t.tag) || []) || []),
+        ...(sub.interactivePodcastOutputs?.filter((o) => o.status === 'COMPLETED').flatMap((o) => o.tags?.map((t) => t.tag) || []) || []),
+      ];
+
+      // Deduplicate by tag id
+      const uniqueTags = [...existingTags, ...allOutputTags].filter(
+        (tag, idx, arr) => arr.findIndex((t) => t.id === tag.id) === idx
+      );
+      map.set(articleId, uniqueTags);
+    });
+    return map;
+  }, [data?.submissions]);
+
+  // Extract all media items from submissions - only COMPLETED outputs
+  const allVideos: MediaItem[] =
     data?.submissions?.flatMap((sub) => {
       return (
-        sub.videoOutputs?.map((vo) => ({
-          type: 'video' as const,
-          id: vo.id,
-          title: vo.title || sub.article?.title || 'Untitled Video',
-          thumbnailUrl: vo.thumbnailUrl,
-          duration: vo.duration ? `${Math.floor(vo.duration / 60)}:${(vo.duration % 60).toString().padStart(2, '0')}` : null,
-          articleTitle: sub.article?.title,
-          submissionId: sub.id,
-          isApproved: vo.isApproved,
-          status: vo.status || 'COMPLETED',
-          createdAt: vo.createdAt,
-        })) || []
+        sub.videoOutputs
+          ?.filter((vo) => vo.status === 'COMPLETED')
+          ?.map((vo) => ({
+            type: 'video' as const,
+            id: vo.id,
+            title: vo.title || sub.article?.title || 'Untitled Video',
+            thumbnailUrl: vo.thumbnailUrl,
+            duration: vo.duration ? `${Math.floor(vo.duration / 60)}:${(vo.duration % 60).toString().padStart(2, '0')}` : null,
+            articleTitle: sub.article?.title,
+            submissionId: sub.id,
+            isApproved: vo.isApproved,
+            status: 'COMPLETED' as const,
+            createdAt: vo.createdAt,
+            tags: vo.tags?.map((t) => t.tag) || [],
+            category: sub.article?.category,
+          })) || []
       );
     }) || [];
 
-  const allPodcasts =
+  const allPodcasts: MediaItem[] =
     data?.submissions?.flatMap((sub) => {
       return (
-        sub.podcastOutputs?.map((po) => ({
-          type: 'podcast' as const,
-          id: po.id,
-          title: po.title || sub.article?.title || 'Untitled Podcast',
-          thumbnailUrl: po.thumbnailUrl,
-          duration: po.duration ? `${Math.floor(po.duration / 60)} min` : null,
-          articleTitle: sub.article?.title,
-          submissionId: sub.id,
-          isApproved: po.isApproved,
-          status: po.status || 'COMPLETED',
-          createdAt: po.createdAt,
-        })) || []
+        sub.podcastOutputs
+          ?.filter((po) => po.status === 'COMPLETED')
+          ?.map((po) => ({
+            type: 'podcast' as const,
+            id: po.id,
+            title: po.title || sub.article?.title || 'Untitled Podcast',
+            thumbnailUrl: po.thumbnailUrl,
+            duration: po.duration ? `${Math.floor(po.duration / 60)} min` : null,
+            articleTitle: sub.article?.title,
+            submissionId: sub.id,
+            isApproved: po.isApproved,
+            status: 'COMPLETED' as const,
+            createdAt: po.createdAt,
+            tags: po.tags?.map((t) => t.tag) || [],
+            category: sub.article?.category,
+          })) || []
       );
     }) || [];
 
-  const allAudio =
+  const allAudio: MediaItem[] =
     data?.submissions?.flatMap((sub) => {
       return (
-        sub.audioOutputs?.map((ao) => ({
-          type: 'audio' as const,
-          id: ao.id,
-          title: sub.article?.title || 'Untitled Audio',
-          duration: ao.duration ? `${Math.floor(ao.duration / 60)} min` : null,
-          articleTitle: sub.article?.title,
-          submissionId: sub.id,
-          isApproved: ao.isApproved,
-          status: ao.status || 'COMPLETED',
-          createdAt: ao.createdAt,
-        })) || []
+        sub.audioOutputs
+          ?.filter((ao) => ao.status === 'COMPLETED')
+          ?.map((ao) => ({
+            type: 'audio' as const,
+            id: ao.id,
+            title: sub.article?.title || 'Untitled Audio',
+            duration: ao.duration ? `${Math.floor(ao.duration / 60)} min` : null,
+            articleTitle: sub.article?.title,
+            submissionId: sub.id,
+            isApproved: ao.isApproved,
+            status: 'COMPLETED' as const,
+            createdAt: ao.createdAt,
+            tags: ao.tags?.map((t) => t.tag) || [],
+            category: sub.article?.category,
+          })) || []
       );
     }) || [];
 
-  const allQuizzes =
+  const allQuizzes: MediaItem[] =
     data?.submissions?.flatMap((sub) => {
       return (
-        sub.quizOutputs?.map((qo) => ({
-          type: 'quiz' as const,
-          id: qo.id,
-          title: sub.article?.title || 'Untitled Quiz',
-          duration: null,
-          articleTitle: sub.article?.title,
-          submissionId: sub.id,
-          isApproved: qo.isApproved,
-          status: qo.status || 'COMPLETED',
-          createdAt: qo.createdAt,
-        })) || []
+        sub.quizOutputs
+          ?.filter((qo) => qo.status === 'COMPLETED')
+          ?.map((qo) => ({
+            type: 'quiz' as const,
+            id: qo.id,
+            title: sub.article?.title || 'Untitled Quiz',
+            duration: null,
+            articleTitle: sub.article?.title,
+            submissionId: sub.id,
+            isApproved: qo.isApproved,
+            status: 'COMPLETED' as const,
+            createdAt: qo.createdAt,
+            tags: qo.tags?.map((t) => t.tag) || [],
+            category: sub.article?.category,
+          })) || []
       );
     }) || [];
 
-  const allArticles = articles.map((article) => ({
+  const allArticles: MediaItem[] = articles.map((article) => ({
     type: 'article' as const,
     id: article.id,
     title: article.title,
@@ -101,38 +167,63 @@ export default function OrgLibraryPage() {
     isApproved: article.isApproved,
     status: 'COMPLETED' as const,
     createdAt: article.createdAt,
+    tags: articleTagsMap.get(article.id) || [],
+    category: article.category,
   }));
 
   // Combine and filter
   let allMedia = [...allVideos, ...allPodcasts, ...allAudio, ...allQuizzes, ...allArticles];
 
-  if (activeFilter !== 'all') {
-    allMedia = allMedia.filter((item) => {
-      if (activeFilter === 'videos') return item.type === 'video';
-      if (activeFilter === 'podcasts') return item.type === 'podcast';
-      if (activeFilter === 'audio') return item.type === 'audio';
-      if (activeFilter === 'quizzes') return item.type === 'quiz';
-      if (activeFilter === 'articles') return item.type === 'article';
-      return true;
-    });
-  }
-
+  // Search filter
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
-    allMedia = allMedia.filter((item) => item.title.toLowerCase().includes(query) || item.articleTitle?.toLowerCase().includes(query));
+    allMedia = allMedia.filter(
+      (item) => item.title.toLowerCase().includes(query) || item.articleTitle?.toLowerCase().includes(query)
+    );
   }
 
-  // Filter by approval status
-  if (approvalFilter !== 'all') {
+  // Approval filter (single-select)
+  if (approvalFilter) {
     allMedia = allMedia.filter((item) => {
       if (approvalFilter === 'approved') return item.isApproved === true;
-      if (approvalFilter === 'pending') return item.isApproved === false;
+      if (approvalFilter === 'unapproved') return item.isApproved !== true;
       return true;
     });
+  }
+
+  // Type filter (OR logic)
+  if (typeFilter.length > 0) {
+    allMedia = allMedia.filter((item) => typeFilter.includes(item.type));
+  }
+
+  // Category filter (OR logic)
+  if (categoryFilter.length > 0) {
+    allMedia = allMedia.filter((item) => item.category && categoryFilter.includes(item.category));
+  }
+
+  // Tag filter (OR logic)
+  if (tagFilter.length > 0) {
+    if (tagFilter.includes('untagged')) {
+      // Special case: show only untagged items
+      allMedia = allMedia.filter((item) => item.tags.length === 0);
+    } else {
+      allMedia = allMedia.filter((item) => tagFilter.some((tagId) => item.tags.some((t) => t.id === tagId)));
+    }
   }
 
   // Sort by created date (newest first)
   allMedia.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  // Check if any filters are active
+  const hasActiveFilters =
+    approvalFilter !== '' || typeFilter.length > 0 || categoryFilter.length > 0 || tagFilter.length > 0;
+
+  const clearFilters = () => {
+    setApprovalFilter('');
+    setTypeFilter([]);
+    setCategoryFilter([]);
+    setTagFilter([]);
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -146,98 +237,85 @@ export default function OrgLibraryPage() {
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
-          <input type="text" placeholder="Search by title or article..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="input w-full pl-10" />
+          <input
+            type="text"
+            placeholder="Search by title or article..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="input w-full pl-10"
+          />
         </div>
 
-        {/* Approval Status Filter */}
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setApprovalFilter('all')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              approvalFilter === 'all' ? 'bg-blue-accent text-white' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setApprovalFilter('approved')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              approvalFilter === 'approved' ? 'bg-success text-white' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Approved
-          </button>
-          <button
-            onClick={() => setApprovalFilter('pending')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              approvalFilter === 'pending' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Pending Approval
-          </button>
-        </div>
+        {/* Filter Dropdowns */}
+        <div className="flex flex-wrap items-center gap-3">
+          <FilterDropdown
+            singleSelect
+            label="Status"
+            options={[
+              { value: '', label: 'All' },
+              { value: 'approved', label: 'Approved' },
+              { value: 'unapproved', label: 'Unapproved' },
+            ]}
+            value={approvalFilter}
+            onChange={setApprovalFilter}
+          />
 
-        {/* Media Type Filter */}
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setActiveFilter('all')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'all' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setActiveFilter('videos')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'videos' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Videos
-          </button>
-          <button
-            onClick={() => setActiveFilter('podcasts')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'podcasts' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Podcasts
-          </button>
-          <button
-            onClick={() => setActiveFilter('audio')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'audio' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Audio
-          </button>
-          <button
-            onClick={() => setActiveFilter('quizzes')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'quizzes' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Quizzes
-          </button>
-          <button
-            onClick={() => setActiveFilter('articles')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              activeFilter === 'articles' ? 'bg-gold text-navy-primary' : 'bg-white-10 text-text-secondary hover:bg-white-20'
-            }`}
-          >
-            Articles
-          </button>
+          <FilterDropdown
+            label="Type"
+            options={[
+              { value: 'video', label: 'Videos' },
+              { value: 'podcast', label: 'Podcasts' },
+              { value: 'audio', label: 'Audio' },
+              { value: 'quiz', label: 'Quizzes' },
+              { value: 'article', label: 'Articles' },
+            ]}
+            value={typeFilter}
+            onChange={setTypeFilter}
+          />
+
+          <FilterDropdown
+            label="Category"
+            options={[
+              { value: 'EVERGREEN', label: 'Evergreen' },
+              { value: 'PERIODIC_UPDATES', label: 'Periodic Updates' },
+              { value: 'MARKET_UPDATES', label: 'Market Updates' },
+            ]}
+            value={categoryFilter}
+            onChange={setCategoryFilter}
+          />
+
+          <FilterDropdown
+            label="Tags"
+            options={[
+              { value: 'untagged', label: 'Untagged' },
+              ...orgTags.map((t) => ({ value: t.id, label: t.name })),
+            ]}
+            value={tagFilter}
+            onChange={setTagFilter}
+          />
+
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="inline-flex items-center gap-1 px-3 py-2 text-sm text-text-muted hover:text-text-secondary transition-colors"
+            >
+              <X className="w-4 h-4" />
+              Clear filters
+            </button>
+          )}
         </div>
       </div>
 
       {/* Results */}
-      {(isLoading || articlesLoading) ? (
+      {isLoading || articlesLoading ? (
         <div className="flex justify-center items-center py-12">
           <Loader2 className="w-6 h-6 text-blue-accent animate-spin" />
         </div>
       ) : allMedia.length === 0 ? (
         <div className="card p-12 text-center">
-          <p className="text-text-muted">{searchQuery ? `No results found for "${searchQuery}"` : 'No media in library yet'}</p>
+          <p className="text-text-muted">
+            {searchQuery || hasActiveFilters ? 'No results found with current filters' : 'No media in library yet'}
+          </p>
         </div>
       ) : (
         <>
@@ -251,11 +329,11 @@ export default function OrgLibraryPage() {
                 id={item.id}
                 type={item.type}
                 title={item.title}
-                thumbnailUrl={'thumbnailUrl' in item ? item.thumbnailUrl : undefined}
+                thumbnailUrl={item.thumbnailUrl}
                 status={item.status}
                 isApproved={item.isApproved}
                 submissionId={item.submissionId}
-                articleId={'articleId' in item ? item.articleId : undefined}
+                articleId={item.articleId}
                 duration={item.duration}
                 orgSlug={orgSlug}
               />
