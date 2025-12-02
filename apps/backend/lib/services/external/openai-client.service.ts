@@ -177,6 +177,49 @@ export class OpenAIClientService {
   }
 
   /**
+   * Streaming chat completion with message history
+   * Returns an async generator that yields content chunks
+   *
+   * @example
+   * for await (const chunk of openai.streamChat({ messages })) {
+   *   process.stdout.write(chunk);
+   * }
+   */
+  async *streamChat(params: {
+    messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
+    model?: string;
+    temperature?: number;
+    maxTokens?: number;
+  }): AsyncGenerator<string, void, unknown> {
+    const model = params.model || this.defaultModel;
+    const temperature = params.temperature ?? this.defaultTemperature;
+
+    try {
+      const stream = await this.client.chat.completions.create({
+        model: model,
+        messages: params.messages,
+        temperature: temperature,
+        max_tokens: params.maxTokens,
+        stream: true,
+      });
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content;
+        if (content) {
+          yield content;
+        }
+      }
+    } catch (error) {
+      logger.error('OpenAI streaming chat failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        model,
+        messageCount: params.messages.length,
+      });
+      throw new Error(`Failed to stream chat: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
    * Generate an image using GPT-Image-1 (with DALL-E 3 fallback)
    * Creates a thumbnail image based on a title and custom prompt
    * Attempts to use gpt-image-1 first, falls back to dall-e-3 if there's an error

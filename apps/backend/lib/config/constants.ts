@@ -90,6 +90,22 @@ export const config = {
       },
     },
   },
+
+  // Email (Resend)
+  email: {
+    resendApiKey: process.env.RESEND_API_KEY || "",
+    fromAddress: process.env.SUPPORT_EMAIL_FROM || "noreply@example.com",
+    supportRecipients: (process.env.SUPPORT_EMAIL_TO || "")
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean),
+  },
+
+  // Support Widget
+  support: {
+    maxChatMessagesPerSession: 50,
+    feedbackRateLimitPerHour: 10,
+  },
 };
 
 // Validate required environment variables in production
