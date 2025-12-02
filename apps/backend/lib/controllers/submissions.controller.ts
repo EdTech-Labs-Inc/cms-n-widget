@@ -14,6 +14,7 @@ export const VideoCustomizationSchema = z.object({
   enableMagicZooms: z.boolean(),
   enableMagicBrolls: z.boolean(),
   magicBrollsPercentage: z.number().min(0).max(100),
+  generateBubbles: z.boolean().optional(),
 }).optional();
 
 export const CreateSubmissionSchema = z.object({
@@ -609,6 +610,7 @@ export const SubmissionsController = {
           enableMagicZooms: videoCustomization.enableMagicZooms ?? true,
           enableMagicBrolls: videoCustomization.enableMagicBrolls ?? true,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage ?? 40,
+          generateBubbles: videoCustomization.generateBubbles ?? true,
         },
       });
     }

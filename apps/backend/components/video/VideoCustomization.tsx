@@ -13,6 +13,7 @@ export interface VideoCustomizationConfig {
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
+  generateBubbles: boolean;
 }
 
 const AVATARS_PER_PAGE = 12;
@@ -119,6 +120,10 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
 
   const handleBrollsPercentageChange = (percentage: number) => {
     onChange({ ...value, magicBrollsPercentage: percentage });
+  };
+
+  const handleBubblesToggle = () => {
+    onChange({ ...value, generateBubbles: !value.generateBubbles });
   };
 
   const handlePreviousPage = () => {
@@ -395,6 +400,25 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
             </div>
           </div>
         )}
+      </div>
+
+      {/* Interactive Bubbles Toggle */}
+      <div>
+        <label className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 cursor-pointer transition-all duration-200">
+          <input
+            type="checkbox"
+            checked={value.generateBubbles}
+            onChange={handleBubblesToggle}
+            className="w-5 h-5 rounded border-white-40 bg-transparent checked:bg-blue-accent"
+            disabled={disabled}
+          />
+          <div className="flex-1">
+            <div className="font-medium text-text-primary flex items-center gap-2">
+              Interactive Bubbles <Sparkles className="w-4 h-4 text-gold" />
+            </div>
+            <div className="text-sm text-text-muted">Generate interactive quiz bubbles that appear during video playback</div>
+          </div>
+        </label>
       </div>
     </div>
   );
