@@ -4,7 +4,9 @@ import { submissionsApi } from '../client';
 // Query Keys
 const submissionQueryKey = (orgSlug: string, id: string) => ['submissions', orgSlug, id] as const;
 
-// Media Regeneration Hooks
+// ============================================
+// Media Regeneration Hooks (for COMPLETED outputs)
+// ============================================
 
 export function useRegenerateVideoMedia(orgSlug: string) {
   const queryClient = useQueryClient();
@@ -36,6 +38,84 @@ export function useRegenerateInteractivePodcastMedia(orgSlug: string) {
   return useMutation({
     mutationFn: ({ submissionId, ipId }: { submissionId: string; ipId: string }) =>
       submissionsApi.regenerateInteractivePodcastMedia(orgSlug, submissionId, ipId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+    },
+  });
+}
+
+// ============================================
+// Media Generation from Script Hooks (for SCRIPT_READY outputs)
+// These are used after user reviews/edits script and triggers media generation
+// ============================================
+
+export interface VideoCustomizationConfig {
+  characterId: string;
+  characterType: 'avatar' | 'talking_photo';
+  voiceId?: string;
+  enableCaptions?: boolean;
+  captionTemplate?: string;
+  enableMagicZooms?: boolean;
+  enableMagicBrolls?: boolean;
+  magicBrollsPercentage?: number;
+}
+
+export function useGenerateVideoMedia(orgSlug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      submissionId,
+      videoId,
+      videoCustomization,
+    }: {
+      submissionId: string;
+      videoId: string;
+      videoCustomization: VideoCustomizationConfig;
+    }) => submissionsApi.generateVideoMedia(orgSlug, submissionId, videoId, videoCustomization),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+    },
+  });
+}
+
+export function useGeneratePodcastMedia(orgSlug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      submissionId,
+      podcastId,
+      voiceSelection,
+    }: {
+      submissionId: string;
+      podcastId: string;
+      voiceSelection?: {
+        interviewerVoiceId?: string;
+        guestVoiceId?: string;
+      };
+    }) => submissionsApi.generatePodcastMedia(orgSlug, submissionId, podcastId, voiceSelection),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
+    },
+  });
+}
+
+export function useGenerateInteractivePodcastMedia(orgSlug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      submissionId,
+      ipId,
+      voiceSelection,
+    }: {
+      submissionId: string;
+      ipId: string;
+      voiceSelection?: {
+        voiceId?: string;
+      };
+    }) => submissionsApi.generateInteractivePodcastMedia(orgSlug, submissionId, ipId, voiceSelection),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: submissionQueryKey(orgSlug, variables.submissionId) });
     },

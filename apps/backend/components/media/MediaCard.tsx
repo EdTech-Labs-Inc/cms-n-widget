@@ -1,6 +1,6 @@
 'use client';
 
-import { Video, Mic, Headphones, FileCheck, Loader2, CheckCircle2, FileText } from 'lucide-react';
+import { Video, Mic, Headphones, FileCheck, Loader2, CheckCircle2, FileText, Edit3 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface MediaCardProps {
@@ -8,7 +8,7 @@ interface MediaCardProps {
   type: 'video' | 'audio' | 'podcast' | 'quiz' | 'interactive-podcast' | 'article';
   title: string;
   thumbnailUrl?: string | null;
-  status?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  status?: 'PENDING' | 'PROCESSING' | 'SCRIPT_READY' | 'COMPLETED' | 'FAILED';
   isApproved?: boolean;
   submissionId?: string;
   articleId?: string;
@@ -35,8 +35,11 @@ export function MediaCard({
   const router = useRouter();
   const isArticle = type === 'article';
   const isCompleted = isArticle || status === 'COMPLETED';
+  const isScriptReady = !isArticle && status === 'SCRIPT_READY';
   const isProcessing = !isArticle && (status === 'PENDING' || status === 'PROCESSING');
   const isFailed = !isArticle && status === 'FAILED';
+  // Script ready or completed cards are clickable
+  const isClickable = isCompleted || isScriptReady;
 
   const getIcon = () => {
     switch (type) {
@@ -97,7 +100,7 @@ export function MediaCard({
   };
 
   const handleClick = () => {
-    if (isCompleted) {
+    if (isClickable) {
       if (onClick) {
         onClick();
       } else {
@@ -144,10 +147,10 @@ export function MediaCard({
   return (
     <div
       className={`card p-4 transition-all duration-300 ${
-        isCompleted
+        isClickable
           ? 'hover:scale-[1.02] cursor-pointer group'
           : 'opacity-75'
-      } ${isApproved ? 'ring-2 ring-success/30' : ''}`}
+      } ${isApproved ? 'ring-2 ring-success/30' : ''} ${isScriptReady ? 'ring-2 ring-amber-400/50' : ''}`}
       onClick={handleClick}
     >
       {/* Icon/Thumbnail Area */}
@@ -183,7 +186,7 @@ export function MediaCard({
       {/* Title */}
       <h3
         className={`font-semibold text-text-primary mb-1 line-clamp-2 ${
-          isCompleted ? 'group-hover:text-blue-accent transition-colors' : ''
+          isClickable ? 'group-hover:text-blue-accent transition-colors' : ''
         }`}
       >
         {title}
@@ -213,6 +216,12 @@ export function MediaCard({
           )}
           {isFailed && (
             <span className="badge badge-failed">Failed</span>
+          )}
+          {isScriptReady && (
+            <span className="badge bg-amber-100 text-amber-700 border border-amber-300">
+              <Edit3 className="w-3 h-3 mr-1" />
+              Script Ready
+            </span>
           )}
           {isCompleted && !isApproved && (
             <span className="badge badge-pending">Pending Approval</span>

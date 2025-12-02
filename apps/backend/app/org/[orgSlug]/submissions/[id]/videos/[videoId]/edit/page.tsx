@@ -12,6 +12,7 @@ import {
   useUpdateVideoScript,
   useRegenerateVideoScript,
   useRegenerateVideoMedia,
+  useGenerateVideoMedia,
   useApproveVideo,
   useUnapproveVideo,
   useRegenerateVideoThumbnail,
@@ -25,7 +26,7 @@ import { VideoPlayer, type Video as VideoPlayerType, type Bubble } from '@repo/v
 import { ScriptEditor } from '@/components/script-editor/ScriptEditor';
 import { AIPromptBox } from '@/components/script-editor/AIPromptBox';
 import { RegenerateMediaButton } from '@/components/script-editor/RegenerateMediaButton';
-import { VideoCustomizationConfig } from '@/components/video/VideoCustomization';
+import { VideoCustomization, VideoCustomizationConfig } from '@/components/video/VideoCustomization';
 import { ThumbnailManager } from '@/components/media/ThumbnailManager';
 
 interface TagManagerProps {
@@ -127,6 +128,8 @@ export default function OrgVideoEditPage() {
   const [editableBubbles, setEditableBubbles] = useState<VideoBubble[]>([]);
   const [videoCustomization, setVideoCustomization] = useState<VideoCustomizationConfig>({
     characterId: '',
+    characterType: 'avatar',
+    voiceId: '',
     enableCaptions: true,
     captionTemplate: 'Ella',
     enableMagicZooms: true,
@@ -145,6 +148,7 @@ export default function OrgVideoEditPage() {
   const updateVideoScript = useUpdateVideoScript(orgSlug);
   const regenerateVideoScript = useRegenerateVideoScript(orgSlug);
   const regenerateVideoMedia = useRegenerateVideoMedia(orgSlug);
+  const generateVideoMedia = useGenerateVideoMedia(orgSlug);
   const approveVideo = useApproveVideo(orgSlug);
   const unapproveVideo = useUnapproveVideo(orgSlug);
   const regenerateVideoThumbnail = useRegenerateVideoThumbnail(orgSlug);
@@ -155,12 +159,14 @@ export default function OrgVideoEditPage() {
     const video = submission?.videoOutputs?.find((v) => v.id === videoId);
     if (video) {
       setVideoCustomization({
-        characterId: video.heygenCharacterId || '',
-        enableCaptions: video.enableCaptions ?? true,
-        captionTemplate: video.submagicTemplate || 'Ella',
-        enableMagicZooms: video.enableMagicZooms ?? true,
-        enableMagicBrolls: video.enableMagicBrolls ?? true,
-        magicBrollsPercentage: video.magicBrollsPercentage ?? 40,
+        characterId: (video as any).heygenCharacterId || '',
+        characterType: (video as any).heygenCharacterType || 'avatar',
+        voiceId: (video as any).heygenVoiceId || '',
+        enableCaptions: (video as any).enableCaptions ?? true,
+        captionTemplate: (video as any).submagicTemplate || 'Ella',
+        enableMagicZooms: (video as any).enableMagicZooms ?? true,
+        enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
+        magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
       });
     }
   }, [submission, videoId]);
@@ -345,6 +351,39 @@ export default function OrgVideoEditPage() {
     );
   };
 
+  // Handler for generating video from script (SCRIPT_READY → PROCESSING)
+  const handleGenerateVideo = () => {
+    if (!videoCustomization.characterId) {
+      toast.error('Select a character', 'Please select a character before generating the video.');
+      return;
+    }
+
+    generateVideoMedia.mutate(
+      {
+        submissionId,
+        videoId,
+        videoCustomization: {
+          characterId: videoCustomization.characterId,
+          characterType: videoCustomization.characterType || 'avatar',
+          voiceId: videoCustomization.voiceId,
+          enableCaptions: videoCustomization.enableCaptions,
+          captionTemplate: videoCustomization.captionTemplate,
+          enableMagicZooms: videoCustomization.enableMagicZooms,
+          enableMagicBrolls: videoCustomization.enableMagicBrolls,
+          magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success('Video generation started', 'Your video is being generated. This may take several minutes.');
+        },
+        onError: (error: any) => {
+          toast.error('Failed to generate video', error?.message || 'Please try again');
+        },
+      }
+    );
+  };
+
   // Transform data for preview
   const videoData: VideoPlayerType = {
     id: video.id,
@@ -355,6 +394,11 @@ export default function OrgVideoEditPage() {
     bubbles: (video.bubbles as unknown as Bubble[]) || [],
   };
 
+  // Status helpers
+  const isScriptReady = video.status === 'SCRIPT_READY';
+  const isProcessing = video.status === 'PROCESSING' || video.status === 'PENDING';
+  const isCompleted = video.status === 'COMPLETED';
+
   return (
     <>
       <MediaEditLayout
@@ -362,29 +406,64 @@ export default function OrgVideoEditPage() {
         backUrl={`/org/${orgSlug}/submissions/${submissionId}`}
         isApproved={video.isApproved}
         approvedAt={video.approvedAt}
-        onApprove={handleApprove}
-        onUnapprove={handleUnapprove}
+        onApprove={isCompleted ? handleApprove : undefined}
+        onUnapprove={isCompleted ? handleUnapprove : undefined}
         isApproving={approveVideo.isPending || unapproveVideo.isPending}
+        showPreviewButton={false}
       >
       <div className="space-y-6">
-        {/* Tags Section */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
-          <TagManager
-            tags={videoTags}
-            availableTags={allTags}
-            onAddTag={handleAddTag}
-            onRemoveTag={handleRemoveTag}
-            isLoading={addVideoTag.isPending || removeVideoTag.isPending}
-          />
-        </div>
+        {/* Status Banner for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-amber-500 rounded-full" />
+              <div>
+                <h3 className="text-amber-500 font-medium">Script Ready for Review</h3>
+                <p className="text-text-secondary text-sm">
+                  Review and edit the script below, configure your video settings, then generate the video.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Processing Banner */}
+        {isProcessing && (
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+              <div>
+                <h3 className="text-blue-500 font-medium">Video Processing</h3>
+                <p className="text-text-secondary text-sm">
+                  Your video is being generated. This may take several minutes.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tags Section - Always show for COMPLETED */}
+        {isCompleted && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
+            <TagManager
+              tags={videoTags}
+              availableTags={allTags}
+              onAddTag={handleAddTag}
+              onRemoveTag={handleRemoveTag}
+              isLoading={addVideoTag.isPending || removeVideoTag.isPending}
+            />
+          </div>
+        )}
 
         {/* Script Editor Section */}
         {video.script && (
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">Video Script</h2>
             <p className="text-text-secondary text-sm mb-4">
-              Edit the script that was used to generate this video. Save your changes and then regenerate the video if needed.
+              {isScriptReady
+                ? 'Review and edit the generated script. Once satisfied, configure your video settings below and generate the video.'
+                : 'Edit the script that was used to generate this video. Save your changes and then regenerate the video if needed.'}
             </p>
             <ScriptEditor
               initialScript={video.script}
@@ -394,26 +473,71 @@ export default function OrgVideoEditPage() {
               label="Script"
               placeholder="Enter video script (max 1400 characters for HeyGen)..."
               rows={10}
+              disabled={isProcessing}
             />
-            <AIPromptBox
-              onRegenerate={handleRegenerateScript}
-              isRegenerating={regenerateVideoScript.isPending}
-              label="AI Script Improvement"
-              placeholder="Describe how you want to improve the video script..."
-            />
-            <RegenerateMediaButton
-              onRegenerate={handleRegenerateMedia}
-              isRegenerating={regenerateVideoMedia.isPending || video.status === 'PROCESSING' || video.status === 'PENDING'}
-              mediaType="video"
-              disabled={video.status === 'PROCESSING' || video.status === 'PENDING'}
-              videoCustomization={videoCustomization}
-              onVideoCustomizationChange={setVideoCustomization}
-            />
+            {!isProcessing && (
+              <AIPromptBox
+                onRegenerate={handleRegenerateScript}
+                isRegenerating={regenerateVideoScript.isPending}
+                label="AI Script Improvement"
+                placeholder="Describe how you want to improve the video script..."
+              />
+            )}
+
+            {/* For COMPLETED videos - show regenerate media button */}
+            {isCompleted && (
+              <RegenerateMediaButton
+                onRegenerate={handleRegenerateMedia}
+                isRegenerating={regenerateVideoMedia.isPending || isProcessing}
+                mediaType="video"
+                disabled={isProcessing}
+                videoCustomization={videoCustomization}
+                onVideoCustomizationChange={setVideoCustomization}
+              />
+            )}
           </div>
         )}
 
-        {/* Video Player */}
-        {video.videoUrl && (
+        {/* Video Customization for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Video Settings</h2>
+            <p className="text-text-secondary text-sm mb-4">
+              Choose a character and configure video options before generating.
+            </p>
+            <VideoCustomization
+              value={videoCustomization}
+              onChange={setVideoCustomization}
+              disabled={isProcessing || generateVideoMedia.isPending}
+            />
+
+            {/* Generate Video Button */}
+            <div className="mt-6 pt-6 border-t border-white-10">
+              <button
+                onClick={handleGenerateVideo}
+                disabled={!videoCustomization.characterId || generateVideoMedia.isPending}
+                className="w-full py-3 px-4 bg-gradient-purple text-white font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {generateVideoMedia.isPending ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Generating Video...
+                  </>
+                ) : (
+                  'Generate Video'
+                )}
+              </button>
+              {!videoCustomization.characterId && (
+                <p className="text-amber-500 text-sm mt-2 text-center">
+                  Please select a character above to generate the video.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Video Player - Only show when COMPLETED */}
+        {isCompleted && video.videoUrl && (
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">Video</h2>
             <div className="relative max-w-3xl mx-auto">
@@ -422,8 +546,8 @@ export default function OrgVideoEditPage() {
           </div>
         )}
 
-        {/* Interactive Bubbles */}
-        {bubbles.length > 0 && (
+        {/* Interactive Bubbles - Only show when COMPLETED */}
+        {isCompleted && bubbles.length > 0 && (
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">
               Interactive Bubbles ({bubbles.length})
@@ -536,27 +660,29 @@ export default function OrgVideoEditPage() {
           </div>
         )}
 
-        {/* Thumbnail Manager */}
-        <ThumbnailManager
-          thumbnailUrl={video.thumbnailUrl}
-          itemTitle={video.title || submission.article?.title || 'Video'}
-          onRegenerateSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          onUploadSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          regenerateMutation={{
-            mutate: (data: { prompt: string }, options?: any) =>
-              regenerateVideoThumbnail.mutate({ submissionId, videoId, prompt: data.prompt }, options),
-            isPending: regenerateVideoThumbnail.isPending,
-          }}
-          uploadMutation={{
-            mutate: (file: File, options?: any) =>
-              uploadVideoThumbnail.mutate({ submissionId, videoId, file }, options),
-            isPending: uploadVideoThumbnail.isPending,
-          }}
-        />
+        {/* Thumbnail Manager - Only show when COMPLETED */}
+        {isCompleted && (
+          <ThumbnailManager
+            thumbnailUrl={video.thumbnailUrl}
+            itemTitle={video.title || submission.article?.title || 'Video'}
+            onRegenerateSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            onUploadSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            regenerateMutation={{
+              mutate: (data: { prompt: string }, options?: any) =>
+                regenerateVideoThumbnail.mutate({ submissionId, videoId, prompt: data.prompt }, options),
+              isPending: regenerateVideoThumbnail.isPending,
+            }}
+            uploadMutation={{
+              mutate: (file: File, options?: any) =>
+                uploadVideoThumbnail.mutate({ submissionId, videoId, file }, options),
+              isPending: uploadVideoThumbnail.isPending,
+            }}
+          />
+        )}
       </div>
     </MediaEditLayout>
 

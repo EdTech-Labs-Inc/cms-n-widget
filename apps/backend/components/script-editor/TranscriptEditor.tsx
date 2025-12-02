@@ -13,6 +13,7 @@ interface TranscriptEditorProps {
   onSave: (transcript: string) => void;
   onCancel?: () => void;
   isSaving?: boolean;
+  disabled?: boolean;
 }
 
 export function TranscriptEditor({
@@ -20,6 +21,7 @@ export function TranscriptEditor({
   onSave,
   onCancel,
   isSaving = false,
+  disabled = false,
 }: TranscriptEditorProps) {
   const [segments, setSegments] = useState<TranscriptSegment[]>([]);
   const [hasChanges, setHasChanges] = useState(false);
@@ -123,8 +125,8 @@ export function TranscriptEditor({
                     value={segment.text}
                     onChange={(e) => handleSegmentChange(index, e.target.value)}
                     rows={3}
-                    className="w-full p-2 bg-navy-dark border border-white-20 rounded-lg text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-blue-accent/50 resize-y"
-                    disabled={isSaving}
+                    className="w-full p-2 bg-navy-dark border border-white-20 rounded-lg text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-blue-accent/50 resize-y disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={isSaving || disabled}
                   />
                 </div>
               )}

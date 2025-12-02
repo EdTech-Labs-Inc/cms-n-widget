@@ -11,6 +11,7 @@ import {
   useUpdatePodcastScript,
   useRegeneratePodcastScript,
   useRegeneratePodcastMedia,
+  useGeneratePodcastMedia,
   useApprovePodcast,
   useUnapprovePodcast,
   useRegeneratePodcastThumbnail,
@@ -24,6 +25,7 @@ import { TranscriptEditor } from '@/components/script-editor/TranscriptEditor';
 import { AIPromptBox } from '@/components/script-editor/AIPromptBox';
 import { RegenerateMediaButton } from '@/components/script-editor/RegenerateMediaButton';
 import { ThumbnailManager } from '@/components/media/ThumbnailManager';
+import { VoiceSelector, getDefaultPodcastVoices, type PodcastVoiceSelection } from '@/components/audio/VoiceSelector';
 
 interface TagManagerProps {
   tags: Tag[];
@@ -118,6 +120,9 @@ export default function OrgPodcastEditPage() {
   const podcastId = params.podcastId as string;
   const toast = useToast();
 
+  // State for voice selection
+  const [voiceSelection, setVoiceSelection] = useState<PodcastVoiceSelection>(getDefaultPodcastVoices);
+
   // Data fetching
   const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
   const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
@@ -128,6 +133,7 @@ export default function OrgPodcastEditPage() {
   const updatePodcastScript = useUpdatePodcastScript(orgSlug);
   const regeneratePodcastScript = useRegeneratePodcastScript(orgSlug);
   const regeneratePodcastMedia = useRegeneratePodcastMedia(orgSlug);
+  const generatePodcastMedia = useGeneratePodcastMedia(orgSlug);
   const approvePodcast = useApprovePodcast(orgSlug);
   const unapprovePodcast = useUnapprovePodcast(orgSlug);
   const regeneratePodcastThumbnail = useRegeneratePodcastThumbnail(orgSlug);
@@ -264,84 +270,190 @@ export default function OrgPodcastEditPage() {
     );
   };
 
+  // Handler for generating podcast from transcript (SCRIPT_READY → PROCESSING)
+  const handleGeneratePodcast = () => {
+    generatePodcastMedia.mutate(
+      {
+        submissionId,
+        podcastId,
+        voiceSelection: {
+          interviewerVoiceId: voiceSelection.interviewerVoiceId,
+          guestVoiceId: voiceSelection.guestVoiceId,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success('Podcast generation started', 'Your podcast audio is being generated. This may take 2-5 minutes.');
+        },
+        onError: (error: any) => {
+          toast.error('Failed to generate podcast', error?.message || 'Please try again');
+        },
+      }
+    );
+  };
+
+  // Status helpers
+  const isScriptReady = podcast.status === 'SCRIPT_READY';
+  const isProcessing = podcast.status === 'PROCESSING' || podcast.status === 'PENDING';
+  const isCompleted = podcast.status === 'COMPLETED';
+
   return (
     <MediaEditLayout
       title={podcast.title || submission.article?.title || 'Podcast'}
       backUrl={`/org/${orgSlug}/submissions/${submissionId}`}
       isApproved={podcast.isApproved}
       approvedAt={podcast.approvedAt}
-      onApprove={handleApprove}
-      onUnapprove={handleUnapprove}
+      onApprove={isCompleted ? handleApprove : undefined}
+      onUnapprove={isCompleted ? handleUnapprove : undefined}
       isApproving={approvePodcast.isPending || unapprovePodcast.isPending}
       showPreviewButton={false}
     >
       <div className="space-y-6">
-        {/* Tags Section */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
-          <TagManager
-            tags={podcastTags}
-            availableTags={allTags}
-            onAddTag={handleAddTag}
-            onRemoveTag={handleRemoveTag}
-            isLoading={addPodcastTag.isPending || removePodcastTag.isPending}
-          />
-        </div>
+        {/* Status Banner for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-amber-500 rounded-full" />
+              <div>
+                <h3 className="text-amber-500 font-medium">Transcript Ready for Review</h3>
+                <p className="text-text-secondary text-sm">
+                  Review and edit the transcript below, then generate the podcast audio.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Processing Banner */}
+        {isProcessing && (
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+              <div>
+                <h3 className="text-blue-500 font-medium">Podcast Processing</h3>
+                <p className="text-text-secondary text-sm">
+                  Your podcast audio is being generated. This may take 2-5 minutes.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tags Section - Only show for COMPLETED */}
+        {isCompleted && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Tags</h2>
+            <TagManager
+              tags={podcastTags}
+              availableTags={allTags}
+              onAddTag={handleAddTag}
+              onRemoveTag={handleRemoveTag}
+              isLoading={addPodcastTag.isPending || removePodcastTag.isPending}
+            />
+          </div>
+        )}
 
         {/* Transcript Editor Section */}
         {podcast.transcript && (
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">Podcast Transcript</h2>
             <p className="text-text-secondary text-sm mb-4">
-              Edit the dialogue between the interviewer and guest. Save your changes and then regenerate the audio if needed.
+              {isScriptReady
+                ? 'Review and edit the generated transcript. Once satisfied, configure voice settings below and generate the podcast.'
+                : 'Edit the dialogue between the interviewer and guest. Save your changes and then regenerate the audio if needed.'}
             </p>
             <TranscriptEditor
               initialTranscript={podcast.transcript}
               onSave={handleSaveTranscript}
               isSaving={updatePodcastScript.isPending}
+              disabled={isProcessing}
             />
-            <AIPromptBox
-              onRegenerate={handleRegenerateScript}
-              isRegenerating={regeneratePodcastScript.isPending}
-              label="AI Transcript Improvement"
-              placeholder="Describe how you want to improve the podcast dialogue..."
-            />
-            <RegenerateMediaButton
-              onRegenerate={handleRegenerateMedia}
-              isRegenerating={regeneratePodcastMedia.isPending || podcast.status === 'PROCESSING' || podcast.status === 'PENDING'}
-              mediaType="podcast"
-              disabled={podcast.status === 'PROCESSING' || podcast.status === 'PENDING'}
-            />
+            {!isProcessing && (
+              <AIPromptBox
+                onRegenerate={handleRegenerateScript}
+                isRegenerating={regeneratePodcastScript.isPending}
+                label="AI Transcript Improvement"
+                placeholder="Describe how you want to improve the podcast dialogue..."
+              />
+            )}
+
+            {/* For COMPLETED podcasts - show regenerate media button */}
+            {isCompleted && (
+              <RegenerateMediaButton
+                onRegenerate={handleRegenerateMedia}
+                isRegenerating={regeneratePodcastMedia.isPending || isProcessing}
+                mediaType="podcast"
+                disabled={isProcessing}
+              />
+            )}
           </div>
         )}
 
-        {/* Podcast Player */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-text-primary mb-4">Podcast Audio</h2>
-          <PodcastPlayer output={podcast} />
-        </div>
+        {/* Voice Selection for SCRIPT_READY */}
+        {isScriptReady && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Voice Settings</h2>
+            <p className="text-text-secondary text-sm mb-4">
+              Choose voices for the interviewer and guest speakers.
+            </p>
+            <VoiceSelector
+              mode="podcast"
+              value={voiceSelection}
+              onChange={(value) => setVoiceSelection(value as PodcastVoiceSelection)}
+              disabled={isProcessing || generatePodcastMedia.isPending}
+            />
 
-        {/* Thumbnail Manager */}
-        <ThumbnailManager
-          thumbnailUrl={podcast.thumbnailUrl}
-          itemTitle={podcast.title || submission.article?.title || 'Podcast'}
-          onRegenerateSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          onUploadSuccess={(newThumbnailUrl) => {
-            // Optimistically update will be handled by query invalidation
-          }}
-          regenerateMutation={{
-            mutate: (data: { prompt: string }, options?: any) =>
-              regeneratePodcastThumbnail.mutate({ submissionId, podcastId, prompt: data.prompt }, options),
-            isPending: regeneratePodcastThumbnail.isPending,
-          }}
-          uploadMutation={{
-            mutate: (file: File, options?: any) =>
-              uploadPodcastThumbnail.mutate({ submissionId, podcastId, file }, options),
-            isPending: uploadPodcastThumbnail.isPending,
-          }}
-        />
+            {/* Generate Podcast Button */}
+            <div className="mt-6 pt-6 border-t border-white-10">
+              <button
+                onClick={handleGeneratePodcast}
+                disabled={generatePodcastMedia.isPending}
+                className="w-full py-3 px-4 bg-gradient-purple text-white font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {generatePodcastMedia.isPending ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Generating Podcast...
+                  </>
+                ) : (
+                  'Generate Podcast'
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Podcast Player - Only show when COMPLETED */}
+        {isCompleted && (
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Podcast Audio</h2>
+            <PodcastPlayer output={podcast} />
+          </div>
+        )}
+
+        {/* Thumbnail Manager - Only show when COMPLETED */}
+        {isCompleted && (
+          <ThumbnailManager
+            thumbnailUrl={podcast.thumbnailUrl}
+            itemTitle={podcast.title || submission.article?.title || 'Podcast'}
+            onRegenerateSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            onUploadSuccess={(newThumbnailUrl) => {
+              // Optimistically update will be handled by query invalidation
+            }}
+            regenerateMutation={{
+              mutate: (data: { prompt: string }, options?: any) =>
+                regeneratePodcastThumbnail.mutate({ submissionId, podcastId, prompt: data.prompt }, options),
+              isPending: regeneratePodcastThumbnail.isPending,
+            }}
+            uploadMutation={{
+              mutate: (file: File, options?: any) =>
+                uploadPodcastThumbnail.mutate({ submissionId, podcastId, file }, options),
+              isPending: uploadPodcastThumbnail.isPending,
+            }}
+          />
+        )}
       </div>
     </MediaEditLayout>
   );

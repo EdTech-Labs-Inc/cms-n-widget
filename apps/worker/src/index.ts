@@ -16,6 +16,14 @@ import { videoGeneratorService } from '../../backend/lib/services/media/video-ge
 import { videoWebhookService } from '../../backend/lib/services/media/video-webhook.service';
 import { interactivePodcastGeneratorService } from '../../backend/lib/services/media/interactive-podcast-generator.service';
 import { thumbnailService } from '../../backend/lib/services/media/thumbnail.service';
+// Script-first flow services
+import { videoScriptService } from '../../backend/lib/services/media/video-script.service';
+import { podcastScriptService } from '../../backend/lib/services/media/podcast-script.service';
+import { interactivePodcastScriptService } from '../../backend/lib/services/media/interactive-podcast-script.service';
+// Media-from-script services
+import { videoMediaService } from '../../backend/lib/services/media/video-media.service';
+import { podcastMediaService } from '../../backend/lib/services/media/podcast-media.service';
+import { interactivePodcastMediaService } from '../../backend/lib/services/media/interactive-podcast-media.service';
 import { submissionService } from '../../backend/lib/services/submission.service';
 import { queueService } from '../../backend/lib/services/core/queue.service';
 import { timeoutMonitorService } from '../../backend/lib/services/core/timeout-monitor.service';
@@ -41,6 +49,32 @@ interface ArticleThumbnailJobData {
 interface VideoCompletionJobData {
   heygenVideoId: string;
   videoUrl: string;
+}
+
+// Media-from-script job data interfaces
+interface VideoMediaJobData {
+  videoOutputId: string;
+  submissionId: string;
+  organizationId: string;
+}
+
+interface PodcastMediaJobData {
+  podcastOutputId: string;
+  submissionId: string;
+  organizationId: string;
+  voiceSelection?: {
+    interviewerVoiceId?: string;
+    guestVoiceId?: string;
+  };
+}
+
+interface InteractivePodcastMediaJobData {
+  interactivePodcastOutputId: string;
+  submissionId: string;
+  organizationId: string;
+  voiceSelection?: {
+    voiceId?: string;
+  };
 }
 
 /**
@@ -131,6 +165,71 @@ const processMediaJob = async (job: Job<MediaJobData | ArticleThumbnailJobData |
           data: { thumbnailUrl },
         });
         logger.info('Article thumbnail job completed', { articleId, thumbnailUrl });
+        break;
+      }
+
+      // ============================================
+      // SCRIPT-ONLY GENERATION JOBS (Script-First Flow)
+      // These generate scripts and set status to SCRIPT_READY
+      // ============================================
+
+      case JobTypes.GENERATE_VIDEO_SCRIPT: {
+        const { articleId, submissionId, outputId, language, organizationId } = job.data as MediaJobData;
+        await videoScriptService.generateVideoScript(articleId, outputId, language, organizationId);
+        // Update submission status after job completes
+        await submissionService.updateSubmissionStatus(submissionId);
+        logger.info('Job completed', { jobName: job.name, articleId, language, outputId });
+        break;
+      }
+
+      case JobTypes.GENERATE_PODCAST_TRANSCRIPT: {
+        const { articleId, submissionId, outputId, language, organizationId } = job.data as MediaJobData;
+        await podcastScriptService.generatePodcastTranscript(articleId, outputId, language, organizationId);
+        // Update submission status after job completes
+        await submissionService.updateSubmissionStatus(submissionId);
+        logger.info('Job completed', { jobName: job.name, articleId, language, outputId });
+        break;
+      }
+
+      case JobTypes.GENERATE_INTERACTIVE_PODCAST_SCRIPT: {
+        const { articleId, submissionId, outputId, language, organizationId } = job.data as MediaJobData;
+        await interactivePodcastScriptService.generateInteractivePodcastScript(articleId, outputId, language, organizationId);
+        // Update submission status after job completes
+        await submissionService.updateSubmissionStatus(submissionId);
+        logger.info('Job completed', { jobName: job.name, articleId, language, outputId });
+        break;
+      }
+
+      // ============================================
+      // MEDIA-FROM-SCRIPT GENERATION JOBS
+      // These generate media from approved scripts
+      // ============================================
+
+      case JobTypes.GENERATE_VIDEO_FROM_SCRIPT: {
+        const { videoOutputId, submissionId } = job.data as VideoMediaJobData;
+        // Video customization is already saved on the VideoOutput by the API endpoint
+        await videoMediaService.generateVideoFromScript(videoOutputId);
+        // Note: Video completion is handled by HeyGen webhook, not here
+        // Status will be updated when webhook fires
+        logger.info('Job completed - HeyGen video initiated', { jobName: job.name, videoOutputId });
+        break;
+      }
+
+      case JobTypes.GENERATE_PODCAST_FROM_TRANSCRIPT: {
+        const { podcastOutputId, submissionId, voiceSelection } = job.data as PodcastMediaJobData;
+        await podcastMediaService.generatePodcastFromTranscript(podcastOutputId, voiceSelection);
+        // Update submission status after job completes
+        await submissionService.updateSubmissionStatus(submissionId);
+        logger.info('Job completed', { jobName: job.name, podcastOutputId });
+        break;
+      }
+
+      case JobTypes.GENERATE_INTERACTIVE_PODCAST_FROM_SCRIPT: {
+        const { interactivePodcastOutputId, submissionId, voiceSelection } = job.data as InteractivePodcastMediaJobData;
+        await interactivePodcastMediaService.generateFromScript(interactivePodcastOutputId, voiceSelection);
+        // Update submission status after job completes
+        await submissionService.updateSubmissionStatus(submissionId);
+        logger.info('Job completed', { jobName: job.name, interactivePodcastOutputId });
         break;
       }
 

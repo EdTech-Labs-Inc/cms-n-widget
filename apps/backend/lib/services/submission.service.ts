@@ -15,6 +15,10 @@ import { logger } from '@repo/logging';
 export class SubmissionService {
   /**
    * Create a new submission and start media generation
+   *
+   * Script-first flow: Video, Podcast, and Interactive Podcast generate scripts first,
+   * entering SCRIPT_READY status. User reviews scripts and triggers media generation separately.
+   * Audio and Quiz continue with immediate full generation.
    */
   async createSubmission(params: {
     articleId: string;
@@ -22,19 +26,10 @@ export class SubmissionService {
     languages?: string[]; // Array of language codes: 'ENGLISH', 'MARATHI', 'HINDI', 'BENGALI'
     generateAudio?: boolean;
     generatePodcast?: boolean;
-    generateVideo?: boolean; // Includes video quiz bubbles automatically
+    generateVideo?: boolean; // Script-first: generates script, user triggers video later
     generateQuiz?: boolean;
     generateInteractivePodcast?: boolean;
-    videoCustomization?: {
-      characterId: string;
-      characterType: 'avatar' | 'talking_photo';
-      voiceId: string;
-      enableCaptions: boolean;
-      captionTemplate: string;
-      enableMagicZooms: boolean;
-      enableMagicBrolls: boolean;
-      magicBrollsPercentage: number;
-    };
+    // Note: videoCustomization removed - now set on edit page after script review
   }) {
     try {
       // Verify article exists and get organizationId
@@ -127,7 +122,7 @@ export class SubmissionService {
           );
         }
 
-        // Podcast
+        // Podcast - Script-first flow: generate transcript only, user reviews before audio generation
         if (submission.generatePodcast) {
           const podcastOutput = await prisma.podcastOutput.create({
             data: {
@@ -136,7 +131,7 @@ export class SubmissionService {
             },
           });
           jobPromises.push(
-            queueService.addPodcastGenerationJob({
+            queueService.addPodcastTranscriptGenerationJob({
               articleId: params.articleId,
               submissionId: submission.id,
               outputId: podcastOutput.id,
@@ -146,68 +141,34 @@ export class SubmissionService {
           );
         }
 
-        // Video (includes bubble quiz questions automatically)
-        // Note: VideoOutput record is created here with customization settings
-        // The video.service.ts will use these settings when generating the video
+        // Video - Script-first flow: generate script only, user reviews and configures character before video generation
+        // Note: Video customization (character, voice, etc.) will be set on the edit page, not during submission
         if (submission.generateVideo) {
-          // Get character details from customization
-          let characterType: string | undefined;
-          let characterId: string | undefined;
-          let voiceId: string | undefined;
-          let submagicTemplate: string | undefined;
-          let enableCaptions: boolean | undefined;
-          let enableMagicZooms: boolean | undefined;
-          let enableMagicBrolls: boolean | undefined;
-          let magicBrollsPercentage: number | undefined;
-
-          if (params.videoCustomization) {
-            logger.info('Video customization received', {
-              characterId: params.videoCustomization.characterId,
-              characterType: params.videoCustomization.characterType,
-              voiceId: params.videoCustomization.voiceId,
-              enableCaptions: params.videoCustomization.enableCaptions,
-              captionTemplate: params.videoCustomization.captionTemplate,
-            });
-
-            // Use character details directly from frontend (dynamic HeyGen avatars)
-            characterType = params.videoCustomization.characterType;
-            characterId = params.videoCustomization.characterId;
-            voiceId = params.videoCustomization.voiceId;
-            submagicTemplate = params.videoCustomization.captionTemplate;
-            enableCaptions = params.videoCustomization.enableCaptions;
-            enableMagicZooms = params.videoCustomization.enableMagicZooms;
-            enableMagicBrolls = params.videoCustomization.enableMagicBrolls;
-            magicBrollsPercentage = params.videoCustomization.magicBrollsPercentage;
-          }
-
-          // Create VideoOutput record with customization settings
-          // This will be used by video.service.ts when generating the video
           const videoOutput = await prisma.videoOutput.create({
             data: {
               submissionId: submission.id,
               status: 'PENDING',
-              heygenCharacterType: characterType,
-              heygenCharacterId: characterId,
-              heygenVoiceId: voiceId,
-              submagicTemplate: submagicTemplate,
-              enableCaptions: enableCaptions ?? true,
-              enableMagicZooms: enableMagicZooms ?? true,
-              enableMagicBrolls: enableMagicBrolls ?? true,
-              magicBrollsPercentage: magicBrollsPercentage ?? 40,
+              // Video customization settings will be set when user triggers media generation
+              // Default caption/broll settings that can be adjusted later
+              enableCaptions: true,
+              enableMagicZooms: true,
+              enableMagicBrolls: true,
+              magicBrollsPercentage: 40,
             },
           });
 
           jobPromises.push(
-            queueService.addVideoGenerationJob({
+            queueService.addVideoScriptGenerationJob({
               articleId: params.articleId,
               submissionId: submission.id,
+              outputId: videoOutput.id,
               language,
               organizationId,
             }),
           );
         }
 
-        // Interactive Podcast (standalone - no dependency on podcast)
+        // Interactive Podcast - Script-first flow: generate script only, user reviews before audio generation
         if (submission.generateInteractivePodcast) {
           const interactivePodcastOutput = await prisma.interactivePodcastOutput.create({
             data: {
@@ -216,7 +177,7 @@ export class SubmissionService {
             },
           });
           jobPromises.push(
-            queueService.addInteractivePodcastGenerationJob({
+            queueService.addInteractivePodcastScriptGenerationJob({
               articleId: params.articleId,
               submissionId: submission.id,
               outputId: interactivePodcastOutput.id,
@@ -388,6 +349,12 @@ export class SubmissionService {
   /**
    * Update submission status based on output statuses
    * Called by workers after completing a job
+   *
+   * Status logic with script-first flow:
+   * - COMPLETED: All outputs are COMPLETED
+   * - PROCESSING: Any output is PROCESSING or PENDING
+   * - PARTIAL_COMPLETE: Mix of COMPLETED/SCRIPT_READY/FAILED (no PROCESSING), or all scripts ready
+   * - FAILED: All outputs that aren't PENDING are FAILED
    */
   async updateSubmissionStatus(submissionId: string) {
     const submission = await this.getSubmission(submissionId);
@@ -403,13 +370,25 @@ export class SubmissionService {
     const allCompleted = statuses.every((status) => status === 'COMPLETED');
     const anyFailed = statuses.some((status) => status === 'FAILED');
     const anyProcessing = statuses.some((status) => status === 'PROCESSING');
+    const anyPending = statuses.some((status) => status === 'PENDING');
+    const anyScriptReady = statuses.some((status) => status === 'SCRIPT_READY');
+    const anyCompleted = statuses.some((status) => status === 'COMPLETED');
 
     let newStatus: 'COMPLETED' | 'FAILED' | 'PARTIAL_COMPLETE' | 'PROCESSING' = 'PROCESSING';
 
     if (allCompleted) {
+      // All outputs fully completed
       newStatus = 'COMPLETED';
-    } else if (anyFailed && !anyProcessing) {
-      newStatus = statuses.some((status) => status === 'COMPLETED') ? 'PARTIAL_COMPLETE' : 'FAILED';
+    } else if (anyProcessing || anyPending) {
+      // Still processing or waiting to start
+      newStatus = 'PROCESSING';
+    } else if (anyFailed) {
+      // Some failed, but nothing is still processing
+      newStatus = (anyCompleted || anyScriptReady) ? 'PARTIAL_COMPLETE' : 'FAILED';
+    } else if (anyScriptReady) {
+      // All active outputs are either COMPLETED or SCRIPT_READY (scripts waiting for review)
+      // This means immediate outputs (audio/quiz) are done, scripts are ready for review
+      newStatus = 'PARTIAL_COMPLETE';
     }
 
     await prisma.submission.update({

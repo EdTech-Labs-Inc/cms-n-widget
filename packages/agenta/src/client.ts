@@ -31,6 +31,14 @@ export class AgentaClient {
     this.cacheTTL = config.cacheTTL || 900000; // 15 minutes
     this.maxRetries = config.maxRetries || 3;
     this.cache = new Map();
+
+    // Log initialization
+    console.log('[Agenta] Client initialized:', {
+      baseUrl: this.baseUrl,
+      environment: this.environment,
+      hasApiKey: !!this.apiKey,
+      apiKeyLength: this.apiKey?.length || 0,
+    });
   }
 
   /**
@@ -103,6 +111,15 @@ export class AgentaClient {
 
     for (let attempt = 0; attempt < this.maxRetries; attempt++) {
       try {
+        // Log before making request
+        console.log('[Agenta] Fetching prompt:', {
+          slug,
+          attempt: attempt + 1,
+          maxRetries: this.maxRetries,
+          url: `${this.baseUrl}/api/variants/configs/fetch`,
+          hasApiKey: !!this.apiKey,
+        });
+
         const response = await fetch(`${this.baseUrl}/api/variants/configs/fetch`, {
           method: 'POST',
           headers: {
@@ -221,6 +238,15 @@ let _agentaClient: AgentaClient | null = null;
  */
 export function getAgentaClient(config?: Partial<AgentaClientConfig>): AgentaClient {
   if (!_agentaClient || config) {
+    // Log environment variable loading
+    console.log('[Agenta] Creating client singleton:', {
+      hasProvidedApiKey: !!config?.apiKey,
+      hasEnvApiKey: !!process.env.AGENTA_API_KEY,
+      envApiKeyLength: process.env.AGENTA_API_KEY?.length || 0,
+      envBaseUrl: process.env.AGENTA_BASE_URL || '(not set)',
+      envEnvironment: process.env.AGENTA_ENVIRONMENT || '(not set)',
+    });
+
     _agentaClient = new AgentaClient({
       apiKey: config?.apiKey || process.env.AGENTA_API_KEY || '',
       baseUrl: config?.baseUrl || process.env.AGENTA_BASE_URL || 'https://cloud.agenta.ai',

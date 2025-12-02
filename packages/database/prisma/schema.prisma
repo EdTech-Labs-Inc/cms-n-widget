@@ -424,6 +424,7 @@ model InteractivePodcastOutput {
 enum OutputStatus {
   PENDING
   PROCESSING
+  SCRIPT_READY
   COMPLETED
   FAILED
 }
