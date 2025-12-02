@@ -58,7 +58,7 @@ function ArticleDisplay({ article, audioData, quizData }: ArticleDisplayProps) {
 
   return (
     <div className="article-reader">
-      <BackButton />
+      <BackButton className="back-button--floating" />
 
       <article className="article-content">
         {article.image && (
