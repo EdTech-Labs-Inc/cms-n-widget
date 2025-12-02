@@ -135,6 +135,7 @@ export default function OrgVideoEditPage() {
     enableMagicZooms: true,
     enableMagicBrolls: true,
     magicBrollsPercentage: 40,
+    generateBubbles: true,
   });
 
   // Data fetching
@@ -167,6 +168,7 @@ export default function OrgVideoEditPage() {
         enableMagicZooms: (video as any).enableMagicZooms ?? true,
         enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
         magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
+        generateBubbles: (video as any).generateBubbles ?? true,
       });
     }
   }, [submission, videoId]);
@@ -371,6 +373,7 @@ export default function OrgVideoEditPage() {
           enableMagicZooms: videoCustomization.enableMagicZooms,
           enableMagicBrolls: videoCustomization.enableMagicBrolls,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
+          generateBubbles: videoCustomization.generateBubbles,
         },
       },
       {

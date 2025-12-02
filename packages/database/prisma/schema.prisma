@@ -288,6 +288,9 @@ model VideoOutput {
   enableMagicBrolls     Boolean @default(true)
   magicBrollsPercentage Int?    @default(40) // 0-100
 
+  // Bubble generation configuration
+  generateBubbles       Boolean @default(true)
+
   // Approval tracking
   isApproved Boolean   @default(false)
   approvedAt DateTime?

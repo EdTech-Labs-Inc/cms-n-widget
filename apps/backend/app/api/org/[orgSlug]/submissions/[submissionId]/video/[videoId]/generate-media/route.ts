@@ -14,6 +14,7 @@ const VideoCustomizationSchema = z.object({
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
+  generateBubbles: z.boolean().optional().default(true),
 });
 
 /**
@@ -129,6 +130,7 @@ export async function POST(
         enableMagicZooms: videoCustomization.enableMagicZooms,
         enableMagicBrolls: videoCustomization.enableMagicBrolls,
         magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
+        generateBubbles: videoCustomization.generateBubbles,
         error: null,
       },
     });

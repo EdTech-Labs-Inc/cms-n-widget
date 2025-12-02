@@ -71,16 +71,21 @@ export class VideoWebhookService {
       const { duration, transcript, wordTimings } = await this.getVideoMetadata(uploadResult.s3Url, language);
 
       // Generate bubble questions in the submission's language using word timings
-      const bubbles = await bubbleGeneratorService.generateVideoBubbles(
-        videoOutput.script || '',
-        article.content,
-        transcript,
-        duration,
-        language,
-        wordTimings
-      );
-
-      logger.info('Generated bubble questions for video', { bubbleCount: bubbles.length });
+      // Only generate if generateBubbles is not explicitly disabled
+      let bubbles: any[] = [];
+      if (videoOutput.generateBubbles !== false) {
+        bubbles = await bubbleGeneratorService.generateVideoBubbles(
+          videoOutput.script || '',
+          article.content,
+          transcript,
+          duration,
+          language,
+          wordTimings
+        );
+        logger.info('Generated bubble questions for video', { bubbleCount: bubbles.length });
+      } else {
+        logger.info('Bubble generation skipped (generateBubbles=false)', { videoOutputId: videoOutput.id });
+      }
 
       // Generate thumbnail for video
       let thumbnailUrl: string | null = null;
