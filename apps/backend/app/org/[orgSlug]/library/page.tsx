@@ -30,8 +30,8 @@ export default function OrgLibraryPage() {
   const params = useParams();
   const orgSlug = params.orgSlug as string;
 
-  // Filter state - all multi-select arrays
-  const [approvalFilter, setApprovalFilter] = useState<string[]>([]);
+  // Filter state
+  const [approvalFilter, setApprovalFilter] = useState<string>(''); // single-select: '' | 'approved' | 'unapproved'
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const [tagFilter, setTagFilter] = useState<string[]>([]);
@@ -182,12 +182,12 @@ export default function OrgLibraryPage() {
     );
   }
 
-  // Approval filter (OR logic)
-  if (approvalFilter.length > 0) {
+  // Approval filter (single-select)
+  if (approvalFilter) {
     allMedia = allMedia.filter((item) => {
-      if (approvalFilter.includes('approved') && item.isApproved === true) return true;
-      if (approvalFilter.includes('unapproved') && item.isApproved !== true) return true;
-      return false;
+      if (approvalFilter === 'approved') return item.isApproved === true;
+      if (approvalFilter === 'unapproved') return item.isApproved !== true;
+      return true;
     });
   }
 
@@ -216,10 +216,10 @@ export default function OrgLibraryPage() {
 
   // Check if any filters are active
   const hasActiveFilters =
-    approvalFilter.length > 0 || typeFilter.length > 0 || categoryFilter.length > 0 || tagFilter.length > 0;
+    approvalFilter !== '' || typeFilter.length > 0 || categoryFilter.length > 0 || tagFilter.length > 0;
 
   const clearFilters = () => {
-    setApprovalFilter([]);
+    setApprovalFilter('');
     setTypeFilter([]);
     setCategoryFilter([]);
     setTagFilter([]);
@@ -249,8 +249,10 @@ export default function OrgLibraryPage() {
         {/* Filter Dropdowns */}
         <div className="flex flex-wrap items-center gap-3">
           <FilterDropdown
+            singleSelect
             label="Status"
             options={[
+              { value: '', label: 'All' },
               { value: 'approved', label: 'Approved' },
               { value: 'unapproved', label: 'Unapproved' },
             ]}

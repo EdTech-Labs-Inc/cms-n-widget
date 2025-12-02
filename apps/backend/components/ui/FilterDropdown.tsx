@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Check, X } from 'lucide-react';
 
 export interface FilterOption {
   value: string;
@@ -27,10 +27,11 @@ type FilterDropdownProps = {
   label: string;
   options: FilterOption[];
   placeholder?: string;
+  maxVisibleOptions?: number; // Max options before scroll, defaults to 8
 } & (MultiSelectProps | SingleSelectProps);
 
 export function FilterDropdown(props: FilterDropdownProps) {
-  const { label, options, placeholder, singleSelect } = props;
+  const { label, options, placeholder, singleSelect, maxVisibleOptions = 8 } = props;
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +66,12 @@ export function FilterDropdown(props: FilterDropdownProps) {
     }
   };
 
+  const handleClearSelection = () => {
+    if (!singleSelect) {
+      (props as MultiSelectProps).onChange([]);
+    }
+  };
+
   const getButtonLabel = () => {
     if (valueArray.length === 0) {
       return placeholder || label;
@@ -77,6 +84,12 @@ export function FilterDropdown(props: FilterDropdownProps) {
   };
 
   const hasSelection = valueArray.length > 0;
+
+  // Calculate max height based on option count (approx 36px per option + clear button if needed)
+  const optionHeight = 36;
+  const clearButtonHeight = !singleSelect && hasSelection ? optionHeight + 1 : 0; // +1 for border
+  const maxHeight = maxVisibleOptions * optionHeight + clearButtonHeight;
+  const needsScroll = options.length > maxVisibleOptions;
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -94,32 +107,50 @@ export function FilterDropdown(props: FilterDropdownProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 w-full min-w-[180px] mt-1 bg-black/90 backdrop-blur-xl border border-white-15 rounded-lg shadow-lg overflow-hidden">
-          {options.map((option) => {
-            const isSelected = valueArray.includes(option.value);
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => handleOptionClick(option.value)}
-                className={`w-full px-4 py-2 text-left text-sm transition-colors flex items-center gap-3 ${
-                  isSelected ? 'bg-blue-accent/20 text-blue-accent' : 'text-text-primary hover:bg-white-10'
-                }`}
-              >
-                {!singleSelect && (
-                  <div
-                    className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                      isSelected ? 'bg-blue-accent border-blue-accent' : 'border-white-30'
-                    }`}
-                  >
-                    {isSelected && <Check className="w-3 h-3 text-white" />}
-                  </div>
-                )}
-                {option.icon && <span>{option.icon}</span>}
-                <span>{option.label}</span>
-              </button>
-            );
-          })}
+        <div
+          className="absolute z-20 w-full min-w-[180px] mt-1 bg-black/90 backdrop-blur-xl border border-white-15 rounded-lg shadow-lg overflow-hidden"
+          style={{ maxHeight: needsScroll ? `${maxHeight}px` : undefined }}
+        >
+          {/* Clear selection button for multi-select when items are selected */}
+          {!singleSelect && hasSelection && (
+            <button
+              type="button"
+              onClick={handleClearSelection}
+              className="w-full px-4 py-2 text-left text-sm transition-colors flex items-center gap-2 text-text-muted hover:bg-white-10 border-b border-white-10"
+            >
+              <X className="w-3 h-3" />
+              <span>Clear selection</span>
+            </button>
+          )}
+
+          {/* Scrollable options container */}
+          <div className={needsScroll ? 'overflow-y-auto' : ''} style={{ maxHeight: needsScroll ? `${maxVisibleOptions * optionHeight}px` : undefined }}>
+            {options.map((option) => {
+              const isSelected = valueArray.includes(option.value);
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleOptionClick(option.value)}
+                  className={`w-full px-4 py-2 text-left text-sm transition-colors flex items-center gap-3 ${
+                    isSelected ? 'bg-blue-accent/20 text-blue-accent' : 'text-text-primary hover:bg-white-10'
+                  }`}
+                >
+                  {!singleSelect && (
+                    <div
+                      className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                        isSelected ? 'bg-blue-accent border-blue-accent' : 'border-white-30'
+                      }`}
+                    >
+                      {isSelected && <Check className="w-3 h-3 text-white" />}
+                    </div>
+                  )}
+                  {option.icon && <span>{option.icon}</span>}
+                  <span>{option.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
