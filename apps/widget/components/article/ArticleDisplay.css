@@ -8,45 +8,6 @@
   color: white;
 }
 
-.floating-back-button {
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.floating-back-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: var(--gold-secondary);
-  transform: scale(1.1);
-}
-
-.floating-back-button-icon {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px;
-  min-height: 24px;
-  max-width: 24px;
-  max-height: 24px;
-  color: white;
-  flex-shrink: 0;
-}
-
-
-
 .article-content {
   max-width: 800px;
   margin: 0 auto;
@@ -546,14 +507,6 @@
 }
 
 @media (max-width: 768px) {
-  .floating-back-button {
-    top: 16px;
-    left: 16px;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-  }
-
   .article-hero {
     height: 200px;
   }

@@ -1,6 +1,5 @@
-/* Base styles for BackButton */
-.back-button-for-real {
-  position: fixed;
+/* Base styles for BackButton - NO position: fixed (context-dependent) */
+.back-button {
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 50%;
@@ -9,69 +8,74 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-  z-index: 1001;
   -webkit-tap-highlight-color: transparent;
 }
 
-.back-button-for-real:hover {
+.back-button:hover {
   background-color: rgba(0, 0, 0, 0.7);
   transform: scale(1.1);
 }
 
-.back-button-for-real:active {
+.back-button:active {
   transform: scale(0.95);
 }
 
+/* Floating variant - use when button should float over content */
+.back-button--floating {
+  position: fixed;
+  z-index: 1001;
+}
+
 /* Variant styles */
-.back-button-for-real--dark {
+.back-button--dark {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
 
-.back-button-for-real--dark:hover {
+.back-button--dark:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.back-button-for-real--light {
+.back-button--light {
   background-color: rgba(255, 255, 255, 0.9);
   color: black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.back-button-for-real--light:hover {
+.back-button--light:hover {
   background-color: rgba(255, 255, 255, 1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Size styles */
-.back-button-for-real--small {
+.back-button--small {
   width: 32px;
   height: 32px;
 }
 
-.back-button-for-real--medium {
+.back-button--medium {
   width: 40px;
   height: 40px;
 }
 
-.back-button-for-real--large {
+.back-button--large {
   width: 48px;
   height: 48px;
 }
 
 /* Icon styles */
-.back-button-for-real__icon {
+.back-button__icon {
   width: 60%;
   height: 60%;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .back-button-for-real {
+  .back-button {
     opacity: 0.9;
   }
-  
-  .back-button-for-real:hover {
+
+  .back-button:hover {
     transform: none;
   }
 }

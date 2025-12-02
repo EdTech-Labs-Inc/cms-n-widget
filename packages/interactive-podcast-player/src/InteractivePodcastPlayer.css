@@ -34,7 +34,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.back-button {
+.ipp-back-button {
   background: rgba(217, 156, 87, 0.1);
   border: 1px solid rgba(217, 156, 87, 0.2);
   cursor: pointer;
@@ -50,7 +50,7 @@
   margin-bottom: 1rem;
 }
 
-.back-button:hover {
+.ipp-back-button:hover {
   background: rgba(217, 156, 87, 0.2);
   border-color: var(--gold-secondary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);

@@ -124,7 +124,7 @@ function VideoPlayerWrapper({ video }: VideoPlayerWrapperProps) {
 
   return (
     <div className="svp-container">
-      <BackButton onClick={handleBack} />
+      <BackButton onClick={handleBack} className="back-button--floating" />
       <div className="svp-video-wrapper">
         <VideoPlayer
           video={video}
