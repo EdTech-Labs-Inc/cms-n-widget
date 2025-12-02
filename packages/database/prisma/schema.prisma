@@ -187,6 +187,7 @@ enum Language {
   MARATHI
   HINDI
   BENGALI
+  GUJARATI
 }
 
 // ============================================

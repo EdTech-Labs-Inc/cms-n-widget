@@ -150,6 +150,12 @@ export const LANGUAGE_CODES = {
     awsTranscribe: 'bn-IN',
     elevenlabs: 'bn',
   },
+  GUJARATI: {
+    name: 'Gujarati',
+    code: 'gu',
+    awsTranscribe: 'gu-IN',
+    elevenlabs: 'gu',
+  },
 } as const;
 
 /**

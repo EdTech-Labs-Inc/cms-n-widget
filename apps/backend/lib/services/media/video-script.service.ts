@@ -104,6 +104,7 @@ export class VideoScriptService {
       MARATHI: 'Marathi',
       HINDI: 'Hindi',
       BENGALI: 'Bengali',
+      GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
 

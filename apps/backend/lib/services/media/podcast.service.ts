@@ -139,6 +139,7 @@ export class PodcastService {
       MARATHI: 'Marathi',
       HINDI: 'Hindi',
       BENGALI: 'Bengali',
+      GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
 
@@ -165,6 +166,7 @@ export class PodcastService {
       MARATHI: 'Marathi',
       HINDI: 'Hindi',
       BENGALI: 'Bengali',
+      GUJARATI: 'Gujarati',
     };
     const languageName = languageMap[language] || 'English';
 

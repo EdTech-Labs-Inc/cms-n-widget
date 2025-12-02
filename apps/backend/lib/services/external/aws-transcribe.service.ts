@@ -227,6 +227,7 @@ import {
         MARATHI: 'hi-IN' as LanguageCode, // AWS doesn't have Marathi, use Hindi
         HINDI: 'hi-IN' as LanguageCode,
         BENGALI: 'bn-IN' as LanguageCode,
+        GUJARATI: 'gu-IN' as LanguageCode,
       };
   
       return languageMap[language] || ('en-US' as LanguageCode);

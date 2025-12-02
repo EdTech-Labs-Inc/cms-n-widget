@@ -5,6 +5,7 @@ const LANGUAGES = [
   { code: 'HINDI', label: 'Hindi' },
   { code: 'MARATHI', label: 'Marathi' },
   { code: 'BENGALI', label: 'Bengali' },
+  { code: 'GUJARATI', label: 'Gujarati' },
 ];
 
 interface LanguageSelectorProps {
