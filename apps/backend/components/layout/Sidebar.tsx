@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Plus, FolderOpen, Library, Settings, X } from 'lucide-react';
+import { Home, Plus, FolderOpen, Library, Settings, Tags, X } from 'lucide-react';
 import { UserMenu } from '@/components/auth/UserMenu';
 
 interface SidebarProps {
@@ -28,6 +28,7 @@ export function Sidebar({ isOpen, onClose, user }: SidebarProps) {
     { href: `${basePath}/dashboard`, label: 'Home', icon: Home },
     { href: `${basePath}/articles`, label: 'Articles', icon: FolderOpen },
     { href: `${basePath}/library`, label: 'Library', icon: Library },
+    { href: `${basePath}/tags`, label: 'Tag Management', icon: Tags },
     { href: `${basePath}/settings`, label: 'Settings', icon: Settings },
   ];
 
