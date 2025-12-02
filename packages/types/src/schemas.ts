@@ -66,7 +66,7 @@ export const VideoScriptsSchema = z.object({
 // Video bubble (quiz question) schema
 export const VideoBubbleSchema = z.object({
   appearsAt: z.number().min(0), // Milliseconds
-  type: z.enum(['MCQ', 'TRUE_FALSE', 'FILL_BLANK']),
+  type: z.enum(['MCQ', 'TRUE_FALSE']),
   question: z.string().min(1),
   options: z.array(z.string()).optional(), // For MCQ
   correctAnswer: z.union([z.number(), z.boolean(), z.string()]),
