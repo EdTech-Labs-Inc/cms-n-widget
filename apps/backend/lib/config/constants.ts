@@ -61,15 +61,15 @@ export const config = {
     cacheTTL: parseInt(process.env.AGENTA_CACHE_TTL || "900000", 10), // 15 minutes
   },
 
-  // Storage (S3/R2)
+  // Storage (AWS S3)
   // Note: In production with SST, credentials are not needed (uses IAM role)
-  // For local development, you can set S3_ACCESS_KEY and S3_SECRET_KEY in .env
+  // For local development, you can set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in .env
   storage: {
-    bucket: process.env.S3_BUCKET || "",
-    accessKeyId: process.env.S3_ACCESS_KEY || "",
-    secretAccessKey: process.env.S3_SECRET_KEY || "",
-    region: process.env.S3_REGION || "ap-south-1",
-    endpoint: process.env.S3_ENDPOINT, // For Cloudflare R2
+    bucket: process.env.AWS_S3_BUCKET_NAME || "",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+    region: process.env.AWS_REGION || "ap-south-1",
+    endpoint: process.env.S3_ENDPOINT, // For Cloudflare R2 or custom endpoints
     cloudfrontBaseUrl: process.env.CLOUDFRONT_BASE_URL, // CloudFront distribution URL (e.g., https://d1234567890abc.cloudfront.net)
   },
 

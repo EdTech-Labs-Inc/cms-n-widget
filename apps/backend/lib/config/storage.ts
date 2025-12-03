@@ -2,7 +2,7 @@ import { S3Client } from '@aws-sdk/client-s3';
 
 // S3 Client configuration
 // Production (SST): Uses IAM role automatically, no credentials needed
-// Development: Can optionally provide S3_ACCESS_KEY and S3_SECRET_KEY
+// Development: Can optionally provide AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 const s3Config: any = {
   region: process.env.AWS_REGION || 'ap-south-1',
 };
