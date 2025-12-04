@@ -64,6 +64,11 @@ declare module "sst" {
       "type": "sst.aws.Redis"
       "username": string
     }
+    "backend-service": {
+      "service": string
+      "type": "sst.aws.Service"
+      "url": string
+    }
     "backend-vpc2": {
       "type": "sst.aws.Vpc"
     }
