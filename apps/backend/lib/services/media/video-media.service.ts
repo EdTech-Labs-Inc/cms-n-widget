@@ -1,4 +1,6 @@
 import { heygenService } from '../external/heygen.service';
+import { elevenlabsService } from '../external/elevenlabs.service';
+import { storageService } from '../core/storage.service';
 import { prisma } from '../../config/database';
 import { logger } from '@repo/logging';
 
@@ -9,7 +11,9 @@ import { logger } from '@repo/logging';
  * 1. Script was generated first (by video-script.service.ts)
  * 2. User reviewed and edited the script
  * 3. User configured video settings (character, voice, captions)
- * 4. This service generates the actual video with HeyGen
+ * 4. This service generates audio with ElevenLabs (v3 model)
+ * 5. Audio is uploaded to S3 for public access
+ * 6. HeyGen generates video with lip-sync to the audio
  */
 export class VideoMediaService {
   /**
@@ -35,13 +39,19 @@ export class VideoMediaService {
     try {
       logger.info('Generating video from approved script', { videoOutputId });
 
-      // Get the video output with its script
+      // Get the video output with its script and organization info
       const videoOutput = await prisma.videoOutput.findUnique({
         where: { id: videoOutputId },
         include: {
           submission: {
             include: {
-              article: true,
+              article: {
+                select: {
+                  id: true,
+                  title: true,
+                  organizationId: true,
+                },
+              },
             },
           },
         },
@@ -115,22 +125,59 @@ export class VideoMediaService {
         }
       }
 
-      logger.info('Calling HeyGen to generate video', {
+      // Step 1: Generate audio with ElevenLabs (using v3 model)
+      logger.info('Generating audio with ElevenLabs', {
+        videoOutputId,
+        scriptLength: videoOutput.script.length,
+        voiceId: voiceId ?? '(using default)',
+      });
+
+      const audioBuffer = await elevenlabsService.textToSpeech({
+        text: videoOutput.script,
+        voiceId: voiceId,
+      });
+
+      logger.info('ElevenLabs audio generated', {
+        videoOutputId,
+        audioSize: audioBuffer.length,
+      });
+
+      // Step 2: Upload audio to S3 for public access
+      const organizationId = videoOutput.submission.article.organizationId;
+      const audioResult = await storageService.uploadAudio(
+        audioBuffer,
+        videoOutput.submissionId,
+        'video-voiceover.mp3',
+        organizationId
+      );
+
+      logger.info('Audio uploaded to S3', {
+        videoOutputId,
+        cloudfrontUrl: audioResult.cloudfrontUrl,
+      });
+
+      // Store the ElevenLabs audio URL
+      await prisma.videoOutput.update({
+        where: { id: videoOutputId },
+        data: {
+          elevenlabsAudioUrl: audioResult.cloudfrontUrl,
+        },
+      });
+
+      // Step 3: Call HeyGen with audio URL (lip-sync mode)
+      logger.info('Calling HeyGen to generate video with audio URL', {
         videoOutputId,
         characterType,
         characterId,
-        voiceId: voiceId ?? '(using defaults)',
-        scriptLength: videoOutput.script.length,
+        audioUrl: audioResult.cloudfrontUrl,
         title: videoOutput.title,
       });
 
-      // Call HeyGen to generate video
       const { videoId } = await heygenService.generateVideo({
-        script: videoOutput.script,
+        audioUrl: audioResult.cloudfrontUrl,
         title: videoOutput.title || videoOutput.submission.article.title,
         characterType: characterType as 'talking_photo' | 'avatar',
         characterId,
-        voiceId,
       });
 
       logger.info('HeyGen video initiated', {

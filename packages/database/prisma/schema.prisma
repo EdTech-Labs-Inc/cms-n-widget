@@ -284,6 +284,9 @@ model VideoOutput {
   heygenCharacterId   String? // talking_photo_id or avatar_id from HeyGen
   heygenVoiceId       String? // voice_id from HeyGen
 
+  // ElevenLabs audio for video generation
+  elevenlabsAudioUrl  String? // CloudFront URL of ElevenLabs-generated audio
+
   // Submagic editing configuration
   submagicTemplate      String? // e.g., "Ella", "Sara", "Daniel", "Tracy"
   enableCaptions        Boolean @default(true)
