@@ -52,7 +52,7 @@ export const OPENAI_CONFIG = {
 export const ELEVENLABS_CONFIG = {
   apiKey: process.env.ELEVENLABS_API_KEY || '',
   defaultVoiceId: process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL',
-  defaultModel: 'eleven_multilingual_v2',
+  defaultModel: 'eleven_v3',
   interviewerVoiceId: process.env.ELEVENLABS_INTERVIEWER_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL',
   guestVoiceId: process.env.ELEVENLABS_GUEST_VOICE_ID || 'ErXwobaYiN019PkySvjV',
   apiUrl: 'https://api.elevenlabs.io/v1',
