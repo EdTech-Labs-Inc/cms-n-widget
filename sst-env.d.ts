@@ -5,6 +5,76 @@
 
 declare module "sst" {
   export interface Resource {
+    "AGENTA_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "BACKEND_BASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "DATABASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "ELEVENLABS_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "HEYGEN_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "HEYGEN_WEBHOOK_SECRET": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "MediaBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
+    "MediaCdn": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "OPENAI_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "RESEND_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "SUBMAGIC_API_KEY": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "WIDGET_DATABASE_URL": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "backend-redis": {
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Redis"
+      "username": string
+    }
+    "backend-vpc2": {
+      "type": "sst.aws.Vpc"
+    }
+    "backend-worker": {
+      "service": string
+      "type": "sst.aws.Service"
+    }
+    "widget": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />
