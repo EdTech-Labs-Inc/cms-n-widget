@@ -9,8 +9,6 @@ const VideoCustomizationSchema = z.object({
   characterId: z.string(),
   characterType: z.enum(['avatar', 'talking_photo']),
   voiceId: z.string().optional(),
-  enableCaptions: z.boolean().optional().default(true),
-  captionTemplate: z.string().optional(),
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
@@ -125,8 +123,8 @@ export async function POST(
         heygenCharacterId: videoCustomization.characterId,
         heygenCharacterType: videoCustomization.characterType,
         heygenVoiceId: videoCustomization.voiceId || null,
-        enableCaptions: videoCustomization.enableCaptions,
-        submagicTemplate: videoCustomization.captionTemplate || null,
+        enableCaptions: true, // Always enabled
+        submagicTemplate: 'jblk', // Hardcoded brandkit template
         enableMagicZooms: videoCustomization.enableMagicZooms,
         enableMagicBrolls: videoCustomization.enableMagicBrolls,
         magicBrollsPercentage: videoCustomization.magicBrollsPercentage,

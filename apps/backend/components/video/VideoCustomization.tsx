@@ -1,15 +1,13 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useSubmagicTemplates, useHeygenAvatars } from '@/lib/api/hooks';
+import { useHeygenAvatars } from '@/lib/api/hooks';
 import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
 
 export interface VideoCustomizationConfig {
   characterId: string;
   characterType: 'avatar' | 'talking_photo';
   voiceId: string;
-  enableCaptions: boolean;
-  captionTemplate: string;
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
@@ -18,29 +16,6 @@ export interface VideoCustomizationConfig {
 
 const AVATARS_PER_PAGE = 12;
 
-const CAPTION_TEMPLATES = [
-  {
-    id: 'Ella',
-    displayName: 'ELLA',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.40_xy4hgc.png'
-  },
-  {
-    id: 'Sara',
-    displayName: 'Sara',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.21_fmbyw7.png'
-  },
-  {
-    id: 'Daniel',
-    displayName: 'Daniel',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.33_nupjf3.png'
-  },
-  {
-    id: 'Tracy',
-    displayName: 'TRACY',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151033/Screenshot_2025-10-22_at_17.36.45_odmkrg.png'
-  }
-];
-
 interface VideoCustomizationProps {
   value: VideoCustomizationConfig;
   onChange: (config: VideoCustomizationConfig) => void;
@@ -48,7 +23,6 @@ interface VideoCustomizationProps {
 }
 
 export function VideoCustomization({ value, onChange, disabled = false }: VideoCustomizationProps) {
-  const { data: templates, isLoading: templatesLoading } = useSubmagicTemplates();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -100,14 +74,6 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
 
   const handleCharacterChange = (avatarId: string, characterType: 'avatar' | 'talking_photo', voiceId: string) => {
     onChange({ ...value, characterId: avatarId, characterType, voiceId });
-  };
-
-  const handleCaptionsToggle = () => {
-    onChange({ ...value, enableCaptions: !value.enableCaptions });
-  };
-
-  const handleTemplateChange = (template: string) => {
-    onChange({ ...value, captionTemplate: template });
   };
 
   const handleZoomsToggle = () => {
@@ -268,76 +234,6 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
           </>
         )}
       </div>
-
-      {/* Captions Toggle */}
-      <div>
-        <label className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 cursor-pointer transition-all duration-200">
-          <input
-            type="checkbox"
-            checked={value.enableCaptions}
-            onChange={handleCaptionsToggle}
-            className="w-5 h-5 rounded border-white-40 bg-transparent checked:bg-blue-accent"
-            disabled={disabled}
-          />
-          <div className="flex-1">
-            <div className="font-medium text-text-primary">Enable Captions</div>
-            <div className="text-sm text-text-muted">Add AI-generated captions to the video</div>
-          </div>
-        </label>
-      </div>
-
-      {/* Caption Template Selection */}
-      {value.enableCaptions && (
-        <div>
-          <label className="block text-text-secondary text-sm font-medium mb-3">
-            Caption Style
-          </label>
-          {templatesLoading ? (
-            <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
-              <Loader2 className="w-6 h-6 animate-spin text-text-muted" />
-            </div>
-          ) : (() => {
-            // Filter templates to only show those available in API response
-            const availableTemplates = CAPTION_TEMPLATES.filter(template =>
-              templates?.includes(template.id)
-            );
-            // Fallback to all templates if API fails or returns empty
-            const displayTemplates = availableTemplates.length > 0 ? availableTemplates : CAPTION_TEMPLATES;
-
-            return (
-              <div className="grid grid-cols-2 gap-3">
-                {displayTemplates.map((template) => (
-                  <label
-                    key={template.id}
-                    className={`flex flex-col gap-2 p-3 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                      value.captionTemplate === template.id
-                        ? 'bg-gold-light border-gold'
-                        : 'bg-white-10 border-transparent hover:bg-white-20'
-                    } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    <input
-                      type="radio"
-                      name="captionTemplate"
-                      value={template.id}
-                      checked={value.captionTemplate === template.id}
-                      onChange={() => handleTemplateChange(template.id)}
-                      className="sr-only"
-                      disabled={disabled}
-                    />
-                    <div className="flex justify-center">
-                      <img
-                        src={template.thumbnailUrl}
-                        alt={template.displayName}
-                        className="w-1/2 h-auto object-cover"
-                      />
-                    </div>
-                  </label>
-                ))}
-              </div>
-            );
-          })()}
-        </div>
-      )}
 
       {/* Magic Zooms Toggle */}
       <div>

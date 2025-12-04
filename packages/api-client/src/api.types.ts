@@ -341,11 +341,10 @@ export interface VideoCustomizationConfig {
   characterId: string;
   characterType: 'avatar' | 'talking_photo';
   voiceId: string;
-  enableCaptions: boolean;
-  captionTemplate: string;
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
+  generateBubbles: boolean;
 }
 
 export interface CreateSubmissionRequest {

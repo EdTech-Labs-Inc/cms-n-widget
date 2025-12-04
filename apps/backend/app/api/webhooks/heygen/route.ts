@@ -77,8 +77,8 @@ async function handleVideoSuccess(eventData: {
       videoOutput.title || `Video ${video_id}`,
       videoOutput.submission.language, // Pass language from submission
       {
-        templateName: videoOutput.submagicTemplate || 'Ella',
-        enableCaptions: videoOutput.enableCaptions,
+        templateName: 'jblk', // Hardcoded brandkit template
+        enableCaptions: true, // Always enabled
         magicZooms: videoOutput.enableMagicZooms,
         magicBrolls: videoOutput.enableMagicBrolls,
         magicBrollsPercentage: videoOutput.magicBrollsPercentage ?? 40,

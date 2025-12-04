@@ -310,11 +310,10 @@ export const submissionsApi = {
       characterId: string;
       characterType: 'avatar' | 'talking_photo';
       voiceId?: string;
-      enableCaptions?: boolean;
-      captionTemplate?: string;
       enableMagicZooms?: boolean;
       enableMagicBrolls?: boolean;
       magicBrollsPercentage?: number;
+      generateBubbles?: boolean;
     }
   ) => {
     const { data } = await apiClient.post<ApiResponse<any>>(

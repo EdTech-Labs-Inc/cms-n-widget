@@ -92,7 +92,7 @@ export class SubmagicService {
       });
 
       // Apply default values or use provided options
-      const templateName = options?.templateName ?? 'Ella';
+      const templateName = options?.templateName ?? 'jblk';
       const enableCaptions = options?.enableCaptions ?? true;
       const magicZooms = options?.magicZooms ?? true;
       const magicBrolls = options?.magicBrolls ?? true;
