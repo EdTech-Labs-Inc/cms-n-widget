@@ -41,6 +41,7 @@ export interface Character {
   name: string;
   description?: string | null;
   thumbnailUrl?: string | null;
+  previewUrl?: string | null; // HeyGen motion preview video URL
   heygenAvatarId: string;
   heygenAvatarGroupId?: string | null;
   characterType: 'avatar' | 'talking_photo';

@@ -1,8 +1,76 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useCharacters } from '@/lib/api/hooks';
 import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
+
+/**
+ * Character preview component that shows video on hover
+ */
+function CharacterPreview({
+  thumbnailUrl,
+  previewUrl,
+  name
+}: {
+  thumbnailUrl?: string | null;
+  previewUrl?: string | null;
+  name: string;
+}) {
+  const [isHovering, setIsHovering] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isHovering && previewUrl) {
+        videoRef.current.play().catch(() => {
+          // Ignore autoplay errors
+        });
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    }
+  }, [isHovering, previewUrl]);
+
+  return (
+    <div
+      className="relative w-12 h-12 rounded-lg overflow-hidden"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {/* Thumbnail image (always rendered, hidden when video plays) */}
+      {thumbnailUrl ? (
+        <img
+          src={thumbnailUrl}
+          alt={name}
+          className={`w-full h-full object-cover transition-opacity duration-200 ${
+            isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      ) : (
+        <div className={`w-full h-full bg-gradient-purple flex items-center justify-center text-white font-bold transition-opacity duration-200 ${
+          isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
+        }`}>
+          {name.charAt(0)}
+        </div>
+      )}
+
+      {/* Video preview (only rendered if previewUrl exists) */}
+      {previewUrl && (
+        <video
+          ref={videoRef}
+          src={previewUrl}
+          muted
+          loop
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
+            isHovering ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+    </div>
+  );
+}
 
 export interface VideoCustomizationConfig {
   characterId: string; // Our DB Character ID (for validation)
@@ -164,17 +232,11 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
                         disabled={disabled}
                       />
                       <div className="flex items-center gap-3">
-                        {character.thumbnailUrl ? (
-                          <img
-                            src={character.thumbnailUrl}
-                            alt={character.name}
-                            className="w-12 h-12 rounded-lg object-cover"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-gradient-purple flex items-center justify-center text-white font-bold">
-                            {character.name.charAt(0)}
-                          </div>
-                        )}
+                        <CharacterPreview
+                          thumbnailUrl={character.thumbnailUrl}
+                          previewUrl={character.previewUrl}
+                          name={character.name}
+                        />
                         <div className="flex-1">
                           <div className="text-text-primary font-medium">{character.name}</div>
                           <div className="text-xs text-text-muted capitalize">{character.characterType.replace('_', ' ')}</div>

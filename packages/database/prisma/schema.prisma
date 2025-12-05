@@ -124,6 +124,7 @@ model Character {
   name        String
   description String? @db.Text
   thumbnailUrl String?
+  previewUrl   String? // HeyGen motion preview video URL
 
   // HeyGen identifiers
   heygenAvatarId      String  // The actual avatar/talking_photo ID for HeyGen API
