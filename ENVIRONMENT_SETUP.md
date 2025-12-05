@@ -42,7 +42,7 @@ PostgreSQL connection string for the main application database.
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cms_platform
 ```
 
-**Note:** Make sure PostgreSQL is running locally or use a cloud database provider.
+**Note:** Make sure PostgreSQL is running locally or use a cloud database provider
 
 ---
 
