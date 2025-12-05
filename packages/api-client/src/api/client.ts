@@ -3,6 +3,8 @@ import type {
   Article,
   Submission,
   Tag,
+  Character,
+  Voice,
   CreateArticleRequest,
   CreateSubmissionRequest,
   CreateTagRequest,
@@ -524,6 +526,22 @@ export const tagsApi = {
 
   delete: async (orgSlug: string, id: string): Promise<void> => {
     await apiClient.delete(`/api/org/${orgSlug}/tags/${id}`);
+  },
+};
+
+// Characters API - Organization-scoped
+export const charactersApi = {
+  getAll: async (orgSlug: string): Promise<Character[]> => {
+    const { data } = await apiClient.get<ApiResponse<{ characters: Character[]; total: number }>>(`/api/org/${orgSlug}/characters`);
+    return data.data?.characters || [];
+  },
+};
+
+// Voices API - Organization-scoped
+export const voicesApi = {
+  getAll: async (orgSlug: string): Promise<Voice[]> => {
+    const { data } = await apiClient.get<ApiResponse<{ voices: Voice[]; total: number }>>(`/api/org/${orgSlug}/voices`);
+    return data.data?.voices || [];
   },
 };
 

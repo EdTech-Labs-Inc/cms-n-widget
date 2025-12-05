@@ -116,6 +116,23 @@ export async function POST(
 
     const voiceSelection = validationResult.data;
 
+    // Validate voice belongs to this organization (if provided)
+    if (voiceSelection?.voiceId) {
+      const validVoice = await prisma.voice.findFirst({
+        where: {
+          organizationId: org.id,
+          elevenlabsVoiceId: voiceSelection.voiceId,
+        },
+      });
+
+      if (!validVoice) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid voice for this organization' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Update InteractivePodcastOutput status to PROCESSING
     await prisma.interactivePodcastOutput.update({
       where: { id: params.ipId },

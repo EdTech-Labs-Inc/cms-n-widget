@@ -1,11 +1,12 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2, Plus, X } from 'lucide-react';
 import {
   useSubmission,
   useTags,
+  useVoices,
   useAddPodcastTag,
   useRemovePodcastTag,
   useUpdatePodcastScript,
@@ -25,7 +26,7 @@ import { TranscriptEditor } from '@/components/script-editor/TranscriptEditor';
 import { AIPromptBox } from '@/components/script-editor/AIPromptBox';
 import { RegenerateMediaButton } from '@/components/script-editor/RegenerateMediaButton';
 import { ThumbnailManager } from '@/components/media/ThumbnailManager';
-import { VoiceSelector, getDefaultPodcastVoices, type PodcastVoiceSelection } from '@/components/audio/VoiceSelector';
+import { VoiceSelector, getDefaultPodcastVoicesFromList, type PodcastVoiceSelection } from '@/components/audio/VoiceSelector';
 
 interface TagManagerProps {
   tags: Tag[];
@@ -121,11 +122,22 @@ export default function OrgPodcastEditPage() {
   const toast = useToast();
 
   // State for voice selection
-  const [voiceSelection, setVoiceSelection] = useState<PodcastVoiceSelection>(getDefaultPodcastVoices);
+  const [voiceSelection, setVoiceSelection] = useState<PodcastVoiceSelection>({
+    interviewerVoiceId: '',
+    guestVoiceId: '',
+  });
 
   // Data fetching
   const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
   const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
+  const { data: voices = [] } = useVoices(orgSlug);
+
+  // Set default voice selection when voices load
+  useEffect(() => {
+    if (voices.length > 0 && !voiceSelection.interviewerVoiceId) {
+      setVoiceSelection(getDefaultPodcastVoicesFromList(voices));
+    }
+  }, [voices, voiceSelection.interviewerVoiceId]);
 
   // Mutations
   const addPodcastTag = useAddPodcastTag(orgSlug);
@@ -397,6 +409,7 @@ export default function OrgPodcastEditPage() {
               Choose voices for the interviewer and guest speakers.
             </p>
             <VoiceSelector
+              orgSlug={orgSlug}
               mode="podcast"
               value={voiceSelection}
               onChange={(value) => setVoiceSelection(value as PodcastVoiceSelection)}

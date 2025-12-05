@@ -488,6 +488,7 @@ export default function OrgVideoEditPage() {
                 isRegenerating={regenerateVideoMedia.isPending || isProcessing}
                 mediaType="video"
                 disabled={isProcessing}
+                orgSlug={orgSlug}
                 videoCustomization={videoCustomization}
                 onVideoCustomizationChange={setVideoCustomization}
               />
@@ -503,6 +504,7 @@ export default function OrgVideoEditPage() {
               Choose a character and configure video options before generating.
             </p>
             <VideoCustomization
+              orgSlug={orgSlug}
               value={videoCustomization}
               onChange={setVideoCustomization}
               disabled={isProcessing || generateVideoMedia.isPending}

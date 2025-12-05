@@ -1,79 +1,76 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useHeygenAvatars } from '@/lib/api/hooks';
+import { useCharacters } from '@/lib/api/hooks';
 import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
 
 export interface VideoCustomizationConfig {
-  characterId: string;
+  characterId: string; // Our DB Character ID (for validation)
+  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
   characterType: 'avatar' | 'talking_photo';
-  voiceId: string;
+  voiceId: string; // ElevenLabs voice ID from linked Voice
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
   generateBubbles: boolean;
 }
 
-const AVATARS_PER_PAGE = 12;
+const CHARACTERS_PER_PAGE = 12;
 
 interface VideoCustomizationProps {
+  orgSlug: string;
   value: VideoCustomizationConfig;
   onChange: (config: VideoCustomizationConfig) => void;
   disabled?: boolean;
 }
 
-export function VideoCustomization({ value, onChange, disabled = false }: VideoCustomizationProps) {
+export function VideoCustomization({ orgSlug, value, onChange, disabled = false }: VideoCustomizationProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch ALL avatars (pagination handled on frontend)
+  // Fetch characters from database
   const {
-    data: avatarsData,
-    isLoading: avatarsLoading,
-    isError: avatarsError,
-  } = useHeygenAvatars();
+    data: characters,
+    isLoading: charactersLoading,
+    isError: charactersError,
+  } = useCharacters(orgSlug);
 
-  const allAvatars = avatarsData?.avatars || [];
+  const allCharacters = characters || [];
 
-  // Filter avatars by search query
-  const filteredAvatars = useMemo(() => {
+  // Filter characters by search query
+  const filteredCharacters = useMemo(() => {
     if (!searchQuery.trim()) {
-      return allAvatars;
+      return allCharacters;
     }
     const query = searchQuery.toLowerCase().trim();
-    return allAvatars.filter(avatar =>
-      avatar.name.toLowerCase().includes(query) ||
-      avatar.type.toLowerCase().includes(query)
+    return allCharacters.filter(character =>
+      character.name.toLowerCase().includes(query) ||
+      character.characterType.toLowerCase().includes(query) ||
+      character.voice?.name?.toLowerCase().includes(query)
     );
-  }, [allAvatars, searchQuery]);
+  }, [allCharacters, searchQuery]);
 
   // Calculate pagination on filtered results
-  const totalPages = Math.ceil(filteredAvatars.length / AVATARS_PER_PAGE);
-  const paginatedAvatars = useMemo(() => {
-    const startIndex = (currentPage - 1) * AVATARS_PER_PAGE;
-    return filteredAvatars.slice(startIndex, startIndex + AVATARS_PER_PAGE);
-  }, [filteredAvatars, currentPage]);
+  const totalPages = Math.ceil(filteredCharacters.length / CHARACTERS_PER_PAGE);
+  const paginatedCharacters = useMemo(() => {
+    const startIndex = (currentPage - 1) * CHARACTERS_PER_PAGE;
+    return filteredCharacters.slice(startIndex, startIndex + CHARACTERS_PER_PAGE);
+  }, [filteredCharacters, currentPage]);
 
   // Reset to page 1 when search changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
 
-  // Set default character when avatars load (if no character is set)
-  useEffect(() => {
-    if (allAvatars.length > 0 && !value.characterId) {
-      const firstAvatar = allAvatars[0];
-      onChange({
-        ...value,
-        characterId: firstAvatar.id,
-        characterType: firstAvatar.type,
-        voiceId: firstAvatar.voiceId
-      });
-    }
-  }, [allAvatars, value.characterId]);
+  // No auto-selection - user must explicitly select a character
 
-  const handleCharacterChange = (avatarId: string, characterType: 'avatar' | 'talking_photo', voiceId: string) => {
-    onChange({ ...value, characterId: avatarId, characterType, voiceId });
+  const handleCharacterChange = (
+    characterId: string,
+    heygenAvatarId: string,
+    characterType: 'avatar' | 'talking_photo',
+    voiceId: string
+  ) => {
+    onChange({ ...value, characterId, heygenAvatarId, characterType, voiceId });
   };
 
   const handleZoomsToggle = () => {
@@ -112,18 +109,18 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
           Character
         </label>
 
-        {avatarsLoading ? (
+        {charactersLoading ? (
           <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
             <Loader2 className="w-6 h-6 animate-spin text-text-muted" />
-            <span className="ml-2 text-text-muted">Loading avatars...</span>
+            <span className="ml-2 text-text-muted">Loading characters...</span>
           </div>
-        ) : avatarsError ? (
+        ) : charactersError ? (
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-            Failed to load avatars. Please try again later.
+            Failed to load characters. Please try again later.
           </div>
-        ) : allAvatars.length === 0 ? (
+        ) : allCharacters.length === 0 ? (
           <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm">
-            No avatars available.
+            No characters available. Please contact an administrator to add characters for your organization.
           </div>
         ) : (
           <>
@@ -132,7 +129,7 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
               <input
                 type="text"
-                placeholder="Search avatars..."
+                placeholder="Search characters..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-white-10 border border-transparent rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-gold/50 transition-colors"
@@ -140,19 +137,19 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
               />
             </div>
 
-            {/* Avatar Grid */}
-            {filteredAvatars.length === 0 ? (
+            {/* Character Grid */}
+            {filteredCharacters.length === 0 ? (
               <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm text-center">
-                No avatars found matching "{searchQuery}"
+                No characters found matching "{searchQuery}"
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-2 gap-3">
-                  {paginatedAvatars.map((avatar) => (
+                  {paginatedCharacters.map((character) => (
                     <label
-                      key={avatar.id}
+                      key={character.id}
                       className={`flex flex-col gap-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                        value.characterId === avatar.id
+                        value.characterId === character.id
                           ? 'bg-gold-light border-gold'
                           : 'bg-white-10 border-transparent hover:bg-white-20'
                       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -160,27 +157,28 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
                       <input
                         type="radio"
                         name="character"
-                        value={avatar.id}
-                        checked={value.characterId === avatar.id}
-                        onChange={() => handleCharacterChange(avatar.id, avatar.type, avatar.voiceId)}
+                        value={character.id}
+                        checked={value.characterId === character.id}
+                        onChange={() => handleCharacterChange(character.id, character.heygenAvatarId, character.characterType, character.voice.elevenlabsVoiceId)}
                         className="sr-only"
                         disabled={disabled}
                       />
                       <div className="flex items-center gap-3">
-                        {avatar.previewUrl ? (
+                        {character.thumbnailUrl ? (
                           <img
-                            src={avatar.previewUrl}
-                            alt={avatar.name}
+                            src={character.thumbnailUrl}
+                            alt={character.name}
                             className="w-12 h-12 rounded-lg object-cover"
                           />
                         ) : (
                           <div className="w-12 h-12 rounded-lg bg-gradient-purple flex items-center justify-center text-white font-bold">
-                            {avatar.name.charAt(0)}
+                            {character.name.charAt(0)}
                           </div>
                         )}
                         <div className="flex-1">
-                          <div className="text-text-primary font-medium">{avatar.name}</div>
-                          <div className="text-xs text-text-muted capitalize">{avatar.type.replace('_', ' ')}</div>
+                          <div className="text-text-primary font-medium">{character.name}</div>
+                          <div className="text-xs text-text-muted capitalize">{character.characterType.replace('_', ' ')}</div>
+                          <div className="text-xs text-text-muted">Voice: {character.voice?.name}</div>
                         </div>
                       </div>
                     </label>
@@ -226,8 +224,8 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
 
                 {/* Results count */}
                 <div className="text-xs text-text-muted text-center mt-2">
-                  Showing {paginatedAvatars.length} of {filteredAvatars.length} avatars
-                  {searchQuery && ` (filtered from ${allAvatars.length} total)`}
+                  Showing {paginatedCharacters.length} of {filteredCharacters.length} characters
+                  {searchQuery && ` (filtered from ${allCharacters.length} total)`}
                 </div>
               </>
             )}

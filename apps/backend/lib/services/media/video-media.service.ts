@@ -99,42 +99,23 @@ export class VideoMediaService {
         },
       });
 
-      // Get voice ID - either from customization, DB, or fetch from avatar
-      let voiceId = videoCustomization?.voiceId || videoOutput.heygenVoiceId || undefined;
+      // Get voice ID - from customization or DB (ElevenLabs voice ID from Character's linked Voice)
+      const voiceId = videoCustomization?.voiceId || videoOutput.heygenVoiceId;
 
-      if (!voiceId && characterType === 'avatar') {
-        try {
-          logger.info('Fetching avatar details for voice ID', { avatarId: characterId });
-          const avatarDetails = await heygenService.getAvatarDetails(characterId);
-          const fetchedVoiceId = (avatarDetails.data as any)?.default_voice_id;
-          if (fetchedVoiceId) {
-            voiceId = fetchedVoiceId;
-            logger.info('Got voice ID from avatar details', { voiceId });
-
-            // Store the fetched voice ID
-            await prisma.videoOutput.update({
-              where: { id: videoOutputId },
-              data: { heygenVoiceId: voiceId },
-            });
-          }
-        } catch (error) {
-          logger.warn('Failed to fetch avatar details for voice, will use defaults', {
-            avatarId: characterId,
-            error: error instanceof Error ? error.message : 'Unknown error',
-          });
-        }
+      if (!voiceId) {
+        throw new Error('Voice ID is required - character must have a linked voice');
       }
 
       // Step 1: Generate audio with ElevenLabs (using v3 model)
       logger.info('Generating audio with ElevenLabs', {
         videoOutputId,
         scriptLength: videoOutput.script.length,
-        voiceId: voiceId ?? '(using default)',
+        voiceId,
       });
 
       const audioBuffer = await elevenlabsService.textToSpeech({
         text: videoOutput.script,
-        voiceId: voiceId,
+        voiceId,
       });
 
       logger.info('ElevenLabs audio generated', {

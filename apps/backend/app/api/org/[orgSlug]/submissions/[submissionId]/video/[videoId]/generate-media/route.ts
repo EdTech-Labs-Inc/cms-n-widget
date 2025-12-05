@@ -6,9 +6,10 @@ import { prisma } from '@/lib/config/database';
 import { z } from 'zod';
 
 const VideoCustomizationSchema = z.object({
-  characterId: z.string(),
+  characterId: z.string(), // Our DB Character ID (for validation)
+  heygenAvatarId: z.string(), // The actual HeyGen avatar/talking_photo ID
   characterType: z.enum(['avatar', 'talking_photo']),
-  voiceId: z.string().optional(),
+  voiceId: z.string(), // ElevenLabs voice ID (required, from linked Voice)
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
@@ -115,14 +116,37 @@ export async function POST(
 
     const videoCustomization = validationResult.data;
 
+    // Validate character belongs to this organization
+    const character = await prisma.character.findFirst({
+      where: {
+        id: videoCustomization.characterId,
+        organizationId: org.id,
+      },
+    });
+
+    if (!character) {
+      return NextResponse.json(
+        { success: false, error: 'Character not found in this organization' },
+        { status: 404 }
+      );
+    }
+
+    // Verify the heygenAvatarId matches the character record
+    if (character.heygenAvatarId !== videoCustomization.heygenAvatarId) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid character data' },
+        { status: 400 }
+      );
+    }
+
     // Update VideoOutput with customization settings and set status to PROCESSING
     await prisma.videoOutput.update({
       where: { id: params.videoId },
       data: {
         status: 'PROCESSING',
-        heygenCharacterId: videoCustomization.characterId,
+        heygenCharacterId: videoCustomization.heygenAvatarId, // Store the actual HeyGen avatar ID
         heygenCharacterType: videoCustomization.characterType,
-        heygenVoiceId: videoCustomization.voiceId || null,
+        heygenVoiceId: videoCustomization.voiceId, // ElevenLabs voice ID
         enableCaptions: true, // Always enabled
         submagicTemplate: 'jblk', // Hardcoded brandkit template
         enableMagicZooms: videoCustomization.enableMagicZooms,

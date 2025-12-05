@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { submissionsApi } from '../client';
+import type { VideoCustomizationConfig } from '../../api.types';
 
 // Query Keys
 const submissionQueryKey = (orgSlug: string, id: string) => ['submissions', orgSlug, id] as const;
@@ -48,16 +49,6 @@ export function useRegenerateInteractivePodcastMedia(orgSlug: string) {
 // Media Generation from Script Hooks (for SCRIPT_READY outputs)
 // These are used after user reviews/edits script and triggers media generation
 // ============================================
-
-export interface VideoCustomizationConfig {
-  characterId: string;
-  characterType: 'avatar' | 'talking_photo';
-  voiceId?: string;
-  enableMagicZooms?: boolean;
-  enableMagicBrolls?: boolean;
-  magicBrollsPercentage?: number;
-  generateBubbles?: boolean;
-}
 
 export function useGenerateVideoMedia(orgSlug: string) {
   const queryClient = useQueryClient();

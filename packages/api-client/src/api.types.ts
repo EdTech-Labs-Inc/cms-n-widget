@@ -21,6 +21,43 @@ export type OutputStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 export type QuestionType = 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'FILL_BLANK';
 
 // ============================================================================
+// VOICE & CHARACTER TYPES
+// ============================================================================
+
+export interface Voice {
+  id: string;
+  name: string;
+  elevenlabsVoiceId: string;
+  description?: string | null;
+  previewAudioUrl?: string | null;
+  gender?: string | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  description?: string | null;
+  thumbnailUrl?: string | null;
+  heygenAvatarId: string;
+  heygenAvatarGroupId?: string | null;
+  characterType: 'avatar' | 'talking_photo';
+  gender?: string | null;
+  voiceId: string;
+  voice: {
+    id: string;
+    name: string;
+    elevenlabsVoiceId: string;
+    gender?: string | null;
+  };
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ============================================================================
 // ARTICLE & SUBMISSION
 // ============================================================================
 
@@ -338,9 +375,10 @@ export interface CreateArticleRequest {
 }
 
 export interface VideoCustomizationConfig {
-  characterId: string;
+  characterId: string; // Our DB Character ID (for validation)
+  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
   characterType: 'avatar' | 'talking_photo';
-  voiceId: string;
+  voiceId: string; // ElevenLabs voice ID from linked Voice
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;

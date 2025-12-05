@@ -28,6 +28,8 @@ model Organization {
   invites         OrganizationInvite[]
   joinRequests    JoinRequest[]
   supportFeedback SupportFeedback[]
+  voices          Voice[]
+  characters      Character[]
 
   @@map("organizations")
 }
@@ -88,6 +90,63 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+}
+
+// ============================================
+// VOICE & CHARACTER MODELS
+// ============================================
+
+model Voice {
+  id                String       @id @default(uuid())
+  name              String
+  elevenlabsVoiceId String
+  description       String?      @db.Text
+  previewAudioUrl   String?
+  gender            String?      // 'male' | 'female' | 'neutral'
+
+  // Organization scoping
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Reverse relation to characters using this voice
+  characters Character[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, elevenlabsVoiceId])
+  @@index([organizationId])
+  @@map("voices")
+}
+
+model Character {
+  id          String  @id @default(uuid())
+  name        String
+  description String? @db.Text
+  thumbnailUrl String?
+
+  // HeyGen identifiers
+  heygenAvatarId      String  // The actual avatar/talking_photo ID for HeyGen API
+  heygenAvatarGroupId String? // The group ID for reference (optional, mainly for avatars)
+  characterType       String  @default("avatar") // 'avatar' | 'talking_photo'
+
+  gender String? // 'male' | 'female'
+
+  // Linked voice (required for video generation)
+  voiceId String
+  voice   Voice  @relation(fields: [voiceId], references: [id], onDelete: Restrict)
+
+  // Organization scoping
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, heygenAvatarId])
+  @@index([organizationId])
+  @@index([voiceId])
+  @@map("characters")
 }
 
 // ============================================

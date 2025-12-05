@@ -1,11 +1,12 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2, Plus, X } from 'lucide-react';
 import {
   useSubmission,
   useTags,
+  useVoices,
   useAddInteractivePodcastTag,
   useRemoveInteractivePodcastTag,
   useUpdateInteractivePodcastScript,
@@ -27,7 +28,7 @@ import { AIPromptBox } from '@/components/script-editor/AIPromptBox';
 import { RegenerateMediaButton } from '@/components/script-editor/RegenerateMediaButton';
 import { ThumbnailManager } from '@/components/media/ThumbnailManager';
 import { InteractivePodcastAudioPlayer } from '@/components/media/InteractivePodcastAudioPlayer';
-import { VoiceSelector, getDefaultInteractivePodcastVoice, type SingleVoiceSelection } from '@/components/audio/VoiceSelector';
+import { VoiceSelector, getDefaultInteractivePodcastVoiceFromList, type SingleVoiceSelection } from '@/components/audio/VoiceSelector';
 
 interface TagManagerProps {
   tags: Tag[];
@@ -124,11 +125,21 @@ export default function OrgInteractivePodcastEditPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   // State for voice selection
-  const [voiceSelection, setVoiceSelection] = useState<SingleVoiceSelection>(getDefaultInteractivePodcastVoice);
+  const [voiceSelection, setVoiceSelection] = useState<SingleVoiceSelection>({
+    voiceId: '',
+  });
 
   // Data fetching
   const { data: submission, isLoading: submissionLoading } = useSubmission(orgSlug, submissionId);
   const { data: allTags = [], isLoading: tagsLoading } = useTags(orgSlug);
+  const { data: voices = [] } = useVoices(orgSlug);
+
+  // Set default voice selection when voices load
+  useEffect(() => {
+    if (voices.length > 0 && !voiceSelection.voiceId) {
+      setVoiceSelection(getDefaultInteractivePodcastVoiceFromList(voices));
+    }
+  }, [voices, voiceSelection.voiceId]);
 
   // Mutations
   const addInteractivePodcastTag = useAddInteractivePodcastTag(orgSlug);
@@ -431,6 +442,7 @@ export default function OrgInteractivePodcastEditPage() {
               Choose a voice for the podcast narrator.
             </p>
             <VoiceSelector
+              orgSlug={orgSlug}
               mode="single"
               value={voiceSelection}
               onChange={(value) => setVoiceSelection(value as SingleVoiceSelection)}
