@@ -11,7 +11,7 @@ export default $config({
         aws: {
           // TODO create separate dev and prod aws accounts and ~/.aws/config profiles
           // profile: input.stage === "production" ? "edeo-production" : "edeo-dev",
-          profile: 'edeop',
+          profile: 'edtechlabs',
         },
       },
     };
@@ -35,8 +35,10 @@ export default $config({
       az: isProduction
         ? ['ap-south-1a', 'ap-south-1b', 'ap-south-1c'] // 3 AZs for high availability
         : ['ap-south-1a', 'ap-south-1b'], // 2 AZs for staging - saves ~$60-100/month on NAT
-      nat: 'managed',
+      nat: 'managed', // elastic ip. In front of the NAT gateway. (adjust route table in lambda)
     });
+
+    // test vpc outbound ip address, set up request bin, setup lambda function which calls endpoint, tht endpoint, call the bin, bin logs the ip.
 
     const redis = new sst.aws.Redis('backend-redis', {
       vpc,
@@ -126,7 +128,7 @@ export default $config({
       FRONTEND_URL: BACKEND_BASE_URL.value,
       NEXT_PUBLIC_API_URL: BACKEND_BASE_URL.value,
 
-      NEXT_PUBLIC_SUPABASE_URL: 'https://oqtvoxobndxnyamzzdkm.supabase.co',
+      NEXT_PUBLIC_SUPABASE_URL: 'https://owlkvcjzvvjooxpaoqps.supabase.co',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: NEXT_PUBLIC_SUPABASE_ANON_KEY.value,
 
       // Database and Redis
@@ -183,7 +185,7 @@ export default $config({
       loadBalancer: {
         domain: {
           name: "cms-staging.edtechinc.com",
-          cert: "arn:aws:acm:ap-south-1:119330870795:certificate/c0ce68ac-1b2e-48dd-9247-467a792f5ee6",
+          cert: "arn:aws:acm:ap-south-1:512739634655:certificate/d684f656-000d-4fb4-b9e7-6125f1222e30",
           dns: sst.aws.dns(),
         },
         rules: [
@@ -207,7 +209,7 @@ export default $config({
         dockerfile: "./apps/backend/Dockerfile",
         args: {
           // NEXT_PUBLIC_* must be passed at build time for Next.js to inline them
-          NEXT_PUBLIC_SUPABASE_URL: 'https://oqtvoxobndxnyamzzdkm.supabase.co',
+          NEXT_PUBLIC_SUPABASE_URL: 'https://owlkvcjzvvjooxpaoqps.supabase.co',
           NEXT_PUBLIC_SUPABASE_ANON_KEY: NEXT_PUBLIC_SUPABASE_ANON_KEY.value,
         },
       },
@@ -261,7 +263,7 @@ export default $config({
 
       domain: {
         name: 'widget-staging.edtechinc.com',
-        cert: 'arn:aws:acm:us-east-1:119330870795:certificate/46327be8-8629-449f-832f-b5b7ef4eacc0',
+        cert: 'arn:aws:acm:us-east-1:512739634655:certificate/df0fee04-3280-406c-915a-a5737b090ec7',
         dns: sst.aws.dns(),
       },
     });
