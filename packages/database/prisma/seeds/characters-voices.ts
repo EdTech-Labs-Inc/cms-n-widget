@@ -15,7 +15,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Replace with your actual organization ID
-const ORGANIZATION_ID = 'YOUR_ORG_ID';
+const ORGANIZATION_ID = '7f3c1e3a-8c1b-4bf5-9f92-2d8a21f7dabc';
 
 /**
  * Voices to seed
