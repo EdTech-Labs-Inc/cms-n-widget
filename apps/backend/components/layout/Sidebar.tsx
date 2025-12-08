@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Plus, FolderOpen, Library, Settings, Tags, X } from 'lucide-react';
+import { Home, Plus, FolderOpen, Library, Settings, Tags, X, Video } from 'lucide-react';
 import { UserMenu } from '@/components/auth/UserMenu';
 
 interface SidebarProps {
@@ -90,6 +90,12 @@ export function Sidebar({ isOpen, onClose, user }: SidebarProps) {
           <Link href={`${basePath}/create`} onClick={handleLinkClick} className="sidebar-cta">
             <Plus className="sidebar-cta-icon" />
             <span className="sidebar-cta-text">New Article</span>
+          </Link>
+
+          {/* Secondary CTA - New Video */}
+          <Link href={`${basePath}/video/create`} onClick={handleLinkClick} className="sidebar-cta sidebar-cta--secondary">
+            <Video className="sidebar-cta-icon" />
+            <span className="sidebar-cta-text">New Video</span>
           </Link>
         </nav>
 

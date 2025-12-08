@@ -2,19 +2,47 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useCharacters } from '@/lib/api/hooks';
-import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
+import { Loader2, ChevronLeft, ChevronRight, Sparkles, ArrowLeft } from 'lucide-react';
+
+interface CharacterGroup {
+  groupId: string;
+  name: string;
+  thumbnailUrl: string | null;
+  previewUrl: string | null;
+  characters: Array<{
+    id: string;
+    name: string;
+    heygenAvatarId: string;
+    characterType: 'avatar' | 'talking_photo';
+    thumbnailUrl?: string | null;
+    previewUrl?: string | null;
+    voice: {
+      id: string;
+      name: string;
+      elevenlabsVoiceId: string;
+    };
+  }>;
+}
 
 /**
- * Character preview component that shows video on hover
+ * Image-centric card component with hover video preview
  */
-function CharacterPreview({
+function AvatarCard({
   thumbnailUrl,
   previewUrl,
-  name
+  name,
+  subtitle,
+  selected,
+  onClick,
+  disabled,
 }: {
   thumbnailUrl?: string | null;
   previewUrl?: string | null;
   name: string;
+  subtitle?: string;
+  selected?: boolean;
+  onClick: () => void;
+  disabled?: boolean;
 }) {
   const [isHovering, setIsHovering] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,22 +61,31 @@ function CharacterPreview({
   }, [isHovering, previewUrl]);
 
   return (
-    <div
-      className="relative w-12 h-12 rounded-lg overflow-hidden"
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      className={`relative w-full aspect-[3/4] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${
+        selected
+          ? 'border-gold ring-2 ring-gold/30'
+          : 'border-transparent hover:border-white/20'
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${
+        isHovering && !disabled ? 'scale-105 z-10' : 'scale-100'
+      }`}
     >
-      {/* Thumbnail image (always rendered, hidden when video plays) */}
+      {/* Thumbnail image */}
       {thumbnailUrl ? (
         <img
           src={thumbnailUrl}
           alt={name}
-          className={`w-full h-full object-cover transition-opacity duration-200 ${
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
             isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
           }`}
         />
       ) : (
-        <div className={`w-full h-full bg-gradient-purple flex items-center justify-center text-white font-bold transition-opacity duration-200 ${
+        <div className={`absolute inset-0 w-full h-full bg-gradient-purple flex items-center justify-center text-white text-2xl font-bold transition-opacity duration-300 ${
           isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
         }`}>
           {name.charAt(0)}
@@ -63,12 +100,23 @@ function CharacterPreview({
           muted
           loop
           playsInline
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
             isHovering ? 'opacity-100' : 'opacity-0'
           }`}
         />
       )}
-    </div>
+
+      {/* Dark gradient overlay at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+      {/* Text overlay */}
+      <div className="absolute inset-x-0 bottom-0 p-3">
+        <div className="text-white font-medium text-sm truncate">{name}</div>
+        {subtitle && (
+          <div className="text-white/70 text-xs">{subtitle}</div>
+        )}
+      </div>
+    </button>
   );
 }
 
@@ -83,7 +131,7 @@ export interface VideoCustomizationConfig {
   generateBubbles: boolean;
 }
 
-const CHARACTERS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 6;
 
 interface VideoCustomizationProps {
   orgSlug: string;
@@ -94,7 +142,7 @@ interface VideoCustomizationProps {
 
 export function VideoCustomization({ orgSlug, value, onChange, disabled = false }: VideoCustomizationProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
 
   // Fetch characters from database
   const {
@@ -105,32 +153,64 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
 
   const allCharacters = characters || [];
 
-  // Filter characters by search query
-  const filteredCharacters = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return allCharacters;
+  // Group characters by heygenAvatarGroupId
+  const characterGroups = useMemo(() => {
+    const groupMap = new Map<string, CharacterGroup>();
+
+    for (const character of allCharacters) {
+      // Use groupId if available, otherwise use character id as unique group
+      const groupId = character.heygenAvatarGroupId || `single_${character.id}`;
+
+      if (groupMap.has(groupId)) {
+        groupMap.get(groupId)!.characters.push(character);
+      } else {
+        groupMap.set(groupId, {
+          groupId,
+          name: character.name,
+          thumbnailUrl: character.thumbnailUrl || null,
+          previewUrl: character.previewUrl || null,
+          characters: [character],
+        });
+      }
     }
-    const query = searchQuery.toLowerCase().trim();
-    return allCharacters.filter(character =>
-      character.name.toLowerCase().includes(query) ||
-      character.characterType.toLowerCase().includes(query) ||
-      character.voice?.name?.toLowerCase().includes(query)
-    );
-  }, [allCharacters, searchQuery]);
 
-  // Calculate pagination on filtered results
-  const totalPages = Math.ceil(filteredCharacters.length / CHARACTERS_PER_PAGE);
-  const paginatedCharacters = useMemo(() => {
-    const startIndex = (currentPage - 1) * CHARACTERS_PER_PAGE;
-    return filteredCharacters.slice(startIndex, startIndex + CHARACTERS_PER_PAGE);
-  }, [filteredCharacters, currentPage]);
+    return Array.from(groupMap.values());
+  }, [allCharacters]);
 
-  // Reset to page 1 when search changes
+  // Get the currently selected group (for Level 2 view)
+  const selectedGroup = useMemo(() => {
+    if (!selectedGroupId) return null;
+    return characterGroups.find(g => g.groupId === selectedGroupId) || null;
+  }, [characterGroups, selectedGroupId]);
+
+  // Get items for current level
+  const currentItems = useMemo(() => {
+    if (selectedGroupId && selectedGroup) {
+      return selectedGroup.characters;
+    }
+    return characterGroups;
+  }, [selectedGroupId, selectedGroup, characterGroups]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return currentItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [currentItems, currentPage]);
+
+  // Reset pagination when level changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery]);
+  }, [selectedGroupId]);
 
-  // No auto-selection - user must explicitly select a character
+  // Handlers
+  const handleBackToGroups = () => {
+    setSelectedGroupId(null);
+  };
+
+  const handleGroupSelect = (groupId: string) => {
+    setSelectedGroupId(groupId);
+  };
 
   const handleCharacterChange = (
     characterId: string,
@@ -173,9 +253,24 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
     <div className="space-y-6">
       {/* Character Selection */}
       <div>
-        <label className="block text-text-secondary text-sm font-medium mb-3">
-          Character
-        </label>
+        {/* Header with back button for Level 2 */}
+        <div className="flex items-center gap-2 mb-3">
+          {selectedGroupId ? (
+            <button
+              type="button"
+              onClick={handleBackToGroups}
+              className="flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
+              disabled={disabled}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm font-medium">{selectedGroup?.name || 'Characters'}</span>
+            </button>
+          ) : (
+            <label className="block text-text-secondary text-sm font-medium">
+              Character
+            </label>
+          )}
+        </div>
 
         {charactersLoading ? (
           <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
@@ -192,105 +287,85 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
           </div>
         ) : (
           <>
-            {/* Search Input */}
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input
-                type="text"
-                placeholder="Search characters..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-white-10 border border-transparent rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-gold/50 transition-colors"
-                disabled={disabled}
-              />
+            {/* Grid */}
+            <div className="grid grid-cols-3 gap-4 justify-items-center">
+              {selectedGroupId ? (
+                // Level 2: Characters within group
+                (paginatedItems as CharacterGroup['characters']).map((character) => (
+                  <div key={character.id} className="w-[75%]">
+                    <AvatarCard
+                      thumbnailUrl={character.thumbnailUrl}
+                      previewUrl={character.previewUrl}
+                      name={character.name}
+                      selected={value.characterId === character.id}
+                      onClick={() => handleCharacterChange(
+                        character.id,
+                        character.heygenAvatarId,
+                        character.characterType,
+                        character.voice.elevenlabsVoiceId
+                      )}
+                      disabled={disabled}
+                    />
+                  </div>
+                ))
+              ) : (
+                // Level 1: Groups
+                (paginatedItems as CharacterGroup[]).map((group) => (
+                  <div key={group.groupId} className="w-[75%]">
+                    <AvatarCard
+                      thumbnailUrl={group.thumbnailUrl}
+                      previewUrl={group.previewUrl}
+                      name={group.name}
+                      subtitle={`${group.characters.length} look${group.characters.length !== 1 ? 's' : ''}`}
+                      onClick={() => handleGroupSelect(group.groupId)}
+                      disabled={disabled}
+                    />
+                  </div>
+                ))
+              )}
             </div>
 
-            {/* Character Grid */}
-            {filteredCharacters.length === 0 ? (
-              <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm text-center">
-                No characters found matching "{searchQuery}"
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1 || disabled}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentPage === 1 || disabled
+                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                      : 'bg-white-10 text-text-primary hover:bg-white-20'
+                  }`}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+
+                <span className="text-sm text-text-secondary">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages || disabled}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentPage === totalPages || disabled
+                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                      : 'bg-white-10 text-text-primary hover:bg-white-20'
+                  }`}
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  {paginatedCharacters.map((character) => (
-                    <label
-                      key={character.id}
-                      className={`flex flex-col gap-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                        value.characterId === character.id
-                          ? 'bg-gold-light border-gold'
-                          : 'bg-white-10 border-transparent hover:bg-white-20'
-                      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="character"
-                        value={character.id}
-                        checked={value.characterId === character.id}
-                        onChange={() => handleCharacterChange(character.id, character.heygenAvatarId, character.characterType, character.voice.elevenlabsVoiceId)}
-                        className="sr-only"
-                        disabled={disabled}
-                      />
-                      <div className="flex items-center gap-3">
-                        <CharacterPreview
-                          thumbnailUrl={character.thumbnailUrl}
-                          previewUrl={character.previewUrl}
-                          name={character.name}
-                        />
-                        <div className="flex-1">
-                          <div className="text-text-primary font-medium">{character.name}</div>
-                          <div className="text-xs text-text-muted capitalize">{character.characterType.replace('_', ' ')}</div>
-                          <div className="text-xs text-text-muted">Voice: {character.voice?.name}</div>
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-4 mt-4">
-                    <button
-                      type="button"
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1 || disabled}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === 1 || disabled
-                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                          : 'bg-white-10 text-text-primary hover:bg-white-20'
-                      }`}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Previous
-                    </button>
-
-                    <span className="text-sm text-text-secondary">
-                      Page {currentPage} of {totalPages}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={handleNextPage}
-                      disabled={currentPage === totalPages || disabled}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === totalPages || disabled
-                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                          : 'bg-white-10 text-text-primary hover:bg-white-20'
-                      }`}
-                    >
-                      Next
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-
-                {/* Results count */}
-                <div className="text-xs text-text-muted text-center mt-2">
-                  Showing {paginatedCharacters.length} of {filteredCharacters.length} characters
-                  {searchQuery && ` (filtered from ${allCharacters.length} total)`}
-                </div>
-              </>
             )}
+
+            {/* Results count */}
+            <div className="text-xs text-text-muted text-center mt-2">
+              Showing {paginatedItems.length} of {currentItems.length} {selectedGroupId ? 'looks' : 'characters'}
+            </div>
           </>
         )}
       </div>
