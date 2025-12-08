@@ -76,10 +76,6 @@ declare module "sst" {
       "service": string
       "type": "sst.aws.Service"
     }
-    "outbound-ip-tester": {
-      "name": string
-      "type": "sst.aws.Function"
-    }
     "widget": {
       "type": "sst.aws.Nextjs"
       "url": string
