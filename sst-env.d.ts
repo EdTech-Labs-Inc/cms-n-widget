@@ -65,7 +65,6 @@ declare module "sst" {
       "username": string
     }
     "backend-service": {
-      "service": string
       "type": "sst.aws.Service"
       "url": string
     }
@@ -73,7 +72,6 @@ declare module "sst" {
       "type": "sst.aws.Vpc"
     }
     "backend-worker": {
-      "service": string
       "type": "sst.aws.Service"
     }
     "widget": {

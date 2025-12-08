@@ -45,7 +45,15 @@ export default $config({
       engine: 'valkey'
     });
 
-    const cluster = new sst.aws.Cluster('backend-cluster', { vpc });
+    const cluster = new sst.aws.Cluster("backend-cluster", {
+      vpc: {
+        id: vpc.id,
+        securityGroups: vpc.securityGroups,
+        containerSubnets: vpc.privateSubnets,   // tasks in private subnets
+        loadBalancerSubnets: vpc.publicSubnets, // LB in public subnets
+      },
+    });
+    
 
     // CloudFront CDN
     const cdn = new sst.aws.Router("MediaCdn");
@@ -269,13 +277,13 @@ export default $config({
     });
 
     // ip tester
-    const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
-      vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
-      handler: "packages/tools/outbound-ip-tester.handler",
-      environment: {
-        BIN_URL: "https://eodjsdnkysuppvd.m.pipedream.net",
-      },
-    });
+    // const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
+    //   vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
+    //   handler: "packages/tools/outbound-ip-tester.handler",
+    //   environment: {
+    //     BIN_URL: "https://eodjsdnkysuppvd.m.pipedream.net",
+    //   },
+    // });
 
     return {
       VPCId: vpc.id,
