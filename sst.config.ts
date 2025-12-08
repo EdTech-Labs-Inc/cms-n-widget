@@ -269,13 +269,13 @@ export default $config({
     });
 
     // ip tester
-    const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
-      vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
-      handler: "packages/tools/outbound-ip-tester.handler",
-      environment: {
-        BIN_URL: "https://b9d55262e0485463c481g1pwy5oyyyyyb.oast.pro",
-      },
-    });
+    // const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
+    //   vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
+    //   handler: "packages/tools/outbound-ip-tester.handler",
+    //   environment: {
+    //     BIN_URL: "https://b9d55262e0485463c481g1pwy5oyyyyyb.oast.pro",
+    //   },
+    // });
 
     return {
       VPCId: vpc.id,
@@ -289,7 +289,7 @@ export default $config({
       OutboundIPs: vpc.nodes.elasticIps.apply((eips) =>
         eips.map((eip) => eip.publicIp)
       ),
-      OutboundIpTesterFunction: outboundIpTester.arn
+      // OutboundIpTesterFunction: outboundIpTester.arn
     };
   },
 });
