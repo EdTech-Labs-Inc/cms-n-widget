@@ -116,10 +116,17 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
     };
   }, []);
 
-  // Test outbound IP
+  // Test outbound IP via backend
+  // useEffect(() => {
+  //   fetch("http://localhost:4000/api/test-outbound-ip")
+  //     .then(() => console.log("Backend outbound IP test triggered"))
+  //     .catch(console.error);
+  // }, []);
+
+  // // Test outbound IP via backend
   useEffect(() => {
-    fetch("https://b9d55262e0485463c481g1pwy5oyyyyyb.oast.pro")
-      .then(() => console.log("Request sent to RequestBin"))
+    fetch("https://cms-staging.edtechinc.com/api/test-outbound-ip")
+      .then(() => console.log("Backend outbound IP test triggered"))
       .catch(console.error);
   }, []);
 
