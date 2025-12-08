@@ -11,7 +11,7 @@ export default $config({
         aws: {
           // TODO create separate dev and prod aws accounts and ~/.aws/config profiles
           // profile: input.stage === "production" ? "edeo-production" : "edeo-dev",
-          profile: 'edtechlabs',
+          profile: 'edtechlabs-test', // TEMP: Testing with fresh IAM user
         },
       },
     };
@@ -263,7 +263,7 @@ export default $config({
 
       domain: {
         name: 'widget-staging.edtechinc.com',
-        cert: 'arn:aws:acm:us-east-1:512739634655:certificate/df0fee04-3280-406c-915a-a5737b090ec7',
+        cert: 'arn:aws:acm:us-east-1:512739634655:certificate/76100633-6065-4e16-92b1-33adf40e436b',
         dns: sst.aws.dns(),
       },
     });

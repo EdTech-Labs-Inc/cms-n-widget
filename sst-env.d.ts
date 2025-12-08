@@ -33,10 +33,6 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Bucket"
     }
-    "MediaCdn": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
       "type": "sst.sst.Secret"
       "value": string
@@ -56,6 +52,18 @@ declare module "sst" {
     "WIDGET_DATABASE_URL": {
       "type": "sst.sst.Secret"
       "value": string
+    }
+    "backend-redis": {
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Redis"
+      "username": string
+    }
+    "backend-service": {
+      "service": string
+      "type": "sst.aws.Service"
+      "url": string
     }
     "backend-vpc2": {
       "type": "sst.aws.Vpc"
