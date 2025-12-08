@@ -33,6 +33,10 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Bucket"
     }
+    "MediaCdn": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
       "type": "sst.sst.Secret"
       "value": string
@@ -71,6 +75,10 @@ declare module "sst" {
     "backend-worker": {
       "service": string
       "type": "sst.aws.Service"
+    }
+    "outbound-ip-tester": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "widget": {
       "type": "sst.aws.Nextjs"

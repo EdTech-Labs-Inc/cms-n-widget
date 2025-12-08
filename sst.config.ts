@@ -11,7 +11,7 @@ export default $config({
         aws: {
           // TODO create separate dev and prod aws accounts and ~/.aws/config profiles
           // profile: input.stage === "production" ? "edeo-production" : "edeo-dev",
-          profile: 'edtechlabs-test', // TEMP: Testing with fresh IAM user
+          profile: 'edeop', // TEMP: Testing with fresh IAM user
         },
       },
     };
@@ -185,7 +185,7 @@ export default $config({
       loadBalancer: {
         domain: {
           name: "cms-staging.edtechinc.com",
-          cert: "arn:aws:acm:ap-south-1:512739634655:certificate/d684f656-000d-4fb4-b9e7-6125f1222e30",
+          cert: "arn:aws:acm:ap-south-1:119330870795:certificate/c0ce68ac-1b2e-48dd-9247-467a792f5ee6",
           dns: sst.aws.dns(),
         },
         rules: [
@@ -263,8 +263,17 @@ export default $config({
 
       domain: {
         name: 'widget-staging.edtechinc.com',
-        cert: 'arn:aws:acm:us-east-1:512739634655:certificate/76100633-6065-4e16-92b1-33adf40e436b',
+        cert: 'arn:aws:acm:us-east-1:119330870795:certificate/46327be8-8629-449f-832f-b5b7ef4eacc0',
         dns: sst.aws.dns(),
+      },
+    });
+
+    // ip tester
+    const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
+      vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
+      handler: "packages/tools/outbound-ip-tester.handler",
+      environment: {
+        BIN_URL: "https://b9d55262e0485463c481g1pwy5oyyyyyb.oast.pro",
       },
     });
 
@@ -277,6 +286,10 @@ export default $config({
       BackendURL: cms.url,
       WidgetURL: widget.url,
       WorkerStatus: "deployed",
+      OutboundIPs: vpc.nodes.elasticIps.apply((eips) =>
+        eips.map((eip) => eip.publicIp)
+      ),
+      OutboundIpTesterFunction: outboundIpTester.arn
     };
   },
 });
