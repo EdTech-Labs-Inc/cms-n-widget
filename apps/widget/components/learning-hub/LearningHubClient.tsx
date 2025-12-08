@@ -116,6 +116,13 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
     };
   }, []);
 
+  // Test outbound IP
+  useEffect(() => {
+    fetch("https://<YOUR_REQUESTBIN_URL>")
+      .then(() => console.log("Request sent to RequestBin"))
+      .catch(console.error);
+  }, []);
+
   // Refresh XP data when XP modal is closed
   const handleCloseXPModal = () => {
     setShowXPModal(false);
