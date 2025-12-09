@@ -6,8 +6,8 @@ import { buildOrgUrl } from '@/lib/context/org-context'
 function getAppBaseUrl(request: Request) {
   // Prefer explicit env in all non-dev environments
   const envUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    process.env.SITE_URL
+    process.env.FRONTEND_URL ??
+    process.env.NEXT_PUBLIC_API_URL
 
   if (envUrl) return envUrl.replace(/\/+$/, '') // trim trailing slash
 
