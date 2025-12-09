@@ -54,6 +54,7 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/api/feature-flags") || // Skip for feature flags (public endpoint)
     request.nextUrl.pathname.startsWith("/api/support") || // Skip for support widget (handles own auth)
     request.nextUrl.pathname.startsWith("/api/test/submagic") ||
+    request.nextUrl.pathname.startsWith("/api/test/video-postprocessing") ||
     request.nextUrl.pathname.startsWith("/api/test-outbound-ip") // Skip for IP test endpoint
   ) {
     return supabaseResponse;

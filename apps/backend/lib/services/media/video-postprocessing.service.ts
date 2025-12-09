@@ -68,6 +68,7 @@ export class VideoPostProcessingService {
         width: mainVideoInfo.width,
         height: mainVideoInfo.height,
         duration: mainVideoInfo.duration,
+        frameRate: mainVideoInfo.frameRate,
       });
 
       // Step 2: Prepare bumpers if provided
@@ -82,6 +83,7 @@ export class VideoPostProcessingService {
           standaloneVideoId,
           mainVideoInfo.width,
           mainVideoInfo.height,
+          mainVideoInfo.frameRate,
           tempFiles
         );
         videosToConcat.push(startBumperPath);
@@ -99,6 +101,7 @@ export class VideoPostProcessingService {
           standaloneVideoId,
           mainVideoInfo.width,
           mainVideoInfo.height,
+          mainVideoInfo.frameRate,
           tempFiles
         );
         videosToConcat.push(endBumperPath);
@@ -172,9 +175,9 @@ export class VideoPostProcessingService {
   }
 
   /**
-   * Get video information (dimensions, duration)
+   * Get video information (dimensions, duration, frame rate)
    */
-  private getVideoInfo(filePath: string): Promise<{ width: number; height: number; duration: number }> {
+  private getVideoInfo(filePath: string): Promise<{ width: number; height: number; duration: number; frameRate: number }> {
     return new Promise((resolve, reject) => {
       ffmpeg.ffprobe(filePath, (err, metadata) => {
         if (err) {
@@ -188,10 +191,16 @@ export class VideoPostProcessingService {
           return;
         }
 
+        // Extract frame rate from r_frame_rate (e.g., "25/1" or "30000/1001")
+        const frameRateStr = videoStream.r_frame_rate || '25/1';
+        const [num, den] = frameRateStr.split('/').map(Number);
+        const frameRate = den ? num / den : 25;
+
         resolve({
           width: videoStream.width || 720,
           height: videoStream.height || 1280,
           duration: metadata.format.duration || 0,
+          frameRate: Math.round(frameRate),
         });
       });
     });
@@ -208,6 +217,7 @@ export class VideoPostProcessingService {
     standaloneVideoId: string,
     targetWidth: number,
     targetHeight: number,
+    targetFrameRate: number,
     tempFiles: string[]
   ): Promise<string> {
     const tempDir = os.tmpdir();
@@ -220,10 +230,10 @@ export class VideoPostProcessingService {
     if (bumper.type === 'image') {
       // Convert image to video
       const duration = bumper.duration || 3; // Default 3 seconds for images
-      await this.imageToVideo(inputPath, outputPath, duration, targetWidth, targetHeight);
+      await this.imageToVideo(inputPath, outputPath, duration, targetWidth, targetHeight, targetFrameRate);
     } else {
       // Re-encode video bumper to match main video
-      await this.reencodeVideo(inputPath, outputPath, targetWidth, targetHeight);
+      await this.reencodeVideo(inputPath, outputPath, targetWidth, targetHeight, targetFrameRate);
     }
 
     tempFiles.push(outputPath);
@@ -250,20 +260,21 @@ export class VideoPostProcessingService {
     outputPath: string,
     duration: number,
     targetWidth: number,
-    targetHeight: number
+    targetHeight: number,
+    targetFrameRate: number
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      logger.debug('Converting image to video', { imagePath, duration, targetWidth, targetHeight });
+      logger.debug('Converting image to video', { imagePath, duration, targetWidth, targetHeight, targetFrameRate });
 
       ffmpeg()
         .input(imagePath)
-        .inputOptions(['-loop 1', '-framerate 30'])
+        .inputOptions(['-loop 1', `-framerate ${targetFrameRate}`])
         // Add silent audio source
         .input('anullsrc=channel_layout=stereo:sample_rate=44100')
         .inputOptions(['-f lavfi'])
         .complexFilter([
-          // Scale and pad the image
-          `[0:v]scale=${targetWidth}:${targetHeight}:force_original_aspect_ratio=decrease,pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2:black,setsar=1:1[v]`,
+          // Scale, pad, and normalize frame rate to match main video
+          `[0:v]scale=${targetWidth}:${targetHeight}:force_original_aspect_ratio=decrease,pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2:black,setsar=1:1,fps=${targetFrameRate}[v]`,
         ])
         .outputOptions([
           '-map [v]',
@@ -275,7 +286,6 @@ export class VideoPostProcessingService {
           '-ar 44100',
           '-ac 2',
           '-t', duration.toString(),
-          '-shortest',
         ])
         .output(outputPath)
         .on('end', () => {
@@ -297,10 +307,11 @@ export class VideoPostProcessingService {
     inputPath: string,
     outputPath: string,
     targetWidth: number,
-    targetHeight: number
+    targetHeight: number,
+    targetFrameRate: number
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      logger.debug('Re-encoding video bumper', { inputPath, targetWidth, targetHeight });
+      logger.debug('Re-encoding video bumper', { inputPath, targetWidth, targetHeight, targetFrameRate });
 
       ffmpeg(inputPath)
         .videoFilters([
@@ -309,11 +320,14 @@ export class VideoPostProcessingService {
           // Pad to exact target dimensions
           `pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2:black`,
           'setsar=1:1',
+          // Normalize frame rate to match main video
+          `fps=${targetFrameRate}`,
         ])
         .outputOptions([
           '-c:v libx264',
           '-preset fast',
           '-pix_fmt yuv420p',
+          `-r ${targetFrameRate}`,
           '-c:a aac',
           '-ar 44100',
           '-ac 2',
