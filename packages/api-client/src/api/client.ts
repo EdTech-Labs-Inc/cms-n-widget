@@ -5,6 +5,9 @@ import type {
   Tag,
   Character,
   Voice,
+  BackgroundMusic,
+  VideoBumper,
+  CaptionStyle,
   CreateArticleRequest,
   CreateSubmissionRequest,
   CreateTagRequest,
@@ -550,6 +553,67 @@ export const featureFlagsApi = {
   getAll: async (): Promise<Record<string, boolean>> => {
     const { data } = await apiClient.get<{ flags: Record<string, boolean> }>('/api/feature-flags');
     return data.flags || {};
+  },
+};
+
+// Background Music API - Organization-scoped
+export const backgroundMusicApi = {
+  getAll: async (orgSlug: string): Promise<BackgroundMusic[]> => {
+    const { data } = await apiClient.get<ApiResponse<{ backgroundMusic: BackgroundMusic[]; total: number }>>(`/api/org/${orgSlug}/background-music`);
+    return data.data?.backgroundMusic || [];
+  },
+};
+
+// Video Bumpers API - Organization-scoped
+export const videoBumpersApi = {
+  getAll: async (orgSlug: string, position?: 'start' | 'end' | 'both'): Promise<VideoBumper[]> => {
+    const url = position
+      ? `/api/org/${orgSlug}/bumpers?position=${position}`
+      : `/api/org/${orgSlug}/bumpers`;
+    const { data } = await apiClient.get<ApiResponse<{ bumpers: VideoBumper[]; total: number }>>(url);
+    return data.data?.bumpers || [];
+  },
+};
+
+// Caption Styles API - Organization-scoped
+export const captionStylesApi = {
+  getAll: async (orgSlug: string): Promise<CaptionStyle[]> => {
+    const { data } = await apiClient.get<ApiResponse<{ captionStyles: CaptionStyle[]; total: number }>>(`/api/org/${orgSlug}/caption-styles`);
+    return data.data?.captionStyles || [];
+  },
+};
+
+// Standalone Video Create API - Organization-scoped
+export interface CreateStandaloneVideoRequest {
+  script: string;
+  sourceType: 'prompt' | 'script_file' | 'content_file';
+  characterId: string;
+  heygenAvatarId: string;
+  heygenCharacterType: 'avatar' | 'talking_photo';
+  voiceId: string;
+  captionStyleId: string;
+  enableMagicZooms: boolean;
+  enableMagicBrolls: boolean;
+  magicBrollsPercentage: number;
+  backgroundMusicId?: string | null;
+  backgroundMusicVolume?: number;
+  startBumperId?: string | null;
+  startBumperDuration?: number | null;
+  endBumperId?: string | null;
+  endBumperDuration?: number | null;
+}
+
+export interface CreateStandaloneVideoResponse {
+  id: string;
+  status: string;
+  jobId: string;
+}
+
+export const standaloneVideoApi = {
+  create: async (orgSlug: string, payload: CreateStandaloneVideoRequest): Promise<CreateStandaloneVideoResponse> => {
+    const { data } = await apiClient.post<ApiResponse<CreateStandaloneVideoResponse>>(`/api/org/${orgSlug}/video/create`, payload);
+    if (!data.data) throw new Error('Failed to create video');
+    return data.data;
   },
 };
 

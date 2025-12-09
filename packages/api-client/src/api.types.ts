@@ -428,6 +428,46 @@ export interface UpdateVideoBubbleRequest {
 }
 
 // ============================================================================
+// VIDEO CREATE RESOURCE TYPES
+// ============================================================================
+
+export interface BackgroundMusic {
+  id: string;
+  name: string;
+  previewAudioUrl: string;
+  audioUrl: string;
+  duration?: number | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface VideoBumper {
+  id: string;
+  name: string;
+  type: 'image' | 'video';
+  position: 'start' | 'end' | 'both';
+  mediaUrl: string;
+  thumbnailUrl?: string | null;
+  duration?: number | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CaptionStyle {
+  id: string;
+  name: string;
+  submagicTemplate: string;
+  previewImageUrl?: string | null;
+  logoUrl?: string | null;
+  logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ============================================================================
 // API RESPONSE WRAPPERS
 // ============================================================================
 

@@ -149,7 +149,7 @@ export class VideoWebhookService {
 
   /**
    * Handle video failure webhook from HeyGen
-   * Returns true on success, false on failure
+   * Returns true if VideoOutput was found and updated, false if not found
    */
   async handleVideoFailure(heygenVideoId: string, errorMessage: string): Promise<boolean> {
     try {
@@ -164,7 +164,8 @@ export class VideoWebhookService {
       });
 
       if (!videoOutput) {
-        logger.error('No video output found for failed HeyGen video', { heygenVideoId });
+        // Return false to indicate no VideoOutput found - caller should check StandaloneVideo
+        logger.info('No VideoOutput found for HeyGen video, may be StandaloneVideo', { heygenVideoId });
         return false;
       }
 

@@ -312,6 +312,51 @@ export class QueueService {
     );
   }
 
+  // ============================================
+  // STANDALONE VIDEO GENERATION
+  // ============================================
+
+  /**
+   * Add a job to generate standalone video (no Article/Submission)
+   */
+  async addStandaloneVideoGenerationJob(data: {
+    standaloneVideoId: string;
+    organizationId: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.GENERATE_STANDALONE_VIDEO,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
+  /**
+   * Add a job to post-process standalone video (add bumpers/music)
+   */
+  async addStandaloneVideoPostProcessingJob(data: {
+    standaloneVideoId: string;
+    organizationId: string;
+    editedVideoUrl: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.POST_PROCESS_STANDALONE_VIDEO,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
   /**
    * Get job status
    */

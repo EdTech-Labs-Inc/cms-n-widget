@@ -1,0 +1,201 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/config/database';
+import { createClient } from '@/lib/supabase/server';
+import { getOrgFromSlug, validateOrgAccess } from '@/lib/context/org-context';
+import { queueService } from '@/lib/services/core/queue.service';
+import { z } from 'zod';
+
+const CreateVideoSchema = z.object({
+  script: z.string().min(1, 'Script is required'),
+  sourceType: z.enum(['prompt', 'script_file', 'content_file']),
+  characterId: z.string().uuid('Invalid character ID'),
+  heygenAvatarId: z.string().min(1, 'HeyGen avatar ID is required'),
+  heygenCharacterType: z.enum(['avatar', 'talking_photo']),
+  voiceId: z.string().min(1, 'Voice ID is required'),
+  captionStyleId: z.string().uuid('Invalid caption style ID'),
+  enableMagicZooms: z.boolean().default(true),
+  enableMagicBrolls: z.boolean().default(true),
+  magicBrollsPercentage: z.number().int().min(0).max(100).default(40),
+  backgroundMusicId: z.string().uuid().nullable().optional(),
+  backgroundMusicVolume: z.number().min(0).max(1).default(0.15),
+  startBumperId: z.string().uuid().nullable().optional(),
+  startBumperDuration: z.number().int().positive().nullable().optional(),
+  endBumperId: z.string().uuid().nullable().optional(),
+  endBumperDuration: z.number().int().positive().nullable().optional(),
+});
+
+/**
+ * POST /api/org/[orgSlug]/video/create - Create a standalone video and queue generation
+ */
+export async function POST(
+  request: NextRequest,
+  props: { params: Promise<{ orgSlug: string }> }
+) {
+  const params = await props.params;
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const hasAccess = await validateOrgAccess(user.id, params.orgSlug);
+    if (!hasAccess) {
+      return NextResponse.json(
+        { success: false, error: 'Access denied to this organization' },
+        { status: 403 }
+      );
+    }
+
+    const org = await getOrgFromSlug(params.orgSlug);
+    if (!org) {
+      return NextResponse.json(
+        { success: false, error: 'Organization not found' },
+        { status: 404 }
+      );
+    }
+
+    const body = await request.json();
+    const validationResult = CreateVideoSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { success: false, error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    const data = validationResult.data;
+
+    // Validate that character belongs to this organization
+    const character = await prisma.character.findFirst({
+      where: {
+        id: data.characterId,
+        organizationId: org.id,
+      },
+    });
+
+    if (!character) {
+      return NextResponse.json(
+        { success: false, error: 'Character not found in this organization' },
+        { status: 400 }
+      );
+    }
+
+    // Validate caption style belongs to this organization
+    const captionStyle = await prisma.captionStyle.findFirst({
+      where: {
+        id: data.captionStyleId,
+        organizationId: org.id,
+      },
+    });
+
+    if (!captionStyle) {
+      return NextResponse.json(
+        { success: false, error: 'Caption style not found in this organization' },
+        { status: 400 }
+      );
+    }
+
+    // Validate background music if provided
+    if (data.backgroundMusicId) {
+      const music = await prisma.backgroundMusic.findFirst({
+        where: {
+          id: data.backgroundMusicId,
+          organizationId: org.id,
+        },
+      });
+
+      if (!music) {
+        return NextResponse.json(
+          { success: false, error: 'Background music not found in this organization' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Validate bumpers if provided
+    if (data.startBumperId) {
+      const bumper = await prisma.videoBumper.findFirst({
+        where: {
+          id: data.startBumperId,
+          organizationId: org.id,
+          position: { in: ['start', 'both'] },
+        },
+      });
+
+      if (!bumper) {
+        return NextResponse.json(
+          { success: false, error: 'Start bumper not found or not valid for start position' },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (data.endBumperId) {
+      const bumper = await prisma.videoBumper.findFirst({
+        where: {
+          id: data.endBumperId,
+          organizationId: org.id,
+          position: { in: ['end', 'both'] },
+        },
+      });
+
+      if (!bumper) {
+        return NextResponse.json(
+          { success: false, error: 'End bumper not found or not valid for end position' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Create the standalone video record
+    const standaloneVideo = await prisma.standaloneVideo.create({
+      data: {
+        organizationId: org.id,
+        status: 'PENDING',
+        script: data.script,
+        sourceType: data.sourceType,
+        characterId: data.characterId,
+        heygenAvatarId: data.heygenAvatarId,
+        heygenCharacterType: data.heygenCharacterType,
+        voiceId: data.voiceId,
+        captionStyleId: data.captionStyleId,
+        enableMagicZooms: data.enableMagicZooms,
+        enableMagicBrolls: data.enableMagicBrolls,
+        magicBrollsPercentage: data.magicBrollsPercentage,
+        backgroundMusicId: data.backgroundMusicId || null,
+        backgroundMusicVolume: data.backgroundMusicVolume,
+        startBumperId: data.startBumperId || null,
+        startBumperDuration: data.startBumperDuration || null,
+        endBumperId: data.endBumperId || null,
+        endBumperDuration: data.endBumperDuration || null,
+      },
+    });
+
+    // Queue the generation job
+    const job = await queueService.addStandaloneVideoGenerationJob({
+      standaloneVideoId: standaloneVideo.id,
+      organizationId: org.id,
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: standaloneVideo.id,
+        status: standaloneVideo.status,
+        jobId: job.id,
+      },
+    }, { status: 201 });
+  } catch (error) {
+    console.error('Create Standalone Video Error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to create video' },
+      { status: 500 }
+    );
+  }
+}

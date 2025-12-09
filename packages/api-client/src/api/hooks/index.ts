@@ -48,6 +48,9 @@ export * from './character-hooks';
 // Feature Flags hooks
 export * from './feature-flags-hooks';
 
+// Video Create hooks (background music, bumpers, caption styles)
+export * from './video-create-hooks';
+
 // Query Keys
 export const queryKeys = {
   articles: ['articles'] as const,

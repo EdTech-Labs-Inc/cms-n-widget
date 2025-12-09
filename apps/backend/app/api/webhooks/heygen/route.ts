@@ -7,6 +7,134 @@ import { submagicService } from '@/lib/services/external/submagic.service';
 import { prisma } from '@/lib/config/database';
 
 /**
+ * Handle successful video generation for VideoOutput (submission-based)
+ * Uploads video to Submagic for AI editing (captions, zooms, B-rolls)
+ */
+async function handleVideoOutputSuccess(video_id: string, url: string): Promise<boolean> {
+  // Find the VideoOutput record with this HeyGen video ID
+  console.log(`🔍 Looking up VideoOutput in database...`);
+  const videoOutput = await prisma.videoOutput.findFirst({
+    where: {
+      heygenVideoId: video_id,
+      status: 'PROCESSING',
+    },
+    include: {
+      submission: true, // Include submission to get language
+    },
+  });
+
+  if (!videoOutput) {
+    return false; // Not a VideoOutput, try StandaloneVideo
+  }
+
+  console.log(`✅ Found VideoOutput ${videoOutput.id}`);
+  console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
+  console.log(`   - Submission ID: ${videoOutput.submissionId}`);
+  console.log(`   - Language: ${videoOutput.submission.language}`);
+
+  console.log(`\n📤 Uploading video to Submagic for AI editing...`);
+
+  // Construct webhook URL for Submagic to call when editing completes
+  const webhookUrl = `${process.env.SUBMAGIC_WEBHOOK_URL}/api/webhooks/submagic`;
+  console.log(`🔔 Submagic webhook URL: ${webhookUrl}`);
+
+  // Upload to Submagic for AI editing (captions, zooms, B-rolls)
+  const { projectId } = await submagicService.uploadVideoForEditing(
+    url,
+    webhookUrl,
+    videoOutput.title || `Video ${video_id}`,
+    videoOutput.submission.language,
+    {
+      templateName: 'jblk', // Hardcoded brandkit template
+      enableCaptions: true, // Always enabled
+      magicZooms: videoOutput.enableMagicZooms,
+      magicBrolls: videoOutput.enableMagicBrolls,
+      magicBrollsPercentage: videoOutput.magicBrollsPercentage ?? 40,
+    }
+  );
+
+  console.log(`✅ Submagic project created: ${projectId}`);
+
+  // Store Submagic project ID in database for webhook matching
+  await prisma.videoOutput.update({
+    where: { id: videoOutput.id },
+    data: {
+      submagicProjectId: projectId,
+    },
+  });
+
+  console.log(`✅ Database updated. Awaiting Submagic webhook callback...`);
+  return true;
+}
+
+/**
+ * Handle successful video generation for StandaloneVideo
+ * Uploads video to Submagic for AI editing, then post-processing adds bumpers/music
+ */
+async function handleStandaloneVideoSuccess(video_id: string, url: string): Promise<boolean> {
+  // Find the StandaloneVideo record with this HeyGen video ID
+  console.log(`🔍 Looking up StandaloneVideo in database...`);
+  const standaloneVideo = await prisma.standaloneVideo.findFirst({
+    where: {
+      heygenVideoId: video_id,
+      status: 'PROCESSING',
+    },
+    include: {
+      captionStyle: true, // Include caption style for Submagic template
+    },
+  });
+
+  if (!standaloneVideo) {
+    return false; // Not a StandaloneVideo either
+  }
+
+  console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}`);
+  console.log(`   - Title: "${standaloneVideo.title || 'Untitled'}"`);
+  console.log(`   - Caption Style: ${standaloneVideo.captionStyle?.name || 'None'}`);
+  console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
+
+  console.log(`\n📤 Uploading video to Submagic for AI editing...`);
+
+  // Construct webhook URL for Submagic to call when editing completes
+  const webhookUrl = `${process.env.SUBMAGIC_WEBHOOK_URL}/api/webhooks/submagic`;
+  console.log(`🔔 Submagic webhook URL: ${webhookUrl}`);
+
+  // Get the Submagic template from caption style, or use default
+  const templateName = standaloneVideo.captionStyle?.submagicTemplate || 'jblk';
+
+  // Upload to Submagic for AI editing (captions, zooms, B-rolls)
+  // StandaloneVideos default to English for now
+  const { projectId } = await submagicService.uploadVideoForEditing(
+    url,
+    webhookUrl,
+    standaloneVideo.title || `Video ${video_id}`,
+    'ENGLISH', // StandaloneVideos are English by default
+    {
+      templateName,
+      enableCaptions: true, // Always enabled
+      magicZooms: standaloneVideo.enableMagicZooms,
+      magicBrolls: standaloneVideo.enableMagicBrolls,
+      magicBrollsPercentage: standaloneVideo.magicBrollsPercentage,
+    }
+  );
+
+  console.log(`✅ Submagic project created: ${projectId}`);
+
+  // Store Submagic project ID in database for webhook matching
+  await prisma.standaloneVideo.update({
+    where: { id: standaloneVideo.id },
+    data: {
+      submagicProjectId: projectId,
+    },
+  });
+
+  console.log(`✅ Database updated. Awaiting Submagic webhook callback...`);
+  console.log(`   Note: After Submagic completes, post-processing will add bumpers/music if configured`);
+  return true;
+}
+
+/**
  * Handle successful video generation
  * Uploads video to Submagic for AI editing (captions, zooms, B-rolls)
  */
@@ -32,75 +160,30 @@ async function handleVideoSuccess(eventData: {
     console.log(`Timestamp: ${new Date().toISOString()}`);
     console.log('==========================================');
 
-    // Find the VideoOutput record with this HeyGen video ID
-    console.log(`🔍 Step 1: Looking up VideoOutput in database...`);
-    const videoOutput = await prisma.videoOutput.findFirst({
-      where: {
-        heygenVideoId: video_id,
-        status: 'PROCESSING',
-      },
-      include: {
-        submission: true, // Include submission to get language
-      },
-    });
-
-    if (!videoOutput) {
-      console.error(`❌ CRITICAL: No video output found for HeyGen video ${video_id}`);
-      console.error(`⚠️  This means the VideoOutput record doesn't exist or is not in PROCESSING status`);
-      console.log(`⚠️  FALLBACK: Enqueueing direct processing without Submagic editing`);
-
-      await queueService.addVideoCompletionJob({
-        heygenVideoId: video_id,
-        videoUrl: url,
-      });
-
-      console.log(`✅ Fallback job enqueued successfully`);
+    // Try VideoOutput first (submission-based videos)
+    const handledAsVideoOutput = await handleVideoOutputSuccess(video_id, url);
+    if (handledAsVideoOutput) {
+      console.log('==========================================\n');
       return;
     }
 
-    console.log(`✅ Step 1 Complete: Found VideoOutput ${videoOutput.id}`);
-    console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
-    console.log(`   - Submission ID: ${videoOutput.submissionId}`);
-    console.log(`   - Language: ${videoOutput.submission.language}`);
+    // Try StandaloneVideo next (standalone create page videos)
+    const handledAsStandaloneVideo = await handleStandaloneVideoSuccess(video_id, url);
+    if (handledAsStandaloneVideo) {
+      console.log('==========================================\n');
+      return;
+    }
 
-    console.log(`\n📤 Step 2: Uploading video to Submagic for AI editing...`);
+    // Neither found - fallback to direct processing
+    console.error(`❌ No VideoOutput or StandaloneVideo found for HeyGen video ${video_id}`);
+    console.log(`⚠️  FALLBACK: Enqueueing direct processing without Submagic editing`);
 
-    // Construct webhook URL for Submagic to call when editing completes
-    const webhookUrl = `${process.env.SUBMAGIC_WEBHOOK_URL}/api/webhooks/submagic`;
-    console.log(`🔔 Submagic webhook URL: ${webhookUrl}`);
-
-    // Upload to Submagic for AI editing (captions, zooms, B-rolls)
-    // Pass the submission language and custom configuration from VideoOutput
-    const { projectId } = await submagicService.uploadVideoForEditing(
-      url,
-      webhookUrl,
-      videoOutput.title || `Video ${video_id}`,
-      videoOutput.submission.language, // Pass language from submission
-      {
-        templateName: 'jblk', // Hardcoded brandkit template
-        enableCaptions: true, // Always enabled
-        magicZooms: videoOutput.enableMagicZooms,
-        magicBrolls: videoOutput.enableMagicBrolls,
-        magicBrollsPercentage: videoOutput.magicBrollsPercentage ?? 40,
-      }
-    );
-
-    console.log(`✅ Step 2 Complete: Submagic project created successfully`);
-    console.log(`   - Project ID: ${projectId}`);
-
-    console.log(`\n💾 Step 3: Storing Submagic project ID in database...`);
-
-    // Store Submagic project ID in database for webhook matching
-    await prisma.videoOutput.update({
-      where: { id: videoOutput.id },
-      data: {
-        submagicProjectId: projectId,
-      },
+    await queueService.addVideoCompletionJob({
+      heygenVideoId: video_id,
+      videoUrl: url,
     });
 
-    console.log(`✅ Step 3 Complete: Database updated successfully`);
-    console.log(`\n🎯 SUCCESS: All steps completed. Awaiting Submagic webhook callback...`);
-    console.log(`   Next: Submagic will call ${webhookUrl} when editing is complete`);
+    console.log(`✅ Fallback job enqueued successfully`);
     console.log('==========================================\n');
   } catch (error) {
     console.error('==========================================');
@@ -149,8 +232,32 @@ async function handleVideoFailure(eventData: {
     console.log(`🔗 Callback ID: ${callback_id}`);
   }
 
-  // Mark video as failed in DB
-  await videoService.handleVideoFailure(video_id, msg);
+  // Try VideoOutput first
+  const videoOutputHandled = await videoService.handleVideoFailure(video_id, msg);
+
+  // If not a VideoOutput, try StandaloneVideo
+  if (!videoOutputHandled) {
+    console.log(`🔍 Checking for StandaloneVideo...`);
+    const standaloneVideo = await prisma.standaloneVideo.findFirst({
+      where: {
+        heygenVideoId: video_id,
+        status: 'PROCESSING',
+      },
+    });
+
+    if (standaloneVideo) {
+      console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}, marking as FAILED`);
+      await prisma.standaloneVideo.update({
+        where: { id: standaloneVideo.id },
+        data: {
+          status: 'FAILED',
+          error: msg,
+        },
+      });
+    } else {
+      console.error(`❌ No VideoOutput or StandaloneVideo found for failed HeyGen video ${video_id}`);
+    }
+  }
 }
 
 /**

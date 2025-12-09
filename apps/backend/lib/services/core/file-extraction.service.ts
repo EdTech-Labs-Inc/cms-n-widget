@@ -2,11 +2,14 @@ import mammoth from 'mammoth';
 import { readFile } from 'fs/promises';
 import { logger } from '@repo/logging';
 import { contentRegenerationService } from '../external/content-regeneration.service';
+// pdf-parse is a CommonJS module, import dynamically to avoid ESM issues
+// @ts-expect-error - pdf-parse types are not available
+import pdfParse from 'pdf-parse';
 
 /**
  * File Extraction Service
  * Extracts text content from various file formats
- * Currently supports: DOCX, DOC, TXT
+ * Supports: DOCX, DOC, TXT, PDF
  * Uses OpenAI to clean content and extract proper titles
  */
 export class FileExtractionService {
@@ -29,8 +32,12 @@ export class FileExtractionService {
           rawContent = await this.extractRawFromText(filePath);
           break;
 
+        case 'application/pdf':
+          rawContent = await this.extractRawFromPdf(filePath);
+          break;
+
         default:
-          throw new Error(`Unsupported file type: ${mimeType}. Currently supported: DOCX (.docx), DOC (.doc), TXT (.txt)`);
+          throw new Error(`Unsupported file type: ${mimeType}. Currently supported: DOCX (.docx), DOC (.doc), TXT (.txt), PDF (.pdf)`);
       }
 
       // Use OpenAI to clean the content and extract proper title
@@ -72,6 +79,37 @@ export class FileExtractionService {
   private async extractRawFromText(filePath: string): Promise<string> {
     const content = await readFile(filePath, 'utf-8');
     return content.trim();
+  }
+
+  /**
+   * Extract raw text from PDF file
+   * Uses pdf-parse which is a pure JavaScript implementation (Docker-compatible)
+   */
+  private async extractRawFromPdf(filePath: string): Promise<string> {
+    const dataBuffer = await readFile(filePath);
+    const data = await pdfParse(dataBuffer);
+    return data.text.trim();
+  }
+
+  /**
+   * Extract raw text from file without cleaning (for script uploads)
+   * Returns the raw text without AI processing
+   */
+  async extractRawText(filePath: string, mimeType: string): Promise<string> {
+    switch (mimeType) {
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+      case 'application/msword':
+        return await this.extractRawFromWord(filePath);
+
+      case 'text/plain':
+        return await this.extractRawFromText(filePath);
+
+      case 'application/pdf':
+        return await this.extractRawFromPdf(filePath);
+
+      default:
+        throw new Error(`Unsupported file type: ${mimeType}. Currently supported: DOCX (.docx), DOC (.doc), TXT (.txt), PDF (.pdf)`);
+    }
   }
 }
 
