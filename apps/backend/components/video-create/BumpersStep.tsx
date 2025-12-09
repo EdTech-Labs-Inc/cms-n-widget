@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useVideoBumpers } from '@/lib/api/hooks';
-import { Loader2, Play, Pause, Check, ImageIcon, Film, X } from 'lucide-react';
+import { Loader2, Check, ImageIcon, Film, X } from 'lucide-react';
 import type { VideoBumper } from '@repo/api-client';
 
 interface BumpersStepProps {
@@ -39,37 +39,6 @@ function BumperCard({
   onClick: () => void;
   disabled?: boolean;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
-    };
-  }, []);
-
-  const handlePlayPause = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (bumper.type !== 'video' || !videoRef.current) return;
-
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    }
-  };
-
-  const handleVideoEnded = () => {
-    setIsPlaying(false);
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-    }
-  };
-
   const handleCardClick = (e: React.MouseEvent) => {
     if (disabled) return;
     onClick();
@@ -92,53 +61,18 @@ function BumperCard({
           : 'border-white-20 hover:border-white-40'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     >
-      {/* Preview */}
+      {/* Preview - always show thumbnail */}
       <div className="aspect-video bg-navy-dark relative">
-        {bumper.type === 'video' ? (
-          <>
-            {bumper.thumbnailUrl && !isPlaying ? (
-              <img
-                src={bumper.thumbnailUrl}
-                alt={bumper.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                src={bumper.mediaUrl}
-                className="w-full h-full object-cover"
-                onEnded={handleVideoEnded}
-                muted
-                playsInline
-              />
-            )}
-            {/* Play/Pause overlay */}
-            <button
-              type="button"
-              onClick={handlePlayPause}
-              className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors"
-            >
-              {isPlaying ? (
-                <Pause className="w-10 h-10 text-white" />
-              ) : (
-                <Play className="w-10 h-10 text-white ml-1" />
-              )}
-            </button>
-          </>
+        {bumper.thumbnailUrl || bumper.mediaUrl ? (
+          <img
+            src={bumper.thumbnailUrl || bumper.mediaUrl}
+            alt={bumper.name}
+            className="w-full h-full object-cover"
+          />
         ) : (
-          <>
-            {bumper.thumbnailUrl || bumper.mediaUrl ? (
-              <img
-                src={bumper.thumbnailUrl || bumper.mediaUrl}
-                alt={bumper.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-white-10">
-                <ImageIcon className="w-8 h-8 text-text-muted" />
-              </div>
-            )}
-          </>
+          <div className="w-full h-full flex items-center justify-center bg-white-10">
+            <ImageIcon className="w-8 h-8 text-text-muted" />
+          </div>
         )}
 
         {/* Type badge */}
