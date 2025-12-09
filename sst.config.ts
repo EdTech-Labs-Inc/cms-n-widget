@@ -11,7 +11,7 @@ export default $config({
         aws: {
           // TODO create separate dev and prod aws accounts and ~/.aws/config profiles
           // profile: input.stage === "production" ? "edeo-production" : "edeo-dev",
-          profile: 'edeop',
+          profile: 'edeop', // TEMP: Testing with fresh IAM user
         },
       },
     };
@@ -35,15 +35,25 @@ export default $config({
       az: isProduction
         ? ['ap-south-1a', 'ap-south-1b', 'ap-south-1c'] // 3 AZs for high availability
         : ['ap-south-1a', 'ap-south-1b'], // 2 AZs for staging - saves ~$60-100/month on NAT
-      nat: 'managed',
+      nat: 'managed', // elastic ip. In front of the NAT gateway. (adjust route table in lambda)
     });
+
+    // test vpc outbound ip address, set up request bin, setup lambda function which calls endpoint, tht endpoint, call the bin, bin logs the ip.
 
     const redis = new sst.aws.Redis('backend-redis', {
       vpc,
       engine: 'valkey'
     });
 
-    const cluster = new sst.aws.Cluster('backend-cluster', { vpc });
+    const cluster = new sst.aws.Cluster("backend-cluster", {
+      vpc: {
+        id: vpc.id,
+        securityGroups: vpc.securityGroups,
+        containerSubnets: vpc.privateSubnets,   // tasks in private subnets
+        loadBalancerSubnets: vpc.publicSubnets, // LB in public subnets
+      },
+    });
+    
 
     // CloudFront CDN
     const cdn = new sst.aws.Router("MediaCdn");
@@ -124,9 +134,10 @@ export default $config({
 
       // Using your secret for both server-side and client-visible URLs
       FRONTEND_URL: BACKEND_BASE_URL.value,
+      // NEXT_PUBLIC_SITE_URL=BACKEND_BASE_URL.value,
       NEXT_PUBLIC_API_URL: BACKEND_BASE_URL.value,
 
-      NEXT_PUBLIC_SUPABASE_URL: 'https://oqtvoxobndxnyamzzdkm.supabase.co',
+      NEXT_PUBLIC_SUPABASE_URL: 'https://owlkvcjzvvjooxpaoqps.supabase.co',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: NEXT_PUBLIC_SUPABASE_ANON_KEY.value,
 
       // Database and Redis
@@ -207,7 +218,7 @@ export default $config({
         dockerfile: "./apps/backend/Dockerfile",
         args: {
           // NEXT_PUBLIC_* must be passed at build time for Next.js to inline them
-          NEXT_PUBLIC_SUPABASE_URL: 'https://oqtvoxobndxnyamzzdkm.supabase.co',
+          NEXT_PUBLIC_SUPABASE_URL: 'https://owlkvcjzvvjooxpaoqps.supabase.co',
           NEXT_PUBLIC_SUPABASE_ANON_KEY: NEXT_PUBLIC_SUPABASE_ANON_KEY.value,
         },
       },
@@ -266,6 +277,15 @@ export default $config({
       },
     });
 
+    // ip tester
+    // const outboundIpTester = new sst.aws.Function("outbound-ip-tester", {
+    //   vpc, // IMPORTANT: this puts the Lambda in the same VPC & behind the NAT
+    //   handler: "packages/tools/outbound-ip-tester.handler",
+    //   environment: {
+    //     BIN_URL: "https://eodjsdnkysuppvd.m.pipedream.net",
+    //   },
+    // });
+
     return {
       VPCId: vpc.id,
       RedisHost: redis.host,
@@ -275,6 +295,10 @@ export default $config({
       BackendURL: cms.url,
       WidgetURL: widget.url,
       WorkerStatus: "deployed",
+      OutboundIPs: vpc.nodes.elasticIps.apply((eips) =>
+        eips.map((eip) => eip.publicIp)
+      ),
+      // OutboundIpTesterFunction: outboundIpTester.arn
     };
   },
 });

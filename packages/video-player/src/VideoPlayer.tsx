@@ -283,7 +283,7 @@ function VideoPlayer({
         onEnded={handleVideoEnded}
         onClick={handleVideoTap}
         style={{
-          objectFit: 'cover',
+          objectFit: 'contain',
           width: '100%',
           height: '100%'
         }}
