@@ -282,56 +282,87 @@ const processMediaJob = async (job: Job<MediaJobData | ArticleThumbnailJobData |
           throw new Error(`StandaloneVideo ${standaloneVideoId} not found`);
         }
 
-        // Build post-processing params
-        const postProcessParams: Parameters<typeof videoPostProcessingService.processVideo>[0] = {
-          videoUrl: editedVideoUrl,
-          standaloneVideoId,
-          organizationId,
-        };
+        // Check if any post-processing is needed
+        const needsPostProcessing =
+          standaloneVideo.startBumper ||
+          standaloneVideo.endBumper ||
+          standaloneVideo.backgroundMusic;
 
-        // Add start bumper if configured
-        if (standaloneVideo.startBumper) {
-          postProcessParams.startBumper = {
-            mediaUrl: standaloneVideo.startBumper.mediaUrl,
-            type: standaloneVideo.startBumper.type as 'image' | 'video',
-            duration: standaloneVideo.startBumperDuration || standaloneVideo.startBumper.duration || 3,
+        let finalVideoUrl: string;
+        let finalDuration: number;
+
+        if (needsPostProcessing) {
+          // Build post-processing params
+          const postProcessParams: Parameters<typeof videoPostProcessingService.processVideo>[0] = {
+            videoUrl: editedVideoUrl,
+            standaloneVideoId,
+            organizationId,
           };
-        }
 
-        // Add end bumper if configured
-        if (standaloneVideo.endBumper) {
-          postProcessParams.endBumper = {
-            mediaUrl: standaloneVideo.endBumper.mediaUrl,
-            type: standaloneVideo.endBumper.type as 'image' | 'video',
-            duration: standaloneVideo.endBumperDuration || standaloneVideo.endBumper.duration || 3,
-          };
-        }
+          // Add start bumper if configured
+          if (standaloneVideo.startBumper) {
+            postProcessParams.startBumper = {
+              mediaUrl: standaloneVideo.startBumper.mediaUrl,
+              type: standaloneVideo.startBumper.type as 'image' | 'video',
+              duration: standaloneVideo.startBumperDuration || standaloneVideo.startBumper.duration || 3,
+            };
+          }
 
-        // Add background music if configured
-        if (standaloneVideo.backgroundMusic) {
-          postProcessParams.music = {
-            audioUrl: standaloneVideo.backgroundMusic.audioUrl,
-            volume: standaloneVideo.backgroundMusicVolume,
-          };
-        }
+          // Add end bumper if configured
+          if (standaloneVideo.endBumper) {
+            postProcessParams.endBumper = {
+              mediaUrl: standaloneVideo.endBumper.mediaUrl,
+              type: standaloneVideo.endBumper.type as 'image' | 'video',
+              duration: standaloneVideo.endBumperDuration || standaloneVideo.endBumper.duration || 3,
+            };
+          }
 
-        // Run post-processing
-        const result = await videoPostProcessingService.processVideo(postProcessParams);
+          // Add background music if configured
+          if (standaloneVideo.backgroundMusic) {
+            postProcessParams.music = {
+              audioUrl: standaloneVideo.backgroundMusic.audioUrl,
+              volume: standaloneVideo.backgroundMusicVolume,
+            };
+          }
+
+          // Run FFmpeg post-processing
+          const result = await videoPostProcessingService.processVideo(postProcessParams);
+          finalVideoUrl = result.cloudfrontUrl;
+          finalDuration = result.duration;
+        } else {
+          // No post-processing needed - just download and re-upload to our S3
+          logger.info('No bumpers/music configured, uploading video directly to S3');
+          const { storageService } = await import('../../backend/lib/services/core/storage.service');
+
+          const response = await fetch(editedVideoUrl);
+          if (!response.ok) {
+            throw new Error(`Failed to download video from Submagic: ${response.statusText}`);
+          }
+          const videoBuffer = Buffer.from(await response.arrayBuffer());
+
+          const filePath = `organizations/${organizationId}/videos/${standaloneVideoId}/final-video.mp4`;
+          const uploadResult = await storageService.uploadFile(videoBuffer, filePath, 'video/mp4');
+
+          finalVideoUrl = uploadResult.cloudfrontUrl;
+          // Estimate duration from the Submagic video (we don't have exact duration without FFprobe)
+          finalDuration = 0; // Will be set by player on load
+        }
 
         // Update StandaloneVideo with final URL and mark as complete
         await prisma.standaloneVideo.update({
           where: { id: standaloneVideoId },
           data: {
             status: 'COMPLETED',
-            videoUrl: result.cloudfrontUrl,
-            duration: result.duration,
+            videoUrl: finalVideoUrl,
+            ...(finalDuration > 0 ? { duration: finalDuration } : {}),
           },
         });
 
         logger.info('Standalone video post-processing completed', {
           standaloneVideoId,
-          videoUrl: result.cloudfrontUrl,
-          duration: result.duration,
+          videoUrl: finalVideoUrl,
+          duration: finalDuration,
+          hadPostProcessing: needsPostProcessing,
         });
         break;
       }

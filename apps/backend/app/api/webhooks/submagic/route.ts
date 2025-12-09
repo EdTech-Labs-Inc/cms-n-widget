@@ -71,49 +71,29 @@ async function handleStandaloneVideoEditingSuccess(projectId: string, videoUrl: 
   console.log(`   - Has End Bumper: ${!!standaloneVideo.endBumper}`);
   console.log(`   - Has Background Music: ${!!standaloneVideo.backgroundMusic}`);
 
-  // Check if post-processing is needed (bumpers or music)
-  const needsPostProcessing =
+  // Always queue post-processing job - this ensures upload happens in worker context
+  // (which has proper S3 permissions) and handles bumpers/music if configured
+  const hasBumpersOrMusic =
     standaloneVideo.startBumper ||
     standaloneVideo.endBumper ||
     standaloneVideo.backgroundMusic;
 
-  if (needsPostProcessing) {
-    console.log(`\n📋 Enqueueing post-processing job for bumpers/music...`);
-
-    // Queue post-processing job
-    await queueService.addStandaloneVideoPostProcessingJob({
-      standaloneVideoId: standaloneVideo.id,
-      organizationId: standaloneVideo.organizationId,
-      editedVideoUrl: videoUrl,
-    });
-
-    console.log(`✅ Post-processing job enqueued successfully`);
-    console.log(`   Next: Worker will add bumpers/music and upload final video`);
+  console.log(`\n📋 Enqueueing post-processing job...`);
+  if (hasBumpersOrMusic) {
+    console.log(`   Will add: ${standaloneVideo.startBumper ? 'start bumper, ' : ''}${standaloneVideo.endBumper ? 'end bumper, ' : ''}${standaloneVideo.backgroundMusic ? 'background music' : ''}`);
   } else {
-    console.log(`\n📋 No post-processing needed, uploading edited video directly...`);
-
-    // No post-processing needed - upload directly and mark complete
-    const { storageService } = await import('@/lib/services/core/storage.service');
-
-    // Download from Submagic and upload to S3
-    const response = await fetch(videoUrl);
-    const videoBuffer = Buffer.from(await response.arrayBuffer());
-    const filePath = `organizations/${standaloneVideo.organizationId}/videos/${standaloneVideo.id}/final-video.mp4`;
-    const uploadResult = await storageService.uploadFile(videoBuffer, filePath, 'video/mp4');
-
-    console.log(`✅ Video uploaded to S3: ${uploadResult.cloudfrontUrl}`);
-
-    // Update StandaloneVideo with final URL
-    await prisma.standaloneVideo.update({
-      where: { id: standaloneVideo.id },
-      data: {
-        status: 'COMPLETED',
-        videoUrl: uploadResult.cloudfrontUrl,
-      },
-    });
-
-    console.log(`✅ StandaloneVideo marked as COMPLETED`);
+    console.log(`   No bumpers/music - will upload video directly`);
   }
+
+  // Queue post-processing job (handles upload to S3 in worker context)
+  await queueService.addStandaloneVideoPostProcessingJob({
+    standaloneVideoId: standaloneVideo.id,
+    organizationId: standaloneVideo.organizationId,
+    editedVideoUrl: videoUrl,
+  });
+
+  console.log(`✅ Post-processing job enqueued successfully`);
+  console.log(`   Next: Worker will process and upload final video`);
 
   return true;
 }
