@@ -132,6 +132,7 @@ export default function VideosPage({ params }: PageProps) {
                   videoUrl={video.videoUrl}
                   thumbnailUrl={video.thumbnailUrl}
                   title={video.title}
+                  downloadUrl={`/api/org/${orgSlug}/videos/${video.id}/download`}
                 />
               ) : (
                 <div className="aspect-[9/16] bg-navy-dark flex flex-col items-center justify-center">

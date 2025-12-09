@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Download } from 'lucide-react';
 
 interface PortraitVideoPlayerProps {
   videoUrl: string;
   thumbnailUrl?: string | null;
   title?: string | null;
+  downloadUrl?: string;
 }
 
-export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title }: PortraitVideoPlayerProps) {
+export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title, downloadUrl }: PortraitVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -43,6 +44,13 @@ export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title }: PortraitV
 
   const handleVideoEnd = () => {
     setIsPlaying(false);
+  };
+
+  const handleDownload = () => {
+    if (downloadUrl) {
+      // Use the backend proxy route to download
+      window.location.href = downloadUrl;
+    }
   };
 
   return (
@@ -105,12 +113,24 @@ export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title }: PortraitV
               )}
             </button>
           </div>
-          <button
-            onClick={handleFullscreen}
-            className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-          >
-            <Maximize className="w-4 h-4 text-white" />
-          </button>
+          <div className="flex items-center gap-2">
+            {downloadUrl && (
+              <button
+                onClick={handleDownload}
+                className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                title="Download video"
+              >
+                <Download className="w-4 h-4 text-white" />
+              </button>
+            )}
+            <button
+              onClick={handleFullscreen}
+              className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+              title="Fullscreen"
+            >
+              <Maximize className="w-4 h-4 text-white" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
