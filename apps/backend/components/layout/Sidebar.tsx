@@ -27,6 +27,7 @@ export function Sidebar({ isOpen, onClose, user }: SidebarProps) {
   const navItems = [
     { href: `${basePath}/dashboard`, label: 'Home', icon: Home },
     { href: `${basePath}/articles`, label: 'Articles', icon: FolderOpen },
+    { href: `${basePath}/videos`, label: 'Videos', icon: Video },
     { href: `${basePath}/library`, label: 'Library', icon: Library },
     { href: `${basePath}/tags`, label: 'Tag Management', icon: Tags },
     { href: `${basePath}/settings`, label: 'Settings', icon: Settings },

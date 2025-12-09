@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { backgroundMusicApi, videoBumpersApi, captionStylesApi, standaloneVideoApi } from '../client';
 import type { CreateStandaloneVideoRequest, CreateStandaloneVideoResponse } from '../client';
-import type { BackgroundMusic, VideoBumper, CaptionStyle } from '../../api.types';
+import type { BackgroundMusic, VideoBumper, CaptionStyle, StandaloneVideo } from '../../api.types';
 
 /**
  * Query keys for video create resources
@@ -11,6 +11,7 @@ export const videoCreateQueryKeys = {
   videoBumpers: (orgSlug: string) => ['video-bumpers', orgSlug] as const,
   videoBumpersFiltered: (orgSlug: string, position: string) => ['video-bumpers', orgSlug, position] as const,
   captionStyles: (orgSlug: string) => ['caption-styles', orgSlug] as const,
+  standaloneVideos: (orgSlug: string) => ['standalone-videos', orgSlug] as const,
 };
 
 /**
@@ -71,5 +72,20 @@ export function useCaptionStyles(orgSlug: string) {
 export function useCreateStandaloneVideo(orgSlug: string) {
   return useMutation<CreateStandaloneVideoResponse, Error, CreateStandaloneVideoRequest>({
     mutationFn: (payload) => standaloneVideoApi.create(orgSlug, payload),
+  });
+}
+
+/**
+ * Hook to fetch all standalone videos for an organization
+ *
+ * @param orgSlug - Organization slug
+ * @returns React Query result with standalone videos array
+ */
+export function useStandaloneVideos(orgSlug: string) {
+  return useQuery<StandaloneVideo[]>({
+    queryKey: videoCreateQueryKeys.standaloneVideos(orgSlug),
+    queryFn: () => standaloneVideoApi.getAll(orgSlug),
+    enabled: !!orgSlug,
+    staleTime: 1000 * 60 * 2, // 2 minutes
   });
 }

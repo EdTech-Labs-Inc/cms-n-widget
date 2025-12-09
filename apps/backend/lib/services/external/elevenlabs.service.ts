@@ -42,6 +42,18 @@ export class ElevenLabsService {
       const voiceId = params.voiceId || this.defaultVoiceId;
       const model = params.model || this.defaultModel;
 
+      // Log the API key being used (masked for security)
+      const maskedApiKey = this.apiKey
+        ? `${this.apiKey.slice(0, 8)}...${this.apiKey.slice(-4)}`
+        : 'NOT SET';
+      logger.info('ElevenLabs textToSpeech - attempting API call', {
+        voiceId,
+        model,
+        apiKeyUsed: maskedApiKey,
+        apiKeyLength: this.apiKey?.length || 0,
+        textLength: params.text.length,
+      });
+
       const response = await axios.post(
         `${this.baseUrl}/text-to-speech/${voiceId}`,
         {

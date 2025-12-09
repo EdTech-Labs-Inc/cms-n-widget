@@ -8,6 +8,7 @@ import type {
   BackgroundMusic,
   VideoBumper,
   CaptionStyle,
+  StandaloneVideo,
   CreateArticleRequest,
   CreateSubmissionRequest,
   CreateTagRequest,
@@ -610,6 +611,11 @@ export interface CreateStandaloneVideoResponse {
 }
 
 export const standaloneVideoApi = {
+  getAll: async (orgSlug: string): Promise<StandaloneVideo[]> => {
+    const { data } = await apiClient.get<ApiResponse<{ videos: StandaloneVideo[]; total: number }>>(`/api/org/${orgSlug}/videos`);
+    return data.data?.videos || [];
+  },
+
   create: async (orgSlug: string, payload: CreateStandaloneVideoRequest): Promise<CreateStandaloneVideoResponse> => {
     const { data } = await apiClient.post<ApiResponse<CreateStandaloneVideoResponse>>(`/api/org/${orgSlug}/video/create`, payload);
     if (!data.data) throw new Error('Failed to create video');

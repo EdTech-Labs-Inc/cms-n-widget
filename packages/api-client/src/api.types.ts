@@ -467,6 +467,38 @@ export interface CaptionStyle {
   updatedAt: string;
 }
 
+export interface StandaloneVideo {
+  id: string;
+  organizationId: string;
+  status: OutputStatus;
+  title?: string | null;
+  script: string;
+  sourceType: 'prompt' | 'script_file' | 'content_file';
+  characterId: string;
+  heygenAvatarId: string;
+  heygenCharacterType: 'avatar' | 'talking_photo';
+  voiceId: string;
+  captionStyleId?: string | null;
+  enableMagicZooms: boolean;
+  enableMagicBrolls: boolean;
+  magicBrollsPercentage: number;
+  backgroundMusicId?: string | null;
+  backgroundMusicVolume: number;
+  startBumperId?: string | null;
+  startBumperDuration?: number | null;
+  endBumperId?: string | null;
+  endBumperDuration?: number | null;
+  heygenVideoId?: string | null;
+  submagicProjectId?: string | null;
+  elevenlabsAudioUrl?: string | null;
+  videoUrl?: string | null;
+  thumbnailUrl?: string | null;
+  duration?: number | null;
+  error?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ============================================================================
 // API RESPONSE WRAPPERS
 // ============================================================================
