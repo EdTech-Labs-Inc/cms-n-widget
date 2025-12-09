@@ -134,6 +134,7 @@ export default $config({
 
       // Using your secret for both server-side and client-visible URLs
       FRONTEND_URL: BACKEND_BASE_URL.value,
+      // NEXT_PUBLIC_SITE_URL=BACKEND_BASE_URL.value,
       NEXT_PUBLIC_API_URL: BACKEND_BASE_URL.value,
 
       NEXT_PUBLIC_SUPABASE_URL: 'https://owlkvcjzvvjooxpaoqps.supabase.co',
