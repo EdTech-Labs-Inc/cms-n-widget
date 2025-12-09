@@ -23,6 +23,12 @@ async function handleVideoOutputEditingSuccess(projectId: string, videoUrl: stri
   console.log(`   - HeyGen Video ID: ${videoOutput.heygenVideoId || 'MISSING'}`);
   console.log(`   - Submission ID: ${videoOutput.submissionId}`);
 
+  // Log the original config that was used
+  console.log(`📝 ORIGINAL CONFIG USED:`);
+  console.log(`   - Template: ${videoOutput.submagicTemplate || 'jblk (hardcoded)'}`);
+  console.log(`   - Magic Zooms: ${videoOutput.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${videoOutput.enableMagicBrolls} (${videoOutput.magicBrollsPercentage ?? 40}%)`);
+
   if (!videoOutput.heygenVideoId) {
     console.error(`\n❌ CRITICAL: Video output ${videoOutput.id} has no HeyGen video ID`);
     console.error(`   Cannot proceed without HeyGen video ID for tracking`);
@@ -58,6 +64,7 @@ async function handleStandaloneVideoEditingSuccess(projectId: string, videoUrl: 
       backgroundMusic: true,
       startBumper: true,
       endBumper: true,
+      captionStyle: true, // Include for logging original template config
     },
   });
 
@@ -70,6 +77,14 @@ async function handleStandaloneVideoEditingSuccess(projectId: string, videoUrl: 
   console.log(`   - Has Start Bumper: ${!!standaloneVideo.startBumper}`);
   console.log(`   - Has End Bumper: ${!!standaloneVideo.endBumper}`);
   console.log(`   - Has Background Music: ${!!standaloneVideo.backgroundMusic}`);
+
+  // Log the original config that was used
+  console.log(`📝 ORIGINAL CONFIG USED:`);
+  console.log(`   - Caption Style ID: ${standaloneVideo.captionStyleId || 'none'}`);
+  console.log(`   - Caption Style Name: ${standaloneVideo.captionStyle?.name || 'none'}`);
+  console.log(`   - Template: ${standaloneVideo.captionStyle?.submagicTemplate || 'jblk (default)'}`);
+  console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
 
   // Always queue post-processing job - this ensures upload happens in worker context
   // (which has proper S3 permissions) and handles bumpers/music if configured
@@ -106,9 +121,11 @@ async function handleEditingSuccess(eventData: {
   id: string; // Submagic project ID
   videoUrl?: string;
   status?: string;
+  directUrl?: string;
+  downloadUrl?: string;
   [key: string]: any;
 }) {
-  const { id: projectId, videoUrl } = eventData;
+  const { id: projectId, videoUrl, directUrl, downloadUrl, status } = eventData;
 
   console.log('==========================================');
   console.log('🎨 SUBMAGIC WEBHOOK - EDITING SUCCESS');
@@ -116,7 +133,13 @@ async function handleEditingSuccess(eventData: {
   console.log(`Timestamp: ${new Date().toISOString()}`);
   console.log('==========================================');
 
-  console.log(`📹 Edited Video URL: ${videoUrl || 'NOT PROVIDED'}`);
+  // Log detailed result information
+  console.log(`📹 SUBMAGIC RESULT:`);
+  console.log(`   - Project ID: ${projectId}`);
+  console.log(`   - Status: ${status || 'completed'}`);
+  console.log(`   - Edited Video URL: ${videoUrl || 'NOT PROVIDED'}`);
+  console.log(`   - Direct URL: ${directUrl || 'N/A'}`);
+  console.log(`   - Download URL: ${downloadUrl || 'N/A'}`);
 
   if (!videoUrl) {
     console.error(`❌ CRITICAL: No video URL provided in Submagic webhook`);

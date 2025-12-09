@@ -19,14 +19,27 @@ function MusicCard({
   selected,
   onClick,
   disabled,
+  isPlaying,
+  onPlayChange,
 }: {
   music: BackgroundMusic;
   selected: boolean;
   onClick: () => void;
   disabled?: boolean;
+  isPlaying: boolean;
+  onPlayChange: (playing: boolean) => void;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.play().catch(() => onPlayChange(false));
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPlaying, onPlayChange]);
 
   useEffect(() => {
     return () => {
@@ -38,19 +51,11 @@ function MusicCard({
 
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    }
+    onPlayChange(!isPlaying);
   };
 
   const handleAudioEnded = () => {
-    setIsPlaying(false);
+    onPlayChange(false);
   };
 
   const formatDuration = (seconds?: number | null) => {
@@ -60,11 +65,26 @@ function MusicCard({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't trigger card selection if clicking the play button
+    if ((e.target as HTMLElement).closest('[data-play-button]')) return;
+    if (!disabled) onClick();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
+    <div
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
       className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 border-2 ${
         selected
           ? 'border-gold bg-gold/10'
@@ -74,6 +94,7 @@ function MusicCard({
       {/* Play/Pause Button */}
       <button
         type="button"
+        data-play-button
         onClick={handlePlayPause}
         disabled={disabled}
         className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
@@ -113,7 +134,7 @@ function MusicCard({
         onEnded={handleAudioEnded}
         preload="none"
       />
-    </button>
+    </div>
   );
 }
 
@@ -125,6 +146,8 @@ export function MusicStep({
   onVolumeChange,
   disabled = false,
 }: MusicStepProps) {
+  const [playingMusicId, setPlayingMusicId] = useState<string | null>(null);
+
   const {
     data: backgroundMusic,
     isLoading,
@@ -196,6 +219,8 @@ export function MusicStep({
               selected={selectedMusicId === music.id}
               onClick={() => onMusicSelect(music.id)}
               disabled={disabled}
+              isPlaying={playingMusicId === music.id}
+              onPlayChange={(playing) => setPlayingMusicId(playing ? music.id : null)}
             />
           ))}
         </div>

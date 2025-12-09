@@ -52,7 +52,8 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/api/org") || // Skip for org-scoped API routes (have own auth)
     request.nextUrl.pathname.startsWith("/api/heygen") || // Skip for HeyGen avatar/character APIs (public data)
     request.nextUrl.pathname.startsWith("/api/feature-flags") || // Skip for feature flags (public endpoint)
-    request.nextUrl.pathname.startsWith("/api/support") // Skip for support widget (handles own auth)
+    request.nextUrl.pathname.startsWith("/api/support") || // Skip for support widget (handles own auth)
+    request.nextUrl.pathname.startsWith("/api/test/submagic")
   ) {
     return supabaseResponse;
   }

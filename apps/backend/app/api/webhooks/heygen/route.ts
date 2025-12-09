@@ -38,6 +38,13 @@ async function handleVideoOutputSuccess(video_id: string, url: string): Promise<
   const webhookUrl = `${process.env.SUBMAGIC_WEBHOOK_URL}/api/webhooks/submagic`;
   console.log(`🔔 Submagic webhook URL: ${webhookUrl}`);
 
+  // Log caption template configuration
+  console.log(`📝 CAPTION TEMPLATE CONFIG (VideoOutput):`);
+  console.log(`   - Template Name: 'jblk' (hardcoded)`);
+  console.log(`   - Enable Captions: true`);
+  console.log(`   - Magic Zooms: ${videoOutput.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${videoOutput.enableMagicBrolls} (${videoOutput.magicBrollsPercentage ?? 40}%)`);
+
   // Upload to Submagic for AI editing (captions, zooms, B-rolls)
   const { projectId } = await submagicService.uploadVideoForEditing(
     url,
@@ -102,6 +109,16 @@ async function handleStandaloneVideoSuccess(video_id: string, url: string): Prom
 
   // Get the Submagic template from caption style, or use default
   const templateName = standaloneVideo.captionStyle?.submagicTemplate || 'jblk';
+
+  // Log caption template configuration
+  console.log(`📝 CAPTION TEMPLATE CONFIG (StandaloneVideo):`);
+  console.log(`   - Caption Style ID: ${standaloneVideo.captionStyleId || 'none'}`);
+  console.log(`   - Caption Style Name: ${standaloneVideo.captionStyle?.name || 'none'}`);
+  console.log(`   - Raw submagicTemplate value: ${standaloneVideo.captionStyle?.submagicTemplate || 'null'}`);
+  console.log(`   - Resolved Template Name: ${templateName} (fallback to 'jblk' if null)`);
+  console.log(`   - Enable Captions: true`);
+  console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
 
   // Upload to Submagic for AI editing (captions, zooms, B-rolls)
   // StandaloneVideos default to English for now
