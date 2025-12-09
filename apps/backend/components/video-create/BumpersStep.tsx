@@ -70,11 +70,22 @@ function BumperCard({
     }
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (disabled) return;
+    onClick();
+  };
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
+    <div
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick(e as unknown as React.MouseEvent);
+        }
+      }}
       className={`relative w-full rounded-xl overflow-hidden transition-all duration-200 border-2 ${
         selected
           ? 'border-gold ring-2 ring-gold/30'
@@ -164,7 +175,7 @@ function BumperCard({
           </div>
         )}
       </div>
-    </button>
+    </div>
   );
 }
 
