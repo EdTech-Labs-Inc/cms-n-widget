@@ -163,11 +163,11 @@ export function PreviewPanel({
               />
               {/* Caption style preview overlay */}
               {captionPreviewUrl && (
-                <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute left-8 right-8 bottom-[18%] pointer-events-none">
                   <img
                     src={captionPreviewUrl}
                     alt={captionStyleName || 'Caption style preview'}
-                    className="w-full h-full object-contain opacity-90"
+                    className="w-full h-auto object-contain opacity-90"
                   />
                 </div>
               )}
