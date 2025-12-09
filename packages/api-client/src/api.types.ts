@@ -21,6 +21,44 @@ export type OutputStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 export type QuestionType = 'MULTIPLE_CHOICE' | 'TRUE_FALSE' | 'FILL_BLANK';
 
 // ============================================================================
+// VOICE & CHARACTER TYPES
+// ============================================================================
+
+export interface Voice {
+  id: string;
+  name: string;
+  elevenlabsVoiceId: string;
+  description?: string | null;
+  previewAudioUrl?: string | null;
+  gender?: string | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  description?: string | null;
+  thumbnailUrl?: string | null;
+  previewUrl?: string | null; // HeyGen motion preview video URL
+  heygenAvatarId: string;
+  heygenAvatarGroupId?: string | null;
+  characterType: 'avatar' | 'talking_photo';
+  gender?: string | null;
+  voiceId: string;
+  voice: {
+    id: string;
+    name: string;
+    elevenlabsVoiceId: string;
+    gender?: string | null;
+  };
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ============================================================================
 // ARTICLE & SUBMISSION
 // ============================================================================
 
@@ -338,14 +376,14 @@ export interface CreateArticleRequest {
 }
 
 export interface VideoCustomizationConfig {
-  characterId: string;
+  characterId: string; // Our DB Character ID (for validation)
+  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
   characterType: 'avatar' | 'talking_photo';
-  voiceId: string;
-  enableCaptions: boolean;
-  captionTemplate: string;
+  voiceId: string; // ElevenLabs voice ID from linked Voice
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
+  generateBubbles: boolean;
 }
 
 export interface CreateSubmissionRequest {
@@ -387,6 +425,78 @@ export interface UpdateVideoOutputRequest {
 
 export interface UpdateVideoBubbleRequest {
   bubbles: VideoBubble[];
+}
+
+// ============================================================================
+// VIDEO CREATE RESOURCE TYPES
+// ============================================================================
+
+export interface BackgroundMusic {
+  id: string;
+  name: string;
+  previewAudioUrl: string;
+  audioUrl: string;
+  duration?: number | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface VideoBumper {
+  id: string;
+  name: string;
+  type: 'image' | 'video';
+  position: 'start' | 'end' | 'both';
+  mediaUrl: string;
+  thumbnailUrl?: string | null;
+  duration?: number | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CaptionStyle {
+  id: string;
+  name: string;
+  submagicTemplate: string;
+  previewImageUrl?: string | null;
+  logoUrl?: string | null;
+  logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | null;
+  organizationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StandaloneVideo {
+  id: string;
+  organizationId: string;
+  status: OutputStatus;
+  title?: string | null;
+  script: string;
+  sourceType: 'prompt' | 'script_file' | 'content_file';
+  characterId: string;
+  heygenAvatarId: string;
+  heygenCharacterType: 'avatar' | 'talking_photo';
+  voiceId: string;
+  captionStyleId?: string | null;
+  enableMagicZooms: boolean;
+  enableMagicBrolls: boolean;
+  magicBrollsPercentage: number;
+  backgroundMusicId?: string | null;
+  backgroundMusicVolume: number;
+  startBumperId?: string | null;
+  startBumperDuration?: number | null;
+  endBumperId?: string | null;
+  endBumperDuration?: number | null;
+  heygenVideoId?: string | null;
+  submagicProjectId?: string | null;
+  elevenlabsAudioUrl?: string | null;
+  videoUrl?: string | null;
+  thumbnailUrl?: string | null;
+  duration?: number | null;
+  error?: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // ============================================================================

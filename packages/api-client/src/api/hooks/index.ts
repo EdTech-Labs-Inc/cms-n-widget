@@ -42,11 +42,14 @@ export * from './media-hooks';
 // Thumbnail hooks
 export * from './thumbnail-hooks';
 
-// HeyGen hooks
-export * from './heygen-hooks';
+// Character and Voice hooks
+export * from './character-hooks';
 
 // Feature Flags hooks
 export * from './feature-flags-hooks';
+
+// Video Create hooks (background music, bumpers, caption styles)
+export * from './video-create-hooks';
 
 // Query Keys
 export const queryKeys = {

@@ -130,8 +130,6 @@ export default function OrgVideoEditPage() {
     characterId: '',
     characterType: 'avatar',
     voiceId: '',
-    enableCaptions: true,
-    captionTemplate: 'Ella',
     enableMagicZooms: true,
     enableMagicBrolls: true,
     magicBrollsPercentage: 40,
@@ -163,8 +161,6 @@ export default function OrgVideoEditPage() {
         characterId: (video as any).heygenCharacterId || '',
         characterType: (video as any).heygenCharacterType || 'avatar',
         voiceId: (video as any).heygenVoiceId || '',
-        enableCaptions: (video as any).enableCaptions ?? true,
-        captionTemplate: (video as any).submagicTemplate || 'Ella',
         enableMagicZooms: (video as any).enableMagicZooms ?? true,
         enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
         magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
@@ -368,8 +364,6 @@ export default function OrgVideoEditPage() {
           characterId: videoCustomization.characterId,
           characterType: videoCustomization.characterType || 'avatar',
           voiceId: videoCustomization.voiceId,
-          enableCaptions: videoCustomization.enableCaptions,
-          captionTemplate: videoCustomization.captionTemplate,
           enableMagicZooms: videoCustomization.enableMagicZooms,
           enableMagicBrolls: videoCustomization.enableMagicBrolls,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
@@ -494,6 +488,7 @@ export default function OrgVideoEditPage() {
                 isRegenerating={regenerateVideoMedia.isPending || isProcessing}
                 mediaType="video"
                 disabled={isProcessing}
+                orgSlug={orgSlug}
                 videoCustomization={videoCustomization}
                 onVideoCustomizationChange={setVideoCustomization}
               />
@@ -509,6 +504,7 @@ export default function OrgVideoEditPage() {
               Choose a character and configure video options before generating.
             </p>
             <VideoCustomization
+              orgSlug={orgSlug}
               value={videoCustomization}
               onChange={setVideoCustomization}
               disabled={isProcessing || generateVideoMedia.isPending}

@@ -3,34 +3,10 @@ import { prisma } from '@/lib/config/database';
 import { queueService } from '@/lib/services/core/queue.service';
 
 /**
- * Handle successful video editing from Submagic
- * Enqueues background job for processing (transcription, bubble generation)
+ * Handle successful video editing from Submagic for VideoOutput
+ * Returns true if VideoOutput was found and processed
  */
-async function handleEditingSuccess(eventData: {
-  id: string; // Submagic project ID
-  videoUrl?: string;
-  status?: string;
-  [key: string]: any;
-}) {
-  const { id: projectId, videoUrl } = eventData;
-
-  console.log('==========================================');
-  console.log('🎨 SUBMAGIC WEBHOOK - EDITING SUCCESS');
-  console.log(`Project ID: ${projectId}`);
-  console.log(`Timestamp: ${new Date().toISOString()}`);
-  console.log('==========================================');
-
-  console.log(`📹 Edited Video URL: ${videoUrl || 'NOT PROVIDED'}`);
-
-  if (!videoUrl) {
-    console.error(`❌ CRITICAL: No video URL provided in Submagic webhook`);
-    console.error(`   Cannot proceed without edited video URL`);
-    console.error('==========================================\n');
-    return;
-  }
-
-  console.log(`\n🔍 Step 1: Looking up VideoOutput by Submagic project ID...`);
-
+async function handleVideoOutputEditingSuccess(projectId: string, videoUrl: string): Promise<boolean> {
   // Find the VideoOutput record with this Submagic project ID
   const videoOutput = await prisma.videoOutput.findFirst({
     where: {
@@ -39,40 +15,162 @@ async function handleEditingSuccess(eventData: {
   });
 
   if (!videoOutput) {
-    console.error(`❌ CRITICAL: No video output found for Submagic project ${projectId}`);
-    console.error(`   This means the database has no record with this submagicProjectId`);
-    console.error(`   Check if HeyGen webhook properly stored the project ID`);
-    console.error('==========================================\n');
-    return;
+    return false; // Not a VideoOutput, try StandaloneVideo
   }
 
-  console.log(`✅ Step 1 Complete: Found VideoOutput ${videoOutput.id}`);
+  console.log(`✅ Found VideoOutput ${videoOutput.id}`);
   console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
   console.log(`   - HeyGen Video ID: ${videoOutput.heygenVideoId || 'MISSING'}`);
   console.log(`   - Submission ID: ${videoOutput.submissionId}`);
 
+  // Log the original config that was used
+  console.log(`📝 ORIGINAL CONFIG USED:`);
+  console.log(`   - Template: ${videoOutput.submagicTemplate || 'jblk (hardcoded)'}`);
+  console.log(`   - Magic Zooms: ${videoOutput.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${videoOutput.enableMagicBrolls} (${videoOutput.magicBrollsPercentage ?? 40}%)`);
+
   if (!videoOutput.heygenVideoId) {
     console.error(`\n❌ CRITICAL: Video output ${videoOutput.id} has no HeyGen video ID`);
     console.error(`   Cannot proceed without HeyGen video ID for tracking`);
-    console.error('==========================================\n');
-    return;
+    return true; // We found it but can't process it
   }
 
-  console.log(`\n📋 Step 2: Enqueueing video completion job...`);
+  console.log(`\n📋 Enqueueing video completion job...`);
   console.log(`   - Using edited video from Submagic`);
   console.log(`   - Will process: download → S3 upload → transcribe → generate bubbles`);
 
   // Enqueue background job to process edited video
-  // (download, upload to S3, transcribe, generate bubbles)
   await queueService.addVideoCompletionJob({
     heygenVideoId: videoOutput.heygenVideoId,
-    videoUrl: videoUrl, // Use Submagic edited video URL instead of raw HeyGen URL
+    videoUrl: videoUrl,
   });
 
-  console.log(`✅ Step 2 Complete: Job enqueued successfully`);
-  console.log(`\n🎯 SUCCESS: Submagic webhook processed successfully`);
-  console.log(`   Next: Worker will process the edited video`);
-  console.log('==========================================\n');
+  console.log(`✅ Job enqueued successfully`);
+  return true;
+}
+
+/**
+ * Handle successful video editing from Submagic for StandaloneVideo
+ * Queues post-processing for bumpers/music if configured
+ * Returns true if StandaloneVideo was found and processed
+ */
+async function handleStandaloneVideoEditingSuccess(projectId: string, videoUrl: string): Promise<boolean> {
+  // Find the StandaloneVideo record with this Submagic project ID
+  const standaloneVideo = await prisma.standaloneVideo.findFirst({
+    where: {
+      submagicProjectId: projectId,
+    },
+    include: {
+      backgroundMusic: true,
+      startBumper: true,
+      endBumper: true,
+      captionStyle: true, // Include for logging original template config
+    },
+  });
+
+  if (!standaloneVideo) {
+    return false; // Not a StandaloneVideo either
+  }
+
+  console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}`);
+  console.log(`   - Title: "${standaloneVideo.title || 'Untitled'}"`);
+  console.log(`   - Has Start Bumper: ${!!standaloneVideo.startBumper}`);
+  console.log(`   - Has End Bumper: ${!!standaloneVideo.endBumper}`);
+  console.log(`   - Has Background Music: ${!!standaloneVideo.backgroundMusic}`);
+
+  // Log the original config that was used
+  console.log(`📝 ORIGINAL CONFIG USED:`);
+  console.log(`   - Caption Style ID: ${standaloneVideo.captionStyleId || 'none'}`);
+  console.log(`   - Caption Style Name: ${standaloneVideo.captionStyle?.name || 'none'}`);
+  console.log(`   - Template: ${standaloneVideo.captionStyle?.submagicTemplate || 'jblk (default)'}`);
+  console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
+  console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
+
+  // Always queue post-processing job - this ensures upload happens in worker context
+  // (which has proper S3 permissions) and handles bumpers/music if configured
+  const hasBumpersOrMusic =
+    standaloneVideo.startBumper ||
+    standaloneVideo.endBumper ||
+    standaloneVideo.backgroundMusic;
+
+  console.log(`\n📋 Enqueueing post-processing job...`);
+  if (hasBumpersOrMusic) {
+    console.log(`   Will add: ${standaloneVideo.startBumper ? 'start bumper, ' : ''}${standaloneVideo.endBumper ? 'end bumper, ' : ''}${standaloneVideo.backgroundMusic ? 'background music' : ''}`);
+  } else {
+    console.log(`   No bumpers/music - will upload video directly`);
+  }
+
+  // Queue post-processing job (handles upload to S3 in worker context)
+  await queueService.addStandaloneVideoPostProcessingJob({
+    standaloneVideoId: standaloneVideo.id,
+    organizationId: standaloneVideo.organizationId,
+    editedVideoUrl: videoUrl,
+  });
+
+  console.log(`✅ Post-processing job enqueued successfully`);
+  console.log(`   Next: Worker will process and upload final video`);
+
+  return true;
+}
+
+/**
+ * Handle successful video editing from Submagic
+ * Enqueues background job for processing (transcription, bubble generation)
+ */
+async function handleEditingSuccess(eventData: {
+  id: string; // Submagic project ID
+  videoUrl?: string;
+  status?: string;
+  directUrl?: string;
+  downloadUrl?: string;
+  [key: string]: any;
+}) {
+  const { id: projectId, videoUrl, directUrl, downloadUrl, status } = eventData;
+
+  console.log('==========================================');
+  console.log('🎨 SUBMAGIC WEBHOOK - EDITING SUCCESS');
+  console.log(`Project ID: ${projectId}`);
+  console.log(`Timestamp: ${new Date().toISOString()}`);
+  console.log('==========================================');
+
+  // Log detailed result information
+  console.log(`📹 SUBMAGIC RESULT:`);
+  console.log(`   - Project ID: ${projectId}`);
+  console.log(`   - Status: ${status || 'completed'}`);
+  console.log(`   - Edited Video URL: ${videoUrl || 'NOT PROVIDED'}`);
+  console.log(`   - Direct URL: ${directUrl || 'N/A'}`);
+  console.log(`   - Download URL: ${downloadUrl || 'N/A'}`);
+
+  if (!videoUrl) {
+    console.error(`❌ CRITICAL: No video URL provided in Submagic webhook`);
+    console.error(`   Cannot proceed without edited video URL`);
+    console.error('==========================================\n');
+    return;
+  }
+
+  // Try VideoOutput first (submission-based videos)
+  console.log(`\n🔍 Looking up VideoOutput by Submagic project ID...`);
+  const handledAsVideoOutput = await handleVideoOutputEditingSuccess(projectId, videoUrl);
+  if (handledAsVideoOutput) {
+    console.log(`\n🎯 SUCCESS: Submagic webhook processed successfully (VideoOutput)`);
+    console.log('==========================================\n');
+    return;
+  }
+
+  // Try StandaloneVideo next
+  console.log(`\n🔍 Looking up StandaloneVideo by Submagic project ID...`);
+  const handledAsStandaloneVideo = await handleStandaloneVideoEditingSuccess(projectId, videoUrl);
+  if (handledAsStandaloneVideo) {
+    console.log(`\n🎯 SUCCESS: Submagic webhook processed successfully (StandaloneVideo)`);
+    console.log('==========================================\n');
+    return;
+  }
+
+  // Neither found
+  console.error(`❌ CRITICAL: No VideoOutput or StandaloneVideo found for Submagic project ${projectId}`);
+  console.error(`   This means the database has no record with this submagicProjectId`);
+  console.error(`   Check if HeyGen webhook properly stored the project ID`);
+  console.error('==========================================\n');
 }
 
 /**
@@ -93,47 +191,74 @@ async function handleEditingFailure(eventData: {
   console.error(`Error: ${errorMessage || 'Unknown error'}`);
   console.error('==========================================');
 
-  console.log(`\n🔍 Step 1: Looking up VideoOutput by Submagic project ID...`);
-
-  // Find the VideoOutput record with this Submagic project ID
+  // Try VideoOutput first
+  console.log(`\n🔍 Looking up VideoOutput by Submagic project ID...`);
   const videoOutput = await prisma.videoOutput.findFirst({
     where: {
       submagicProjectId: projectId,
     },
   });
 
-  if (!videoOutput) {
-    console.error(`❌ CRITICAL: No video output found for Submagic project ${projectId}`);
-    console.error(`   Cannot mark video as failed - no matching record in database`);
+  if (videoOutput) {
+    console.log(`✅ Found VideoOutput ${videoOutput.id}`);
+    console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
+    console.log(`   - Submission ID: ${videoOutput.submissionId}`);
+
+    console.log(`\n💾 Marking video as FAILED in database...`);
+
+    // Update VideoOutput to FAILED status
+    await prisma.videoOutput.update({
+      where: { id: videoOutput.id },
+      data: {
+        status: 'FAILED',
+        error: `Submagic editing failed: ${errorMessage || 'Unknown error'}`,
+      },
+    });
+
+    console.log(`✅ VideoOutput marked as FAILED`);
+
+    // Update submission status
+    const { submissionService } = await import('@/lib/services/submission.service');
+    await submissionService.updateSubmissionStatus(videoOutput.submissionId);
+
+    console.log(`✅ Submission status updated`);
+    console.error(`\n⚠️  FAILURE HANDLED: Video marked as failed, user will be notified`);
     console.error('==========================================\n');
     return;
   }
 
-  console.log(`✅ Step 1 Complete: Found VideoOutput ${videoOutput.id}`);
-  console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
-  console.log(`   - Submission ID: ${videoOutput.submissionId}`);
-
-  console.log(`\n💾 Step 2: Marking video as FAILED in database...`);
-
-  // Update VideoOutput to FAILED status
-  await prisma.videoOutput.update({
-    where: { id: videoOutput.id },
-    data: {
-      status: 'FAILED',
-      error: `Submagic editing failed: ${errorMessage || 'Unknown error'}`,
+  // Try StandaloneVideo next
+  console.log(`\n🔍 Looking up StandaloneVideo by Submagic project ID...`);
+  const standaloneVideo = await prisma.standaloneVideo.findFirst({
+    where: {
+      submagicProjectId: projectId,
     },
   });
 
-  console.log(`✅ Step 2 Complete: VideoOutput marked as FAILED`);
+  if (standaloneVideo) {
+    console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}`);
+    console.log(`   - Title: "${standaloneVideo.title || 'Untitled'}"`);
 
-  console.log(`\n📊 Step 3: Updating submission status...`);
+    console.log(`\n💾 Marking video as FAILED in database...`);
 
-  // Update submission status
-  const { submissionService } = await import('@/lib/services/submission.service');
-  await submissionService.updateSubmissionStatus(videoOutput.submissionId);
+    // Update StandaloneVideo to FAILED status
+    await prisma.standaloneVideo.update({
+      where: { id: standaloneVideo.id },
+      data: {
+        status: 'FAILED',
+        error: `Submagic editing failed: ${errorMessage || 'Unknown error'}`,
+      },
+    });
 
-  console.log(`✅ Step 3 Complete: Submission status updated`);
-  console.error(`\n⚠️  FAILURE HANDLED: Video marked as failed, user will be notified`);
+    console.log(`✅ StandaloneVideo marked as FAILED`);
+    console.error(`\n⚠️  FAILURE HANDLED: Video marked as failed`);
+    console.error('==========================================\n');
+    return;
+  }
+
+  // Neither found
+  console.error(`❌ CRITICAL: No VideoOutput or StandaloneVideo found for Submagic project ${projectId}`);
+  console.error(`   Cannot mark video as failed - no matching record in database`);
   console.error('==========================================\n');
 }
 

@@ -1,113 +1,224 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { useSubmagicTemplates, useHeygenAvatars } from '@/lib/api/hooks';
-import { Loader2, ChevronLeft, ChevronRight, Sparkles, Search } from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { useCharacters } from '@/lib/api/hooks';
+import { Loader2, ChevronLeft, ChevronRight, Sparkles, ArrowLeft } from 'lucide-react';
+
+interface CharacterGroup {
+  groupId: string;
+  name: string;
+  thumbnailUrl: string | null;
+  previewUrl: string | null;
+  characters: Array<{
+    id: string;
+    name: string;
+    heygenAvatarId: string;
+    characterType: 'avatar' | 'talking_photo';
+    thumbnailUrl?: string | null;
+    previewUrl?: string | null;
+    voice: {
+      id: string;
+      name: string;
+      elevenlabsVoiceId: string;
+    };
+  }>;
+}
+
+/**
+ * Image-centric card component with hover video preview
+ */
+function AvatarCard({
+  thumbnailUrl,
+  previewUrl,
+  name,
+  subtitle,
+  selected,
+  onClick,
+  disabled,
+}: {
+  thumbnailUrl?: string | null;
+  previewUrl?: string | null;
+  name: string;
+  subtitle?: string;
+  selected?: boolean;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  const [isHovering, setIsHovering] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isHovering && previewUrl) {
+        videoRef.current.play().catch(() => {
+          // Ignore autoplay errors
+        });
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    }
+  }, [isHovering, previewUrl]);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      className={`relative w-full aspect-[3/4] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${
+        selected
+          ? 'border-gold ring-2 ring-gold/30'
+          : 'border-transparent hover:border-white/20'
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${
+        isHovering && !disabled ? 'scale-105 z-10' : 'scale-100'
+      }`}
+    >
+      {/* Thumbnail image */}
+      {thumbnailUrl ? (
+        <img
+          src={thumbnailUrl}
+          alt={name}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      ) : (
+        <div className={`absolute inset-0 w-full h-full bg-gradient-purple flex items-center justify-center text-white text-2xl font-bold transition-opacity duration-300 ${
+          isHovering && previewUrl ? 'opacity-0' : 'opacity-100'
+        }`}>
+          {name.charAt(0)}
+        </div>
+      )}
+
+      {/* Video preview (only rendered if previewUrl exists) */}
+      {previewUrl && (
+        <video
+          ref={videoRef}
+          src={previewUrl}
+          muted
+          loop
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            isHovering ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+
+      {/* Dark gradient overlay at bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+      {/* Text overlay */}
+      <div className="absolute inset-x-0 bottom-0 p-3">
+        <div className="text-white font-medium text-sm truncate">{name}</div>
+        {subtitle && (
+          <div className="text-white/70 text-xs">{subtitle}</div>
+        )}
+      </div>
+    </button>
+  );
+}
 
 export interface VideoCustomizationConfig {
-  characterId: string;
+  characterId: string; // Our DB Character ID (for validation)
+  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
   characterType: 'avatar' | 'talking_photo';
-  voiceId: string;
-  enableCaptions: boolean;
-  captionTemplate: string;
+  voiceId: string; // ElevenLabs voice ID from linked Voice
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
   generateBubbles: boolean;
 }
 
-const AVATARS_PER_PAGE = 12;
-
-const CAPTION_TEMPLATES = [
-  {
-    id: 'Ella',
-    displayName: 'ELLA',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.40_xy4hgc.png'
-  },
-  {
-    id: 'Sara',
-    displayName: 'Sara',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.21_fmbyw7.png'
-  },
-  {
-    id: 'Daniel',
-    displayName: 'Daniel',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151032/Screenshot_2025-10-22_at_17.36.33_nupjf3.png'
-  },
-  {
-    id: 'Tracy',
-    displayName: 'TRACY',
-    thumbnailUrl: 'https://res.cloudinary.com/dphekriyz/image/upload/v1761151033/Screenshot_2025-10-22_at_17.36.45_odmkrg.png'
-  }
-];
+const ITEMS_PER_PAGE = 6;
 
 interface VideoCustomizationProps {
+  orgSlug: string;
   value: VideoCustomizationConfig;
   onChange: (config: VideoCustomizationConfig) => void;
   disabled?: boolean;
 }
 
-export function VideoCustomization({ value, onChange, disabled = false }: VideoCustomizationProps) {
-  const { data: templates, isLoading: templatesLoading } = useSubmagicTemplates();
+export function VideoCustomization({ orgSlug, value, onChange, disabled = false }: VideoCustomizationProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
 
-  // Fetch ALL avatars (pagination handled on frontend)
+  // Fetch characters from database
   const {
-    data: avatarsData,
-    isLoading: avatarsLoading,
-    isError: avatarsError,
-  } = useHeygenAvatars();
+    data: characters,
+    isLoading: charactersLoading,
+    isError: charactersError,
+  } = useCharacters(orgSlug);
 
-  const allAvatars = avatarsData?.avatars || [];
+  const allCharacters = characters || [];
 
-  // Filter avatars by search query
-  const filteredAvatars = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return allAvatars;
+  // Group characters by heygenAvatarGroupId
+  const characterGroups = useMemo(() => {
+    const groupMap = new Map<string, CharacterGroup>();
+
+    for (const character of allCharacters) {
+      // Use groupId if available, otherwise use character id as unique group
+      const groupId = character.heygenAvatarGroupId || `single_${character.id}`;
+
+      if (groupMap.has(groupId)) {
+        groupMap.get(groupId)!.characters.push(character);
+      } else {
+        groupMap.set(groupId, {
+          groupId,
+          name: character.name,
+          thumbnailUrl: character.thumbnailUrl || null,
+          previewUrl: character.previewUrl || null,
+          characters: [character],
+        });
+      }
     }
-    const query = searchQuery.toLowerCase().trim();
-    return allAvatars.filter(avatar =>
-      avatar.name.toLowerCase().includes(query) ||
-      avatar.type.toLowerCase().includes(query)
-    );
-  }, [allAvatars, searchQuery]);
 
-  // Calculate pagination on filtered results
-  const totalPages = Math.ceil(filteredAvatars.length / AVATARS_PER_PAGE);
-  const paginatedAvatars = useMemo(() => {
-    const startIndex = (currentPage - 1) * AVATARS_PER_PAGE;
-    return filteredAvatars.slice(startIndex, startIndex + AVATARS_PER_PAGE);
-  }, [filteredAvatars, currentPage]);
+    return Array.from(groupMap.values());
+  }, [allCharacters]);
 
-  // Reset to page 1 when search changes
+  // Get the currently selected group (for Level 2 view)
+  const selectedGroup = useMemo(() => {
+    if (!selectedGroupId) return null;
+    return characterGroups.find(g => g.groupId === selectedGroupId) || null;
+  }, [characterGroups, selectedGroupId]);
+
+  // Get items for current level
+  const currentItems = useMemo(() => {
+    if (selectedGroupId && selectedGroup) {
+      return selectedGroup.characters;
+    }
+    return characterGroups;
+  }, [selectedGroupId, selectedGroup, characterGroups]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return currentItems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [currentItems, currentPage]);
+
+  // Reset pagination when level changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery]);
+  }, [selectedGroupId]);
 
-  // Set default character when avatars load (if no character is set)
-  useEffect(() => {
-    if (allAvatars.length > 0 && !value.characterId) {
-      const firstAvatar = allAvatars[0];
-      onChange({
-        ...value,
-        characterId: firstAvatar.id,
-        characterType: firstAvatar.type,
-        voiceId: firstAvatar.voiceId
-      });
-    }
-  }, [allAvatars, value.characterId]);
-
-  const handleCharacterChange = (avatarId: string, characterType: 'avatar' | 'talking_photo', voiceId: string) => {
-    onChange({ ...value, characterId: avatarId, characterType, voiceId });
+  // Handlers
+  const handleBackToGroups = () => {
+    setSelectedGroupId(null);
   };
 
-  const handleCaptionsToggle = () => {
-    onChange({ ...value, enableCaptions: !value.enableCaptions });
+  const handleGroupSelect = (groupId: string) => {
+    setSelectedGroupId(groupId);
   };
 
-  const handleTemplateChange = (template: string) => {
-    onChange({ ...value, captionTemplate: template });
+  const handleCharacterChange = (
+    characterId: string,
+    heygenAvatarId: string,
+    characterType: 'avatar' | 'talking_photo',
+    voiceId: string
+  ) => {
+    onChange({ ...value, characterId, heygenAvatarId, characterType, voiceId });
   };
 
   const handleZoomsToggle = () => {
@@ -142,202 +253,122 @@ export function VideoCustomization({ value, onChange, disabled = false }: VideoC
     <div className="space-y-6">
       {/* Character Selection */}
       <div>
-        <label className="block text-text-secondary text-sm font-medium mb-3">
-          Character
-        </label>
+        {/* Header with back button for Level 2 */}
+        <div className="flex items-center gap-2 mb-3">
+          {selectedGroupId ? (
+            <button
+              type="button"
+              onClick={handleBackToGroups}
+              className="flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
+              disabled={disabled}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm font-medium">{selectedGroup?.name || 'Characters'}</span>
+            </button>
+          ) : (
+            <label className="block text-text-secondary text-sm font-medium">
+              Character
+            </label>
+          )}
+        </div>
 
-        {avatarsLoading ? (
+        {charactersLoading ? (
           <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
             <Loader2 className="w-6 h-6 animate-spin text-text-muted" />
-            <span className="ml-2 text-text-muted">Loading avatars...</span>
+            <span className="ml-2 text-text-muted">Loading characters...</span>
           </div>
-        ) : avatarsError ? (
+        ) : charactersError ? (
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-            Failed to load avatars. Please try again later.
+            Failed to load characters. Please try again later.
           </div>
-        ) : allAvatars.length === 0 ? (
+        ) : allCharacters.length === 0 ? (
           <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm">
-            No avatars available.
+            No characters available. Please contact an administrator to add characters for your organization.
           </div>
         ) : (
           <>
-            {/* Search Input */}
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input
-                type="text"
-                placeholder="Search avatars..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-white-10 border border-transparent rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-gold/50 transition-colors"
-                disabled={disabled}
-              />
+            {/* Grid */}
+            <div className="grid grid-cols-3 gap-4 justify-items-center">
+              {selectedGroupId ? (
+                // Level 2: Characters within group
+                (paginatedItems as CharacterGroup['characters']).map((character) => (
+                  <div key={character.id} className="w-[75%]">
+                    <AvatarCard
+                      thumbnailUrl={character.thumbnailUrl}
+                      previewUrl={character.previewUrl}
+                      name={character.name}
+                      selected={value.characterId === character.id}
+                      onClick={() => handleCharacterChange(
+                        character.id,
+                        character.heygenAvatarId,
+                        character.characterType,
+                        character.voice.elevenlabsVoiceId
+                      )}
+                      disabled={disabled}
+                    />
+                  </div>
+                ))
+              ) : (
+                // Level 1: Groups
+                (paginatedItems as CharacterGroup[]).map((group) => (
+                  <div key={group.groupId} className="w-[75%]">
+                    <AvatarCard
+                      thumbnailUrl={group.thumbnailUrl}
+                      previewUrl={group.previewUrl}
+                      name={group.name}
+                      subtitle={`${group.characters.length} look${group.characters.length !== 1 ? 's' : ''}`}
+                      onClick={() => handleGroupSelect(group.groupId)}
+                      disabled={disabled}
+                    />
+                  </div>
+                ))
+              )}
             </div>
 
-            {/* Avatar Grid */}
-            {filteredAvatars.length === 0 ? (
-              <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm text-center">
-                No avatars found matching "{searchQuery}"
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1 || disabled}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentPage === 1 || disabled
+                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                      : 'bg-white-10 text-text-primary hover:bg-white-20'
+                  }`}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+
+                <span className="text-sm text-text-secondary">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages || disabled}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentPage === totalPages || disabled
+                      ? 'bg-white-10 text-text-muted cursor-not-allowed'
+                      : 'bg-white-10 text-text-primary hover:bg-white-20'
+                  }`}
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  {paginatedAvatars.map((avatar) => (
-                    <label
-                      key={avatar.id}
-                      className={`flex flex-col gap-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                        value.characterId === avatar.id
-                          ? 'bg-gold-light border-gold'
-                          : 'bg-white-10 border-transparent hover:bg-white-20'
-                      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="character"
-                        value={avatar.id}
-                        checked={value.characterId === avatar.id}
-                        onChange={() => handleCharacterChange(avatar.id, avatar.type, avatar.voiceId)}
-                        className="sr-only"
-                        disabled={disabled}
-                      />
-                      <div className="flex items-center gap-3">
-                        {avatar.previewUrl ? (
-                          <img
-                            src={avatar.previewUrl}
-                            alt={avatar.name}
-                            className="w-12 h-12 rounded-lg object-cover"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-gradient-purple flex items-center justify-center text-white font-bold">
-                            {avatar.name.charAt(0)}
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <div className="text-text-primary font-medium">{avatar.name}</div>
-                          <div className="text-xs text-text-muted capitalize">{avatar.type.replace('_', ' ')}</div>
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-4 mt-4">
-                    <button
-                      type="button"
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1 || disabled}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === 1 || disabled
-                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                          : 'bg-white-10 text-text-primary hover:bg-white-20'
-                      }`}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Previous
-                    </button>
-
-                    <span className="text-sm text-text-secondary">
-                      Page {currentPage} of {totalPages}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={handleNextPage}
-                      disabled={currentPage === totalPages || disabled}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === totalPages || disabled
-                          ? 'bg-white-10 text-text-muted cursor-not-allowed'
-                          : 'bg-white-10 text-text-primary hover:bg-white-20'
-                      }`}
-                    >
-                      Next
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-
-                {/* Results count */}
-                <div className="text-xs text-text-muted text-center mt-2">
-                  Showing {paginatedAvatars.length} of {filteredAvatars.length} avatars
-                  {searchQuery && ` (filtered from ${allAvatars.length} total)`}
-                </div>
-              </>
             )}
+
+            {/* Results count */}
+            <div className="text-xs text-text-muted text-center mt-2">
+              Showing {paginatedItems.length} of {currentItems.length} {selectedGroupId ? 'looks' : 'characters'}
+            </div>
           </>
         )}
       </div>
-
-      {/* Captions Toggle */}
-      <div>
-        <label className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 cursor-pointer transition-all duration-200">
-          <input
-            type="checkbox"
-            checked={value.enableCaptions}
-            onChange={handleCaptionsToggle}
-            className="w-5 h-5 rounded border-white-40 bg-transparent checked:bg-blue-accent"
-            disabled={disabled}
-          />
-          <div className="flex-1">
-            <div className="font-medium text-text-primary">Enable Captions</div>
-            <div className="text-sm text-text-muted">Add AI-generated captions to the video</div>
-          </div>
-        </label>
-      </div>
-
-      {/* Caption Template Selection */}
-      {value.enableCaptions && (
-        <div>
-          <label className="block text-text-secondary text-sm font-medium mb-3">
-            Caption Style
-          </label>
-          {templatesLoading ? (
-            <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
-              <Loader2 className="w-6 h-6 animate-spin text-text-muted" />
-            </div>
-          ) : (() => {
-            // Filter templates to only show those available in API response
-            const availableTemplates = CAPTION_TEMPLATES.filter(template =>
-              templates?.includes(template.id)
-            );
-            // Fallback to all templates if API fails or returns empty
-            const displayTemplates = availableTemplates.length > 0 ? availableTemplates : CAPTION_TEMPLATES;
-
-            return (
-              <div className="grid grid-cols-2 gap-3">
-                {displayTemplates.map((template) => (
-                  <label
-                    key={template.id}
-                    className={`flex flex-col gap-2 p-3 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
-                      value.captionTemplate === template.id
-                        ? 'bg-gold-light border-gold'
-                        : 'bg-white-10 border-transparent hover:bg-white-20'
-                    } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    <input
-                      type="radio"
-                      name="captionTemplate"
-                      value={template.id}
-                      checked={value.captionTemplate === template.id}
-                      onChange={() => handleTemplateChange(template.id)}
-                      className="sr-only"
-                      disabled={disabled}
-                    />
-                    <div className="flex justify-center">
-                      <img
-                        src={template.thumbnailUrl}
-                        alt={template.displayName}
-                        className="w-1/2 h-auto object-cover"
-                      />
-                    </div>
-                  </label>
-                ))}
-              </div>
-            );
-          })()}
-        </div>
-      )}
 
       {/* Magic Zooms Toggle */}
       <div>

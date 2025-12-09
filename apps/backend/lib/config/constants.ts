@@ -26,7 +26,7 @@ export const config = {
     apiKey: process.env.ELEVENLABS_API_KEY || "",
     defaultVoiceId:
       process.env.ELEVENLABS_DEFAULT_VOICE_ID || "EXAVITQu4vr4xnSDxMaL", // Default voice
-    defaultModel: "eleven_multilingual_v2",
+    defaultModel: "eleven_v3",
     interviewerVoiceId:
       process.env.ELEVENLABS_INTERVIEWER_VOICE_ID || "EXAVITQu4vr4xnSDxMaL",
     guestVoiceId:

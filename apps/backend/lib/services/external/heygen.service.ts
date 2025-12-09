@@ -138,7 +138,9 @@ export class HeyGenService {
    * });
    */
   async generateVideo(params: {
-    script: string;
+    script?: string;
+    // Audio URL for pre-generated audio (uses ElevenLabs)
+    audioUrl?: string;
     // New explicit approach (recommended)
     characterType?: CharacterType;
     characterId?: string;
@@ -149,6 +151,11 @@ export class HeyGenService {
     title?: string;
   }): Promise<{ videoId: string }> {
     try {
+      // Validate: either audioUrl or script must be provided
+      if (!params.audioUrl && !params.script) {
+        throw new Error('Either audioUrl or script must be provided');
+      }
+
       // Log input parameters for debugging
       logger.info('HeyGen generateVideo called', {
         characterType: params.characterType ?? 'not provided',
@@ -156,21 +163,24 @@ export class HeyGenService {
         avatarId: params.avatarId ?? 'not provided',
         talkingPhotoId: params.talkingPhotoId ?? 'not provided',
         voiceId: params.voiceId ?? 'not provided',
-        scriptLength: params.script.length,
+        audioUrl: params.audioUrl ? 'provided' : 'not provided',
+        scriptLength: params.script?.length ?? 0,
+        useExternalAudio: !!params.audioUrl,
       });
 
       const voiceId = params.voiceId || this.defaultVoiceId;
 
-      // HeyGen API limits: max 1500 characters per video
-      const maxLength = 1500;
+      // HeyGen API limits: max 1500 characters per video (only relevant for text mode)
       let script = params.script;
-
-      if (script.length > maxLength) {
-        logger.warn('Script exceeded maximum length, truncating', {
-          actualLength: script.length,
-          maxLength,
-        });
-        script = script.substring(0, maxLength);
+      if (script && !params.audioUrl) {
+        const maxLength = 1500;
+        if (script.length > maxLength) {
+          logger.warn('Script exceeded maximum length, truncating', {
+            actualLength: script.length,
+            maxLength,
+          });
+          script = script.substring(0, maxLength);
+        }
       }
 
       // Determine character configuration
@@ -209,7 +219,20 @@ export class HeyGenService {
         configPath,
         character,
         voiceId,
+        useExternalAudio: !!params.audioUrl,
       });
+
+      // Build voice configuration based on whether external audio is provided
+      const voice = params.audioUrl
+        ? {
+            type: 'audio',
+            audio_url: params.audioUrl,
+          }
+        : {
+            type: 'text',
+            input_text: script,
+            voice_id: voiceId, // Required by HeyGen API for text mode
+          };
 
       const response = await axios.post(
         `${this.baseUrl}/video/generate`,
@@ -217,11 +240,7 @@ export class HeyGenService {
           video_inputs: [
             {
               character,
-              voice: {
-                type: 'text',
-                input_text: script,
-                voice_id: voiceId, // Required by HeyGen API
-              },
+              voice,
             },
           ],
           dimension: {
@@ -248,14 +267,16 @@ export class HeyGenService {
       logger.info('HeyGen video creation initiated', {
         videoId,
         characterType: character.type,
-        scriptLength: script.length,
+        useExternalAudio: !!params.audioUrl,
+        scriptLength: script?.length ?? 0,
       });
 
       return { videoId };
     } catch (error) {
       logger.error('HeyGen video generation failed', {
         error: error instanceof Error ? error.message : 'Unknown error',
-        scriptLength: params.script.length,
+        scriptLength: params.script?.length ?? 0,
+        useExternalAudio: !!params.audioUrl,
       });
       if (axios.isAxiosError(error)) {
         // Log full error response for debugging
@@ -268,66 +289,6 @@ export class HeyGenService {
         throw new Error(`HeyGen API error: ${message}`);
       }
       throw new Error(`Failed to generate video: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
-
-  /**
-   * List all available avatars and talking photos from HeyGen
-   *
-   * @returns Combined list of avatars and talking photos
-   */
-  async listAvatars(): Promise<HeyGenAvatarListResponse> {
-    try {
-      console.log('🎭 [HeyGenService] listAvatars() called');
-      console.log('🎭 [HeyGenService] API URL:', `${this.baseUrl}/avatars`);
-      console.log('🎭 [HeyGenService] API Key present:', !!this.apiKey);
-      logger.info('Fetching avatars from HeyGen API');
-
-      const response = await axios.get<HeyGenAvatarListResponse>(
-        `${this.baseUrl}/avatars`,
-        {
-          headers: {
-            'X-Api-Key': this.apiKey,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      const avatarCount = response.data?.data?.avatars?.length ?? 0;
-      const talkingPhotoCount = response.data?.data?.talking_photos?.length ?? 0;
-
-      console.log('🎭 [HeyGenService] Response received:', {
-        avatarCount,
-        talkingPhotoCount,
-        total: avatarCount + talkingPhotoCount,
-      });
-      logger.info('HeyGen avatars fetched successfully', {
-        avatarCount,
-        talkingPhotoCount,
-        total: avatarCount + talkingPhotoCount,
-      });
-
-      return response.data;
-    } catch (error) {
-      console.error('🎭 [HeyGenService] ERROR:', error);
-      logger.error('Failed to fetch HeyGen avatars', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
-
-      if (axios.isAxiosError(error)) {
-        console.error('🎭 [HeyGenService] Axios error:', {
-          status: error.response?.status,
-          data: error.response?.data,
-        });
-        logger.error('HeyGen API error details', {
-          statusCode: error.response?.status,
-          data: error.response?.data,
-        });
-        const message = error.response?.data?.error?.message || error.message;
-        throw new Error(`HeyGen API error: ${message}`);
-      }
-
-      throw new Error(`Failed to fetch avatars: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 

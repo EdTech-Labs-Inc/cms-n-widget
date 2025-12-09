@@ -11,6 +11,7 @@ interface RegenerateMediaButtonProps {
   mediaType: 'video' | 'podcast' | 'interactive-podcast';
   disabled?: boolean;
   // Video-specific props (only used when mediaType === 'video')
+  orgSlug?: string;
   videoCustomization?: VideoCustomizationConfig;
   onVideoCustomizationChange?: (config: VideoCustomizationConfig) => void;
 }
@@ -20,6 +21,7 @@ export function RegenerateMediaButton({
   isRegenerating = false,
   mediaType,
   disabled = false,
+  orgSlug,
   videoCustomization,
   onVideoCustomizationChange,
 }: RegenerateMediaButtonProps) {
@@ -128,13 +130,14 @@ export function RegenerateMediaButton({
               </div>
 
               {/* Video Customization Section (only for videos) */}
-              {mediaType === 'video' && videoCustomization && onVideoCustomizationChange && (
+              {mediaType === 'video' && orgSlug && videoCustomization && onVideoCustomizationChange && (
                 <div className="mb-4">
                   <h4 className="text-sm font-semibold text-text-primary mb-3">
                     Video Settings
                   </h4>
                   <div className="p-4 rounded-xl bg-white-10 border border-white-20">
                     <VideoCustomization
+                      orgSlug={orgSlug}
                       value={videoCustomization}
                       onChange={onVideoCustomizationChange}
                       disabled={false}

@@ -28,6 +28,14 @@ model Organization {
   invites         OrganizationInvite[]
   joinRequests    JoinRequest[]
   supportFeedback SupportFeedback[]
+  voices          Voice[]
+  characters      Character[]
+
+  // Video creation resources
+  backgroundMusic  BackgroundMusic[]
+  videoBumpers     VideoBumper[]
+  captionStyles    CaptionStyle[]
+  standaloneVideos StandaloneVideo[]
 
   @@map("organizations")
 }
@@ -88,6 +96,193 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+}
+
+// ============================================
+// VOICE & CHARACTER MODELS
+// ============================================
+
+model Voice {
+  id                String       @id @default(uuid())
+  name              String
+  elevenlabsVoiceId String
+  description       String?      @db.Text
+  previewAudioUrl   String?
+  gender            String?      // 'male' | 'female' | 'neutral'
+
+  // Organization scoping
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Reverse relation to characters using this voice
+  characters Character[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, elevenlabsVoiceId])
+  @@index([organizationId])
+  @@map("voices")
+}
+
+model Character {
+  id          String  @id @default(uuid())
+  name        String
+  description String? @db.Text
+  thumbnailUrl String?
+  previewUrl   String? // HeyGen motion preview video URL
+
+  // HeyGen identifiers
+  heygenAvatarId      String  // The actual avatar/talking_photo ID for HeyGen API
+  heygenAvatarGroupId String? // The group ID for reference (optional, mainly for avatars)
+  characterType       String  @default("avatar") // 'avatar' | 'talking_photo'
+
+  gender String? // 'male' | 'female'
+
+  // Linked voice (required for video generation)
+  voiceId String
+  voice   Voice  @relation(fields: [voiceId], references: [id], onDelete: Restrict)
+
+  // Organization scoping
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, heygenAvatarId])
+  @@index([organizationId])
+  @@index([voiceId])
+  @@map("characters")
+}
+
+// ============================================
+// VIDEO CREATION RESOURCE MODELS
+// ============================================
+
+model BackgroundMusic {
+  id              String   @id @default(uuid())
+  name            String
+  previewAudioUrl String   // Short preview for selection UI
+  audioUrl        String   // Full audio for video overlay
+  duration        Int?     // Duration in seconds
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Reverse relation
+  standaloneVideos StandaloneVideo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("background_music")
+}
+
+model VideoBumper {
+  id           String  @id @default(uuid())
+  name         String
+  type         String  // 'image' | 'video'
+  position     String  // 'start' | 'end' | 'both'
+  mediaUrl     String  // CloudFront URL
+  thumbnailUrl String? // Preview thumbnail
+  duration     Int?    // Videos: actual duration. Images: default duration suggestion
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Reverse relations for start/end bumpers
+  standaloneVideosAsStart StandaloneVideo[] @relation("StartBumper")
+  standaloneVideosAsEnd   StandaloneVideo[] @relation("EndBumper")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("video_bumpers")
+}
+
+model CaptionStyle {
+  id               String  @id @default(uuid())
+  name             String
+  submagicTemplate String  // Submagic template name (e.g., 'jblk')
+  previewImageUrl  String? // Preview of caption appearance
+  logoUrl          String? // Logo to overlay on video
+  logoPosition     String? // 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Reverse relation
+  standaloneVideos StandaloneVideo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("caption_styles")
+}
+
+model StandaloneVideo {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  status OutputStatus @default(PENDING)
+
+  // Script & Content
+  title      String?
+  script     String  @db.Text
+  sourceType String  // 'prompt' | 'script_file' | 'content_file'
+
+  // Character/Voice
+  characterId         String // Our DB Character ID
+  heygenAvatarId      String // HeyGen avatar/talking_photo ID
+  heygenCharacterType String // 'avatar' | 'talking_photo'
+  voiceId             String // ElevenLabs voice ID
+
+  // Caption Style
+  captionStyleId String?
+  captionStyle   CaptionStyle? @relation(fields: [captionStyleId], references: [id], onDelete: SetNull)
+
+  // Special Effects
+  enableMagicZooms      Boolean @default(true)
+  enableMagicBrolls     Boolean @default(true)
+  magicBrollsPercentage Int     @default(40)
+
+  // Music
+  backgroundMusicId     String?
+  backgroundMusic       BackgroundMusic? @relation(fields: [backgroundMusicId], references: [id], onDelete: SetNull)
+  backgroundMusicVolume Float            @default(0.15) // 15%
+
+  // Bumpers
+  startBumperId       String?
+  startBumper         VideoBumper? @relation("StartBumper", fields: [startBumperId], references: [id], onDelete: SetNull)
+  startBumperDuration Int?         // For image bumpers: display duration in seconds
+  endBumperId         String?
+  endBumper           VideoBumper? @relation("EndBumper", fields: [endBumperId], references: [id], onDelete: SetNull)
+  endBumperDuration   Int?
+
+  // Processing IDs
+  heygenVideoId      String?
+  submagicProjectId  String?
+  elevenlabsAudioUrl String?
+
+  // Output
+  videoUrl     String? // Final CloudFront URL
+  thumbnailUrl String?
+  duration     Int?
+
+  // Meta
+  error     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([heygenVideoId])
+  @@index([submagicProjectId])
+  @@map("standalone_videos")
 }
 
 // ============================================
@@ -283,6 +478,9 @@ model VideoOutput {
   heygenCharacterType String? // 'talking_photo' or 'avatar'
   heygenCharacterId   String? // talking_photo_id or avatar_id from HeyGen
   heygenVoiceId       String? // voice_id from HeyGen
+
+  // ElevenLabs audio for video generation
+  elevenlabsAudioUrl  String? // CloudFront URL of ElevenLabs-generated audio
 
   // Submagic editing configuration
   submagicTemplate      String? // e.g., "Ella", "Sara", "Daniel", "Tracy"

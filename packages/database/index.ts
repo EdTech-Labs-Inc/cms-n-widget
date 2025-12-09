@@ -5,6 +5,8 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+console.log("🔌 Prisma connecting to:", process.env.DATABASE_URL?.split("@")[1] || "DATABASE_URL not set");
+
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({

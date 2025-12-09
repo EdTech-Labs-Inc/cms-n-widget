@@ -92,7 +92,7 @@ export class SubmagicService {
       });
 
       // Apply default values or use provided options
-      const templateName = options?.templateName ?? 'Ella';
+      const templateName = options?.templateName ?? 'jblk';
       const enableCaptions = options?.enableCaptions ?? true;
       const magicZooms = options?.magicZooms ?? true;
       const magicBrolls = options?.magicBrolls ?? true;
@@ -106,18 +106,28 @@ export class SubmagicService {
         magicBrollsPercentage,
       });
 
+      // Build payload for logging and request
+      const payload = {
+        title,
+        language: languageCode,
+        videoUrl,
+        templateName,
+        webhookUrl,
+        magicZooms,
+        magicBrolls,
+        magicBrollsPercentage,
+        dictionary: ['Jio BlackRock', 'SEBI'],
+      };
+
+      // Log full API request payload
+      logger.info('📤 SUBMAGIC API REQUEST', {
+        url: `${this.baseUrl}/projects`,
+        payload,
+      });
+
       const response = await axios.post(
         `${this.baseUrl}/projects`,
-        {
-          title,
-          language: languageCode,
-          videoUrl,
-          templateName,
-          webhookUrl,
-          magicZooms,
-          magicBrolls,
-          magicBrollsPercentage,
-        },
+        payload,
         {
           headers: {
             'x-api-key': this.apiKey,
@@ -125,6 +135,12 @@ export class SubmagicService {
           },
         }
       );
+
+      // Log full API response
+      logger.info('📥 SUBMAGIC API RESPONSE', {
+        status: response.status,
+        data: response.data,
+      });
 
       const projectId = response.data?.id;
 

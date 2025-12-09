@@ -24,6 +24,10 @@ import { interactivePodcastScriptService } from '../../backend/lib/services/medi
 import { videoMediaService } from '../../backend/lib/services/media/video-media.service';
 import { podcastMediaService } from '../../backend/lib/services/media/podcast-media.service';
 import { interactivePodcastMediaService } from '../../backend/lib/services/media/interactive-podcast-media.service';
+// Standalone video service
+import { standaloneVideoService } from '../../backend/lib/services/media/standalone-video.service';
+// Video post-processing service (bumpers, music)
+import { videoPostProcessingService } from '../../backend/lib/services/media/video-postprocessing.service';
 import { submissionService } from '../../backend/lib/services/submission.service';
 import { queueService } from '../../backend/lib/services/core/queue.service';
 import { timeoutMonitorService } from '../../backend/lib/services/core/timeout-monitor.service';
@@ -75,6 +79,19 @@ interface InteractivePodcastMediaJobData {
   voiceSelection?: {
     voiceId?: string;
   };
+}
+
+// Standalone video job data interface
+interface StandaloneVideoJobData {
+  standaloneVideoId: string;
+  organizationId: string;
+}
+
+// Standalone video post-processing job data interface
+interface StandaloneVideoPostProcessingJobData {
+  standaloneVideoId: string;
+  organizationId: string;
+  editedVideoUrl: string;
 }
 
 /**
@@ -230,6 +247,123 @@ const processMediaJob = async (job: Job<MediaJobData | ArticleThumbnailJobData |
         // Update submission status after job completes
         await submissionService.updateSubmissionStatus(submissionId);
         logger.info('Job completed', { jobName: job.name, interactivePodcastOutputId });
+        break;
+      }
+
+      // ============================================
+      // STANDALONE VIDEO GENERATION
+      // Video from standalone create page (no Article/Submission)
+      // ============================================
+
+      case JobTypes.GENERATE_STANDALONE_VIDEO: {
+        const { standaloneVideoId, organizationId } = job.data as StandaloneVideoJobData;
+        await standaloneVideoService.generateVideo(standaloneVideoId);
+        // Note: Video completion is handled by HeyGen webhook
+        // Status will be updated when webhook fires
+        logger.info('Job completed - HeyGen video initiated', { jobName: job.name, standaloneVideoId });
+        break;
+      }
+
+      case JobTypes.POST_PROCESS_STANDALONE_VIDEO: {
+        const { standaloneVideoId, organizationId, editedVideoUrl } = job.data as StandaloneVideoPostProcessingJobData;
+        logger.info('Post-processing standalone video', { standaloneVideoId, editedVideoUrl });
+
+        // Get the standalone video with bumper and music details
+        const standaloneVideo = await prisma.standaloneVideo.findUnique({
+          where: { id: standaloneVideoId },
+          include: {
+            backgroundMusic: true,
+            startBumper: true,
+            endBumper: true,
+          },
+        });
+
+        if (!standaloneVideo) {
+          throw new Error(`StandaloneVideo ${standaloneVideoId} not found`);
+        }
+
+        // Check if any post-processing is needed
+        const needsPostProcessing =
+          standaloneVideo.startBumper ||
+          standaloneVideo.endBumper ||
+          standaloneVideo.backgroundMusic;
+
+        let finalVideoUrl: string;
+        let finalDuration: number;
+
+        if (needsPostProcessing) {
+          // Build post-processing params
+          const postProcessParams: Parameters<typeof videoPostProcessingService.processVideo>[0] = {
+            videoUrl: editedVideoUrl,
+            standaloneVideoId,
+            organizationId,
+          };
+
+          // Add start bumper if configured
+          if (standaloneVideo.startBumper) {
+            postProcessParams.startBumper = {
+              mediaUrl: standaloneVideo.startBumper.mediaUrl,
+              type: standaloneVideo.startBumper.type as 'image' | 'video',
+              duration: standaloneVideo.startBumperDuration || standaloneVideo.startBumper.duration || 3,
+            };
+          }
+
+          // Add end bumper if configured
+          if (standaloneVideo.endBumper) {
+            postProcessParams.endBumper = {
+              mediaUrl: standaloneVideo.endBumper.mediaUrl,
+              type: standaloneVideo.endBumper.type as 'image' | 'video',
+              duration: standaloneVideo.endBumperDuration || standaloneVideo.endBumper.duration || 3,
+            };
+          }
+
+          // Add background music if configured
+          if (standaloneVideo.backgroundMusic) {
+            postProcessParams.music = {
+              audioUrl: standaloneVideo.backgroundMusic.audioUrl,
+              volume: standaloneVideo.backgroundMusicVolume,
+            };
+          }
+
+          // Run FFmpeg post-processing
+          const result = await videoPostProcessingService.processVideo(postProcessParams);
+          finalVideoUrl = result.cloudfrontUrl;
+          finalDuration = result.duration;
+        } else {
+          // No post-processing needed - just download and re-upload to our S3
+          logger.info('No bumpers/music configured, uploading video directly to S3');
+          const { storageService } = await import('../../backend/lib/services/core/storage.service');
+
+          const response = await fetch(editedVideoUrl);
+          if (!response.ok) {
+            throw new Error(`Failed to download video from Submagic: ${response.statusText}`);
+          }
+          const videoBuffer = Buffer.from(await response.arrayBuffer());
+
+          const filePath = `organizations/${organizationId}/videos/${standaloneVideoId}/final-video.mp4`;
+          const uploadResult = await storageService.uploadFile(videoBuffer, filePath, 'video/mp4');
+
+          finalVideoUrl = uploadResult.cloudfrontUrl;
+          // Estimate duration from the Submagic video (we don't have exact duration without FFprobe)
+          finalDuration = 0; // Will be set by player on load
+        }
+
+        // Update StandaloneVideo with final URL and mark as complete
+        await prisma.standaloneVideo.update({
+          where: { id: standaloneVideoId },
+          data: {
+            status: 'COMPLETED',
+            videoUrl: finalVideoUrl,
+            ...(finalDuration > 0 ? { duration: finalDuration } : {}),
+          },
+        });
+
+        logger.info('Standalone video post-processing completed', {
+          standaloneVideoId,
+          videoUrl: finalVideoUrl,
+          duration: finalDuration,
+          hadPostProcessing: needsPostProcessing,
+        });
         break;
       }
 

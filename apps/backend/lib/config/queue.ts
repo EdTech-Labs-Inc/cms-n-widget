@@ -183,4 +183,8 @@ export enum JobTypes {
   GENERATE_VIDEO_FROM_SCRIPT = 'generate-video-from-script', // Generate HeyGen video from approved script
   GENERATE_PODCAST_FROM_TRANSCRIPT = 'generate-podcast-from-transcript', // Generate podcast audio from approved transcript
   GENERATE_INTERACTIVE_PODCAST_FROM_SCRIPT = 'generate-interactive-podcast-from-script', // Generate interactive podcast from approved script
+
+  // Standalone video generation (no Article/Submission)
+  GENERATE_STANDALONE_VIDEO = 'generate-standalone-video', // Generate video from standalone video create page
+  POST_PROCESS_STANDALONE_VIDEO = 'post-process-standalone-video', // Add bumpers/music to standalone video
 }

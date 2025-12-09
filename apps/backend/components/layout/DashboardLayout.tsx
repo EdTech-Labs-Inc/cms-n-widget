@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { SupportWidget } from '../support/SupportWidget';
 import { useFeatureFlags } from '@/lib/api/hooks';
+
+const NO_SIDEBAR_ROUTES = ['/video/create'];
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -19,9 +22,15 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { data: featureFlags } = useFeatureFlags();
+  const pathname = usePathname();
 
-  // If no user, don't show sidebar (login page, etc.)
-  if (!user) {
+  // Check if current route should hide the sidebar
+  const shouldHideSidebar = NO_SIDEBAR_ROUTES.some((route) =>
+    pathname.includes(route)
+  );
+
+  // If no user or route hides sidebar, don't show sidebar
+  if (!user || shouldHideSidebar) {
     return <>{children}</>;
   }
 

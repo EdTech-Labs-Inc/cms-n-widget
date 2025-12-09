@@ -112,6 +112,38 @@ export async function POST(
 
     const voiceSelection = validationResult.data;
 
+    // Validate voices belong to this organization (if provided)
+    if (voiceSelection?.interviewerVoiceId || voiceSelection?.guestVoiceId) {
+      const voiceIdsToValidate = [
+        voiceSelection.interviewerVoiceId,
+        voiceSelection.guestVoiceId,
+      ].filter(Boolean) as string[];
+
+      const validVoices = await prisma.voice.findMany({
+        where: {
+          organizationId: org.id,
+          elevenlabsVoiceId: { in: voiceIdsToValidate },
+        },
+        select: { elevenlabsVoiceId: true },
+      });
+
+      const validVoiceIds = new Set(validVoices.map((v) => v.elevenlabsVoiceId));
+
+      if (voiceSelection.interviewerVoiceId && !validVoiceIds.has(voiceSelection.interviewerVoiceId)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid interviewer voice for this organization' },
+          { status: 400 }
+        );
+      }
+
+      if (voiceSelection.guestVoiceId && !validVoiceIds.has(voiceSelection.guestVoiceId)) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid guest voice for this organization' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Update PodcastOutput status to PROCESSING
     await prisma.podcastOutput.update({
       where: { id: params.podcastId },
