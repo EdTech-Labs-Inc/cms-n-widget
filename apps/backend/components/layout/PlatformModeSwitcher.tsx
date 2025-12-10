@@ -51,23 +51,14 @@ export function PlatformModeSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white-5 hover:bg-white-10 border border-white-10 hover:border-white-20 transition-all group"
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary transition-all duration-200 hover:bg-white-10 hover:text-text-primary border border-white-10 hover:border-white-20"
       >
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gold/20 flex items-center justify-center">
-            <CurrentIcon className="w-4 h-4 text-gold" />
-          </div>
-          <div className="flex-1 min-w-0 text-left">
-            <div className="text-sm font-medium text-text-primary truncate">
-              {currentMode.label}
-            </div>
-            <div className="text-xs text-text-muted truncate">
-              {currentMode.description}
-            </div>
-          </div>
-        </div>
+        <CurrentIcon className="w-5 h-5 flex-shrink-0" />
+        <span className="text-sm font-semibold flex-1 text-left truncate">
+          {currentMode.label}
+        </span>
         <ChevronDown
-          className={`w-4 h-4 text-text-muted flex-shrink-0 transition-transform ${
+          className={`w-4 h-4 flex-shrink-0 transition-transform ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -75,7 +66,7 @@ export function PlatformModeSwitcher() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-navy-secondary border border-white-10 rounded-lg shadow-xl z-50">
+        <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-black border border-white-10 rounded-xl shadow-xl z-50">
           {MODES.map((modeOption) => {
             const Icon = modeOption.icon;
             const isActive = modeOption.value === mode;
@@ -86,23 +77,17 @@ export function PlatformModeSwitcher() {
                 onClick={() => handleModeChange(modeOption.value)}
                 className={`w-full flex items-center gap-3 px-4 py-3 transition-colors ${
                   isActive
-                    ? 'bg-gold/10 text-text-primary'
-                    : 'text-text-secondary hover:bg-white-5 hover:text-text-primary'
+                    ? 'bg-white-10 text-white'
+                    : 'text-text-secondary hover:bg-white-10 hover:text-text-primary'
                 }`}
               >
-                <div
-                  className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-                    isActive ? 'bg-gold/20' : 'bg-white-5'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-gold' : 'text-text-muted'}`} />
-                </div>
+                <Icon className="w-5 h-5 flex-shrink-0" />
                 <div className="flex-1 text-left">
-                  <div className="text-sm font-medium">{modeOption.label}</div>
+                  <div className="text-sm font-semibold">{modeOption.label}</div>
                   <div className="text-xs text-text-muted">{modeOption.description}</div>
                 </div>
                 {isActive && (
-                  <div className="flex-shrink-0 w-2 h-2 rounded-full bg-gold" />
+                  <div className="flex-shrink-0 w-2 h-2 rounded-full bg-white" />
                 )}
               </button>
             );

@@ -92,7 +92,7 @@ export function Sidebar({ isOpen, onClose, user }: SidebarProps) {
         </div>
 
         {/* Platform Mode Switcher */}
-        <div className="px-4 mb-4">
+        <div className="mb-4">
           <PlatformModeSwitcher />
         </div>
 
