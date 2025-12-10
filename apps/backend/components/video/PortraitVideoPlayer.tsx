@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize, Download } from 'lucide-react';
 
 interface PortraitVideoPlayerProps {
@@ -15,6 +15,21 @@ export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title, downloadUrl
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement === video);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -63,7 +78,7 @@ export function PortraitVideoPlayer({ videoUrl, thumbnailUrl, title, downloadUrl
         ref={videoRef}
         src={videoUrl}
         poster={thumbnailUrl || undefined}
-        className="w-full h-full object-cover"
+        className={`w-full h-full ${isFullscreen ? 'object-contain' : 'object-cover'}`}
         onEnded={handleVideoEnd}
         onClick={togglePlay}
         playsInline
