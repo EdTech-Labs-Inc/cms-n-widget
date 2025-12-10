@@ -10,11 +10,11 @@
 export interface Bubble {
   id: string
   videoOutputId: string
-  appearsAt: number        // Replaces 'timestamp' - in seconds or ms
+  appearsAt: number        // Timestamp in milliseconds
   order: number | null     // Position if multiple bubbles at same time
   question: string
-  options: any             // JSON field: [{id, text}] for MCQ
-  correctAnswer: any       // JSON field: String/array/structured
+  options: string[]        // Array of answer options (e.g., ['True', 'False'] or MCQ choices)
+  correctAnswer: number    // Index of the correct answer in options array
   explanation: string | null
   createdAt?: Date
   updatedAt?: Date

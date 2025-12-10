@@ -1,0 +1,25 @@
+.bubble-overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Prevent scrolling while overlay is active */
+  .bubble-overlay * {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+  
+  /* Ensure bubbles are positioned correctly */
+  .bubble-overlay > * {
+    position: absolute;
+  }
+  
+  /* Add some visual feedback for debugging collision areas */
+  @media (max-width: 360px) {
+    /* Ensure touch targets remain accessible on very small screens */
+    .bubble-overlay {
+      padding: 8px;
+    }
+  }

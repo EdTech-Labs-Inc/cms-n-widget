@@ -116,20 +116,6 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
     };
   }, []);
 
-  // Test outbound IP via backend
-  // useEffect(() => {
-  //   fetch("http://localhost:4000/api/test-outbound-ip")
-  //     .then(() => console.log("Backend outbound IP test triggered"))
-  //     .catch(console.error);
-  // }, []);
-
-  // // Test outbound IP via backend
-  useEffect(() => {
-    fetch("https://cms-staging.edtechinc.com/api/test-outbound-ip")
-      .then(() => console.log("Backend outbound IP test triggered"))
-      .catch(console.error);
-  }, []);
-
   // Refresh XP data when XP modal is closed
   const handleCloseXPModal = () => {
     setShowXPModal(false);
