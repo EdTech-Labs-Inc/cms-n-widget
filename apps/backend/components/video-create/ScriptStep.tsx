@@ -8,6 +8,7 @@ import {
   Loader2,
   AlertCircle,
   X,
+  Trash2,
 } from 'lucide-react';
 
 type ScriptSource = 'prompt' | 'script_file' | 'content_file' | null;
@@ -19,7 +20,11 @@ interface ScriptStepProps {
   orgSlug: string;
 }
 
-type InputMode = 'none' | 'upload_script' | 'upload_content' | 'prompt';
+interface AttachedFile {
+  file: File;
+  type: 'script' | 'content';
+  name: string;
+}
 
 export function ScriptStep({
   script,
@@ -27,8 +32,8 @@ export function ScriptStep({
   onScriptChange,
   orgSlug,
 }: ScriptStepProps) {
-  const [inputMode, setInputMode] = useState<InputMode>('none');
   const [prompt, setPrompt] = useState('');
+  const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
   const [aiGuidance, setAiGuidance] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isImproving, setIsImproving] = useState(false);
@@ -37,109 +42,106 @@ export function ScriptStep({
   const scriptFileInputRef = useRef<HTMLInputElement>(null);
   const contentFileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleUploadScriptFile = useCallback(
-    async (file: File) => {
-      setIsLoading(true);
-      setError(null);
+  // Extract text from a file (used internally)
+  const extractTextFromFile = useCallback(
+    async (file: File): Promise<string> => {
+      const formData = new FormData();
+      formData.append('file', file);
 
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch(
-          `/api/org/${orgSlug}/video/upload-script`,
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
-
-        const result = await response.json();
-
-        if (!result.success) {
-          throw new Error(result.error || 'Failed to extract script');
+      const response = await fetch(
+        `/api/org/${orgSlug}/video/upload-script`,
+        {
+          method: 'POST',
+          body: formData,
         }
+      );
 
-        onScriptChange(result.data.script, 'script_file');
-        setInputMode('none');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to upload file');
-      } finally {
-        setIsLoading(false);
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to extract text from file');
       }
+
+      return result.data.script;
     },
-    [orgSlug, onScriptChange]
+    [orgSlug]
   );
 
-  const handleUploadContentFile = useCallback(
+  // Handle script file only (no prompt)
+  const handleScriptFileOnly = useCallback(
     async (file: File) => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // First extract text from file
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const uploadResponse = await fetch(
-          `/api/org/${orgSlug}/video/upload-script`,
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
-
-        const uploadResult = await uploadResponse.json();
-
-        if (!uploadResult.success) {
-          throw new Error(uploadResult.error || 'Failed to extract content');
-        }
-
-        // Then generate script from content
-        const generateResponse = await fetch(
-          `/api/org/${orgSlug}/video/generate-script`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              mode: 'content',
-              content: uploadResult.data.script,
-              language: 'ENGLISH',
-            }),
-          }
-        );
-
-        const generateResult = await generateResponse.json();
-
-        if (!generateResult.success) {
-          throw new Error(generateResult.error || 'Failed to generate script');
-        }
-
-        onScriptChange(generateResult.data.script, 'content_file');
-        setInputMode('none');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to process file');
-      } finally {
-        setIsLoading(false);
-      }
+      const extractedScript = await extractTextFromFile(file);
+      onScriptChange(extractedScript, 'script_file');
     },
-    [orgSlug, onScriptChange]
+    [extractTextFromFile, onScriptChange]
   );
 
-  const handleGenerateFromPrompt = useCallback(async () => {
-    if (!prompt.trim()) return;
+  // Handle content file only (no prompt)
+  const handleContentFileOnly = useCallback(
+    async (file: File) => {
+      const extractedContent = await extractTextFromFile(file);
 
-    setIsLoading(true);
-    setError(null);
-
-    try {
       const response = await fetch(
         `/api/org/${orgSlug}/video/generate-script`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            mode: 'prompt',
+            mode: 'content',
+            content: extractedContent,
+            language: 'ENGLISH',
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to generate script');
+      }
+
+      onScriptChange(result.data.script, 'content_file');
+    },
+    [orgSlug, extractTextFromFile, onScriptChange]
+  );
+
+  // Handle prompt only (no file)
+  const handlePromptOnly = useCallback(async () => {
+    const response = await fetch(
+      `/api/org/${orgSlug}/video/generate-script`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'prompt',
+          prompt: prompt.trim(),
+          language: 'ENGLISH',
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to generate script');
+    }
+
+    onScriptChange(result.data.script, 'prompt');
+  }, [orgSlug, prompt, onScriptChange]);
+
+  // Handle script file with prompt guidance
+  const handleScriptWithPrompt = useCallback(
+    async (file: File) => {
+      const extractedScript = await extractTextFromFile(file);
+
+      const response = await fetch(
+        `/api/org/${orgSlug}/video/generate-script`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mode: 'script_with_prompt',
+            script: extractedScript,
             prompt: prompt.trim(),
             language: 'ENGLISH',
           }),
@@ -152,17 +154,86 @@ export function ScriptStep({
         throw new Error(result.error || 'Failed to generate script');
       }
 
-      onScriptChange(result.data.script, 'prompt');
-      setInputMode('none');
-      setPrompt('');
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to generate script'
+      onScriptChange(result.data.script, 'script_file');
+    },
+    [orgSlug, prompt, extractTextFromFile, onScriptChange]
+  );
+
+  // Handle content file with prompt guidance
+  const handleContentWithPrompt = useCallback(
+    async (file: File) => {
+      const extractedContent = await extractTextFromFile(file);
+
+      const response = await fetch(
+        `/api/org/${orgSlug}/video/generate-script`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mode: 'content_with_prompt',
+            content: extractedContent,
+            prompt: prompt.trim(),
+            language: 'ENGLISH',
+          }),
+        }
       );
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to generate script');
+      }
+
+      onScriptChange(result.data.script, 'content_file');
+    },
+    [orgSlug, prompt, extractTextFromFile, onScriptChange]
+  );
+
+  // Unified generate handler
+  const handleGenerate = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const hasPrompt = prompt.trim().length > 0;
+      const hasFile = attachedFile !== null;
+
+      if (hasFile && hasPrompt) {
+        // Combined mode - file + prompt guidance
+        if (attachedFile.type === 'script') {
+          await handleScriptWithPrompt(attachedFile.file);
+        } else {
+          await handleContentWithPrompt(attachedFile.file);
+        }
+      } else if (hasFile) {
+        // File only
+        if (attachedFile.type === 'script') {
+          await handleScriptFileOnly(attachedFile.file);
+        } else {
+          await handleContentFileOnly(attachedFile.file);
+        }
+      } else if (hasPrompt) {
+        // Prompt only
+        await handlePromptOnly();
+      }
+
+      // Clear state after successful generation
+      setPrompt('');
+      setAttachedFile(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate script');
     } finally {
       setIsLoading(false);
     }
-  }, [orgSlug, prompt, onScriptChange]);
+  }, [
+    prompt,
+    attachedFile,
+    handleScriptWithPrompt,
+    handleContentWithPrompt,
+    handleScriptFileOnly,
+    handleContentFileOnly,
+    handlePromptOnly,
+  ]);
 
   const handleImproveScript = useCallback(async () => {
     if (!aiGuidance.trim() || !script) return;
@@ -199,29 +270,49 @@ export function ScriptStep({
     }
   }, [orgSlug, script, aiGuidance, scriptSource, onScriptChange]);
 
-  const handleFileInputChange = useCallback(
+  const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: 'script' | 'content') => {
       const file = e.target.files?.[0];
       if (file) {
-        if (type === 'script') {
-          handleUploadScriptFile(file);
-        } else {
-          handleUploadContentFile(file);
-        }
+        setAttachedFile({
+          file,
+          type,
+          name: file.name,
+        });
+        setError(null);
       }
       e.target.value = '';
     },
-    [handleUploadScriptFile, handleUploadContentFile]
-  );
-
-  const handleKeyPress = useCallback(
-    (e: React.KeyboardEvent, action: () => void) => {
-      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-        action();
-      }
-    },
     []
   );
+
+  const handleRemoveFile = useCallback(() => {
+    setAttachedFile(null);
+  }, []);
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        const hasPrompt = prompt.trim().length > 0;
+        const hasFile = attachedFile !== null;
+        if (hasPrompt || hasFile) {
+          handleGenerate();
+        }
+      }
+    },
+    [prompt, attachedFile, handleGenerate]
+  );
+
+  const canGenerate = prompt.trim().length > 0 || attachedFile !== null;
+
+  // Determine loading message based on state
+  const getLoadingMessage = () => {
+    if (!attachedFile) return 'Generating script...';
+    if (attachedFile.type === 'script') {
+      return prompt.trim() ? 'Applying guidance to script...' : 'Extracting script...';
+    }
+    return prompt.trim() ? 'Generating script with guidance...' : 'Generating script from content...';
+  };
 
   return (
     <div className="space-y-4">
@@ -239,202 +330,119 @@ export function ScriptStep({
         </div>
       )}
 
-      {/* Input Mode Selection (when no script yet) */}
-      {!script && inputMode === 'none' && (
-        <div className="space-y-3">
-          <p className="text-sm text-text-muted">
-            Choose how to create your video script:
-          </p>
+      {/* Script Creation Interface (when no script yet) */}
+      {!script && (
+        <div className="space-y-4">
+          {/* Attached File Indicator */}
+          {attachedFile && (
+            <div className="flex items-center gap-2 p-3 bg-white-10 rounded-lg">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                attachedFile.type === 'script' ? 'bg-blue-accent/20' : 'bg-purple-500/20'
+              }`}>
+                {attachedFile.type === 'script' ? (
+                  <Upload className="w-4 h-4 text-blue-accent" />
+                ) : (
+                  <FileText className="w-4 h-4 text-purple-500" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-primary truncate">
+                  {attachedFile.name}
+                </p>
+                <p className="text-xs text-text-muted">
+                  {attachedFile.type === 'script' ? 'Script file' : 'Content file'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveFile}
+                className="p-1.5 hover:bg-white-10 rounded-lg transition-colors"
+                title="Remove file"
+              >
+                <Trash2 className="w-4 h-4 text-text-muted hover:text-red-400" />
+              </button>
+            </div>
+          )}
 
-          <div className="grid grid-cols-1 gap-3">
-            {/* Upload Script File */}
-            <button
-              type="button"
-              onClick={() => setInputMode('upload_script')}
-              className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 transition-colors text-left"
-            >
-              <div className="w-10 h-10 rounded-lg bg-blue-accent/20 flex items-center justify-center">
-                <Upload className="w-5 h-5 text-blue-accent" />
-              </div>
-              <div>
-                <div className="font-medium text-text-primary">
-                  Upload Script File
-                </div>
-                <div className="text-sm text-text-muted">
-                  Upload a ready-to-use script (DOCX, TXT, PDF)
-                </div>
-              </div>
-            </button>
-
-            {/* Upload Content for AI */}
-            <button
-              type="button"
-              onClick={() => setInputMode('upload_content')}
-              className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 transition-colors text-left"
-            >
-              <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-purple-500" />
-              </div>
-              <div>
-                <div className="font-medium text-text-primary">
-                  Upload Content File
-                </div>
-                <div className="text-sm text-text-muted">
-                  AI will generate a script from your article/content
-                </div>
-              </div>
-            </button>
-
-            {/* Generate from Prompt */}
-            <button
-              type="button"
-              onClick={() => setInputMode('prompt')}
-              className="flex items-center gap-3 p-4 rounded-xl bg-white-10 hover:bg-white-20 transition-colors text-left"
-            >
-              <div className="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-gold" />
-              </div>
-              <div>
-                <div className="font-medium text-text-primary">
-                  Generate from Prompt
-                </div>
-                <div className="text-sm text-text-muted">
-                  Describe your video topic and AI will write the script
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Upload Script Mode */}
-      {inputMode === 'upload_script' && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-text-muted">Upload your script file:</p>
-            <button
-              type="button"
-              onClick={() => setInputMode('none')}
-              className="text-sm text-text-muted hover:text-text-primary"
-            >
-              Cancel
-            </button>
-          </div>
-
+          {/* Hidden File Inputs */}
           <input
             ref={scriptFileInputRef}
             type="file"
             accept=".doc,.docx,.txt,.pdf"
-            onChange={(e) => handleFileInputChange(e, 'script')}
+            onChange={(e) => handleFileSelect(e, 'script')}
             className="hidden"
           />
-
-          <button
-            type="button"
-            onClick={() => scriptFileInputRef.current?.click()}
-            disabled={isLoading}
-            className="w-full p-8 border-2 border-dashed border-white-20 rounded-xl hover:border-white-40 hover:bg-white-5 transition-colors"
-          >
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                <Loader2 className="w-8 h-8 text-text-muted animate-spin" />
-                <span className="text-sm text-text-muted">
-                  Extracting text...
-                </span>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-2">
-                <Upload className="w-8 h-8 text-text-muted" />
-                <span className="text-sm text-text-muted">
-                  Click to select file (DOCX, DOC, TXT, PDF)
-                </span>
-              </div>
-            )}
-          </button>
-        </div>
-      )}
-
-      {/* Upload Content Mode */}
-      {inputMode === 'upload_content' && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-text-muted">
-              Upload content for AI to generate script:
-            </p>
-            <button
-              type="button"
-              onClick={() => setInputMode('none')}
-              className="text-sm text-text-muted hover:text-text-primary"
-            >
-              Cancel
-            </button>
-          </div>
-
           <input
             ref={contentFileInputRef}
             type="file"
             accept=".doc,.docx,.txt,.pdf"
-            onChange={(e) => handleFileInputChange(e, 'content')}
+            onChange={(e) => handleFileSelect(e, 'content')}
             className="hidden"
           />
 
-          <button
-            type="button"
-            onClick={() => contentFileInputRef.current?.click()}
-            disabled={isLoading}
-            className="w-full p-8 border-2 border-dashed border-white-20 rounded-xl hover:border-white-40 hover:bg-white-5 transition-colors"
-          >
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                <Loader2 className="w-8 h-8 text-text-muted animate-spin" />
-                <span className="text-sm text-text-muted">
-                  Generating script from content...
-                </span>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-2">
-                <FileText className="w-8 h-8 text-text-muted" />
-                <span className="text-sm text-text-muted">
-                  Click to select content file (DOCX, DOC, TXT, PDF)
-                </span>
-              </div>
-            )}
-          </button>
-        </div>
-      )}
+          {/* Prompt Input */}
+          <div className="space-y-2">
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder={
+                attachedFile?.type === 'script'
+                  ? 'Optional: Add guidance for how to adjust the script...'
+                  : attachedFile?.type === 'content'
+                    ? 'Optional: Add guidance for how to create the script from this content...'
+                    : 'Describe your video topic, or attach a file below...'
+              }
+              rows={4}
+              className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-gold/50 text-sm resize-y"
+              disabled={isLoading}
+            />
+          </div>
 
-      {/* Prompt Input Mode */}
-      {inputMode === 'prompt' && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-text-muted">
-              Describe your video topic:
-            </p>
+          {/* Attachment Buttons */}
+          <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => setInputMode('none')}
-              className="text-sm text-text-muted hover:text-text-primary"
+              onClick={() => scriptFileInputRef.current?.click()}
+              disabled={isLoading}
+              className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-colors ${
+                attachedFile?.type === 'script'
+                  ? 'border-blue-accent bg-blue-accent/10 text-blue-accent'
+                  : 'border-white-20 bg-white-5 hover:bg-white-10 text-text-muted hover:text-text-primary'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              Cancel
+              <Upload className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {attachedFile?.type === 'script' ? 'Replace Script' : 'Attach Script'}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => contentFileInputRef.current?.click()}
+              disabled={isLoading}
+              className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border transition-colors ${
+                attachedFile?.type === 'content'
+                  ? 'border-purple-500 bg-purple-500/10 text-purple-500'
+                  : 'border-white-20 bg-white-5 hover:bg-white-10 text-text-muted hover:text-text-primary'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              <FileText className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {attachedFile?.type === 'content' ? 'Replace Content' : 'Attach Content'}
+              </span>
             </button>
           </div>
 
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            onKeyDown={(e) => handleKeyPress(e, handleGenerateFromPrompt)}
-            placeholder="E.g., Create an engaging video about the benefits of meditation for busy professionals..."
-            rows={4}
-            className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-gold/50 text-sm resize-y"
-            disabled={isLoading}
-          />
-
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-text-muted">Press Cmd/Ctrl+Enter to generate</p>
+          {/* Generate Button */}
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-xs text-text-muted">
+              {isLoading ? getLoadingMessage() : 'Press Cmd/Ctrl+Enter to generate'}
+            </p>
             <button
               type="button"
-              onClick={handleGenerateFromPrompt}
-              disabled={!prompt.trim() || isLoading}
+              onClick={handleGenerate}
+              disabled={!canGenerate || isLoading}
               className="inline-flex items-center gap-2 px-4 py-2 bg-gold hover:bg-gold/90 disabled:bg-gold/30 disabled:cursor-not-allowed text-navy-dark rounded-lg font-medium text-sm transition-colors"
             >
               {isLoading ? (
@@ -475,7 +483,8 @@ export function ScriptStep({
               type="button"
               onClick={() => {
                 onScriptChange('', null);
-                setInputMode('none');
+                setPrompt('');
+                setAttachedFile(null);
               }}
               className="text-sm text-text-muted hover:text-text-primary"
             >
@@ -507,7 +516,11 @@ export function ScriptStep({
               <textarea
                 value={aiGuidance}
                 onChange={(e) => setAiGuidance(e.target.value)}
-                onKeyDown={(e) => handleKeyPress(e, handleImproveScript)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && aiGuidance.trim()) {
+                    handleImproveScript();
+                  }
+                }}
                 placeholder="E.g., Make it more conversational, add a stronger hook, shorten to 60 seconds..."
                 rows={3}
                 className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-gold/50 text-sm resize-y"

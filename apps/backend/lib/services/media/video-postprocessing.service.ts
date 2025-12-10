@@ -253,7 +253,7 @@ export class VideoPostProcessingService {
   /**
    * Convert an image to a video with specified duration
    * Scales/pads image to match target dimensions
-   * Adds silent audio track for consistent concatenation
+   * Note: Creates video without audio - concatenation handles adding silent audio
    */
   private imageToVideo(
     imagePath: string,
@@ -269,23 +269,18 @@ export class VideoPostProcessingService {
       ffmpeg()
         .input(imagePath)
         .inputOptions(['-loop 1', `-framerate ${targetFrameRate}`])
-        // Add silent audio source
-        .input('anullsrc=channel_layout=stereo:sample_rate=44100')
-        .inputOptions(['-f lavfi'])
-        .complexFilter([
-          // Scale, pad, and normalize frame rate to match main video
-          `[0:v]scale=${targetWidth}:${targetHeight}:force_original_aspect_ratio=decrease,pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2:black,setsar=1:1,fps=${targetFrameRate}[v]`,
+        .videoFilters([
+          `scale=${targetWidth}:${targetHeight}:force_original_aspect_ratio=decrease`,
+          `pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2:black`,
+          'setsar=1:1',
+          `fps=${targetFrameRate}`,
         ])
         .outputOptions([
-          '-map [v]',
-          '-map 1:a',
           '-c:v libx264',
           '-preset fast',
           '-pix_fmt yuv420p',
-          '-c:a aac',
-          '-ar 44100',
-          '-ac 2',
           '-t', duration.toString(),
+          '-an', // No audio - concatenation will handle this
         ])
         .output(outputPath)
         .on('end', () => {
@@ -346,40 +341,139 @@ export class VideoPostProcessingService {
   }
 
   /**
-   * Concatenate multiple videos into one
-   * Uses concat demuxer for fast concatenation of same-format videos
+   * Generate a silent audio file (no lavfi required)
    */
-  private concatenateVideos(inputPaths: string[], outputPath: string): Promise<void> {
+  private async generateSilentAudio(outputPath: string, durationSec: number): Promise<void> {
+    // Generate raw PCM silence (16-bit stereo at 44100Hz)
+    const sampleRate = 44100;
+    const channels = 2;
+    const bytesPerSample = 2;
+    const totalSamples = Math.ceil(sampleRate * durationSec * channels);
+    const buffer = Buffer.alloc(totalSamples * bytesPerSample, 0);
+
+    const rawPath = outputPath.replace('.aac', '.raw');
+    await fs.writeFile(rawPath, buffer);
+
+    // Convert raw PCM to AAC
     return new Promise((resolve, reject) => {
-      logger.debug('Concatenating videos', { inputCount: inputPaths.length });
-
-      const tempDir = os.tmpdir();
-      const listFile = path.join(tempDir, `concat_list_${Date.now()}.txt`);
-
-      // Create concat list file
-      const listContent = inputPaths.map((p) => `file '${p}'`).join('\n');
-      fs.writeFile(listFile, listContent)
-        .then(() => {
-          ffmpeg()
-            .input(listFile)
-            .inputOptions(['-f concat', '-safe 0'])
-            .outputOptions(['-c copy'])
-            .output(outputPath)
-            .on('end', () => {
-              // Cleanup list file
-              fs.unlink(listFile).catch(() => {});
-              logger.debug('Video concatenation complete', { outputPath });
-              resolve();
-            })
-            .on('error', (err) => {
-              fs.unlink(listFile).catch(() => {});
-              logger.error('Video concatenation failed', { error: err.message });
-              reject(err);
-            })
-            .run();
+      ffmpeg()
+        .input(rawPath)
+        .inputOptions(['-f s16le', '-ar 44100', '-ac 2'])
+        .outputOptions(['-c:a aac', '-b:a 128k'])
+        .output(outputPath)
+        .on('end', () => {
+          fs.unlink(rawPath).catch(() => {});
+          resolve();
         })
-        .catch(reject);
+        .on('error', (err) => {
+          fs.unlink(rawPath).catch(() => {});
+          reject(err);
+        })
+        .run();
     });
+  }
+
+  /**
+   * Add silent audio track to a video file
+   */
+  private async addSilentAudioToVideo(inputPath: string, outputPath: string): Promise<void> {
+    // Get video duration
+    const info = await this.getVideoInfo(inputPath);
+    const tempDir = os.tmpdir();
+    const silentAudioPath = path.join(tempDir, `silent_${Date.now()}.aac`);
+
+    try {
+      // Generate silent audio matching video duration
+      await this.generateSilentAudio(silentAudioPath, info.duration + 1);
+
+      // Merge video with silent audio
+      return new Promise((resolve, reject) => {
+        ffmpeg()
+          .input(inputPath)
+          .input(silentAudioPath)
+          .outputOptions(['-c:v copy', '-c:a aac', '-map 0:v', '-map 1:a', '-shortest'])
+          .output(outputPath)
+          .on('end', () => {
+            fs.unlink(silentAudioPath).catch(() => {});
+            resolve();
+          })
+          .on('error', (err) => {
+            fs.unlink(silentAudioPath).catch(() => {});
+            reject(err);
+          })
+          .run();
+      });
+    } catch (err) {
+      await fs.unlink(silentAudioPath).catch(() => {});
+      throw err;
+    }
+  }
+
+  /**
+   * Concatenate multiple videos into one
+   * Ensures all videos have audio tracks before concatenation
+   */
+  private async concatenateVideos(inputPaths: string[], outputPath: string): Promise<void> {
+    logger.debug('Concatenating videos', { inputCount: inputPaths.length });
+
+    const tempDir = os.tmpdir();
+    const tempFiles: string[] = [];
+
+    // Ensure all inputs have audio tracks
+    const normalizedPaths = await Promise.all(
+      inputPaths.map(async (inputPath, i) => {
+        const hasAudio = await new Promise<boolean>((resolve) => {
+          ffmpeg.ffprobe(inputPath, (err, metadata) => {
+            if (err) {
+              resolve(false);
+              return;
+            }
+            const hasAudioStream = metadata.streams.some((s) => s.codec_type === 'audio');
+            resolve(hasAudioStream);
+          });
+        });
+
+        if (hasAudio) {
+          return inputPath;
+        }
+
+        // Add silent audio to videos without audio
+        logger.debug('Adding silent audio to video', { inputPath });
+        const withAudioPath = path.join(tempDir, `with_audio_${i}_${Date.now()}.mp4`);
+        await this.addSilentAudioToVideo(inputPath, withAudioPath);
+        tempFiles.push(withAudioPath);
+        return withAudioPath;
+      })
+    );
+
+    // Now concatenate using the fast concat demuxer (all videos have same format)
+    const listFile = path.join(tempDir, `concat_list_${Date.now()}.txt`);
+    const listContent = normalizedPaths.map((p) => `file '${p}'`).join('\n');
+
+    try {
+      await fs.writeFile(listFile, listContent);
+
+      await new Promise<void>((resolve, reject) => {
+        ffmpeg()
+          .input(listFile)
+          .inputOptions(['-f concat', '-safe 0'])
+          .outputOptions(['-c copy'])
+          .output(outputPath)
+          .on('end', () => {
+            logger.debug('Video concatenation complete', { outputPath });
+            resolve();
+          })
+          .on('error', (err) => {
+            logger.error('Video concatenation failed', { error: err.message });
+            reject(err);
+          })
+          .run();
+      });
+    } finally {
+      // Cleanup temp files
+      await fs.unlink(listFile).catch(() => {});
+      await Promise.all(tempFiles.map((f) => fs.unlink(f).catch(() => {})));
+    }
   }
 
   /**
