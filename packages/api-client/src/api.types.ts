@@ -43,7 +43,7 @@ export interface Character {
   thumbnailUrl?: string | null;
   previewUrl?: string | null; // HeyGen motion preview video URL
   heygenAvatarId?: string | null; // Legacy: for old avatar-based characters
-  heygenImageKey?: string | null; // New: for Avatar IV API (photo upload)
+  heygenImageKey: string; // Required: for Avatar IV API
   heygenAvatarGroupId?: string | null;
   characterType: 'avatar' | 'talking_photo';
   gender?: string | null;

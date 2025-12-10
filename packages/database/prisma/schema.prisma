@@ -135,7 +135,7 @@ model Character {
   // HeyGen identifiers
   heygenAvatarId      String? // Legacy: avatar/talking_photo ID (optional, kept for reference)
   heygenAvatarGroupId String? // Legacy: group ID for reference (optional)
-  heygenImageKey      String? // Image key from HeyGen Upload Asset API (required for IV API - populate after migration)
+  heygenImageKey      String  // Image key from HeyGen Upload Asset API (required for Avatar IV API)
   characterType       String  @default("avatar") // 'avatar' | 'talking_photo'
 
   gender String? // 'male' | 'female'
@@ -151,6 +151,7 @@ model Character {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([organizationId, heygenImageKey])
   @@index([organizationId])
   @@index([voiceId])
   @@map("characters")
