@@ -172,7 +172,7 @@
   }
 
   .sidebar-cta {
-    @apply mt-4 flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white text-black font-bold transition-all duration-200 hover:opacity-90;
+    @apply mt-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-transparent border border-white-20 text-text-primary font-semibold transition-all duration-200 hover:bg-white-10 hover:border-white-30;
   }
 
   .sidebar-cta-icon {
@@ -181,10 +181,6 @@
 
   .sidebar-cta-text {
     @apply text-sm;
-  }
-
-  .sidebar-cta--secondary {
-    @apply mt-2 bg-transparent border border-white/30 text-white hover:bg-white/10 hover:opacity-100;
   }
 
   /* Dashboard layout - Enhanced */
