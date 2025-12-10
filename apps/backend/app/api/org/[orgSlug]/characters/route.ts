@@ -16,7 +16,7 @@ const CreateCharacterSchema = z.object({
   heygenAvatarGroupId: z.string().optional(),
 });
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB (HeyGen supports up to 200MB)
 const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
 
 /**
