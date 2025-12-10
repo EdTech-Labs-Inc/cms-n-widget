@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import QueryProvider from "@/lib/providers/QueryProvider";
 import { ToastProvider } from "@/components/ui/ToastContainer";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { PlatformModeProvider } from "@/lib/context/platform-mode-context";
 import { getUserAndProfile } from "@/app/auth/actions";
 
 const inter = Inter({
@@ -38,7 +39,9 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${inter.className}`}>
         <QueryProvider>
           <ToastProvider>
-            <DashboardLayout user={user}>{children}</DashboardLayout>
+            <PlatformModeProvider>
+              <DashboardLayout user={user}>{children}</DashboardLayout>
+            </PlatformModeProvider>
           </ToastProvider>
         </QueryProvider>
       </body>

@@ -2,6 +2,7 @@
 
 import { CheckCircle, X, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { usePlatformMode } from '@/lib/context/platform-mode-context';
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -10,7 +11,13 @@ interface SuccessModalProps {
 }
 
 export function SuccessModal({ isOpen, onClose, orgSlug }: SuccessModalProps) {
+  const { mode } = usePlatformMode();
+
   if (!isOpen) return null;
+
+  // Determine redirect based on platform mode
+  const dashboardLink = mode === 'creative' ? `/org/${orgSlug}/creative` : `/org/${orgSlug}/dashboard`;
+  const dashboardLabel = mode === 'creative' ? 'Go to Videos' : 'Go to Dashboard';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -42,7 +49,7 @@ export function SuccessModal({ isOpen, onClose, orgSlug }: SuccessModalProps) {
             <p className="text-sm text-text-secondary">
               <strong className="text-text-primary">What happens next?</strong>
               <br />
-              Video generation typically takes 15-20 minutes. You'll be able to view your completed video on the dashboard once it's ready.
+              Video generation typically takes 15-20 minutes. You'll be able to view your completed video once it's ready.
             </p>
           </div>
 
@@ -56,10 +63,10 @@ export function SuccessModal({ isOpen, onClose, orgSlug }: SuccessModalProps) {
               Create Another
             </button>
             <Link
-              href={`/org/${orgSlug}/dashboard`}
+              href={dashboardLink}
               className="btn btn-primary flex items-center gap-2"
             >
-              Go to Dashboard
+              {dashboardLabel}
               <ExternalLink className="w-4 h-4" />
             </Link>
           </div>
