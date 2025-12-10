@@ -9,8 +9,9 @@ const CreateVideoSchema = z.object({
   script: z.string().min(1, 'Script is required'),
   sourceType: z.enum(['prompt', 'script_file', 'content_file']),
   characterId: z.string().uuid('Invalid character ID'),
-  heygenAvatarId: z.string().min(1, 'HeyGen avatar ID is required'),
-  heygenCharacterType: z.enum(['avatar', 'talking_photo']),
+  // Legacy fields - optional for backwards compatibility (new characters use heygenImageKey from Character record)
+  heygenAvatarId: z.string().nullable().optional(),
+  heygenCharacterType: z.enum(['avatar', 'talking_photo']).nullable().optional(),
   voiceId: z.string().min(1, 'Voice ID is required'),
   captionStyleId: z.string().uuid('Invalid caption style ID'),
   enableMagicZooms: z.boolean().default(true),
@@ -154,6 +155,7 @@ export async function POST(
     }
 
     // Create the standalone video record
+    // Use character data as fallback for legacy fields
     const standaloneVideo = await prisma.standaloneVideo.create({
       data: {
         organizationId: org.id,
@@ -161,8 +163,8 @@ export async function POST(
         script: data.script,
         sourceType: data.sourceType,
         characterId: data.characterId,
-        heygenAvatarId: data.heygenAvatarId,
-        heygenCharacterType: data.heygenCharacterType,
+        heygenAvatarId: data.heygenAvatarId || character.heygenAvatarId || '',
+        heygenCharacterType: data.heygenCharacterType || character.characterType || 'avatar',
         voiceId: data.voiceId,
         captionStyleId: data.captionStyleId,
         enableMagicZooms: data.enableMagicZooms,

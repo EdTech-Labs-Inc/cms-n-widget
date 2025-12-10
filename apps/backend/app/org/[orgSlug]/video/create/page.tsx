@@ -175,7 +175,7 @@ export default function VideoCreatePage() {
   const handleCharacterSelect = useCallback(
     (
       characterId: string,
-      heygenAvatarId: string,
+      heygenAvatarId: string | null, // Can be null for new characters using heygenImageKey
       heygenCharacterType: 'avatar' | 'talking_photo',
       voiceId: string,
       thumbnailUrl: string | null
@@ -275,7 +275,8 @@ export default function VideoCreatePage() {
       toast.error('Missing Script', 'Please add a script before generating');
       return;
     }
-    if (!draft.characterId || !draft.heygenAvatarId || !draft.heygenCharacterType || !draft.voiceId) {
+    // characterId and voiceId are required; heygenAvatarId is optional (new characters use heygenImageKey from DB)
+    if (!draft.characterId || !draft.voiceId) {
       toast.error('Missing Character', 'Please select a character and look before generating');
       return;
     }
@@ -291,8 +292,8 @@ export default function VideoCreatePage() {
         script: draft.script,
         sourceType: draft.scriptSource || 'prompt',
         characterId: draft.characterId,
-        heygenAvatarId: draft.heygenAvatarId,
-        heygenCharacterType: draft.heygenCharacterType,
+        heygenAvatarId: draft.heygenAvatarId, // Can be null for new characters
+        heygenCharacterType: draft.heygenCharacterType, // Can be null, backend will use character.characterType
         voiceId: draft.voiceId,
         captionStyleId: draft.captionStyleId,
         enableMagicZooms: draft.enableMagicZooms,

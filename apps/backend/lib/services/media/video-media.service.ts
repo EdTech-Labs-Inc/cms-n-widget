@@ -26,9 +26,7 @@ export class VideoMediaService {
   async generateVideoFromScript(
     videoOutputId: string,
     videoCustomization?: {
-      characterId: string;
-      characterType: 'avatar' | 'talking_photo';
-      voiceId?: string;
+      characterId: string; // Internal Character ID
       enableCaptions?: boolean;
       captionTemplate?: string;
       enableMagicZooms?: boolean;
@@ -65,12 +63,21 @@ export class VideoMediaService {
         throw new Error('No script available - script generation may have failed');
       }
 
-      // Validate customization is set (either from DB or provided)
-      const characterId = videoCustomization?.characterId || videoOutput.heygenCharacterId;
-      const characterType = videoCustomization?.characterType || videoOutput.heygenCharacterType;
+      // Validate character is set (either from customization or DB)
+      const characterId = videoCustomization?.characterId || videoOutput.characterId;
 
-      if (!characterId || !characterType) {
+      if (!characterId) {
         throw new Error('Video customization (character) must be configured before generating video');
+      }
+
+      // Look up the Character to get the heygenImageKey for Avatar IV API
+      const character = await prisma.character.findUnique({
+        where: { id: characterId },
+        include: { voice: true },
+      });
+
+      if (!character) {
+        throw new Error(`Character not found: ${characterId}`);
       }
 
       // Update customization settings if provided
@@ -78,9 +85,7 @@ export class VideoMediaService {
         await prisma.videoOutput.update({
           where: { id: videoOutputId },
           data: {
-            heygenCharacterId: videoCustomization.characterId,
-            heygenCharacterType: videoCustomization.characterType,
-            heygenVoiceId: videoCustomization.voiceId || null,
+            characterId: videoCustomization.characterId,
             enableCaptions: videoCustomization.enableCaptions ?? true,
             submagicTemplate: videoCustomization.captionTemplate || null,
             enableMagicZooms: videoCustomization.enableMagicZooms ?? true,
@@ -99,11 +104,11 @@ export class VideoMediaService {
         },
       });
 
-      // Get voice ID - from customization or DB (ElevenLabs voice ID from Character's linked Voice)
-      const voiceId = videoCustomization?.voiceId || videoOutput.heygenVoiceId;
+      // Get voice ID from Character's linked voice
+      const voiceId = character.voice.elevenlabsVoiceId;
 
       if (!voiceId) {
-        throw new Error('Voice ID is required - character must have a linked voice');
+        throw new Error(`Voice ID is required - character ${character.name} must have a linked voice`);
       }
 
       // Step 1: Generate audio with ElevenLabs (using v3 model)
@@ -145,20 +150,20 @@ export class VideoMediaService {
         },
       });
 
-      // Step 3: Call HeyGen with audio URL (lip-sync mode)
-      logger.info('Calling HeyGen to generate video with audio URL', {
+      // Step 3: Call HeyGen Avatar IV API with audio URL (lip-sync mode)
+      logger.info('Calling HeyGen Avatar IV API to generate video', {
         videoOutputId,
-        characterType,
-        characterId,
+        imageKey: character.heygenImageKey,
+        voiceId,
         audioUrl: audioResult.cloudfrontUrl,
         title: videoOutput.title,
       });
 
       const { videoId } = await heygenService.generateVideo({
+        imageKey: character.heygenImageKey,
         audioUrl: audioResult.cloudfrontUrl,
+        voiceId,
         title: videoOutput.title || videoOutput.submission.article.title,
-        characterType: characterType as 'talking_photo' | 'avatar',
-        characterId,
       });
 
       logger.info('HeyGen video initiated', {

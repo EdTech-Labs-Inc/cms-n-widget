@@ -231,6 +231,8 @@ export interface VideoOutput {
   transcript?: string | null;
   wordTimings?: any; // JSON field
   bubbles?: VideoBubble[]; // Relation to VideoBubble table
+  characterId?: string | null; // Internal Character ID
+  // Legacy HeyGen fields (kept for backward compatibility)
   heygenCharacterType?: string | null;
   heygenCharacterId?: string | null;
   heygenVoiceId?: string | null;

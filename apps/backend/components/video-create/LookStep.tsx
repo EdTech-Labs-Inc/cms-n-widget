@@ -9,7 +9,8 @@ interface CharacterVariant {
   name: string;
   thumbnailUrl: string | null;
   previewUrl: string | null;
-  heygenAvatarId: string;
+  heygenAvatarId: string | null; // Legacy: for old avatar-based characters
+  heygenImageKey: string | null; // New: for Avatar IV API (photo upload)
   characterType: 'avatar' | 'talking_photo';
   voiceId: string;
   voiceName: string;
@@ -21,7 +22,7 @@ interface LookStepProps {
   selectedCharacterId: string | null;
   onCharacterSelect: (
     characterId: string,
-    heygenAvatarId: string,
+    heygenAvatarId: string | null, // Can be null for new characters using heygenImageKey
     heygenCharacterType: 'avatar' | 'talking_photo',
     voiceId: string,
     thumbnailUrl: string | null
@@ -149,7 +150,8 @@ export function LookStep({
         name: char.name,
         thumbnailUrl: char.thumbnailUrl || null,
         previewUrl: char.previewUrl || null,
-        heygenAvatarId: char.heygenAvatarId,
+        heygenAvatarId: char.heygenAvatarId || null,
+        heygenImageKey: char.heygenImageKey || null,
         characterType: char.characterType,
         voiceId: char.voice.elevenlabsVoiceId,
         voiceName: char.voice.name,

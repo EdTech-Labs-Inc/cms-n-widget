@@ -589,8 +589,9 @@ export interface CreateStandaloneVideoRequest {
   script: string;
   sourceType: 'prompt' | 'script_file' | 'content_file';
   characterId: string;
-  heygenAvatarId: string;
-  heygenCharacterType: 'avatar' | 'talking_photo';
+  // Legacy fields - optional for new characters using heygenImageKey from Character record
+  heygenAvatarId?: string | null;
+  heygenCharacterType?: 'avatar' | 'talking_photo' | null;
   voiceId: string;
   captionStyleId: string;
   enableMagicZooms: boolean;

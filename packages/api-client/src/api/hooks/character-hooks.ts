@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { charactersApi, voicesApi } from '../client';
 import type { Character, Voice } from '../../api.types';
+import axios from 'axios';
 
 /**
  * Query keys for character and voice queries
@@ -45,5 +46,44 @@ export function useVoices(orgSlug: string) {
     queryFn: () => voicesApi.getAll(orgSlug),
     enabled: !!orgSlug,
     staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+}
+
+/**
+ * Hook to create a new character
+ * Handles multipart form data upload including photo
+ *
+ * @param orgSlug - Organization slug
+ * @returns React Query mutation for creating a character
+ *
+ * @example
+ * const createCharacter = useCreateCharacter(orgSlug);
+ * const formData = new FormData();
+ * formData.append('photo', photoFile);
+ * formData.append('name', 'Character Name');
+ * formData.append('voiceId', voiceId);
+ * createCharacter.mutate(formData);
+ */
+export function useCreateCharacter(orgSlug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const response = await axios.post<{ success: boolean; data: Character; error?: string }>(
+        `/api/org/${orgSlug}/characters`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 60000, // 60 second timeout for upload
+        }
+      );
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Failed to create character');
+      }
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: characterQueryKeys.characters(orgSlug) });
+    },
   });
 }

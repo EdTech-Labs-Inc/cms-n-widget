@@ -6,10 +6,7 @@ import { prisma } from '@/lib/config/database';
 import { z } from 'zod';
 
 const VideoCustomizationSchema = z.object({
-  characterId: z.string(), // Our DB Character ID (for validation)
-  heygenAvatarId: z.string(), // The actual HeyGen avatar/talking_photo ID
-  characterType: z.enum(['avatar', 'talking_photo']),
-  voiceId: z.string(), // ElevenLabs voice ID (required, from linked Voice)
+  characterId: z.string(), // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
@@ -116,7 +113,7 @@ export async function POST(
 
     const videoCustomization = validationResult.data;
 
-    // Validate character belongs to this organization
+    // Validate character belongs to this organization and has required fields
     const character = await prisma.character.findFirst({
       where: {
         id: videoCustomization.characterId,
@@ -131,10 +128,9 @@ export async function POST(
       );
     }
 
-    // Verify the heygenAvatarId matches the character record
-    if (character.heygenAvatarId !== videoCustomization.heygenAvatarId) {
+    if (!character.heygenImageKey) {
       return NextResponse.json(
-        { success: false, error: 'Invalid character data' },
+        { success: false, error: 'Character does not have HeyGen image key configured' },
         { status: 400 }
       );
     }
@@ -144,9 +140,7 @@ export async function POST(
       where: { id: params.videoId },
       data: {
         status: 'PROCESSING',
-        heygenCharacterId: videoCustomization.heygenAvatarId, // Store the actual HeyGen avatar ID
-        heygenCharacterType: videoCustomization.characterType,
-        heygenVoiceId: videoCustomization.voiceId, // ElevenLabs voice ID
+        characterId: videoCustomization.characterId, // Store internal Character ID
         enableCaptions: true, // Always enabled
         submagicTemplate: 'jblk', // Hardcoded brandkit template
         enableMagicZooms: videoCustomization.enableMagicZooms,

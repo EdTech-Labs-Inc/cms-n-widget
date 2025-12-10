@@ -91,20 +91,34 @@ export class StandaloneVideoService {
       // Step 3: Generate title from first line of script if not set
       const title = standaloneVideo.title || standaloneVideo.script.split('\n')[0].slice(0, 100);
 
-      // Step 4: Call HeyGen with audio URL (lip-sync mode)
-      logger.info('Calling HeyGen to generate video with audio URL', {
+      // Step 4: Look up Character to get imageKey for Avatar IV API
+      const character = await prisma.character.findUnique({
+        where: { id: standaloneVideo.characterId },
+        include: { voice: true },
+      });
+
+      if (!character) {
+        throw new Error(`Character not found: ${standaloneVideo.characterId}`);
+      }
+
+      // Step 5: Call HeyGen Avatar IV API with audio URL (lip-sync mode)
+      // Use voice from Character's linked voice
+      const voiceId = character.voice.elevenlabsVoiceId;
+
+      logger.info('Calling HeyGen Avatar IV API to generate video', {
         standaloneVideoId,
-        characterType: standaloneVideo.heygenCharacterType,
-        characterId: standaloneVideo.heygenAvatarId,
+        characterName: character.name,
+        imageKey: character.heygenImageKey,
+        voiceId,
         audioUrl: audioResult.cloudfrontUrl,
         title,
       });
 
       const { videoId } = await heygenService.generateVideo({
+        imageKey: character.heygenImageKey,
         audioUrl: audioResult.cloudfrontUrl,
+        voiceId,
         title,
-        characterType: standaloneVideo.heygenCharacterType as 'talking_photo' | 'avatar',
-        characterId: standaloneVideo.heygenAvatarId,
       });
 
       logger.info('HeyGen video initiated', {

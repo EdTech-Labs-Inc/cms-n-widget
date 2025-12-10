@@ -6,14 +6,12 @@ import { prisma } from '@/lib/config/database';
 
 // Validation schemas
 export const VideoCustomizationSchema = z.object({
-  characterId: z.string(),
-  characterType: z.enum(['avatar', 'talking_photo']),
-  voiceId: z.string(),
-  enableCaptions: z.boolean(),
-  captionTemplate: z.string(),
-  enableMagicZooms: z.boolean(),
-  enableMagicBrolls: z.boolean(),
-  magicBrollsPercentage: z.number().min(0).max(100),
+  characterId: z.string(), // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
+  enableCaptions: z.boolean().optional(),
+  captionTemplate: z.string().optional(),
+  enableMagicZooms: z.boolean().optional(),
+  enableMagicBrolls: z.boolean().optional(),
+  magicBrollsPercentage: z.number().min(0).max(100).optional(),
   generateBubbles: z.boolean().optional(),
 }).optional();
 
@@ -604,7 +602,7 @@ export const SubmissionsController = {
       await prisma.videoOutput.update({
         where: { id: videoId },
         data: {
-          heygenCharacterId: videoCustomization.characterId || null,
+          characterId: videoCustomization.characterId || null,
           submagicTemplate: videoCustomization.captionTemplate || null,
           enableCaptions: videoCustomization.enableCaptions ?? true,
           enableMagicZooms: videoCustomization.enableMagicZooms ?? true,

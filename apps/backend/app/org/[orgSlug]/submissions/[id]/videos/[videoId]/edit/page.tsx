@@ -128,8 +128,6 @@ export default function OrgVideoEditPage() {
   const [editableBubbles, setEditableBubbles] = useState<VideoBubble[]>([]);
   const [videoCustomization, setVideoCustomization] = useState<VideoCustomizationConfig>({
     characterId: '',
-    characterType: 'avatar',
-    voiceId: '',
     enableMagicZooms: true,
     enableMagicBrolls: true,
     magicBrollsPercentage: 40,
@@ -158,9 +156,7 @@ export default function OrgVideoEditPage() {
     const video = submission?.videoOutputs?.find((v) => v.id === videoId);
     if (video) {
       setVideoCustomization({
-        characterId: (video as any).heygenCharacterId || '',
-        characterType: (video as any).heygenCharacterType || 'avatar',
-        voiceId: (video as any).heygenVoiceId || '',
+        characterId: (video as any).characterId || '',
         enableMagicZooms: (video as any).enableMagicZooms ?? true,
         enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
         magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
@@ -362,8 +358,6 @@ export default function OrgVideoEditPage() {
         videoId,
         videoCustomization: {
           characterId: videoCustomization.characterId,
-          characterType: videoCustomization.characterType || 'avatar',
-          voiceId: videoCustomization.voiceId,
           enableMagicZooms: videoCustomization.enableMagicZooms,
           enableMagicBrolls: videoCustomization.enableMagicBrolls,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage,

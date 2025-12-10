@@ -121,10 +121,7 @@ function AvatarCard({
 }
 
 export interface VideoCustomizationConfig {
-  characterId: string; // Our DB Character ID (for validation)
-  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
-  characterType: 'avatar' | 'talking_photo';
-  voiceId: string; // ElevenLabs voice ID from linked Voice
+  characterId: string; // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
@@ -212,13 +209,8 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
     setSelectedGroupId(groupId);
   };
 
-  const handleCharacterChange = (
-    characterId: string,
-    heygenAvatarId: string,
-    characterType: 'avatar' | 'talking_photo',
-    voiceId: string
-  ) => {
-    onChange({ ...value, characterId, heygenAvatarId, characterType, voiceId });
+  const handleCharacterChange = (characterId: string) => {
+    onChange({ ...value, characterId });
   };
 
   const handleZoomsToggle = () => {
@@ -298,12 +290,7 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
                       previewUrl={character.previewUrl}
                       name={character.name}
                       selected={value.characterId === character.id}
-                      onClick={() => handleCharacterChange(
-                        character.id,
-                        character.heygenAvatarId,
-                        character.characterType,
-                        character.voice.elevenlabsVoiceId
-                      )}
+                      onClick={() => handleCharacterChange(character.id)}
                       disabled={disabled}
                     />
                   </div>

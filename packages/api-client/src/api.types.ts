@@ -42,7 +42,8 @@ export interface Character {
   description?: string | null;
   thumbnailUrl?: string | null;
   previewUrl?: string | null; // HeyGen motion preview video URL
-  heygenAvatarId: string;
+  heygenAvatarId?: string | null; // Legacy: for old avatar-based characters
+  heygenImageKey?: string | null; // New: for Avatar IV API (photo upload)
   heygenAvatarGroupId?: string | null;
   characterType: 'avatar' | 'talking_photo';
   gender?: string | null;
@@ -376,10 +377,7 @@ export interface CreateArticleRequest {
 }
 
 export interface VideoCustomizationConfig {
-  characterId: string; // Our DB Character ID (for validation)
-  heygenAvatarId: string; // The actual HeyGen avatar/talking_photo ID
-  characterType: 'avatar' | 'talking_photo';
-  voiceId: string; // ElevenLabs voice ID from linked Voice
+  characterId: string; // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;

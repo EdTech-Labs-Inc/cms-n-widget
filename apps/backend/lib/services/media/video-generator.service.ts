@@ -109,84 +109,44 @@ export class VideoGeneratorService {
           });
         }
 
-        // Initiate HeyGen video creation (non-blocking)
-        // Use character configuration from VideoOutput if set, otherwise use defaults
-        // Fetch avatar details to get correct voice if not already set
-        let voiceId = videoOutput.heygenVoiceId || undefined;
+        // Initiate HeyGen Avatar IV video creation (non-blocking)
+        // Look up Character to get imageKey and voiceId
+        const characterId = videoOutput.characterId;
 
-        // DEBUG: Log the initial state before voice lookup
-        logger.info('🔍 DEBUG: Voice lookup initial state', {
-          videoOutputId: videoOutput.id,
-          heygenVoiceId_raw: videoOutput.heygenVoiceId,
-          heygenVoiceId_afterCoercion: voiceId,
-          heygenCharacterId: videoOutput.heygenCharacterId,
-          heygenCharacterType: videoOutput.heygenCharacterType,
-          willFetchDetails: !voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar',
-        });
-
-        if (!voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar') {
-          try {
-            logger.info('Fetching avatar details for voice ID', {
-              avatarId: videoOutput.heygenCharacterId
-            });
-            const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
-
-            // DEBUG: Log the full response from getAvatarDetails
-            logger.info('🔍 DEBUG: Full avatar details response', {
-              avatarId: videoOutput.heygenCharacterId,
-              fullResponse: JSON.stringify(avatarDetails, null, 2),
-              hasData: !!avatarDetails.data,
-              // HeyGen returns default_voice_id as a flat string, not nested object
-              defaultVoiceId: (avatarDetails.data as any)?.default_voice_id,
-            });
-
-            // HeyGen API returns default_voice_id as a flat string field
-            const fetchedVoiceId = (avatarDetails.data as any)?.default_voice_id;
-            if (fetchedVoiceId) {
-              voiceId = fetchedVoiceId;
-              logger.info('Got voice ID from avatar details', { voiceId });
-
-              // Update the VideoOutput with the fetched voice ID for future reference
-              await prisma.videoOutput.update({
-                where: { id: videoOutput.id },
-                data: { heygenVoiceId: voiceId },
-              });
-            } else {
-              logger.warn('🔍 DEBUG: No default_voice.voice_id found in avatar details');
-            }
-          } catch (error) {
-            logger.warn('Failed to fetch avatar details for voice, will use defaults', {
-              avatarId: videoOutput.heygenCharacterId,
-              error: error instanceof Error ? error.message : 'Unknown error',
-            });
-          }
-        } else if (!voiceId) {
-          logger.info('🔍 DEBUG: Voice lookup skipped - conditions not met', {
-            reason: !videoOutput.heygenCharacterId ? 'No characterId' :
-                    videoOutput.heygenCharacterType !== 'avatar' ? `CharacterType is ${videoOutput.heygenCharacterType}, not avatar` :
-                    'Unknown reason',
-          });
+        if (!characterId) {
+          throw new Error('No character ID configured for video generation');
         }
 
-        // DEBUG: Log final voiceId before sending to HeyGen
-        logger.info('🔍 DEBUG: Final voiceId before HeyGen call', {
-          voiceId: voiceId ?? '(undefined - will use default)',
+        const character = await prisma.character.findUnique({
+          where: { id: characterId },
+          include: { voice: true },
         });
 
-        logger.info('Calling HeyGen with VideoOutput settings', {
+        if (!character) {
+          throw new Error(`Character not found: ${characterId}`);
+        }
+
+        // Get voice ID from Character's linked voice
+        const voiceId = character.voice.elevenlabsVoiceId;
+
+        if (!voiceId) {
+          throw new Error(`No voice ID found for character ${character.name}`);
+        }
+
+        logger.info('Calling HeyGen Avatar IV API', {
           videoOutputId: videoOutput.id,
-          heygenCharacterType: videoOutput.heygenCharacterType ?? 'not set (will use defaults)',
-          heygenCharacterId: videoOutput.heygenCharacterId ?? 'not set (will use defaults)',
-          heygenVoiceId: voiceId ?? 'not set (will use defaults)',
+          characterName: character.name,
+          imageKey: character.heygenImageKey,
+          voiceId,
           scriptLength: script.length,
           title,
         });
+
         const { videoId } = await heygenService.generateVideo({
+          imageKey: character.heygenImageKey,
           script,
-          title,
-          characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
-          characterId: videoOutput.heygenCharacterId || undefined,
           voiceId,
+          title,
         });
 
         logger.info('HeyGen video initiated', {
@@ -293,51 +253,44 @@ export class VideoGeneratorService {
         },
       });
 
-      // Initiate HeyGen video creation with the edited script
-      // Use existing character configuration if set
-      // Fetch avatar details to get correct voice if not already set
-      let voiceId = videoOutput.heygenVoiceId || undefined;
+      // Initiate HeyGen Avatar IV video creation with the edited script
+      // Look up Character to get imageKey and voiceId
+      const characterId = videoOutput.characterId;
 
-      if (!voiceId && videoOutput.heygenCharacterId && videoOutput.heygenCharacterType === 'avatar') {
-        try {
-          logger.info('Regenerate: Fetching avatar details for voice ID', {
-            avatarId: videoOutput.heygenCharacterId
-          });
-          const avatarDetails = await heygenService.getAvatarDetails(videoOutput.heygenCharacterId);
-          // HeyGen API returns default_voice_id as a flat string field
-          const fetchedVoiceId = (avatarDetails.data as any)?.default_voice_id;
-          if (fetchedVoiceId) {
-            voiceId = fetchedVoiceId;
-            logger.info('Regenerate: Got voice ID from avatar details', { voiceId });
-
-            // Update the VideoOutput with the fetched voice ID for future reference
-            await prisma.videoOutput.update({
-              where: { id: videoOutput.id },
-              data: { heygenVoiceId: voiceId },
-            });
-          }
-        } catch (error) {
-          logger.warn('Regenerate: Failed to fetch avatar details for voice, will use defaults', {
-            avatarId: videoOutput.heygenCharacterId,
-            error: error instanceof Error ? error.message : 'Unknown error',
-          });
-        }
+      if (!characterId) {
+        throw new Error('No character ID configured for video regeneration');
       }
 
-      logger.info('Regenerate: Calling HeyGen with VideoOutput settings', {
+      const character = await prisma.character.findUnique({
+        where: { id: characterId },
+        include: { voice: true },
+      });
+
+      if (!character) {
+        throw new Error(`Character not found: ${characterId}`);
+      }
+
+      // Get voice ID from Character's linked voice
+      const voiceId = character.voice.elevenlabsVoiceId;
+
+      if (!voiceId) {
+        throw new Error(`No voice ID found for character ${character.name}`);
+      }
+
+      logger.info('Regenerate: Calling HeyGen Avatar IV API', {
         videoOutputId: videoOutput.id,
-        heygenCharacterType: videoOutput.heygenCharacterType ?? 'not set (will use defaults)',
-        heygenCharacterId: videoOutput.heygenCharacterId ?? 'not set (will use defaults)',
-        heygenVoiceId: voiceId ?? 'not set (will use defaults)',
+        characterName: character.name,
+        imageKey: character.heygenImageKey,
+        voiceId,
         scriptLength: videoOutput.script.length,
         title: videoOutput.title || videoOutput.submission.article.title,
       });
+
       const { videoId } = await heygenService.generateVideo({
+        imageKey: character.heygenImageKey,
         script: videoOutput.script,
-        title: videoOutput.title || videoOutput.submission.article.title,
-        characterType: videoOutput.heygenCharacterType as 'talking_photo' | 'avatar' | undefined,
-        characterId: videoOutput.heygenCharacterId || undefined,
         voiceId,
+        title: videoOutput.title || videoOutput.submission.article.title,
       });
 
       logger.info('HeyGen video initiated for regeneration', {

@@ -133,8 +133,9 @@ model Character {
   previewUrl   String? // HeyGen motion preview video URL
 
   // HeyGen identifiers
-  heygenAvatarId      String  // The actual avatar/talking_photo ID for HeyGen API
-  heygenAvatarGroupId String? // The group ID for reference (optional, mainly for avatars)
+  heygenAvatarId      String? // Legacy: avatar/talking_photo ID (optional, kept for reference)
+  heygenAvatarGroupId String? // Legacy: group ID for reference (optional)
+  heygenImageKey      String? // Image key from HeyGen Upload Asset API (required for IV API - populate after migration)
   characterType       String  @default("avatar") // 'avatar' | 'talking_photo'
 
   gender String? // 'male' | 'female'
@@ -150,7 +151,6 @@ model Character {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([organizationId, heygenAvatarId])
   @@index([organizationId])
   @@index([voiceId])
   @@map("characters")
@@ -474,10 +474,13 @@ model VideoOutput {
   wordTimings       Json? // Array of {text, start_time, end_time} for detailed word-level transcript
   bubbles           VideoBubble[]
 
-  // HeyGen character configuration
-  heygenCharacterType String? // 'talking_photo' or 'avatar'
-  heygenCharacterId   String? // talking_photo_id or avatar_id from HeyGen
-  heygenVoiceId       String? // voice_id from HeyGen
+  // Character configuration
+  characterId String? // Reference to our Character model
+
+  // Legacy HeyGen fields (kept for backward compatibility)
+  heygenCharacterType String? // 'talking_photo' or 'avatar' (legacy)
+  heygenCharacterId   String? // talking_photo_id or avatar_id from HeyGen (legacy)
+  heygenVoiceId       String? // voice_id from HeyGen (legacy)
 
   // ElevenLabs audio for video generation
   elevenlabsAudioUrl  String? // CloudFront URL of ElevenLabs-generated audio

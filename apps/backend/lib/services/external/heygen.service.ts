@@ -3,12 +3,12 @@ import { config } from '../../config/constants';
 import { logger } from '@repo/logging';
 
 /**
- * HeyGen Service - Reusable wrapper for HeyGen Video Generation API
+ * HeyGen Service - Reusable wrapper for HeyGen Avatar IV Video Generation API
  *
  * Features:
- * - Generate avatar videos from scripts
- * - Check video generation status
- * - Wait for video completion with polling
+ * - Generate Avatar IV videos using image_key from uploaded photos
+ * - Supports both text-to-speech and pre-generated audio modes
+ * - Advanced AI-powered motion and expressions
  */
 
 export type CharacterType = 'avatar' | 'talking_photo';
@@ -114,142 +114,92 @@ export class HeyGenService {
   }
 
   /**
-   * Generate a video from a script
+   * Generate an Avatar IV video using the new HeyGen IV API
    *
    * @example
-   * // With explicit character type (recommended):
+   * // With audio URL (ElevenLabs workflow - primary use case):
    * const { videoId } = await heygen.generateVideo({
-   *   script: "Hello, welcome to our platform!",
-   *   characterType: "talking_photo",
-   *   characterId: "your-photo-id"
+   *   imageKey: "uploaded-image-key",
+   *   audioUrl: "https://cdn.example.com/audio.mp3",
+   *   voiceId: "voice-id",
+   *   title: "My Video"
    * });
    *
-   * // With explicit character type (avatar):
+   * // With script (HeyGen TTS):
    * const { videoId } = await heygen.generateVideo({
+   *   imageKey: "uploaded-image-key",
    *   script: "Hello, welcome to our platform!",
-   *   characterType: "avatar",
-   *   characterId: "your-avatar-id"
-   * });
-   *
-   * // Legacy support (backward compatible):
-   * const { videoId } = await heygen.generateVideo({
-   *   script: "Hello, welcome to our platform!",
-   *   talkingPhotoId: "your-photo-id"  // Still works
+   *   voiceId: "voice-id",
+   *   title: "My Video"
    * });
    */
   async generateVideo(params: {
+    // Image key from HeyGen Upload Asset API (required for IV API)
+    imageKey: string;
+    // Script for text-to-speech mode
     script?: string;
     // Audio URL for pre-generated audio (uses ElevenLabs)
     audioUrl?: string;
-    // New explicit approach (recommended)
-    characterType?: CharacterType;
-    characterId?: string;
-    // Legacy parameters (backward compatible)
-    avatarId?: string;
-    talkingPhotoId?: string;
-    voiceId?: string;
+    // Voice ID (required)
+    voiceId: string;
+    // Video title
     title?: string;
   }): Promise<{ videoId: string }> {
     try {
+      // Validate: imageKey is required
+      if (!params.imageKey) {
+        throw new Error('imageKey is required for Avatar IV video generation');
+      }
+
       // Validate: either audioUrl or script must be provided
       if (!params.audioUrl && !params.script) {
         throw new Error('Either audioUrl or script must be provided');
       }
 
+      // Validate: voiceId is required
+      if (!params.voiceId) {
+        throw new Error('voiceId is required for Avatar IV video generation');
+      }
+
       // Log input parameters for debugging
-      logger.info('HeyGen generateVideo called', {
-        characterType: params.characterType ?? 'not provided',
-        characterId: params.characterId ?? 'not provided',
-        avatarId: params.avatarId ?? 'not provided',
-        talkingPhotoId: params.talkingPhotoId ?? 'not provided',
-        voiceId: params.voiceId ?? 'not provided',
+      logger.info('HeyGen Avatar IV generateVideo called', {
+        imageKey: params.imageKey,
+        voiceId: params.voiceId,
         audioUrl: params.audioUrl ? 'provided' : 'not provided',
         scriptLength: params.script?.length ?? 0,
         useExternalAudio: !!params.audioUrl,
+        title: params.title,
       });
 
-      const voiceId = params.voiceId || this.defaultVoiceId;
+      // Build request body for Avatar IV API
+      const requestBody: Record<string, unknown> = {
+        image_key: params.imageKey,
+        video_title: params.title || 'Video',
+        voice_id: params.voiceId,
+        video_orientation: 'portrait', // 9:16 aspect ratio
+        fit: 'cover', // Scale to cover entire frame
+      };
 
-      // HeyGen API limits: max 1500 characters per video (only relevant for text mode)
-      let script = params.script;
-      if (script && !params.audioUrl) {
-        const maxLength = 1500;
-        if (script.length > maxLength) {
-          logger.warn('Script exceeded maximum length, truncating', {
-            actualLength: script.length,
-            maxLength,
-          });
-          script = script.substring(0, maxLength);
-        }
-      }
-
-      // Determine character configuration
-      let character: { type: string; talking_photo_id?: string; avatar_id?: string; avatar_style?: string };
-      let configPath: string;
-
-      if (params.characterType && params.characterId) {
-        // New explicit approach
-        configPath = 'EXPLICIT';
-        character = params.characterType === 'talking_photo'
-          ? { type: 'talking_photo', talking_photo_id: params.characterId }
-          : { type: 'avatar', avatar_id: params.characterId, avatar_style: 'normal' };
-      } else if (params.talkingPhotoId || params.avatarId) {
-        // Legacy support: prefer talking photo over avatar
-        configPath = 'LEGACY';
-        character = params.talkingPhotoId
-          ? { type: 'talking_photo', talking_photo_id: params.talkingPhotoId }
-          : { type: 'avatar', avatar_id: params.avatarId!, avatar_style: 'normal' };
+      // Add either audio_url or script based on mode
+      if (params.audioUrl) {
+        requestBody.audio_url = params.audioUrl;
       } else {
-        // Use defaults
-        configPath = 'DEFAULTS';
-        const defaultConfig = this.getDefaultCharacterConfig();
-        logger.info('HeyGen using default config', {
-          defaultCharacterType: this.defaultCharacterType,
-          defaultTalkingPhotoId: this.defaultTalkingPhotoId || '(empty)',
-          defaultAvatarId: this.defaultAvatarId || '(empty)',
-          resolvedConfig: defaultConfig,
-        });
-        character = defaultConfig.type === 'talking_photo'
-          ? { type: 'talking_photo', talking_photo_id: defaultConfig.id }
-          : { type: 'avatar', avatar_id: defaultConfig.id, avatar_style: 'normal' };
+        requestBody.script = params.script;
       }
 
-      // Log the resolved character configuration
-      logger.info('HeyGen character config resolved', {
-        configPath,
-        character,
-        voiceId,
-        useExternalAudio: !!params.audioUrl,
+      logger.info('HeyGen Avatar IV request body', {
+        image_key: params.imageKey,
+        video_title: requestBody.video_title,
+        voice_id: params.voiceId,
+        video_orientation: 'portrait',
+        fit: 'cover',
+        has_audio_url: !!params.audioUrl,
+        has_script: !!params.script,
       });
-
-      // Build voice configuration based on whether external audio is provided
-      const voice = params.audioUrl
-        ? {
-            type: 'audio',
-            audio_url: params.audioUrl,
-          }
-        : {
-            type: 'text',
-            input_text: script,
-            voice_id: voiceId, // Required by HeyGen API for text mode
-          };
 
       const response = await axios.post(
-        `${this.baseUrl}/video/generate`,
-        {
-          video_inputs: [
-            {
-              character,
-              voice,
-            },
-          ],
-          dimension: {
-            width: 720, // Portrait orientation (9:16)
-            height: 1280,
-          },
-          test: false, // Set to false for production videos
-          title: params.title || 'Video',
-        },
+        `${this.baseUrl}/video/av4/generate`,
+        requestBody,
         {
           headers: {
             'X-Api-Key': this.apiKey,
@@ -264,17 +214,18 @@ export class HeyGenService {
         throw new Error('HeyGen did not return a video ID');
       }
 
-      logger.info('HeyGen video creation initiated', {
+      logger.info('HeyGen Avatar IV video creation initiated', {
         videoId,
-        characterType: character.type,
+        imageKey: params.imageKey,
         useExternalAudio: !!params.audioUrl,
-        scriptLength: script?.length ?? 0,
+        scriptLength: params.script?.length ?? 0,
       });
 
       return { videoId };
     } catch (error) {
-      logger.error('HeyGen video generation failed', {
+      logger.error('HeyGen Avatar IV video generation failed', {
         error: error instanceof Error ? error.message : 'Unknown error',
+        imageKey: params.imageKey,
         scriptLength: params.script?.length ?? 0,
         useExternalAudio: !!params.audioUrl,
       });
@@ -339,6 +290,77 @@ export class HeyGenService {
       }
 
       throw new Error(`Failed to fetch avatar details: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Upload an asset (image) to HeyGen to get an image_key for Avatar IV API
+   *
+   * @param fileBuffer - The image file as a Buffer
+   * @param fileName - Original filename (e.g., "avatar.jpg")
+   * @param contentType - MIME type (e.g., "image/jpeg" or "image/png")
+   * @returns The image_key to use with Avatar IV video generation
+   *
+   * @example
+   * const { imageKey } = await heygen.uploadAsset(buffer, "avatar.jpg", "image/jpeg");
+   */
+  async uploadAsset(
+    fileBuffer: Buffer,
+    fileName: string,
+    contentType: string
+  ): Promise<{ imageKey: string }> {
+    try {
+      logger.info('Uploading asset to HeyGen', {
+        fileName,
+        contentType,
+        fileSize: fileBuffer.length,
+      });
+
+      // HeyGen Upload Asset API expects raw file bytes in the body
+      const response = await axios.post(
+        'https://upload.heygen.com/v1/asset',
+        fileBuffer,
+        {
+          headers: {
+            'X-Api-Key': this.apiKey,
+            'Content-Type': contentType,
+          },
+        }
+      );
+
+      // HeyGen returns the asset ID in data.asset_id or data.image_key
+      const imageKey = response.data?.data?.asset_id || response.data?.data?.image_key;
+
+      if (!imageKey) {
+        logger.error('HeyGen upload response missing imageKey', {
+          responseData: response.data,
+        });
+        throw new Error('HeyGen did not return an asset ID/image_key');
+      }
+
+      logger.info('HeyGen asset uploaded successfully', {
+        imageKey,
+        fileName,
+      });
+
+      return { imageKey };
+    } catch (error) {
+      logger.error('HeyGen asset upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        fileName,
+        contentType,
+      });
+
+      if (axios.isAxiosError(error)) {
+        logger.error('HeyGen upload API error details', {
+          statusCode: error.response?.status,
+          data: error.response?.data,
+        });
+        const message = error.response?.data?.error?.message || error.response?.data?.message || error.message;
+        throw new Error(`HeyGen upload failed: ${message}`);
+      }
+
+      throw new Error(`Failed to upload asset to HeyGen: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 }
