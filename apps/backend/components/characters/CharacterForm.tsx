@@ -11,7 +11,7 @@ interface CharacterFormProps {
   orgSlug: string;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
 
 export function CharacterForm({ orgSlug }: CharacterFormProps) {
@@ -45,7 +45,7 @@ export function CharacterForm({ orgSlug }: CharacterFormProps) {
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      toast.error('File too large', 'Maximum file size is 5MB');
+      toast.error('File too large', 'Maximum file size is 20MB');
       return;
     }
 
@@ -72,7 +72,7 @@ export function CharacterForm({ orgSlug }: CharacterFormProps) {
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      toast.error('File too large', 'Maximum file size is 5MB');
+      toast.error('File too large', 'Maximum file size is 20MB');
       return;
     }
 
@@ -208,7 +208,7 @@ export function CharacterForm({ orgSlug }: CharacterFormProps) {
               Drop photo here or click to upload
             </span>
             <span className="text-text-muted text-xs mt-1">
-              JPG or PNG, max 5MB
+              JPG or PNG, max 20MB
             </span>
           </label>
         )}
