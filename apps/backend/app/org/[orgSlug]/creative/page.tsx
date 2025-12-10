@@ -94,7 +94,7 @@ export default function CreativePlatformPage({ params }: PageProps) {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Hero Section */}
-      <div className="mb-10">
+      <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center">
             <Sparkles className="w-5 h-5 text-gold" />
@@ -106,36 +106,6 @@ export default function CreativePlatformPage({ params }: PageProps) {
         <p className="text-text-secondary">
           Create stunning social media videos with AI
         </p>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-        <div className="card p-6">
-          <p className="text-text-muted text-sm mb-2">Total Videos</p>
-          <p className="text-3xl font-bold text-text-primary">{totalVideos}</p>
-        </div>
-
-        <div className="card p-6">
-          <p className="text-text-muted text-sm mb-2">Completed</p>
-          <div className="flex items-baseline gap-3">
-            <p className="text-3xl font-bold text-text-primary">{completedVideos}</p>
-            {totalVideos > 0 && (
-              <span className="text-sm text-text-muted">
-                {Math.round((completedVideos / totalVideos) * 100)}%
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="card p-6">
-          <p className="text-text-muted text-sm mb-2">Processing</p>
-          <div className="flex items-center gap-3">
-            <p className="text-3xl font-bold text-text-primary">{processingVideos}</p>
-            {processingVideos > 0 && (
-              <Loader2 className="w-4 h-4 text-blue-accent animate-spin" />
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Header with CTA */}
