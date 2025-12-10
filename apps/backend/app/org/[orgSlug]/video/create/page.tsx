@@ -17,6 +17,7 @@ import { PreviewPanel } from '@/components/video-create/PreviewPanel';
 import { SuccessModal } from '@/components/video-create/SuccessModal';
 import { useCreateStandaloneVideo } from '@repo/api-client/hooks';
 import { useToast } from '@/components/ui/ToastContainer';
+import { usePlatformMode } from '@/lib/context/platform-mode-context';
 
 type ScriptSource = 'prompt' | 'script_file' | 'content_file' | null;
 
@@ -89,6 +90,7 @@ export default function VideoCreatePage() {
   const router = useRouter();
   const orgSlug = params.orgSlug as string;
   const toast = useToast();
+  const { mode } = usePlatformMode();
 
   const STORAGE_KEY = `video-create-draft-${orgSlug}`;
 
@@ -103,6 +105,9 @@ export default function VideoCreatePage() {
 
   // API mutation
   const createVideoMutation = useCreateStandaloneVideo(orgSlug);
+
+  // Determine back link based on platform mode
+  const backLink = mode === 'creative' ? `/org/${orgSlug}/creative` : `/org/${orgSlug}/dashboard`;
 
   // Load draft from localStorage on mount
   useEffect(() => {
@@ -332,7 +337,7 @@ export default function VideoCreatePage() {
       <header className="sticky top-0 z-50 bg-navy-primary/95 backdrop-blur border-b border-white-10">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link
-            href={`/org/${orgSlug}/dashboard`}
+            href={backLink}
             className="p-2 rounded-lg bg-white-10 hover:bg-white-20 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-text-primary" />
