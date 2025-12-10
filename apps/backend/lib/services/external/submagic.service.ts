@@ -58,7 +58,7 @@ export class SubmagicService {
    *   'My Video',
    *   'HINDI',
    *   {
-   *     templateName: 'Hormozi 1',
+   *     userThemeId: '9a3c5f9f-a496-41d0-a104-b1e6dad84d89',
    *     enableCaptions: true,
    *     magicZooms: true,
    *     magicBrolls: true,
@@ -72,7 +72,7 @@ export class SubmagicService {
     title: string = 'Video Editing Project',
     language?: string,
     options?: {
-      templateName?: string;
+      userThemeId?: string;
       enableCaptions?: boolean;
       magicZooms?: boolean;
       magicBrolls?: boolean;
@@ -92,14 +92,14 @@ export class SubmagicService {
       });
 
       // Apply default values or use provided options
-      const templateName = options?.templateName ?? 'jblk';
+      const userThemeId = options?.userThemeId ?? '9a3c5f9f-a496-41d0-a104-b1e6dad84d89';
       const enableCaptions = options?.enableCaptions ?? true;
       const magicZooms = options?.magicZooms ?? true;
       const magicBrolls = options?.magicBrolls ?? true;
       const magicBrollsPercentage = options?.magicBrollsPercentage ?? 40;
 
       logger.info('Submagic configuration applied', {
-        templateName,
+        userThemeId,
         enableCaptions,
         magicZooms,
         magicBrolls,
@@ -111,12 +111,12 @@ export class SubmagicService {
         title,
         language: languageCode,
         videoUrl,
-        templateName,
+        userThemeId,
         webhookUrl,
         magicZooms,
         magicBrolls,
         magicBrollsPercentage,
-        dictionary: ['Jio BlackRock', 'SEBI'],
+        dictionary: ['Jio BlackRock', 'SEBI', 'wealth check-up', 'wealth check-ups', 'KYC'],
       };
 
       // Log full API request payload

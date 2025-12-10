@@ -15,7 +15,7 @@ const TestSubmagicSchema = z.object({
   videoUrl: z.string().url(),
   organizationId: z.string().uuid(),
   title: z.string().optional().default('Test Video'),
-  templateName: z.string().optional().default('jblk'),
+  userThemeId: z.string().optional().default('9a3c5f9f-a496-41d0-a104-b1e6dad84d89'),
   language: z.string().optional().default('ENGLISH'),
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       videoUrl,
       organizationId,
       title,
-      templateName,
+      userThemeId,
       language,
       enableMagicZooms,
       enableMagicBrolls,
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
     console.log(`\n📝 CAPTION TEMPLATE CONFIG (Test):`);
     console.log(`   - Caption Style ID: ${captionStyleId || 'none'}`);
     console.log(`   - Caption Style Name: ${standaloneVideo.captionStyle?.name || 'none'}`);
-    console.log(`   - Template Name: ${templateName}`);
+    console.log(`   - User Theme ID: ${userThemeId}`);
     console.log(`   - Language: ${language}`);
     console.log(`   - Enable Captions: true`);
     console.log(`   - Magic Zooms: ${enableMagicZooms}`);
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       title,
       language,
       {
-        templateName,
+        userThemeId,
         enableCaptions: true,
         magicZooms: enableMagicZooms,
         magicBrolls: enableMagicBrolls,

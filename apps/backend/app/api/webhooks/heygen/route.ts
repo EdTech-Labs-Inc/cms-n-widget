@@ -40,7 +40,7 @@ async function handleVideoOutputSuccess(video_id: string, url: string): Promise<
 
   // Log caption template configuration
   console.log(`📝 CAPTION TEMPLATE CONFIG (VideoOutput):`);
-  console.log(`   - Template Name: 'jblk' (hardcoded)`);
+  console.log(`   - User Theme ID: '9a3c5f9f-a496-41d0-a104-b1e6dad84d89' (default)`);
   console.log(`   - Enable Captions: true`);
   console.log(`   - Magic Zooms: ${videoOutput.enableMagicZooms}`);
   console.log(`   - Magic B-Rolls: ${videoOutput.enableMagicBrolls} (${videoOutput.magicBrollsPercentage ?? 40}%)`);
@@ -52,7 +52,7 @@ async function handleVideoOutputSuccess(video_id: string, url: string): Promise<
     videoOutput.title || `Video ${video_id}`,
     videoOutput.submission.language,
     {
-      templateName: 'jblk', // Hardcoded brandkit template
+      userThemeId: '9a3c5f9f-a496-41d0-a104-b1e6dad84d89', // Default theme
       enableCaptions: true, // Always enabled
       magicZooms: videoOutput.enableMagicZooms,
       magicBrolls: videoOutput.enableMagicBrolls,
@@ -107,15 +107,15 @@ async function handleStandaloneVideoSuccess(video_id: string, url: string): Prom
   const webhookUrl = `${process.env.SUBMAGIC_WEBHOOK_URL}/api/webhooks/submagic`;
   console.log(`🔔 Submagic webhook URL: ${webhookUrl}`);
 
-  // Get the Submagic template from caption style, or use default
-  const templateName = standaloneVideo.captionStyle?.submagicTemplate || 'jblk';
+  // Get the userThemeId from caption style, or use default
+  const userThemeId = standaloneVideo.captionStyle?.submagicTemplate || '9a3c5f9f-a496-41d0-a104-b1e6dad84d89';
 
   // Log caption template configuration
   console.log(`📝 CAPTION TEMPLATE CONFIG (StandaloneVideo):`);
   console.log(`   - Caption Style ID: ${standaloneVideo.captionStyleId || 'none'}`);
   console.log(`   - Caption Style Name: ${standaloneVideo.captionStyle?.name || 'none'}`);
   console.log(`   - Raw submagicTemplate value: ${standaloneVideo.captionStyle?.submagicTemplate || 'null'}`);
-  console.log(`   - Resolved Template Name: ${templateName} (fallback to 'jblk' if null)`);
+  console.log(`   - Resolved User Theme ID: ${userThemeId} (fallback to default if null)`);
   console.log(`   - Enable Captions: true`);
   console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
   console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
@@ -128,7 +128,7 @@ async function handleStandaloneVideoSuccess(video_id: string, url: string): Prom
     standaloneVideo.title || `Video ${video_id}`,
     'ENGLISH', // StandaloneVideos are English by default
     {
-      templateName,
+      userThemeId,
       enableCaptions: true, // Always enabled
       magicZooms: standaloneVideo.enableMagicZooms,
       magicBrolls: standaloneVideo.enableMagicBrolls,
