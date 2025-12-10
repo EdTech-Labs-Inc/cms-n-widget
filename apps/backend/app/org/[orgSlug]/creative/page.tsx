@@ -100,11 +100,11 @@ export default function CreativePlatformPage({ params }: PageProps) {
             <Sparkles className="w-5 h-5 text-gold" />
           </div>
           <h1 className="text-3xl font-bold text-text-primary">
-            Creative Platform
+            Marketing
           </h1>
         </div>
         <p className="text-text-secondary">
-          Create stunning social media videos with AI
+          Create high-quality social media videos with AI
         </p>
       </div>
 

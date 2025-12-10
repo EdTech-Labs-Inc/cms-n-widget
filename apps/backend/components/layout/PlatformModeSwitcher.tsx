@@ -7,13 +7,13 @@ import { usePlatformMode, PlatformMode } from '@/lib/context/platform-mode-conte
 const MODES = [
   {
     value: 'learning' as PlatformMode,
-    label: 'Learning Platform',
+    label: 'Education',
     icon: GraduationCap,
-    description: 'Educational content creation',
+    description: 'Learning hub content',
   },
   {
     value: 'creative' as PlatformMode,
-    label: 'Creative Platform',
+    label: 'Marketing',
     icon: Sparkles,
     description: 'Social media videos',
   },
