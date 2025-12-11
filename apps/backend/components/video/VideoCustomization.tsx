@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useCharacters } from '@/lib/api/hooks';
-import { Loader2, ChevronLeft, ChevronRight, Sparkles, ArrowLeft } from 'lucide-react';
+import { useCharacters, useCaptionStyles } from '@/lib/api/hooks';
+import { Loader2, ChevronLeft, ChevronRight, Sparkles, ArrowLeft, ImageIcon, Check } from 'lucide-react';
+import type { CaptionStyle } from '@repo/api-client';
 
 interface CharacterGroup {
   groupId: string;
@@ -122,6 +123,7 @@ function AvatarCard({
 
 export interface VideoCustomizationConfig {
   characterId: string; // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
+  captionStyleId: string; // Our DB CaptionStyle ID - submagicTemplate is looked up from CaptionStyle
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
@@ -148,7 +150,15 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
     isError: charactersError,
   } = useCharacters(orgSlug);
 
+  // Fetch caption styles from database
+  const {
+    data: captionStyles,
+    isLoading: captionStylesLoading,
+    isError: captionStylesError,
+  } = useCaptionStyles(orgSlug);
+
   const allCharacters = characters || [];
+  const allCaptionStyles = captionStyles || [];
 
   // Group characters by heygenAvatarGroupId
   const characterGroups = useMemo(() => {
@@ -227,6 +237,10 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
 
   const handleBubblesToggle = () => {
     onChange({ ...value, generateBubbles: !value.generateBubbles });
+  };
+
+  const handleCaptionStyleChange = (captionStyleId: string) => {
+    onChange({ ...value, captionStyleId });
   };
 
   const handlePreviousPage = () => {
@@ -354,6 +368,81 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
               Showing {paginatedItems.length} of {currentItems.length} {selectedGroupId ? 'looks' : 'characters'}
             </div>
           </>
+        )}
+      </div>
+
+      {/* Caption Style Selection */}
+      <div>
+        <label className="block text-text-secondary text-sm font-medium mb-3">
+          Caption Style
+        </label>
+
+        {captionStylesLoading ? (
+          <div className="flex items-center justify-center p-8 bg-white-10 rounded-xl">
+            <Loader2 className="w-6 h-6 animate-spin text-text-muted" />
+            <span className="ml-2 text-text-muted">Loading caption styles...</span>
+          </div>
+        ) : captionStylesError ? (
+          <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+            Failed to load caption styles. Please try again later.
+          </div>
+        ) : allCaptionStyles.length === 0 ? (
+          <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm">
+            No caption styles available. Please contact an administrator to add caption styles for your organization.
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {allCaptionStyles.map((style) => (
+              <button
+                key={style.id}
+                type="button"
+                onClick={() => handleCaptionStyleChange(style.id)}
+                disabled={disabled}
+                className={`relative w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-200 border-2 ${
+                  value.captionStyleId === style.id
+                    ? 'border-gold ring-2 ring-gold/30'
+                    : 'border-white-20 hover:border-white-40'
+                } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {/* Preview Image */}
+                <div className="aspect-video bg-navy-dark">
+                  {style.previewImageUrl ? (
+                    <img
+                      src={style.previewImageUrl}
+                      alt={style.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white-10">
+                      <ImageIcon className="w-8 h-8 text-text-muted" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="p-3 bg-white-5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-text-primary text-sm truncate">
+                      {style.name}
+                    </span>
+                    {value.captionStyleId === style.id && (
+                      <div className="w-5 h-5 rounded-full bg-gold flex items-center justify-center">
+                        <Check className="w-3 h-3 text-navy-dark" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Logo indicator */}
+                  {style.logoUrl && (
+                    <div className="mt-1 flex items-center gap-1 text-xs text-text-muted">
+                      <ImageIcon className="w-3 h-3" />
+                      <span>Includes logo overlay</span>
+                    </div>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

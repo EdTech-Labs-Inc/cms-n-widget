@@ -7,6 +7,7 @@ import { z } from 'zod';
 
 const VideoCustomizationSchema = z.object({
   characterId: z.string(), // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
+  captionStyleId: z.string(), // Our DB CaptionStyle ID - submagicTemplate is looked up from CaptionStyle
   enableMagicZooms: z.boolean().optional().default(true),
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
@@ -135,6 +136,21 @@ export async function POST(
       );
     }
 
+    // Validate caption style belongs to this organization
+    const captionStyle = await prisma.captionStyle.findFirst({
+      where: {
+        id: videoCustomization.captionStyleId,
+        organizationId: org.id,
+      },
+    });
+
+    if (!captionStyle) {
+      return NextResponse.json(
+        { success: false, error: 'Caption style not found in this organization' },
+        { status: 404 }
+      );
+    }
+
     // Update VideoOutput with customization settings and set status to PROCESSING
     await prisma.videoOutput.update({
       where: { id: params.videoId },
@@ -142,7 +158,7 @@ export async function POST(
         status: 'PROCESSING',
         characterId: videoCustomization.characterId, // Store internal Character ID
         enableCaptions: true, // Always enabled
-        submagicTemplate: 'jblk', // Hardcoded brandkit template
+        submagicTemplate: captionStyle.submagicTemplate, // Use caption style's template
         enableMagicZooms: videoCustomization.enableMagicZooms,
         enableMagicBrolls: videoCustomization.enableMagicBrolls,
         magicBrollsPercentage: videoCustomization.magicBrollsPercentage,

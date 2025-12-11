@@ -586,7 +586,7 @@ export const SubmissionsController = {
   },
 
   // Media Regeneration methods
-  async regenerateVideoMedia(submissionId: string, videoId: string, videoCustomization?: any) {
+  async regenerateVideoMedia(submissionId: string, videoId: string, organizationId?: string, videoCustomization?: any) {
     const video = await prisma.videoOutput.findFirst({
       where: { id: videoId, submissionId },
     });
@@ -599,11 +599,25 @@ export const SubmissionsController = {
 
     // Update video customization settings if provided
     if (videoCustomization) {
+      // Look up caption style if captionStyleId is provided
+      let submagicTemplate: string | null = null;
+      if (videoCustomization.captionStyleId && organizationId) {
+        const captionStyle = await prisma.captionStyle.findFirst({
+          where: {
+            id: videoCustomization.captionStyleId,
+            organizationId: organizationId,
+          },
+        });
+        if (captionStyle) {
+          submagicTemplate = captionStyle.submagicTemplate;
+        }
+      }
+
       await prisma.videoOutput.update({
         where: { id: videoId },
         data: {
           characterId: videoCustomization.characterId || null,
-          submagicTemplate: videoCustomization.captionTemplate || null,
+          submagicTemplate: submagicTemplate, // Use looked-up template from caption style
           enableCaptions: videoCustomization.enableCaptions ?? true,
           enableMagicZooms: videoCustomization.enableMagicZooms ?? true,
           enableMagicBrolls: videoCustomization.enableMagicBrolls ?? true,

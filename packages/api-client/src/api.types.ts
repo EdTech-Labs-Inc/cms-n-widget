@@ -378,6 +378,7 @@ export interface CreateArticleRequest {
 
 export interface VideoCustomizationConfig {
   characterId: string; // Our DB Character ID - heygenImageKey and voiceId are looked up from Character
+  captionStyleId: string; // Our DB CaptionStyle ID - submagicTemplate is looked up from CaptionStyle
   enableMagicZooms: boolean;
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;

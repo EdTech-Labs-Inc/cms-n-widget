@@ -128,6 +128,7 @@ export default function OrgVideoEditPage() {
   const [editableBubbles, setEditableBubbles] = useState<VideoBubble[]>([]);
   const [videoCustomization, setVideoCustomization] = useState<VideoCustomizationConfig>({
     characterId: '',
+    captionStyleId: '',
     enableMagicZooms: true,
     enableMagicBrolls: true,
     magicBrollsPercentage: 40,
@@ -157,6 +158,7 @@ export default function OrgVideoEditPage() {
     if (video) {
       setVideoCustomization({
         characterId: (video as any).characterId || '',
+        captionStyleId: '', // CaptionStyleId is not stored on VideoOutput, user must select
         enableMagicZooms: (video as any).enableMagicZooms ?? true,
         enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
         magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
@@ -352,12 +354,18 @@ export default function OrgVideoEditPage() {
       return;
     }
 
+    if (!videoCustomization.captionStyleId) {
+      toast.error('Select a caption style', 'Please select a caption style before generating the video.');
+      return;
+    }
+
     generateVideoMedia.mutate(
       {
         submissionId,
         videoId,
         videoCustomization: {
           characterId: videoCustomization.characterId,
+          captionStyleId: videoCustomization.captionStyleId,
           enableMagicZooms: videoCustomization.enableMagicZooms,
           enableMagicBrolls: videoCustomization.enableMagicBrolls,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
@@ -508,7 +516,7 @@ export default function OrgVideoEditPage() {
             <div className="mt-6 pt-6 border-t border-white-10">
               <button
                 onClick={handleGenerateVideo}
-                disabled={!videoCustomization.characterId || generateVideoMedia.isPending}
+                disabled={!videoCustomization.characterId || !videoCustomization.captionStyleId || generateVideoMedia.isPending}
                 className="w-full py-3 px-4 bg-gradient-purple text-white font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {generateVideoMedia.isPending ? (
@@ -520,9 +528,9 @@ export default function OrgVideoEditPage() {
                   'Generate Video'
                 )}
               </button>
-              {!videoCustomization.characterId && (
+              {(!videoCustomization.characterId || !videoCustomization.captionStyleId) && (
                 <p className="text-amber-500 text-sm mt-2 text-center">
-                  Please select a character above to generate the video.
+                  Please select a character and caption style above to generate the video.
                 </p>
               )}
             </div>

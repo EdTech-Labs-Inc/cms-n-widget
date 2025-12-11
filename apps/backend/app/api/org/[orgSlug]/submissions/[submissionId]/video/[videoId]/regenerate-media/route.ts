@@ -51,10 +51,16 @@ export async function POST(
       );
     }
 
+    // Parse request body for optional video customization
+    const body = await request.json().catch(() => ({}));
+    const videoCustomization = body.videoCustomization;
+
     // Regenerate video media
     const result = await SubmissionsController.regenerateVideoMedia(
       params.submissionId,
-      params.videoId
+      params.videoId,
+      org.id,
+      videoCustomization
     );
 
     return NextResponse.json({
