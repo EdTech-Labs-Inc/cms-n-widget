@@ -478,6 +478,10 @@ export interface StandaloneVideo {
   id: string;
   organizationId: string;
   status: OutputStatus;
+  // Multi-language support
+  language: Language;
+  batchId?: string | null;
+  // Content
   title?: string | null;
   script: string;
   sourceType: 'prompt' | 'script_file' | 'content_file';

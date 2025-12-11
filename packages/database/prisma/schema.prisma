@@ -237,6 +237,10 @@ model StandaloneVideo {
 
   status OutputStatus @default(PENDING)
 
+  // Multi-language support
+  language Language @default(ENGLISH)
+  batchId  String?  // Groups videos created together across languages
+
   // Script & Content
   title      String?
   script     String  @db.Text
@@ -288,6 +292,7 @@ model StandaloneVideo {
   @@index([organizationId])
   @@index([heygenVideoId])
   @@index([submagicProjectId])
+  @@index([batchId])
   @@map("standalone_videos")
 }
 

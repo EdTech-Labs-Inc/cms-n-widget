@@ -121,12 +121,11 @@ async function handleStandaloneVideoSuccess(video_id: string, url: string): Prom
   console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
 
   // Upload to Submagic for AI editing (captions, zooms, B-rolls)
-  // StandaloneVideos default to English for now
   const { projectId } = await submagicService.uploadVideoForEditing(
     url,
     webhookUrl,
     standaloneVideo.title || `Video ${video_id}`,
-    'ENGLISH', // StandaloneVideos are English by default
+    standaloneVideo.language || 'ENGLISH', // Use video's language
     {
       userThemeId,
       enableCaptions: true, // Always enabled

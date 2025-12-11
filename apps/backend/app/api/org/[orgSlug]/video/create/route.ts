@@ -3,9 +3,25 @@ import { prisma } from '@/lib/config/database';
 import { createClient } from '@/lib/supabase/server';
 import { getOrgFromSlug, validateOrgAccess } from '@/lib/context/org-context';
 import { queueService } from '@/lib/services/core/queue.service';
+import { translationService } from '@/lib/services/media/translation.service';
 import { z } from 'zod';
+import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@repo/logging';
+
+const LanguageEnum = z.enum(['ENGLISH', 'MARATHI', 'HINDI', 'BENGALI', 'GUJARATI']);
+type Language = z.infer<typeof LanguageEnum>;
+
+const TranslationOverrideSchema = z.object({
+  script: z.string(),
+  title: z.string(),
+});
 
 const CreateVideoSchema = z.object({
+  // Multi-language support
+  title: z.string().min(1, 'Title is required'),
+  languages: z.array(LanguageEnum).min(1, 'At least one language is required'),
+  translations: z.record(z.string(), TranslationOverrideSchema).optional(), // Per-language overrides
+  // Content
   script: z.string().min(1, 'Script is required'),
   sourceType: z.enum(['prompt', 'script_file', 'content_file']),
   characterId: z.string().uuid('Invalid character ID'),
@@ -154,43 +170,100 @@ export async function POST(
       }
     }
 
-    // Create the standalone video record
-    // Use character data as fallback for legacy fields
-    const standaloneVideo = await prisma.standaloneVideo.create({
-      data: {
-        organizationId: org.id,
-        status: 'PENDING',
-        script: data.script,
-        sourceType: data.sourceType,
-        characterId: data.characterId,
-        heygenAvatarId: data.heygenAvatarId || character.heygenAvatarId || '',
-        heygenCharacterType: data.heygenCharacterType || character.characterType || 'avatar',
-        voiceId: data.voiceId,
-        captionStyleId: data.captionStyleId,
-        enableMagicZooms: data.enableMagicZooms,
-        enableMagicBrolls: data.enableMagicBrolls,
-        magicBrollsPercentage: data.magicBrollsPercentage,
-        backgroundMusicId: data.backgroundMusicId || null,
-        backgroundMusicVolume: data.backgroundMusicVolume,
-        startBumperId: data.startBumperId || null,
-        startBumperDuration: data.startBumperDuration || null,
-        endBumperId: data.endBumperId || null,
-        endBumperDuration: data.endBumperDuration || null,
-      },
-    });
+    // Generate batchId if multiple languages
+    const batchId = data.languages.length > 1 ? uuidv4() : null;
 
-    // Queue the generation job
-    const job = await queueService.addStandaloneVideoGenerationJob({
-      standaloneVideoId: standaloneVideo.id,
+    logger.info('Creating standalone videos', {
+      languages: data.languages,
+      batchId,
       organizationId: org.id,
     });
+
+    // Create videos for each language
+    const createdVideos: Array<{
+      id: string;
+      language: Language;
+      status: string;
+      jobId: string;
+    }> = [];
+
+    for (const language of data.languages) {
+      let videoScript = data.script;
+      let videoTitle = data.title;
+
+      // For non-English languages, get translation
+      if (language !== 'ENGLISH') {
+        // Check if user provided an override
+        const override = data.translations?.[language];
+        if (override) {
+          videoScript = override.script;
+          videoTitle = override.title;
+          logger.info('Using user-provided translation', { language });
+        } else {
+          // Translate using the service
+          logger.info('Translating content', { language });
+          const translated = await translationService.translateScriptAndTitle(
+            data.script,
+            data.title,
+            language
+          );
+          videoScript = translated.translatedScript;
+          videoTitle = translated.translatedTitle;
+        }
+      }
+
+      // Create the standalone video record
+      const standaloneVideo = await prisma.standaloneVideo.create({
+        data: {
+          organizationId: org.id,
+          status: 'PENDING',
+          language,
+          batchId,
+          title: videoTitle,
+          script: videoScript,
+          sourceType: data.sourceType,
+          characterId: data.characterId,
+          heygenAvatarId: data.heygenAvatarId || character.heygenAvatarId || '',
+          heygenCharacterType: data.heygenCharacterType || character.characterType || 'avatar',
+          voiceId: data.voiceId,
+          captionStyleId: data.captionStyleId,
+          enableMagicZooms: data.enableMagicZooms,
+          enableMagicBrolls: data.enableMagicBrolls,
+          magicBrollsPercentage: data.magicBrollsPercentage,
+          backgroundMusicId: data.backgroundMusicId || null,
+          backgroundMusicVolume: data.backgroundMusicVolume,
+          startBumperId: data.startBumperId || null,
+          startBumperDuration: data.startBumperDuration || null,
+          endBumperId: data.endBumperId || null,
+          endBumperDuration: data.endBumperDuration || null,
+        },
+      });
+
+      // Queue the generation job
+      const job = await queueService.addStandaloneVideoGenerationJob({
+        standaloneVideoId: standaloneVideo.id,
+        organizationId: org.id,
+      });
+
+      createdVideos.push({
+        id: standaloneVideo.id,
+        language,
+        status: standaloneVideo.status,
+        jobId: job.id ?? standaloneVideo.id,
+      });
+
+      logger.info('Created standalone video', {
+        id: standaloneVideo.id,
+        language,
+        batchId,
+      });
+    }
 
     return NextResponse.json({
       success: true,
       data: {
-        id: standaloneVideo.id,
-        status: standaloneVideo.status,
-        jobId: job.id,
+        videos: createdVideos,
+        batchId,
       },
     }, { status: 201 });
   } catch (error) {
