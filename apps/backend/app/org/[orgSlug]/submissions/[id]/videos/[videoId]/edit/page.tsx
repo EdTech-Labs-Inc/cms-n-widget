@@ -489,7 +489,6 @@ export default function OrgVideoEditPage() {
               maxLength={1400}
               label="Script"
               placeholder="Enter video script (max 1400 characters for HeyGen)..."
-              rows={10}
               disabled={isProcessing}
             />
             {!isProcessing && (

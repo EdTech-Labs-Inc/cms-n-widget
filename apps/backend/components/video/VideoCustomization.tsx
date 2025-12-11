@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useCharacters, useCaptionStyles, useBackgroundMusic, useVideoBumpers } from '@/lib/api/hooks';
-import { Loader2, ChevronLeft, ChevronRight, Sparkles, ArrowLeft, ImageIcon, Check, Play, Pause, Volume2, VolumeX, Music, Film, X } from 'lucide-react';
+import { Loader2, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Sparkles, ArrowLeft, ImageIcon, Check, Play, Pause, Volume2, VolumeX, Music, Film, X } from 'lucide-react';
 import type { CaptionStyle, BackgroundMusic, VideoBumper } from '@repo/api-client';
 
 interface CharacterGroup {
@@ -350,6 +350,7 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
   const [playingMusicId, setPlayingMusicId] = useState<string | null>(null);
+  const [isMusicExpanded, setIsMusicExpanded] = useState(false);
 
   // Fetch characters from database
   const {
@@ -808,49 +809,129 @@ export function VideoCustomization({ orgSlug, value, onChange, disabled = false 
           </div>
         ) : (
           <div className="space-y-2">
-            {/* No Music Option */}
-            <button
-              type="button"
-              onClick={() => handleMusicSelect(null)}
-              disabled={disabled}
-              className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 border-2 ${
-                !value.backgroundMusicId
-                  ? 'border-gold bg-gold/10'
-                  : 'border-white-20 bg-white-5 hover:border-white-40 hover:bg-white-10'
-              } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-            >
-              <div className="w-10 h-10 rounded-full bg-white-20 flex items-center justify-center shrink-0">
-                <VolumeX className="w-5 h-5 text-text-muted" />
-              </div>
-              <div className="flex-1 text-left">
-                <div className="font-medium text-text-primary">No Background Music</div>
-                <div className="text-xs text-text-muted">Video will only have speech audio</div>
-              </div>
-              {!value.backgroundMusicId && (
-                <div className="w-6 h-6 rounded-full bg-gold flex items-center justify-center shrink-0">
-                  <Check className="w-4 h-4 text-navy-dark" />
-                </div>
-              )}
-            </button>
-
-            {/* Music Options */}
-            {musicList.length === 0 ? (
-              <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm flex items-center gap-2">
-                <Music className="w-4 h-4" />
-                <span>No background music tracks available yet.</span>
-              </div>
+            {/* Collapsed View - Shows selected option with expand button */}
+            {!isMusicExpanded ? (
+              <button
+                type="button"
+                onClick={() => setIsMusicExpanded(true)}
+                disabled={disabled}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 border-2 border-white-20 bg-white-5 hover:border-white-40 hover:bg-white-10 ${
+                  disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                }`}
+              >
+                {value.backgroundMusicId ? (
+                  <>
+                    {/* Show selected music */}
+                    {(() => {
+                      const selectedMusic = musicList.find(m => m.id === value.backgroundMusicId);
+                      return (
+                        <>
+                          <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
+                            <Music className="w-5 h-5 text-gold" />
+                          </div>
+                          <div className="flex-1 text-left min-w-0">
+                            <div className="font-medium text-text-primary truncate">
+                              {selectedMusic?.name || 'Selected Music'}
+                            </div>
+                            <div className="text-xs text-text-muted">
+                              Click to change selection
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </>
+                ) : (
+                  <>
+                    {/* Show no music selected */}
+                    <div className="w-10 h-10 rounded-full bg-white-20 flex items-center justify-center shrink-0">
+                      <VolumeX className="w-5 h-5 text-text-muted" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <div className="font-medium text-text-primary">No Background Music</div>
+                      <div className="text-xs text-text-muted">Click to add music</div>
+                    </div>
+                  </>
+                )}
+                <ChevronDown className="w-5 h-5 text-text-muted shrink-0" />
+              </button>
             ) : (
-              musicList.map((music) => (
-                <MusicCard
-                  key={music.id}
-                  music={music}
-                  selected={value.backgroundMusicId === music.id}
-                  onClick={() => handleMusicSelect(music.id)}
-                  disabled={disabled}
-                  isPlaying={playingMusicId === music.id}
-                  onPlayChange={(playing) => setPlayingMusicId(playing ? music.id : null)}
-                />
-              ))
+              <>
+                {/* Expanded View - Shows all options */}
+                <div className="border-2 border-white-20 rounded-xl overflow-hidden">
+                  {/* Collapse header */}
+                  <button
+                    type="button"
+                    onClick={() => setIsMusicExpanded(false)}
+                    className="w-full flex items-center justify-between p-3 bg-white-10 hover:bg-white-20 transition-colors"
+                  >
+                    <span className="text-sm font-medium text-text-secondary">Select Background Music</span>
+                    <ChevronUp className="w-5 h-5 text-text-muted" />
+                  </button>
+
+                  <div className="p-3 space-y-2">
+                    {/* No Music Option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleMusicSelect(null);
+                        setIsMusicExpanded(false);
+                      }}
+                      disabled={disabled}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 border-2 ${
+                        !value.backgroundMusicId
+                          ? 'border-gold bg-gold/10'
+                          : 'border-white-20 bg-white-5 hover:border-white-40 hover:bg-white-10'
+                      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-white-20 flex items-center justify-center shrink-0">
+                        <VolumeX className="w-5 h-5 text-text-muted" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <div className="font-medium text-text-primary">No Background Music</div>
+                        <div className="text-xs text-text-muted">Video will only have speech audio</div>
+                      </div>
+                      {!value.backgroundMusicId && (
+                        <div className="w-6 h-6 rounded-full bg-gold flex items-center justify-center shrink-0">
+                          <Check className="w-4 h-4 text-navy-dark" />
+                        </div>
+                      )}
+                    </button>
+
+                    {/* Music Options */}
+                    {musicList.length === 0 ? (
+                      <div className="p-4 bg-white-10 rounded-xl text-text-muted text-sm flex items-center gap-2">
+                        <Music className="w-4 h-4" />
+                        <span>No background music tracks available yet.</span>
+                      </div>
+                    ) : (
+                      musicList.map((music) => (
+                        <div
+                          key={music.id}
+                          onClick={() => {
+                            if (!disabled) {
+                              handleMusicSelect(music.id);
+                              setIsMusicExpanded(false);
+                            }
+                          }}
+                        >
+                          <MusicCard
+                            music={music}
+                            selected={value.backgroundMusicId === music.id}
+                            onClick={() => {
+                              handleMusicSelect(music.id);
+                              setIsMusicExpanded(false);
+                            }}
+                            disabled={disabled}
+                            isPlaying={playingMusicId === music.id}
+                            onPlayChange={(playing) => setPlayingMusicId(playing ? music.id : null)}
+                          />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </>
             )}
 
             {/* Volume Slider (only shown when music is selected) */}

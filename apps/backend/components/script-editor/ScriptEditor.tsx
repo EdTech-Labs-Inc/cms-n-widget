@@ -11,7 +11,6 @@ interface ScriptEditorProps {
   maxLength?: number;
   label?: string;
   placeholder?: string;
-  rows?: number;
   disabled?: boolean;
 }
 
@@ -23,7 +22,6 @@ export function ScriptEditor({
   maxLength,
   label = 'Script',
   placeholder = 'Enter your script here...',
-  rows = 8,
   disabled = false,
 }: ScriptEditorProps) {
   const [script, setScript] = useState(initialScript);
@@ -56,32 +54,33 @@ export function ScriptEditor({
   const characterLimit = maxLength || Infinity;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-text-primary">{label}</label>
-        <div className="flex items-center gap-2">
-          {maxLength && (
-            <span
-              className={`text-xs ${
-                isOverLimit ? 'text-error font-semibold' : 'text-text-muted'
-              }`}
-            >
-              {characterCount} / {characterLimit}
-            </span>
-          )}
-        </div>
+        <label className="text-base font-semibold text-text-primary">{label}</label>
+        {maxLength && (
+          <span
+            className={`text-sm px-3 py-1 rounded-full ${
+              isOverLimit
+                ? 'bg-error/20 text-error font-semibold'
+                : 'bg-white-10 text-text-secondary'
+            }`}
+          >
+            {characterCount.toLocaleString()} / {characterLimit.toLocaleString()}
+          </span>
+        )}
       </div>
 
       <textarea
         value={script}
         onChange={(e) => handleScriptChange(e.target.value)}
         placeholder={placeholder}
-        rows={rows}
-        className={`w-full p-3 bg-navy-dark border ${
-          isOverLimit ? 'border-error' : 'border-white-20'
-        } rounded-lg text-text-primary focus:outline-none focus:ring-2 ${
-          isOverLimit ? 'focus:ring-error/50' : 'focus:ring-blue-accent/50'
-        } font-mono text-sm leading-relaxed resize-y disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`w-full p-5 h-[65vh] bg-navy-secondary border-2 ${
+          isOverLimit ? 'border-error' : 'border-white-30'
+        } rounded-xl text-text-primary focus:outline-none focus:ring-2 ${
+          isOverLimit
+            ? 'focus:ring-error/50 focus:border-error'
+            : 'focus:ring-purple-glow focus:border-purple-accent focus:shadow-glow-purple'
+        } font-mono text-base leading-loose tracking-wide resize-none overflow-y-auto transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-text-dim`}
         disabled={isSaving || disabled}
       />
 
