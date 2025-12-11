@@ -54,6 +54,10 @@ export async function POST(
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      logger.warn('Video create auth failed', {
+        organizationSlug: params.orgSlug,
+        authError: authError?.message,
+      });
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -62,6 +66,10 @@ export async function POST(
 
     const hasAccess = await validateOrgAccess(user.id, params.orgSlug);
     if (!hasAccess) {
+      logger.warn('Video create access denied', {
+        organizationSlug: params.orgSlug,
+        userId: user.id,
+      });
       return NextResponse.json(
         { success: false, error: 'Access denied to this organization' },
         { status: 403 }
@@ -70,18 +78,63 @@ export async function POST(
 
     const org = await getOrgFromSlug(params.orgSlug);
     if (!org) {
+      logger.warn('Video create org not found', {
+        organizationSlug: params.orgSlug,
+      });
       return NextResponse.json(
         { success: false, error: 'Organization not found' },
         { status: 404 }
       );
     }
 
-    const body = await request.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch (jsonError) {
+      logger.error('Video create invalid JSON body', {
+        organizationSlug: params.orgSlug,
+        error: jsonError instanceof Error ? jsonError.message : 'Unknown JSON parse error',
+      });
+      return NextResponse.json(
+        { success: false, error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
+    }
+
+    // Debug logging to diagnose validation failures
+    const languages = body.languages as unknown[] | undefined;
+    logger.info('Video create request received', {
+      organizationSlug: params.orgSlug,
+      hasTitle: !!body.title,
+      hasLanguages: !!languages,
+      languagesCount: languages?.length,
+      hasScript: !!body.script,
+      sourceType: body.sourceType,
+      characterId: body.characterId,
+      heygenAvatarId: body.heygenAvatarId,
+      heygenCharacterType: body.heygenCharacterType,
+      voiceId: body.voiceId,
+      captionStyleId: body.captionStyleId,
+    });
+
     const validationResult = CreateVideoSchema.safeParse(body);
 
     if (!validationResult.success) {
+      logger.warn('Video create validation failed', {
+        organizationSlug: params.orgSlug,
+        errors: validationResult.error.errors,
+      });
       return NextResponse.json(
-        { success: false, error: validationResult.error.errors[0].message },
+        {
+          success: false,
+          error: validationResult.error.errors[0].message,
+          // Include all validation errors for debugging
+          validationErrors: validationResult.error.errors.map(e => ({
+            path: e.path.join('.'),
+            message: e.message,
+            code: e.code,
+          })),
+        },
         { status: 400 }
       );
     }
