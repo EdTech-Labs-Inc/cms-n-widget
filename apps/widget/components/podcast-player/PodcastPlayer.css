@@ -5,7 +5,7 @@
 }
 
 .podcast-player.active {
-  background: rgba(217, 156, 87, 0.08);
+  background: rgba(206, 161, 90, 0.08);
   margin: 0 -24px;
   padding: 0 24px;
   border-radius: 8px;
@@ -32,12 +32,12 @@
 .podcast-player-thumbnail {
   width: 48px;
   height: 48px;
-  background: rgba(217, 156, 87, 0.15);
+  background: rgba(206, 161, 90, 0.15);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(217, 156, 87, 0.3);
+  border: 1px solid rgba(206, 161, 90, 0.3);
   overflow: hidden;
 }
 
@@ -98,7 +98,7 @@
 
 .podcast-progress-fill {
   height: 100%;
-  background: #D99C57;
+  background: #CEA15A;
   border-radius: 2px;
   transition: width 0.1s linear;
 }
@@ -107,7 +107,7 @@
 .podcast-play-button {
   width: 40px;
   height: 40px;
-  background: #D99C57;
+  background: #CEA15A;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -116,13 +116,13 @@
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(217, 156, 87, 0.4);
+  box-shadow: 0 2px 8px rgba(206, 161, 90, 0.4);
   position: relative;
 }
 
 .podcast-play-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(217, 156, 87, 0.6);
+  box-shadow: 0 4px 12px rgba(206, 161, 90, 0.6);
 }
 
 .podcast-play-button:active {

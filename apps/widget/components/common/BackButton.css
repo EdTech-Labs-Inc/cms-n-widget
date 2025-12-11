@@ -1,7 +1,7 @@
 /* Base styles for BackButton - matches interactive podcast style */
 .back-button {
-  background: rgba(217, 156, 87, 0.1);
-  border: 1px solid rgba(217, 156, 87, 0.2);
+  background: rgba(206, 161, 90, 0.1);
+  border: 1px solid rgba(206, 161, 90, 0.2);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
 }
 
 .back-button:hover {
-  background: rgba(217, 156, 87, 0.2);
+  background: rgba(206, 161, 90, 0.2);
   border-color: var(--gold-secondary);
   transform: translateY(-1px);
 }

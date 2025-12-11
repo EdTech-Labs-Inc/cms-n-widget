@@ -1,10 +1,18 @@
 /* Import shared utilities */
 @import './utilities.css';
 
+/* JioType Variable Font */
+@font-face {
+  font-family: 'JioType';
+  src: url('/assets/JioType-Variable.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
-  /* Professional Gamified Font System */
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* JioBlackRock Font System */
+  --font-primary: 'JioType', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'JioType', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
 
   font-family: var(--font-primary);
@@ -12,18 +20,38 @@
   font-weight: 400;
 
   /* New Brand Colors */
-  --navy-primary: #000420;
-  --gold-secondary: #D99C57;
-  --blue-accent: #2884C8;
-  --purple-accent: #6402B0;
+  --navy-primary: #000632;
+  --gold-secondary: #CEA15A;
+  --blue-accent: #026B9A;
+  --purple-accent: #5D00B5;
 
   /* Color Variations */
-  --navy-light: rgba(0, 6, 49, 0.8);
-  --navy-lighter: rgba(0, 6, 49, 0.6);
-  --gold-light: rgba(217, 156, 87, 0.15);
-  --gold-lighter: rgba(217, 156, 87, 0.08);
-  --blue-light: rgba(40, 132, 200, 0.15);
-  --purple-light: rgba(100, 2, 176, 0.15);
+  --navy-light: rgba(0, 6, 50, 0.8);
+  --navy-lighter: rgba(0, 6, 50, 0.6);
+  --gold-light: rgba(206, 161, 90, 0.15);
+  --gold-lighter: rgba(206, 161, 90, 0.08);
+  --blue-light: rgba(2, 107, 154, 0.15);
+  --purple-light: rgba(93, 0, 181, 0.15);
+
+  /* Gold color alpha variants for consistency */
+  --gold-rgb: 206, 161, 90;
+  --gold-10: rgba(206, 161, 90, 0.1);
+  --gold-12: rgba(206, 161, 90, 0.12);
+  --gold-15: rgba(206, 161, 90, 0.15);
+  --gold-20: rgba(206, 161, 90, 0.2);
+  --gold-25: rgba(206, 161, 90, 0.25);
+  --gold-30: rgba(206, 161, 90, 0.3);
+  --gold-40: rgba(206, 161, 90, 0.4);
+  --gold-50: rgba(206, 161, 90, 0.5);
+  --gold-60: rgba(206, 161, 90, 0.6);
+  --gold-80: rgba(206, 161, 90, 0.8);
+  --gold-90: rgba(206, 161, 90, 0.9);
+  --gold-95: rgba(206, 161, 90, 0.95);
+
+  /* Blue color alpha variants */
+  --blue-rgb: 2, 107, 154;
+  --blue-10: rgba(2, 107, 154, 0.1);
+  --blue-15: rgba(2, 107, 154, 0.15);
 
   /* FinDemo Learning Hub Color System - Legacy */
   --primary-dark: var(--navy-primary);

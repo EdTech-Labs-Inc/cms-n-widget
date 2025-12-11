@@ -28,15 +28,15 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(0, 6, 49, 0.95);
+  background: rgba(0, 6, 50, 0.95);
   backdrop-filter: blur(20px);
   padding: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .back-button {
-  background: rgba(217, 156, 87, 0.1);
-  border: 1px solid rgba(217, 156, 87, 0.2);
+  background: rgba(206, 161, 90, 0.1);
+  border: 1px solid rgba(206, 161, 90, 0.2);
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 8px;
@@ -51,7 +51,7 @@
 }
 
 .back-button:hover {
-  background: rgba(217, 156, 87, 0.2);
+  background: rgba(206, 161, 90, 0.2);
   border-color: var(--gold-secondary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   color: rgba(0, 0, 0, 0.88);
@@ -96,14 +96,14 @@
   position: relative;
   width: 72px;
   height: 72px;
-  background: rgba(217, 156, 87, 0.15);
+  background: rgba(206, 161, 90, 0.15);
   backdrop-filter: blur(20px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(217, 156, 87, 0.3);
+  border: 1px solid rgba(206, 161, 90, 0.3);
 }
 
 .progress-ring {
@@ -143,7 +143,7 @@
   right: 2rem;
   width: 72px;
   height: 72px;
-  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  background: linear-gradient(135deg, #CEA15A 0%, #D9AE68 100%);
   border: none;
   color: white;
   border-radius: 50%;
@@ -152,13 +152,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+  box-shadow: 0 6px 20px rgba(206, 161, 90, 0.4);
   z-index: 100;
 }
 
 .bottom-right-play-button:hover {
   transform: scale(1.1);
-  box-shadow: 0 8px 28px rgba(223, 159, 57, 0.5);
+  box-shadow: 0 8px 28px rgba(206, 161, 90, 0.5);
 }
 
 .bottom-right-play-button:active {
@@ -221,7 +221,7 @@
 }
 
 .gold-start-button {
-  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  background: linear-gradient(135deg, #CEA15A 0%, #D9AE68 100%);
   border: none;
   color: white;
   font-size: 1.25rem;
@@ -230,7 +230,7 @@
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(223, 159, 57, 0.4);
+  box-shadow: 0 8px 25px rgba(206, 161, 90, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   min-width: 140px;
@@ -238,7 +238,7 @@
 
 .gold-start-button:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(223, 159, 57, 0.6);
+  box-shadow: 0 12px 35px rgba(206, 161, 90, 0.6);
 }
 
 .gold-start-button:active {
@@ -248,11 +248,11 @@
 @keyframes goldButtonPulse {
   0%, 100% { 
     transform: scale(1);
-    box-shadow: 0 8px 25px rgba(223, 159, 57, 0.4);
+    box-shadow: 0 8px 25px rgba(206, 161, 90, 0.4);
   }
   50% { 
     transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(223, 159, 57, 0.6);
+    box-shadow: 0 10px 30px rgba(206, 161, 90, 0.6);
   }
 }
 
@@ -272,12 +272,12 @@
   position: relative;
   width: 72px;
   height: 72px;
-  background: linear-gradient(135deg, #df9f39 0%, #e4b347 100%);
+  background: linear-gradient(135deg, #CEA15A 0%, #D9AE68 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+  box-shadow: 0 6px 20px rgba(206, 161, 90, 0.4);
   animation: countdownPulse 1s ease-in-out infinite;
 }
 
@@ -306,22 +306,22 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: rgba(217, 156, 87, 0.15);
+  background: rgba(206, 161, 90, 0.15);
   backdrop-filter: blur(20px);
   padding: 0.375rem 0.75rem;
   border-radius: 12px;
-  border: 1px solid rgba(217, 156, 87, 0.3);
+  border: 1px solid rgba(206, 161, 90, 0.3);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes countdownPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 6px 20px rgba(223, 159, 57, 0.4);
+    box-shadow: 0 6px 20px rgba(206, 161, 90, 0.4);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 8px 28px rgba(223, 159, 57, 0.6);
+    box-shadow: 0 8px 28px rgba(206, 161, 90, 0.6);
   }
 }
 

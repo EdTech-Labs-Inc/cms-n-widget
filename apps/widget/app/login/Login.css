@@ -115,7 +115,7 @@
 .form-group input:focus {
   outline: none;
   border-color: var(--gold-secondary);
-  box-shadow: 0 0 0 3px rgba(217, 156, 87, 0.15);
+  box-shadow: 0 0 0 3px rgba(206, 161, 90, 0.15);
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -136,18 +136,18 @@
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 8px;
-  box-shadow: 0 4px 12px rgba(217, 156, 87, 0.4);
+  box-shadow: 0 4px 12px rgba(206, 161, 90, 0.4);
 }
 
 .login-button:hover {
-  background: #c88a2f;
+  background: #B88941;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(217, 156, 87, 0.6);
+  box-shadow: 0 6px 20px rgba(206, 161, 90, 0.6);
 }
 
 .login-button:active {
   transform: translateY(0);
-  box-shadow: 0 4px 12px rgba(217, 156, 87, 0.4);
+  box-shadow: 0 4px 12px rgba(206, 161, 90, 0.4);
 }
 
 /* Error Message */
