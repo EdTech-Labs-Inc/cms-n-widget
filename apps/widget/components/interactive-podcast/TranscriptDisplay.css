@@ -127,8 +127,8 @@
 
 
 .inline-option {
-  background: rgba(217, 156, 87, 0.2);
-  border: 2px solid rgba(217, 156, 87, 0.5);
+  background: rgba(206, 161, 90, 0.2);
+  border: 2px solid rgba(206, 161, 90, 0.5);
   border-radius: 20px;
   padding: 0.35rem 0.75rem;
   font-weight: 600;
@@ -261,8 +261,8 @@
 }
 
 .inline-option.awaiting {
-  background: rgba(217, 156, 87, 0.25);
-  border-color: rgba(217, 156, 87, 0.7);
+  background: rgba(206, 161, 90, 0.25);
+  border-color: rgba(206, 161, 90, 0.7);
   border-radius: 20px;
   animation: awaitingPulse 1.5s infinite;
   cursor: pointer;

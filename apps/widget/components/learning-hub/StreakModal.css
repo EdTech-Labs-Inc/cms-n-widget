@@ -16,12 +16,12 @@
 }
 
 .streak-modal {
-    background: linear-gradient(135deg, rgba(217, 156, 87, 0.15) 0%, rgba(40, 132, 200, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(206, 161, 90, 0.15) 0%, rgba(2, 107, 154, 0.1) 100%);
     backdrop-filter: blur(20px);
     border-radius: 24px;
     padding: 0;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(217, 156, 87, 0.3);
+    border: 1px solid rgba(206, 161, 90, 0.3);
     max-width: 480px;
     width: 100%;
     max-height: 90vh;
@@ -36,7 +36,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--gold-secondary) 0%, rgba(217, 156, 87, 0.8) 50%, var(--gold-secondary) 100%);
+    background: linear-gradient(90deg, var(--gold-secondary) 0%, rgba(206, 161, 90, 0.8) 50%, var(--gold-secondary) 100%);
 }
 
 .streak-modal-content {
@@ -52,12 +52,12 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 24px;
-    background: linear-gradient(135deg, rgba(217, 156, 87, 0.2) 0%, rgba(228, 179, 71, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(206, 161, 90, 0.2) 0%, rgba(217, 174, 104, 0.1) 100%);
     border: 2px solid var(--gold-secondary);
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    box-shadow: 0 8px 24px rgba(217, 156, 87, 0.3);
+    box-shadow: 0 8px 24px rgba(206, 161, 90, 0.3);
 }
 
 .streak-fire-icon {
@@ -80,8 +80,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(217, 156, 87, 0.5);
-    border: 2px solid rgba(217, 156, 87, 0.9);
+    box-shadow: 0 4px 12px rgba(206, 161, 90, 0.5);
+    border: 2px solid rgba(206, 161, 90, 0.9);
 }
 
 .streak-title {
@@ -113,8 +113,8 @@
 }
 
 .streak-motivation {
-    background: linear-gradient(135deg, rgba(217, 156, 87, 0.15) 0%, rgba(228, 179, 71, 0.08) 100%);
-    border: 1px solid rgba(217, 156, 87, 0.3);
+    background: linear-gradient(135deg, rgba(206, 161, 90, 0.15) 0%, rgba(217, 174, 104, 0.08) 100%);
+    border: 1px solid rgba(206, 161, 90, 0.3);
     border-radius: 12px;
     padding: 16px;
     margin-top: 20px !important;
@@ -126,7 +126,7 @@
 }
 
 .streak-commit-button {
-    background: linear-gradient(135deg, var(--gold-secondary) 0%, #e4b347 100%);
+    background: linear-gradient(135deg, var(--gold-secondary) 0%, #D9AE68 100%);
     border: none;
     border-radius: 24px;
     padding: 16px 32px;
@@ -134,7 +134,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 16px rgba(217, 156, 87, 0.4);
+    box-shadow: 0 6px 16px rgba(206, 161, 90, 0.4);
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
@@ -158,9 +158,9 @@
 }
 
 .streak-commit-button:hover {
-    background: linear-gradient(135deg, #e4b347 0%, #f0c468 100%);
+    background: linear-gradient(135deg, #D9AE68 0%, #E5BC7F 100%);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(217, 156, 87, 0.6);
+    box-shadow: 0 8px 20px rgba(206, 161, 90, 0.6);
 }
 
 .streak-commit-button:active {

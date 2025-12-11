@@ -99,7 +99,7 @@
 
 .article-text h2.article-heading-enhanced {
   padding-bottom: 12px;
-  border-bottom: 2px solid rgba(217, 156, 87, 0.2);
+  border-bottom: 2px solid rgba(206, 161, 90, 0.2);
 }
 
 /* Enhanced list styling */
@@ -211,7 +211,7 @@
   padding: 0;
   background: none;
   border: none;
-  border-top: 2px solid rgba(217, 156, 87, 0.3);
+  border-top: 2px solid rgba(206, 161, 90, 0.3);
   padding-top: 24px;
 }
 
@@ -573,7 +573,7 @@
 }
 
 .benefit-card {
-  background: linear-gradient(135deg, var(--gold-light) 0%, rgba(217, 156, 87, 0.05) 100%);
+  background: linear-gradient(135deg, var(--gold-light) 0%, rgba(206, 161, 90, 0.05) 100%);
   border: 1px solid var(--gold-secondary);
   border-left: 4px solid var(--gold-secondary);
   border-radius: 12px;
@@ -582,7 +582,7 @@
 }
 
 .benefit-card:hover {
-  box-shadow: 0 6px 20px rgba(217, 156, 87, 0.3);
+  box-shadow: 0 6px 20px rgba(206, 161, 90, 0.3);
   transform: translateY(-2px);
 }
 
@@ -724,7 +724,7 @@
 .article-quiz-section {
   margin-top: 48px;
   padding-top: 32px;
-  border-top: 2px solid rgba(217, 156, 87, 0.3);
+  border-top: 2px solid rgba(206, 161, 90, 0.3);
   display: flex;
   justify-content: center;
 }

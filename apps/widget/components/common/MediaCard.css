@@ -178,7 +178,7 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--gold-secondary);
   transform: scale(1.01);
-  box-shadow: 0 8px 24px rgba(217, 156, 87, 0.15);
+  box-shadow: 0 8px 24px rgba(206, 161, 90, 0.15);
 }
 
 .media-card--article .media-card__thumbnail-container {
@@ -211,8 +211,8 @@
 }
 
 .media-card--article .media-card__read-time {
-  background: rgba(217, 156, 87, 0.15);
-  border: 1px solid rgba(217, 156, 87, 0.3);
+  background: rgba(206, 161, 90, 0.15);
+  border: 1px solid rgba(206, 161, 90, 0.3);
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 13px;
