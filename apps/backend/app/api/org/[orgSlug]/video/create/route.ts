@@ -216,6 +216,7 @@ export async function POST(
       const standaloneVideo = await prisma.standaloneVideo.create({
         data: {
           organizationId: org.id,
+          createdByProfileId: user.id,
           status: 'PENDING',
           language,
           batchId,

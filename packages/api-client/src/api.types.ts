@@ -477,6 +477,12 @@ export interface CaptionStyle {
 export interface StandaloneVideo {
   id: string;
   organizationId: string;
+  createdByProfileId?: string | null;
+  createdByProfile?: {
+    id: string;
+    fullName?: string | null;
+    email: string;
+  } | null;
   status: OutputStatus;
   // Multi-language support
   language: Language;

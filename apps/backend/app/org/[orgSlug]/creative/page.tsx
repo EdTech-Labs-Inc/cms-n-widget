@@ -199,7 +199,7 @@ export default function CreativePlatformPage({ params }: PageProps) {
                     {video.title || 'Untitled Video'}
                   </h3>
                   <div className="flex items-center gap-2 shrink-0">
-                    {video.language && video.language !== 'ENGLISH' && (
+                    {video.language && (
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400">
                         <Languages className="w-3 h-3" />
                         {LANGUAGE_LABELS[video.language] || video.language}
@@ -211,6 +211,11 @@ export default function CreativePlatformPage({ params }: PageProps) {
                 <p className="text-text-muted text-sm">
                   {formatDate(video.createdAt)}
                 </p>
+                {video.createdByProfile?.fullName && (
+                  <p className="text-text-muted text-xs">
+                    By {video.createdByProfile.fullName}
+                  </p>
+                )}
                 {video.duration && video.status === 'COMPLETED' && (
                   <p className="text-text-muted text-xs mt-1">
                     Duration: {Math.round(video.duration)}s

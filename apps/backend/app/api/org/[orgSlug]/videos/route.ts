@@ -42,6 +42,11 @@ export async function GET(
       where: {
         organizationId: org.id,
       },
+      include: {
+        createdByProfile: {
+          select: { id: true, fullName: true, email: true }
+        }
+      },
       orderBy: { createdAt: 'desc' },
     });
 

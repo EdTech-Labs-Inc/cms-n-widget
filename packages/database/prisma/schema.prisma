@@ -235,6 +235,9 @@ model StandaloneVideo {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  createdByProfileId String?
+  createdByProfile   Profile? @relation(fields: [createdByProfileId], references: [id], onDelete: SetNull)
+
   status OutputStatus @default(PENDING)
 
   // Multi-language support
@@ -313,6 +316,7 @@ model Profile {
   organizationMembership OrganizationMember?
   joinRequests           JoinRequest[]
   supportFeedback        SupportFeedback[]
+  standaloneVideos       StandaloneVideo[]
 
   @@map("profiles")
 }
