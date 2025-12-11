@@ -68,6 +68,7 @@ function VideoPlayer({
   const [previousTimeMs, setPreviousTimeMs] = useState(0)
   const [bubbleQueue, setBubbleQueue] = useState<Bubble[]>([])
   const [isProcessingQueue, setIsProcessingQueue] = useState(false)
+  const [metadataLoaded, setMetadataLoaded] = useState(false)
 
 
 
@@ -113,6 +114,7 @@ function VideoPlayer({
       setBubbleQueue([])
       setIsProcessingQueue(false)
       setIsCompleted(false)
+      setMetadataLoaded(false)
     }
   }, [isActive, video, bubbles, bubblesInitialized])
 
@@ -281,6 +283,7 @@ function VideoPlayer({
         onTimeUpdate={handleTimeUpdate}
         onProgress={handleProgress}
         onEnded={handleVideoEnded}
+        onLoadedMetadata={() => setMetadataLoaded(true)}
         onClick={handleVideoTap}
         style={{
           objectFit: 'contain',
@@ -337,7 +340,7 @@ function VideoPlayer({
       )}
 
       {/* Bottom controls */}
-      {showControls && (
+      {showControls && metadataLoaded && (
         <div className="vs-player__controls">
           <h3 className="vs-player__title">{video.title}</h3>
           <div className="vs-player__progress-container">
