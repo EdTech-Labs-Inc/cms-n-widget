@@ -136,8 +136,16 @@ export default function VideoCreatePage() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        const parsed = JSON.parse(saved) as VideoCreateDraft;
-        setDraft(parsed);
+        const parsed = JSON.parse(saved) as Partial<VideoCreateDraft>;
+        // Merge with defaults to handle missing fields from older drafts
+        setDraft({
+          ...DEFAULT_DRAFT,
+          ...parsed,
+          // Ensure new required fields have defaults
+          title: parsed.title ?? DEFAULT_DRAFT.title,
+          selectedLanguages: parsed.selectedLanguages ?? DEFAULT_DRAFT.selectedLanguages,
+          translations: parsed.translations ?? DEFAULT_DRAFT.translations,
+        });
       } catch {
         // Invalid JSON, use default
       }

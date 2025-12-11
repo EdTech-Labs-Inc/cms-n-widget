@@ -24,7 +24,7 @@ export class VideoWebhookService {
     try {
       logger.info('Processing completed video', { heygenVideoId });
 
-      // Find the VideoOutput record with this HeyGen video ID
+      // First, try to find a VideoOutput record
       const videoOutput = await prisma.videoOutput.findFirst({
         where: {
           heygenVideoId: heygenVideoId,
@@ -39,8 +39,24 @@ export class VideoWebhookService {
         },
       });
 
+      // If not a VideoOutput, check for StandaloneVideo
       if (!videoOutput) {
-        logger.error('No video output found for HeyGen video', { heygenVideoId });
+        const standaloneVideo = await prisma.standaloneVideo.findFirst({
+          where: {
+            heygenVideoId: heygenVideoId,
+            status: 'PROCESSING',
+          },
+        });
+
+        if (standaloneVideo) {
+          logger.info('Found StandaloneVideo, processing completion', {
+            standaloneVideoId: standaloneVideo.id,
+            heygenVideoId
+          });
+          return this.handleStandaloneVideoCompletion(standaloneVideo.id, videoUrl);
+        }
+
+        logger.error('No video output or standalone video found for HeyGen video', { heygenVideoId });
         return false;
       }
 
@@ -217,6 +233,93 @@ export class VideoWebhookService {
         heygenVideoId,
         error: error instanceof Error ? error.message : error
       });
+      return false;
+    }
+  }
+
+  /**
+   * Handle standalone video completion (fallback when Submagic fails)
+   * Downloads video, uploads to S3, generates thumbnail, marks as complete
+   */
+  private async handleStandaloneVideoCompletion(standaloneVideoId: string, videoUrl: string): Promise<boolean> {
+    try {
+      const standaloneVideo = await prisma.standaloneVideo.findUnique({
+        where: { id: standaloneVideoId },
+      });
+
+      if (!standaloneVideo) {
+        logger.error('StandaloneVideo not found', { standaloneVideoId });
+        return false;
+      }
+
+      logger.info('Processing standalone video completion (fallback path)', {
+        standaloneVideoId,
+      });
+
+      // Download video and upload to S3
+      const filename = `${standaloneVideoId}-final.mp4`;
+      const uploadResult = await storageService.uploadVideoFromUrl(
+        videoUrl,
+        standaloneVideoId,
+        filename,
+        standaloneVideo.organizationId
+      );
+
+      logger.info('Standalone video uploaded to S3', {
+        cloudfrontUrl: uploadResult.cloudfrontUrl,
+      });
+
+      // Get video duration via transcription
+      const language = standaloneVideo.language || 'ENGLISH';
+      const { duration } = await this.getVideoMetadata(uploadResult.s3Url, language);
+
+      // Generate thumbnail
+      let thumbnailUrl: string | null = null;
+      try {
+        thumbnailUrl = await thumbnailService.generateThumbnail(
+          standaloneVideo.title || 'Standalone Video',
+          'video',
+          standaloneVideoId,
+          standaloneVideo.organizationId
+        );
+      } catch (error) {
+        logger.warn('Failed to generate standalone video thumbnail', {
+          error: error instanceof Error ? error.message : error
+        });
+      }
+
+      // Update StandaloneVideo with completed data
+      await prisma.standaloneVideo.update({
+        where: { id: standaloneVideoId },
+        data: {
+          videoUrl: uploadResult.cloudfrontUrl,
+          thumbnailUrl,
+          duration,
+          status: 'COMPLETED',
+        },
+      });
+
+      logger.info('Standalone video processed successfully (fallback path)', {
+        standaloneVideoId,
+        videoUrl: uploadResult.cloudfrontUrl,
+      });
+
+      return true;
+    } catch (error) {
+      logger.error('Error processing standalone video completion', {
+        standaloneVideoId,
+        error: error instanceof Error ? error.message : error
+      });
+
+      // Mark as failed
+      await prisma.standaloneVideo.update({
+        where: { id: standaloneVideoId },
+        data: {
+          status: 'FAILED',
+          error: error instanceof Error ? error.message : 'Failed to process video',
+        },
+      });
+
       return false;
     }
   }

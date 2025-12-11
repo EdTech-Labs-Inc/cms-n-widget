@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import {
   Upload,
   FileText,
@@ -67,13 +67,64 @@ export function ScriptStep({
   // Language tabs state
   const [activeLanguage, setActiveLanguage] = useState<Language>('ENGLISH');
   const [isTranslating, setIsTranslating] = useState(false);
+  const [translatingLanguages, setTranslatingLanguages] = useState<Language[]>([]);
 
   const scriptFileInputRef = useRef<HTMLInputElement>(null);
   const contentFileInputRef = useRef<HTMLInputElement>(null);
+  const prevScriptRef = useRef<string>('');
 
   // Check if we need to show language tabs
   const showLanguageTabs = script && selectedLanguages.length > 1;
   const nonEnglishLanguages = selectedLanguages.filter((l) => l !== 'ENGLISH');
+
+  // Auto-translate all non-English languages when script is first generated
+  const translateAllLanguages = useCallback(async (languagesToTranslate: Language[]) => {
+    if (!script || !title || languagesToTranslate.length === 0) return;
+
+    setTranslatingLanguages(languagesToTranslate);
+    const newTranslations = { ...translations };
+
+    for (const lang of languagesToTranslate) {
+      try {
+        const response = await fetch(`/api/org/${orgSlug}/video/translate-script`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            script,
+            title,
+            targetLanguage: lang,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          newTranslations[lang] = {
+            script: result.data.translatedScript,
+            title: result.data.translatedTitle,
+          };
+        }
+      } catch {
+        // Continue with other languages if one fails
+      }
+    }
+
+    onTranslationsChange(newTranslations);
+    setTranslatingLanguages([]);
+  }, [script, title, orgSlug, translations, onTranslationsChange]);
+
+  // Auto-translate when script is first set and there are non-English languages
+  useEffect(() => {
+    const scriptJustGenerated = script && !prevScriptRef.current;
+    const hasNonEnglishLanguages = nonEnglishLanguages.length > 0;
+
+    if (scriptJustGenerated && hasNonEnglishLanguages && title) {
+      // Auto-translate all non-English languages
+      translateAllLanguages(nonEnglishLanguages);
+    }
+
+    prevScriptRef.current = script;
+  }, [script, title, nonEnglishLanguages, translateAllLanguages]);
 
   // Handle translation fetch
   const handleTranslate = useCallback(async (targetLanguage: Language) => {
@@ -591,24 +642,43 @@ export function ScriptStep({
           {/* Language Tabs */}
           {showLanguageTabs && (
             <div className="flex items-center gap-1 p-1 bg-white-5 rounded-lg">
-              {selectedLanguages.map((lang) => (
-                <button
-                  key={lang}
-                  type="button"
-                  onClick={() => setActiveLanguage(lang)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    activeLanguage === lang
-                      ? 'bg-white-10 text-text-primary'
-                      : 'text-text-muted hover:text-text-primary hover:bg-white-5'
-                  }`}
-                >
-                  <Languages className="w-4 h-4" />
-                  {LANGUAGE_LABELS[lang]}
-                  {lang !== 'ENGLISH' && translations[lang]?.script && (
-                    <span className="w-2 h-2 rounded-full bg-green-500" title="Translated" />
-                  )}
-                </button>
-              ))}
+              {selectedLanguages.map((lang) => {
+                const isBeingTranslated = translatingLanguages.includes(lang);
+                const hasTranslation = lang !== 'ENGLISH' && translations[lang]?.script;
+                return (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => setActiveLanguage(lang)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      activeLanguage === lang
+                        ? 'bg-white-10 text-text-primary'
+                        : 'text-text-muted hover:text-text-primary hover:bg-white-5'
+                    }`}
+                  >
+                    <Languages className="w-4 h-4" />
+                    {LANGUAGE_LABELS[lang]}
+                    {isBeingTranslated && (
+                      <span title="Translating...">
+                        <Loader2 className="w-3 h-3 animate-spin text-blue-400" />
+                      </span>
+                    )}
+                    {!isBeingTranslated && hasTranslation && (
+                      <span className="w-2 h-2 rounded-full bg-green-500" title="Translated" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Auto-translation progress */}
+          {translatingLanguages.length > 0 && (
+            <div className="flex items-center gap-2 p-3 bg-blue-accent/10 border border-blue-accent/30 rounded-lg">
+              <Loader2 className="w-4 h-4 text-blue-accent animate-spin" />
+              <p className="text-sm text-blue-accent">
+                Auto-translating to {translatingLanguages.map(l => LANGUAGE_LABELS[l]).join(', ')}...
+              </p>
             </div>
           )}
 
