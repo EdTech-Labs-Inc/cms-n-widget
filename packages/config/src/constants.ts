@@ -51,10 +51,10 @@ export const OPENAI_CONFIG = {
  */
 export const ELEVENLABS_CONFIG = {
   apiKey: process.env.ELEVENLABS_API_KEY || '',
-  defaultVoiceId: process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL',
+  defaultVoiceId: process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'bawxE4HcqqctPXcpzV00',
   defaultModel: 'eleven_v3',
-  interviewerVoiceId: process.env.ELEVENLABS_INTERVIEWER_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL',
-  guestVoiceId: process.env.ELEVENLABS_GUEST_VOICE_ID || 'ErXwobaYiN019PkySvjV',
+  interviewerVoiceId: process.env.ELEVENLABS_INTERVIEWER_VOICE_ID || 'bawxE4HcqqctPXcpzV00',
+  guestVoiceId: process.env.ELEVENLABS_GUEST_VOICE_ID || 'UZ43nGa9SDlDnGtiiY5Q',
   apiUrl: 'https://api.elevenlabs.io/v1',
 } as const;
 

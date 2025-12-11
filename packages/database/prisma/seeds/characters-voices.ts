@@ -26,6 +26,30 @@ const ORGANIZATION_ID = 'c428421a-c1ab-48da-998e-18bc76d4852a';
  * - Mumpy: aeqiqPUmY3kTgXiu21cB
  */
 export const voicesToSeed = [
+  // {
+  //   name: 'Vaibhav',
+  //   elevenlabsVoiceId: 'UZ43nGa9SDlDnGtiiY5Q',
+  //   description: null,
+  //   previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1764933872/ElevenLabs_2025-12-05T11_24_09_Vaibhav_ivc_sp100_s50_sb75_v3_lxthbc.mp3',
+  //   gender: 'male',
+  //   organizationId: ORGANIZATION_ID,
+  // },
+  // {
+  //   name: 'Yash',
+  //   elevenlabsVoiceId: 'iZZ7Mcbyhw8wjwQ3HhEy',
+  //   description: null,
+  //   previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1764933999/ElevenLabs_2025-12-05T11_26_19_Yash_ivc_sp100_s50_sb75_v3_opd4fg.mp3',
+  //   gender: 'male',
+  //   organizationId: ORGANIZATION_ID,
+  // },
+  // {
+  //   name: 'Mumpy',
+  //   elevenlabsVoiceId: 'aeqiqPUmY3kTgXiu21cB',
+  //   description: null,
+  //   previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1764933810/ElevenLabs_2025-12-05T11_22_40_Mumpy_ivc_sp100_s50_sb75_v3_vzzrib.mp3',
+  //   gender: 'female',
+  //   organizationId: ORGANIZATION_ID,
+  // },
   {
     name: 'Vaibhav',
     elevenlabsVoiceId: 'UZ43nGa9SDlDnGtiiY5Q',
