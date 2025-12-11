@@ -410,17 +410,17 @@ export class VideoPostProcessingService {
   }
 
   /**
-   * Concatenate multiple videos into one using the concat FILTER
-   * This re-encodes everything but guarantees proper timestamp alignment
-   * (The concat demuxer with -c copy has timebase issues causing slowdown/speedup)
+   * Concatenate multiple videos into one with crossfade transitions
+   * Uses xfade filter for video, concat for audio (acrossfade doesn't chain well)
    */
   private async concatenateVideos(inputPaths: string[], outputPath: string): Promise<void> {
-    logger.debug('Concatenating videos with concat filter', { inputCount: inputPaths.length });
+    const FADE_DURATION = 0.2; // seconds
+    logger.debug('Concatenating videos with crossfade', { inputCount: inputPaths.length, fadeDuration: FADE_DURATION });
 
     const tempDir = os.tmpdir();
     const tempFiles: string[] = [];
 
-    // Ensure all inputs have audio tracks (required for concat filter with audio)
+    // Ensure all inputs have audio tracks (required for concat)
     const normalizedPaths = await Promise.all(
       inputPaths.map(async (inputPath, i) => {
         const hasAudio = await new Promise<boolean>((resolve) => {
@@ -447,9 +447,19 @@ export class VideoPostProcessingService {
       })
     );
 
+    // Get info for all videos (needed for normalization and xfade offsets)
+    const videoInfos = await Promise.all(normalizedPaths.map((p) => this.getVideoInfo(p)));
+    const durations = videoInfos.map((info) => info.duration);
+    logger.debug('Video durations for crossfade', { durations });
+
+    // Get target dimensions from main video (index 0 if only bumpers, else index 1)
+    const mainVideoIndex = normalizedPaths.length > 1 ? 1 : 0;
+    const targetWidth = videoInfos[mainVideoIndex].width;
+    const targetHeight = videoInfos[mainVideoIndex].height;
+    const targetFps = 25;
+
     try {
       await new Promise<void>((resolve, reject) => {
-        // Build the ffmpeg command with multiple inputs
         let command = ffmpeg();
 
         // Add all input files
@@ -457,11 +467,46 @@ export class VideoPostProcessingService {
           command = command.input(inputPath);
         });
 
-        // Build the filter_complex string for concat filter
-        // Format: [0:v][0:a][1:v][1:a][2:v][2:a]concat=n=3:v=1:a=1[outv][outa]
+        const filterParts: string[] = [];
         const n = normalizedPaths.length;
-        const inputStreams = normalizedPaths.map((_, i) => `[${i}:v][${i}:a]`).join('');
-        const filterComplex = `${inputStreams}concat=n=${n}:v=1:a=1[outv][outa]`;
+
+        if (n === 1) {
+          // Single video - no crossfade needed, just pass through
+          filterParts.push('[0:v]copy[outv]');
+          filterParts.push('[0:a]acopy[outa]');
+        } else {
+          // STEP 1: Normalize all video inputs to same format (required for xfade)
+          for (let i = 0; i < n; i++) {
+            filterParts.push(
+              `[${i}:v]scale=${targetWidth}:${targetHeight}:force_original_aspect_ratio=decrease,pad=${targetWidth}:${targetHeight}:(ow-iw)/2:(oh-ih)/2,fps=${targetFps},format=yuv420p,setpts=PTS-STARTPTS[v${i}]`
+            );
+          }
+
+          // STEP 2: Build chained xfade filters for VIDEO
+          let videoLabel = '[v0]';
+          let outputDuration = durations[0]; // Track cumulative output duration
+
+          for (let i = 1; i < n; i++) {
+            // Offset is when the transition starts on the OUTPUT timeline
+            const offset = outputDuration - FADE_DURATION;
+            const outVideoLabel = i === n - 1 ? '[outv]' : `[vx${i}]`;
+
+            filterParts.push(
+              `${videoLabel}[v${i}]xfade=transition=fade:duration=${FADE_DURATION}:offset=${offset.toFixed(3)}${outVideoLabel}`
+            );
+
+            videoLabel = outVideoLabel;
+            // After xfade, output duration increases by next video minus fade overlap
+            outputDuration = outputDuration + durations[i] - FADE_DURATION;
+          }
+
+          // STEP 3: Use simple concat for AUDIO (acrossfade doesn't chain well for 3+ inputs)
+          const audioInputs = normalizedPaths.map((_, i) => `[${i}:a]`).join('');
+          filterParts.push(`${audioInputs}concat=n=${n}:v=0:a=1[outa]`);
+        }
+
+        const filterComplex = filterParts.join(';');
+        logger.debug('Crossfade filter_complex', { filterComplex });
 
         command
           .complexFilter([filterComplex])
@@ -477,11 +522,11 @@ export class VideoPostProcessingService {
           ])
           .output(outputPath)
           .on('end', () => {
-            logger.debug('Video concatenation complete', { outputPath });
+            logger.debug('Video concatenation with crossfade complete', { outputPath });
             resolve();
           })
           .on('error', (err) => {
-            logger.error('Video concatenation failed', { error: err.message });
+            logger.error('Video concatenation with crossfade failed', { error: err.message });
             reject(err);
           })
           .run();
