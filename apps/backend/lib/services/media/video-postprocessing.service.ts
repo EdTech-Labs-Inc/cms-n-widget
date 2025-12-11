@@ -410,16 +410,17 @@ export class VideoPostProcessingService {
   }
 
   /**
-   * Concatenate multiple videos into one
-   * Ensures all videos have audio tracks before concatenation
+   * Concatenate multiple videos into one using the concat FILTER
+   * This re-encodes everything but guarantees proper timestamp alignment
+   * (The concat demuxer with -c copy has timebase issues causing slowdown/speedup)
    */
   private async concatenateVideos(inputPaths: string[], outputPath: string): Promise<void> {
-    logger.debug('Concatenating videos', { inputCount: inputPaths.length });
+    logger.debug('Concatenating videos with concat filter', { inputCount: inputPaths.length });
 
     const tempDir = os.tmpdir();
     const tempFiles: string[] = [];
 
-    // Ensure all inputs have audio tracks
+    // Ensure all inputs have audio tracks (required for concat filter with audio)
     const normalizedPaths = await Promise.all(
       inputPaths.map(async (inputPath, i) => {
         const hasAudio = await new Promise<boolean>((resolve) => {
@@ -446,18 +447,34 @@ export class VideoPostProcessingService {
       })
     );
 
-    // Now concatenate using the fast concat demuxer (all videos have same format)
-    const listFile = path.join(tempDir, `concat_list_${Date.now()}.txt`);
-    const listContent = normalizedPaths.map((p) => `file '${p}'`).join('\n');
-
     try {
-      await fs.writeFile(listFile, listContent);
-
       await new Promise<void>((resolve, reject) => {
-        ffmpeg()
-          .input(listFile)
-          .inputOptions(['-f concat', '-safe 0'])
-          .outputOptions(['-c copy'])
+        // Build the ffmpeg command with multiple inputs
+        let command = ffmpeg();
+
+        // Add all input files
+        normalizedPaths.forEach((inputPath) => {
+          command = command.input(inputPath);
+        });
+
+        // Build the filter_complex string for concat filter
+        // Format: [0:v][0:a][1:v][1:a][2:v][2:a]concat=n=3:v=1:a=1[outv][outa]
+        const n = normalizedPaths.length;
+        const inputStreams = normalizedPaths.map((_, i) => `[${i}:v][${i}:a]`).join('');
+        const filterComplex = `${inputStreams}concat=n=${n}:v=1:a=1[outv][outa]`;
+
+        command
+          .complexFilter([filterComplex])
+          .outputOptions([
+            '-map [outv]',
+            '-map [outa]',
+            '-c:v libx264',
+            '-preset fast',
+            '-pix_fmt yuv420p',
+            '-c:a aac',
+            '-ar 44100',
+            '-ac 2',
+          ])
           .output(outputPath)
           .on('end', () => {
             logger.debug('Video concatenation complete', { outputPath });
@@ -471,7 +488,6 @@ export class VideoPostProcessingService {
       });
     } finally {
       // Cleanup temp files
-      await fs.unlink(listFile).catch(() => {});
       await Promise.all(tempFiles.map((f) => fs.unlink(f).catch(() => {})));
     }
   }
