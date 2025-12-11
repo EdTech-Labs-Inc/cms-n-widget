@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion';
 
 interface FilterPillsProps {
-  activeFilter: 'recommended' | 'watch' | 'listen' | 'read';
-  onFilterChange: (filter: 'recommended' | 'watch' | 'listen' | 'read') => void;
+  activeFilter: 'fundamentals' | 'market-updates';
+  onFilterChange: (filter: 'fundamentals' | 'market-updates') => void;
 }
 
 const sectionVariants = {
@@ -28,28 +28,16 @@ export default function FilterPills({ activeFilter, onFilterChange }: FilterPill
   return (
     <motion.div className="filter-pills" variants={sectionVariants}>
       <button
-        className={`filter-pill ${activeFilter === 'recommended' ? 'active' : ''}`}
-        onClick={() => onFilterChange('recommended')}
+        className={`filter-pill ${activeFilter === 'fundamentals' ? 'active' : ''}`}
+        onClick={() => onFilterChange('fundamentals')}
       >
-        Recommended
+        Fundamentals
       </button>
       <button
-        className={`filter-pill ${activeFilter === 'watch' ? 'active' : ''}`}
-        onClick={() => onFilterChange('watch')}
+        className={`filter-pill ${activeFilter === 'market-updates' ? 'active' : ''}`}
+        onClick={() => onFilterChange('market-updates')}
       >
-        Watch
-      </button>
-      <button
-        className={`filter-pill ${activeFilter === 'listen' ? 'active' : ''}`}
-        onClick={() => onFilterChange('listen')}
-      >
-        Listen
-      </button>
-      <button
-        className={`filter-pill ${activeFilter === 'read' ? 'active' : ''}`}
-        onClick={() => onFilterChange('read')}
-      >
-        Read
+        Market Updates
       </button>
     </motion.div>
   );

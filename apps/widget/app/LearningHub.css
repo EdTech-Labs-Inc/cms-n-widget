@@ -1378,6 +1378,94 @@
   opacity: 0.8;
 }
 
+/* Progress Wheels Section */
+.progress-wheels-section {
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.progress-wheels-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  justify-items: center;
+}
+
+.progress-wheel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 160px;
+}
+
+.progress-wheel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(206, 161, 90, 0.3);
+  transform: translateY(-2px);
+}
+
+.progress-wheel--completed {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.progress-wheel--completed:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.08) 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.progress-wheel__svg {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.progress-wheel__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.progress-wheel__name {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+}
+
+.progress-wheel__percentage {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-secondary);
+}
+
+.progress-wheel__completed-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #10B981;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Two-column video grid variant */
+.video-tiles-grid--two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 640px) {
   .lh-page__content {
@@ -1463,6 +1551,23 @@
   .interactive-description {
     font-size: 13px;
   }
+
+  .progress-wheels-section {
+    padding: 20px 16px;
+  }
+
+  .progress-wheels-grid {
+    gap: 16px;
+  }
+
+  .progress-wheel {
+    padding: 12px;
+    max-width: 140px;
+  }
+
+  .progress-wheel__name {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1482,5 +1587,27 @@
 
   .video-tiles-grid {
     gap: 10px;
+  }
+
+  .progress-wheels-section {
+    padding: 16px 12px;
+  }
+
+  .progress-wheels-grid {
+    gap: 12px;
+  }
+
+  .progress-wheel {
+    padding: 10px;
+    max-width: 130px;
+  }
+
+  .progress-wheel__name {
+    font-size: 11px;
+  }
+
+  .progress-wheel__percentage,
+  .progress-wheel__completed-text {
+    font-size: 10px;
   }
 }

@@ -9,10 +9,8 @@ import LearningHubHeader from './LearningHubHeader';
 import SearchModal from './SearchModal';
 import WelcomeSection from './WelcomeSection';
 import FilterPills from './FilterPills';
-import RecommendedView from './RecommendedView';
-import WatchView from './WatchView';
-import ListenView from './ListenView';
-import ReadView from './ReadView';
+import FundamentalsView from './FundamentalsView';
+import MarketUpdatesView from './MarketUpdatesView';
 import StreakModal from './StreakModal';
 import XPModal from './XPModal';
 
@@ -51,7 +49,7 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
   const [showXPModal, setShowXPModal] = useState(false);
   const [streakCount, setStreakCount] = useState(3);
   const [xpData, setXPData] = useState(getXPData());
-  const [activeFilter, setActiveFilter] = useState<'recommended' | 'watch' | 'listen' | 'read'>('recommended');
+  const [activeFilter, setActiveFilter] = useState<'fundamentals' | 'market-updates'>('fundamentals');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -279,13 +277,13 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
         {/* Filter Pills */}
         <FilterPills activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
-        {/* Recommended View */}
-        {activeFilter === 'recommended' && (
-          <RecommendedView
-            featuredVideos={featuredVideos}
-            formattedInteractivePodcasts={formattedInteractivePodcasts}
-            formattedPodcasts={formattedPodcasts}
-            formattedArticles={formattedArticles}
+        {/* Fundamentals View */}
+        {activeFilter === 'fundamentals' && (
+          <FundamentalsView
+            videos={allVideos.filter((v) => v.category === 'evergreen')}
+            interactivePodcasts={formattedInteractivePodcasts.filter((p) => p.category === 'evergreen')}
+            podcasts={formattedPodcasts.filter((p) => p.category === 'evergreen')}
+            articles={formattedArticles.filter((a) => a.category === 'evergreen')}
             activePodcast={activePodcast}
             onVideoClick={handleVideoClick}
             onPodcastClick={handlePodcastClick}
@@ -294,37 +292,18 @@ function LearningHubClient({ initialContent }: LearningHubClientProps) {
           />
         )}
 
-        {/* Watch View */}
-        {activeFilter === 'watch' && (
-          <WatchView
-            allVideos={allVideos}
-            categories={categories}
-            onVideoClick={handleVideoClick}
-            getContentByCategory={getContentByCategory}
-          />
-        )}
-
-        {/* Listen View */}
-        {activeFilter === 'listen' && (
-          <ListenView
-            allPodcasts={allPodcasts}
-            formattedInteractivePodcasts={formattedInteractivePodcasts}
-            formattedPodcasts={formattedPodcasts}
-            categories={categories}
+        {/* Market Updates View */}
+        {activeFilter === 'market-updates' && (
+          <MarketUpdatesView
+            videos={allVideos.filter((v) => v.category === 'market-updates')}
+            interactivePodcasts={formattedInteractivePodcasts.filter((p) => p.category === 'market-updates')}
+            podcasts={formattedPodcasts.filter((p) => p.category === 'market-updates')}
+            articles={formattedArticles.filter((a) => a.category === 'market-updates')}
             activePodcast={activePodcast}
+            onVideoClick={handleVideoClick}
             onPodcastClick={handlePodcastClick}
-            onSetActivePodcast={setActivePodcast}
-            getContentByCategory={getContentByCategory}
-          />
-        )}
-
-        {/* Read View */}
-        {activeFilter === 'read' && (
-          <ReadView
-            formattedArticles={formattedArticles}
-            categories={categories}
             onArticleClick={handleArticleClick}
-            getContentByCategory={getContentByCategory}
+            onSetActivePodcast={setActivePodcast}
           />
         )}
       </motion.div>
