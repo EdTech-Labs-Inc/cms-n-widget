@@ -94,6 +94,12 @@ interface StandaloneVideoPostProcessingJobData {
   editedVideoUrl: string;
 }
 
+// VideoOutput post-processing job data interface (for edu videos)
+interface VideoOutputPostProcessingJobData {
+  videoOutputId: string;
+  editedVideoUrl: string;
+}
+
 /**
  * Worker handler - processes media generation jobs
  */
@@ -363,6 +369,89 @@ const processMediaJob = async (job: Job<MediaJobData | ArticleThumbnailJobData |
           videoUrl: finalVideoUrl,
           duration: finalDuration,
           hadPostProcessing: needsPostProcessing,
+        });
+        break;
+      }
+
+      case JobTypes.POST_PROCESS_VIDEO_OUTPUT: {
+        const { videoOutputId, editedVideoUrl } = job.data as VideoOutputPostProcessingJobData;
+        logger.info('Post-processing VideoOutput (edu video)', { videoOutputId, editedVideoUrl });
+
+        // Get the VideoOutput with bumper and music details
+        const videoOutput = await prisma.videoOutput.findUnique({
+          where: { id: videoOutputId },
+          include: {
+            submission: true,
+            backgroundMusic: true,
+            startBumper: true,
+            endBumper: true,
+          },
+        });
+
+        if (!videoOutput) {
+          throw new Error(`VideoOutput ${videoOutputId} not found`);
+        }
+
+        // Check if any post-processing is needed
+        const needsVideoPostProcessing =
+          videoOutput.startBumper ||
+          videoOutput.endBumper ||
+          videoOutput.backgroundMusic;
+
+        let finalVideoUrl: string;
+
+        if (needsVideoPostProcessing) {
+          // Build post-processing params
+          const postProcessParams: Parameters<typeof videoPostProcessingService.processVideo>[0] = {
+            videoUrl: editedVideoUrl,
+            videoOutputId,
+            organizationId: videoOutput.submission.organizationId,
+          };
+
+          // Add start bumper if configured
+          if (videoOutput.startBumper) {
+            postProcessParams.startBumper = {
+              mediaUrl: videoOutput.startBumper.mediaUrl,
+              type: videoOutput.startBumper.type as 'image' | 'video',
+              duration: videoOutput.startBumperDuration || videoOutput.startBumper.duration || 3,
+            };
+          }
+
+          // Add end bumper if configured
+          if (videoOutput.endBumper) {
+            postProcessParams.endBumper = {
+              mediaUrl: videoOutput.endBumper.mediaUrl,
+              type: videoOutput.endBumper.type as 'image' | 'video',
+              duration: videoOutput.endBumperDuration || videoOutput.endBumper.duration || 3,
+            };
+          }
+
+          // Add background music if configured
+          if (videoOutput.backgroundMusic) {
+            postProcessParams.music = {
+              audioUrl: videoOutput.backgroundMusic.audioUrl,
+              volume: videoOutput.backgroundMusicVolume,
+            };
+          }
+
+          // Run FFmpeg post-processing
+          const result = await videoPostProcessingService.processVideo(postProcessParams);
+          finalVideoUrl = result.cloudfrontUrl;
+        } else {
+          // No post-processing needed - use the edited video URL directly
+          finalVideoUrl = editedVideoUrl;
+        }
+
+        // Queue the video completion job (for transcription + bubbles)
+        await queueService.addVideoCompletionJob({
+          heygenVideoId: videoOutput.heygenVideoId!,
+          videoUrl: finalVideoUrl,
+        });
+
+        logger.info('VideoOutput post-processing completed, queued video completion', {
+          videoOutputId,
+          videoUrl: finalVideoUrl,
+          hadPostProcessing: needsVideoPostProcessing,
         });
         break;
       }

@@ -358,6 +358,26 @@ export class QueueService {
   }
 
   /**
+   * Add a job to post-process VideoOutput (add bumpers/music to edu videos)
+   */
+  async addVideoOutputPostProcessingJob(data: {
+    videoOutputId: string;
+    editedVideoUrl: string;
+  }) {
+    return await getMediaGenerationQueue().add(
+      JobTypes.POST_PROCESS_VIDEO_OUTPUT,
+      data,
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 5000,
+        },
+      }
+    );
+  }
+
+  /**
    * Get job status
    */
   async getJobStatus(jobId: string) {

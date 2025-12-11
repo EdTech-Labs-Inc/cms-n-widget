@@ -171,8 +171,9 @@ model BackgroundMusic {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // Reverse relation
+  // Reverse relations
   standaloneVideos StandaloneVideo[]
+  videoOutputs     VideoOutput[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -193,9 +194,13 @@ model VideoBumper {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // Reverse relations for start/end bumpers
+  // Reverse relations for start/end bumpers (StandaloneVideo)
   standaloneVideosAsStart StandaloneVideo[] @relation("StartBumper")
   standaloneVideosAsEnd   StandaloneVideo[] @relation("EndBumper")
+
+  // Reverse relations for start/end bumpers (VideoOutput)
+  videoOutputsAsStart VideoOutput[] @relation("VideoOutputStartBumper")
+  videoOutputsAsEnd   VideoOutput[] @relation("VideoOutputEndBumper")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -495,6 +500,19 @@ model VideoOutput {
 
   // Bubble generation configuration
   generateBubbles       Boolean @default(true)
+
+  // Background Music
+  backgroundMusicId     String?
+  backgroundMusic       BackgroundMusic? @relation(fields: [backgroundMusicId], references: [id], onDelete: SetNull)
+  backgroundMusicVolume Float            @default(0.15) // 15%
+
+  // Bumpers
+  startBumperId       String?
+  startBumper         VideoBumper? @relation("VideoOutputStartBumper", fields: [startBumperId], references: [id], onDelete: SetNull)
+  startBumperDuration Int?         // For image bumpers: display duration in seconds
+  endBumperId         String?
+  endBumper           VideoBumper? @relation("VideoOutputEndBumper", fields: [endBumperId], references: [id], onDelete: SetNull)
+  endBumperDuration   Int?
 
   // Approval tracking
   isApproved Boolean   @default(false)

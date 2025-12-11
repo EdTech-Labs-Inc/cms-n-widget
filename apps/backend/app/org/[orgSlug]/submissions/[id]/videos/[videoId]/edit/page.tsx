@@ -133,6 +133,12 @@ export default function OrgVideoEditPage() {
     enableMagicBrolls: true,
     magicBrollsPercentage: 40,
     generateBubbles: true,
+    backgroundMusicId: null,
+    backgroundMusicVolume: 0.15,
+    startBumperId: null,
+    startBumperDuration: null,
+    endBumperId: null,
+    endBumperDuration: null,
   });
 
   // Data fetching
@@ -163,6 +169,12 @@ export default function OrgVideoEditPage() {
         enableMagicBrolls: (video as any).enableMagicBrolls ?? true,
         magicBrollsPercentage: (video as any).magicBrollsPercentage ?? 40,
         generateBubbles: (video as any).generateBubbles ?? true,
+        backgroundMusicId: (video as any).backgroundMusicId || null,
+        backgroundMusicVolume: (video as any).backgroundMusicVolume ?? 0.15,
+        startBumperId: (video as any).startBumperId || null,
+        startBumperDuration: (video as any).startBumperDuration || null,
+        endBumperId: (video as any).endBumperId || null,
+        endBumperDuration: (video as any).endBumperDuration || null,
       });
     }
   }, [submission, videoId]);
@@ -370,6 +382,12 @@ export default function OrgVideoEditPage() {
           enableMagicBrolls: videoCustomization.enableMagicBrolls,
           magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
           generateBubbles: videoCustomization.generateBubbles,
+          backgroundMusicId: videoCustomization.backgroundMusicId,
+          backgroundMusicVolume: videoCustomization.backgroundMusicVolume,
+          startBumperId: videoCustomization.startBumperId,
+          startBumperDuration: videoCustomization.startBumperDuration,
+          endBumperId: videoCustomization.endBumperId,
+          endBumperDuration: videoCustomization.endBumperDuration,
         },
       },
       {

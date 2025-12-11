@@ -383,6 +383,14 @@ export interface VideoCustomizationConfig {
   enableMagicBrolls: boolean;
   magicBrollsPercentage: number;
   generateBubbles: boolean;
+  // Background Music
+  backgroundMusicId?: string | null;
+  backgroundMusicVolume?: number; // 0-1, default 0.15
+  // Bumpers
+  startBumperId?: string | null;
+  startBumperDuration?: number | null; // seconds, for image bumpers
+  endBumperId?: string | null;
+  endBumperDuration?: number | null; // seconds, for image bumpers
 }
 
 export interface CreateSubmissionRequest {

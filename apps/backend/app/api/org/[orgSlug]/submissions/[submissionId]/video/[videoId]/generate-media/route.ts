@@ -12,6 +12,14 @@ const VideoCustomizationSchema = z.object({
   enableMagicBrolls: z.boolean().optional().default(true),
   magicBrollsPercentage: z.number().min(0).max(100).optional().default(40),
   generateBubbles: z.boolean().optional().default(true),
+  // Background Music
+  backgroundMusicId: z.string().nullable().optional(),
+  backgroundMusicVolume: z.number().min(0).max(1).optional(),
+  // Bumpers
+  startBumperId: z.string().nullable().optional(),
+  startBumperDuration: z.number().min(1).max(10).nullable().optional(),
+  endBumperId: z.string().nullable().optional(),
+  endBumperDuration: z.number().min(1).max(10).nullable().optional(),
 });
 
 /**
@@ -151,6 +159,36 @@ export async function POST(
       );
     }
 
+    // Validate background music belongs to organization (if provided)
+    if (videoCustomization.backgroundMusicId) {
+      const music = await prisma.backgroundMusic.findFirst({
+        where: { id: videoCustomization.backgroundMusicId, organizationId: org.id },
+      });
+      if (!music) {
+        return NextResponse.json({ success: false, error: 'Background music not found' }, { status: 404 });
+      }
+    }
+
+    // Validate start bumper belongs to organization (if provided)
+    if (videoCustomization.startBumperId) {
+      const bumper = await prisma.videoBumper.findFirst({
+        where: { id: videoCustomization.startBumperId, organizationId: org.id },
+      });
+      if (!bumper) {
+        return NextResponse.json({ success: false, error: 'Start bumper not found' }, { status: 404 });
+      }
+    }
+
+    // Validate end bumper belongs to organization (if provided)
+    if (videoCustomization.endBumperId) {
+      const bumper = await prisma.videoBumper.findFirst({
+        where: { id: videoCustomization.endBumperId, organizationId: org.id },
+      });
+      if (!bumper) {
+        return NextResponse.json({ success: false, error: 'End bumper not found' }, { status: 404 });
+      }
+    }
+
     // Update VideoOutput with customization settings and set status to PROCESSING
     await prisma.videoOutput.update({
       where: { id: params.videoId },
@@ -163,6 +201,13 @@ export async function POST(
         enableMagicBrolls: videoCustomization.enableMagicBrolls,
         magicBrollsPercentage: videoCustomization.magicBrollsPercentage,
         generateBubbles: videoCustomization.generateBubbles,
+        // Music & Bumpers
+        backgroundMusicId: videoCustomization.backgroundMusicId || null,
+        backgroundMusicVolume: videoCustomization.backgroundMusicVolume ?? 0.15,
+        startBumperId: videoCustomization.startBumperId || null,
+        startBumperDuration: videoCustomization.startBumperDuration || null,
+        endBumperId: videoCustomization.endBumperId || null,
+        endBumperDuration: videoCustomization.endBumperDuration || null,
         error: null,
       },
     });

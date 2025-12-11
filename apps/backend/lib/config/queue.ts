@@ -187,4 +187,7 @@ export enum JobTypes {
   // Standalone video generation (no Article/Submission)
   GENERATE_STANDALONE_VIDEO = 'generate-standalone-video', // Generate video from standalone video create page
   POST_PROCESS_STANDALONE_VIDEO = 'post-process-standalone-video', // Add bumpers/music to standalone video
+
+  // VideoOutput post-processing (for edu video flow)
+  POST_PROCESS_VIDEO_OUTPUT = 'post-process-video-output', // Add bumpers/music to VideoOutput (edu videos)
 }

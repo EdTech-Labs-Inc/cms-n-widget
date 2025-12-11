@@ -8,9 +8,15 @@ import { queueService } from '@/lib/services/core/queue.service';
  */
 async function handleVideoOutputEditingSuccess(projectId: string, videoUrl: string): Promise<boolean> {
   // Find the VideoOutput record with this Submagic project ID
+  // Include bumper and music relations to check if post-processing is needed
   const videoOutput = await prisma.videoOutput.findFirst({
     where: {
       submagicProjectId: projectId,
+    },
+    include: {
+      backgroundMusic: true,
+      startBumper: true,
+      endBumper: true,
     },
   });
 
@@ -22,6 +28,9 @@ async function handleVideoOutputEditingSuccess(projectId: string, videoUrl: stri
   console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
   console.log(`   - HeyGen Video ID: ${videoOutput.heygenVideoId || 'MISSING'}`);
   console.log(`   - Submission ID: ${videoOutput.submissionId}`);
+  console.log(`   - Has Start Bumper: ${!!videoOutput.startBumper}`);
+  console.log(`   - Has End Bumper: ${!!videoOutput.endBumper}`);
+  console.log(`   - Has Background Music: ${!!videoOutput.backgroundMusic}`);
 
   // Log the original config that was used
   console.log(`📝 ORIGINAL CONFIG USED:`);
@@ -35,17 +44,39 @@ async function handleVideoOutputEditingSuccess(projectId: string, videoUrl: stri
     return true; // We found it but can't process it
   }
 
-  console.log(`\n📋 Enqueueing video completion job...`);
-  console.log(`   - Using edited video from Submagic`);
-  console.log(`   - Will process: download → S3 upload → transcribe → generate bubbles`);
+  // Check if post-processing is needed (bumpers or music)
+  const needsPostProcessing =
+    videoOutput.backgroundMusicId ||
+    videoOutput.startBumperId ||
+    videoOutput.endBumperId;
 
-  // Enqueue background job to process edited video
-  await queueService.addVideoCompletionJob({
-    heygenVideoId: videoOutput.heygenVideoId,
-    videoUrl: videoUrl,
-  });
+  if (needsPostProcessing) {
+    console.log(`\n📋 Enqueueing post-processing job (bumpers/music detected)...`);
+    console.log(`   Will add: ${videoOutput.startBumper ? 'start bumper, ' : ''}${videoOutput.endBumper ? 'end bumper, ' : ''}${videoOutput.backgroundMusic ? 'background music' : ''}`);
+    console.log(`   - After post-processing: video completion job will be queued automatically`);
 
-  console.log(`✅ Job enqueued successfully`);
+    // Queue post-processing job (bumpers + music)
+    // The post-processing job will queue the video completion job when done
+    await queueService.addVideoOutputPostProcessingJob({
+      videoOutputId: videoOutput.id,
+      editedVideoUrl: videoUrl,
+    });
+
+    console.log(`✅ Post-processing job enqueued successfully`);
+  } else {
+    console.log(`\n📋 Enqueueing video completion job (no bumpers/music)...`);
+    console.log(`   - Using edited video from Submagic`);
+    console.log(`   - Will process: download → S3 upload → transcribe → generate bubbles`);
+
+    // No post-processing needed - queue video completion directly (current behavior)
+    await queueService.addVideoCompletionJob({
+      heygenVideoId: videoOutput.heygenVideoId,
+      videoUrl: videoUrl,
+    });
+
+    console.log(`✅ Video completion job enqueued successfully`);
+  }
+
   return true;
 }
 
