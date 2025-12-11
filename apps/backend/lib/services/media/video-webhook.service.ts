@@ -98,6 +98,30 @@ export class VideoWebhookService {
 
       // 🔴 CRITICAL SCHEMA UPDATE: Create VideoBubble rows (not JSON)
       if (bubbles.length > 0) {
+        // Normalize correctAnswer to numeric index (AI may return boolean for TRUE_FALSE)
+        const normalizeCorrectAnswer = (bubble: any): number => {
+          const answer = bubble.correctAnswer;
+
+          // Already a number - return as-is
+          if (typeof answer === 'number') {
+            return answer;
+          }
+
+          // Boolean (TRUE_FALSE): true → 0, false → 1
+          // Convention: options are ['True', 'False'] so true=index 0, false=index 1
+          if (typeof answer === 'boolean') {
+            return answer ? 0 : 1;
+          }
+
+          // String fallback - find in options array
+          if (typeof answer === 'string' && bubble.options) {
+            const index = bubble.options.indexOf(answer);
+            return index >= 0 ? index : 0;
+          }
+
+          return 0; // Default fallback
+        };
+
         await prisma.videoBubble.createMany({
           data: bubbles.map((bubble: any, index: number) => ({
             videoOutputId: videoOutput.id,
@@ -105,7 +129,7 @@ export class VideoWebhookService {
             order: index,
             question: bubble.question,
             options: bubble.options,
-            correctAnswer: bubble.correctAnswer,
+            correctAnswer: normalizeCorrectAnswer(bubble),
             explanation: bubble.explanation,
           }))
         });
