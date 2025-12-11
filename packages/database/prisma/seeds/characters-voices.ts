@@ -14,7 +14,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Replace with your actual organization ID
-const ORGANIZATION_ID = 'c428421a-c1ab-48da-998e-18bc76d4852a';
+const ORGANIZATION_ID = '044ed6c6-ac55-4653-848b-cd24383f75fe';
 
 /**
  * Voices to seed
@@ -59,18 +59,34 @@ export const voicesToSeed = [
     organizationId: ORGANIZATION_ID,
   },
   {
-    name: 'Yash',
-    elevenlabsVoiceId: 'iZZ7Mcbyhw8wjwQ3HhEy',
+    name: 'ManBlueShirt',
+    elevenlabsVoiceId: '6X2abQeGWGz0rTnIhZjq',
     description: null,
-    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1764933999/ElevenLabs_2025-12-05T11_26_19_Yash_ivc_sp100_s50_sb75_v3_opd4fg.mp3',
+    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1765437726/ElevenLabs_2025-12-11T07_21_49_ManBlueShirt_ivc_sp100_s50_sb75_v3_jpwcon.mp3',
     gender: 'male',
     organizationId: ORGANIZATION_ID,
   },
   {
-    name: 'Mumpy',
-    elevenlabsVoiceId: 'aeqiqPUmY3kTgXiu21cB',
+    name: 'WomanBlackShirtGrayPants',
+    elevenlabsVoiceId: 'xJBEZqUdulR1kJ9jha2k',
     description: null,
-    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1764933810/ElevenLabs_2025-12-05T11_22_40_Mumpy_ivc_sp100_s50_sb75_v3_vzzrib.mp3',
+    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1765437648/ElevenLabs_2025-12-11T07_20_31_WomanBlackShirtGrayPants_ivc_sp100_s50_sb75_v3_cfddue.mp3',
+    gender: 'female',
+    organizationId: ORGANIZATION_ID,
+  },
+  {
+    name: 'WomanColourfulBlouseBlackPants',
+    elevenlabsVoiceId: 'oo10XjOXVR5vrPJmQSxz',
+    description: null,
+    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1765437582/ElevenLabs_2025-12-11T07_19_19_WomanColourfulBlouseBlackPants_ivc_sp100_s50_sb75_v3_kocyhn.mp3',
+    gender: 'female',
+    organizationId: ORGANIZATION_ID,
+  },
+  {
+    name: 'WomanNavySuitSleeveless',
+    elevenlabsVoiceId: 'q5Rz8tJTHBrg4WosvbF3',
+    description: null,
+    previewAudioUrl: 'https://res.cloudinary.com/dphekriyz/video/upload/v1765437495/ElevenLabs_2025-12-11T07_17_24_WomanNavySuitSleeveless_ivc_sp100_s50_sb75_v3_nmhqgs.mp3',
     gender: 'female',
     organizationId: ORGANIZATION_ID,
   },
