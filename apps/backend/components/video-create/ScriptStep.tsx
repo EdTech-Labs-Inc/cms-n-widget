@@ -9,15 +9,36 @@ import {
   AlertCircle,
   X,
   Trash2,
+  Languages,
+  RefreshCw,
 } from 'lucide-react';
 
 type ScriptSource = 'prompt' | 'script_file' | 'content_file' | null;
+type Language = 'ENGLISH' | 'MARATHI' | 'HINDI' | 'BENGALI' | 'GUJARATI';
+
+const LANGUAGE_LABELS: Record<Language, string> = {
+  ENGLISH: 'English',
+  MARATHI: 'Marathi',
+  HINDI: 'Hindi',
+  BENGALI: 'Bengali',
+  GUJARATI: 'Gujarati',
+};
+
+interface TranslationData {
+  script: string;
+  title: string;
+}
 
 interface ScriptStepProps {
   script: string;
   scriptSource: ScriptSource;
   onScriptChange: (script: string, source: ScriptSource) => void;
   orgSlug: string;
+  // Multi-language support
+  title: string;
+  selectedLanguages: Language[];
+  translations: Record<string, TranslationData>;
+  onTranslationsChange: (translations: Record<string, TranslationData>) => void;
 }
 
 interface AttachedFile {
@@ -31,6 +52,10 @@ export function ScriptStep({
   scriptSource,
   onScriptChange,
   orgSlug,
+  title,
+  selectedLanguages,
+  translations,
+  onTranslationsChange,
 }: ScriptStepProps) {
   const [prompt, setPrompt] = useState('');
   const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
@@ -39,8 +64,79 @@ export function ScriptStep({
   const [isImproving, setIsImproving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Language tabs state
+  const [activeLanguage, setActiveLanguage] = useState<Language>('ENGLISH');
+  const [isTranslating, setIsTranslating] = useState(false);
+
   const scriptFileInputRef = useRef<HTMLInputElement>(null);
   const contentFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check if we need to show language tabs
+  const showLanguageTabs = script && selectedLanguages.length > 1;
+  const nonEnglishLanguages = selectedLanguages.filter((l) => l !== 'ENGLISH');
+
+  // Handle translation fetch
+  const handleTranslate = useCallback(async (targetLanguage: Language) => {
+    if (targetLanguage === 'ENGLISH' || !script || !title) return;
+
+    setIsTranslating(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/org/${orgSlug}/video/translate-script`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          script,
+          title,
+          targetLanguage,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to translate');
+      }
+
+      // Update translations
+      onTranslationsChange({
+        ...translations,
+        [targetLanguage]: {
+          script: result.data.translatedScript,
+          title: result.data.translatedTitle,
+        },
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to translate');
+    } finally {
+      setIsTranslating(false);
+    }
+  }, [script, title, orgSlug, translations, onTranslationsChange]);
+
+  // Handle translation edit
+  const handleTranslationEdit = useCallback((language: Language, newScript: string) => {
+    const currentTranslation = translations[language] || { script: '', title: '' };
+    onTranslationsChange({
+      ...translations,
+      [language]: {
+        ...currentTranslation,
+        script: newScript,
+      },
+    });
+  }, [translations, onTranslationsChange]);
+
+  // Handle title translation edit
+  const handleTitleTranslationEdit = useCallback((language: Language, newTitle: string) => {
+    const currentTranslation = translations[language] || { script: '', title: '' };
+    onTranslationsChange({
+      ...translations,
+      [language]: {
+        ...currentTranslation,
+        title: newTitle,
+      },
+    });
+  }, [translations, onTranslationsChange]);
 
   // Extract text from a file (used internally)
   const extractTextFromFile = useCallback(
@@ -492,16 +588,131 @@ export function ScriptStep({
             </button>
           </div>
 
-          <textarea
-            value={script}
-            onChange={(e) => onScriptChange(e.target.value, scriptSource)}
-            rows={8}
-            className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-blue-accent/50 font-mono text-sm leading-relaxed resize-y"
-          />
+          {/* Language Tabs */}
+          {showLanguageTabs && (
+            <div className="flex items-center gap-1 p-1 bg-white-5 rounded-lg">
+              {selectedLanguages.map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => setActiveLanguage(lang)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    activeLanguage === lang
+                      ? 'bg-white-10 text-text-primary'
+                      : 'text-text-muted hover:text-text-primary hover:bg-white-5'
+                  }`}
+                >
+                  <Languages className="w-4 h-4" />
+                  {LANGUAGE_LABELS[lang]}
+                  {lang !== 'ENGLISH' && translations[lang]?.script && (
+                    <span className="w-2 h-2 rounded-full bg-green-500" title="Translated" />
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
 
-          <div className="text-xs text-text-muted text-right">
-            {script.length} characters
-          </div>
+          {/* English Script Editor (default view or when English tab active) */}
+          {(!showLanguageTabs || activeLanguage === 'ENGLISH') && (
+            <>
+              <textarea
+                value={script}
+                onChange={(e) => onScriptChange(e.target.value, scriptSource)}
+                rows={8}
+                className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-blue-accent/50 font-mono text-sm leading-relaxed resize-y"
+              />
+
+              <div className="text-xs text-text-muted text-right">
+                {script.length} characters
+              </div>
+            </>
+          )}
+
+          {/* Translation Editor (non-English tabs) */}
+          {showLanguageTabs && activeLanguage !== 'ENGLISH' && (
+            <div className="space-y-4">
+              {/* Translated Title */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-text-primary">
+                  {LANGUAGE_LABELS[activeLanguage]} Title
+                </label>
+                {translations[activeLanguage]?.title ? (
+                  <input
+                    type="text"
+                    value={translations[activeLanguage]?.title || ''}
+                    onChange={(e) => handleTitleTranslationEdit(activeLanguage, e.target.value)}
+                    className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-blue-accent/50 text-sm"
+                    placeholder={`${LANGUAGE_LABELS[activeLanguage]} title will appear here...`}
+                  />
+                ) : (
+                  <div className="p-3 bg-white-5 border border-white-10 rounded-lg text-text-muted text-sm">
+                    Click &quot;Translate&quot; to generate {LANGUAGE_LABELS[activeLanguage]} title
+                  </div>
+                )}
+              </div>
+
+              {/* Translated Script */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-text-primary">
+                    {LANGUAGE_LABELS[activeLanguage]} Script
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => handleTranslate(activeLanguage)}
+                    disabled={isTranslating || !title}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-accent hover:bg-blue-accent/80 disabled:bg-blue-accent/30 disabled:cursor-not-allowed text-white rounded-lg font-medium text-sm transition-colors"
+                  >
+                    {isTranslating ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Translating...
+                      </>
+                    ) : translations[activeLanguage]?.script ? (
+                      <>
+                        <RefreshCw className="w-4 h-4" />
+                        Re-translate
+                      </>
+                    ) : (
+                      <>
+                        <Languages className="w-4 h-4" />
+                        Translate
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {translations[activeLanguage]?.script ? (
+                  <>
+                    <textarea
+                      value={translations[activeLanguage]?.script || ''}
+                      onChange={(e) => handleTranslationEdit(activeLanguage, e.target.value)}
+                      rows={8}
+                      className="w-full p-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-blue-accent/50 font-mono text-sm leading-relaxed resize-y"
+                    />
+                    <div className="text-xs text-text-muted text-right">
+                      {translations[activeLanguage]?.script?.length || 0} characters
+                    </div>
+                  </>
+                ) : (
+                  <div className="p-6 bg-white-5 border border-white-10 rounded-lg text-center">
+                    <Languages className="w-8 h-8 text-text-muted mx-auto mb-2" />
+                    <p className="text-sm text-text-muted">
+                      {!title
+                        ? 'Add a title above to enable translation'
+                        : `Click "Translate" to generate ${LANGUAGE_LABELS[activeLanguage]} version`
+                      }
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Info note */}
+              <p className="text-xs text-text-muted">
+                You can edit the translation before generating the video. Changes are saved automatically.
+              </p>
+            </div>
+          )}
 
           {/* AI Improvement Section */}
           <div className="border-t border-white-20 pt-4">

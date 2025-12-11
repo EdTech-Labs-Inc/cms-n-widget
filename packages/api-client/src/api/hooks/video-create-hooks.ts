@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { backgroundMusicApi, videoBumpersApi, captionStylesApi, standaloneVideoApi } from '../client';
-import type { CreateStandaloneVideoRequest, CreateStandaloneVideoResponse } from '../client';
+import type { CreateStandaloneVideoRequest, CreateStandaloneVideoResponse, TranslateScriptRequest, TranslateScriptResponse } from '../client';
 import type { BackgroundMusic, VideoBumper, CaptionStyle, StandaloneVideo } from '../../api.types';
 
 /**
@@ -87,5 +87,17 @@ export function useStandaloneVideos(orgSlug: string) {
     queryFn: () => standaloneVideoApi.getAll(orgSlug),
     enabled: !!orgSlug,
     staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+}
+
+/**
+ * Hook to translate a video script to another language
+ *
+ * @param orgSlug - Organization slug
+ * @returns React Query mutation for translating a script
+ */
+export function useTranslateScript(orgSlug: string) {
+  return useMutation<TranslateScriptResponse, Error, TranslateScriptRequest>({
+    mutationFn: (payload) => standaloneVideoApi.translateScript(orgSlug, payload),
   });
 }

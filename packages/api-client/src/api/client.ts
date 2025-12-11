@@ -21,6 +21,7 @@ import type {
   VideoOutputTag,
   QuizOutputTag,
   InteractivePodcastOutputTag,
+  Language,
 } from '../api.types';
 
 export const apiClient = axios.create({
@@ -586,6 +587,11 @@ export const captionStylesApi = {
 
 // Standalone Video Create API - Organization-scoped
 export interface CreateStandaloneVideoRequest {
+  // Multi-language support
+  title: string;
+  languages: Language[];
+  translations?: Record<string, { script: string; title: string }>; // Per-language overrides (user-edited)
+  // Content
   script: string;
   sourceType: 'prompt' | 'script_file' | 'content_file';
   characterId: string;
@@ -606,9 +612,25 @@ export interface CreateStandaloneVideoRequest {
 }
 
 export interface CreateStandaloneVideoResponse {
-  id: string;
-  status: string;
-  jobId: string;
+  videos: Array<{
+    id: string;
+    language: Language;
+    status: string;
+    jobId: string;
+  }>;
+  batchId: string | null;
+}
+
+// Translation preview API
+export interface TranslateScriptRequest {
+  script: string;
+  title: string;
+  targetLanguage: Language;
+}
+
+export interface TranslateScriptResponse {
+  translatedScript: string;
+  translatedTitle: string;
 }
 
 export const standaloneVideoApi = {
@@ -620,6 +642,12 @@ export const standaloneVideoApi = {
   create: async (orgSlug: string, payload: CreateStandaloneVideoRequest): Promise<CreateStandaloneVideoResponse> => {
     const { data } = await apiClient.post<ApiResponse<CreateStandaloneVideoResponse>>(`/api/org/${orgSlug}/video/create`, payload);
     if (!data.data) throw new Error('Failed to create video');
+    return data.data;
+  },
+
+  translateScript: async (orgSlug: string, payload: TranslateScriptRequest): Promise<TranslateScriptResponse> => {
+    const { data } = await apiClient.post<ApiResponse<TranslateScriptResponse>>(`/api/org/${orgSlug}/video/translate-script`, payload);
+    if (!data.data) throw new Error('Failed to translate script');
     return data.data;
   },
 };

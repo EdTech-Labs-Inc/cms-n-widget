@@ -20,8 +20,27 @@ import { useToast } from '@/components/ui/ToastContainer';
 import { usePlatformMode } from '@/lib/context/platform-mode-context';
 
 type ScriptSource = 'prompt' | 'script_file' | 'content_file' | null;
+type Language = 'ENGLISH' | 'MARATHI' | 'HINDI' | 'BENGALI' | 'GUJARATI';
+
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'ENGLISH', label: 'English' },
+  { code: 'HINDI', label: 'Hindi' },
+  { code: 'MARATHI', label: 'Marathi' },
+  { code: 'BENGALI', label: 'Bengali' },
+  { code: 'GUJARATI', label: 'Gujarati' },
+];
+
+interface TranslationData {
+  script: string;
+  title: string;
+}
 
 interface VideoCreateDraft {
+  // Multi-language support
+  title: string;
+  selectedLanguages: Language[];
+  translations: Record<string, TranslationData>;
+  // Content
   script: string;
   scriptSource: ScriptSource;
   characterGroupId: string | null;
@@ -54,6 +73,9 @@ interface VideoCreateDraft {
 }
 
 const DEFAULT_DRAFT: VideoCreateDraft = {
+  title: '',
+  selectedLanguages: ['ENGLISH'],
+  translations: {},
   script: '',
   scriptSource: null,
   characterGroupId: null,
@@ -268,9 +290,50 @@ export default function VideoCreatePage() {
     []
   );
 
+  // Handle title change
+  const handleTitleChange = useCallback((title: string) => {
+    setDraft((prev) => ({ ...prev, title }));
+  }, []);
+
+  // Handle language toggle
+  const handleLanguageToggle = useCallback((langCode: Language) => {
+    setDraft((prev) => {
+      const isSelected = prev.selectedLanguages.includes(langCode);
+      // Don't allow deselecting the last language
+      if (isSelected && prev.selectedLanguages.length === 1) {
+        return prev;
+      }
+      const newLanguages = isSelected
+        ? prev.selectedLanguages.filter((l) => l !== langCode)
+        : [...prev.selectedLanguages, langCode];
+      // Clear translations for deselected languages
+      const newTranslations = { ...prev.translations };
+      if (isSelected) {
+        delete newTranslations[langCode];
+      }
+      return { ...prev, selectedLanguages: newLanguages, translations: newTranslations };
+    });
+  }, []);
+
+  // Handle translations change (from ScriptStep)
+  const handleTranslationsChange = useCallback(
+    (translations: Record<string, TranslationData>) => {
+      setDraft((prev) => ({ ...prev, translations }));
+    },
+    []
+  );
+
   // Handle generate
   const handleGenerate = useCallback(async () => {
     // Validate required fields
+    if (!draft.title.trim()) {
+      toast.error('Missing Title', 'Please add a title before generating');
+      return;
+    }
+    if (draft.selectedLanguages.length === 0) {
+      toast.error('Missing Language', 'Please select at least one language');
+      return;
+    }
     if (!draft.script.trim()) {
       toast.error('Missing Script', 'Please add a script before generating');
       return;
@@ -289,6 +352,9 @@ export default function VideoCreatePage() {
 
     try {
       await createVideoMutation.mutateAsync({
+        title: draft.title,
+        languages: draft.selectedLanguages,
+        translations: Object.keys(draft.translations).length > 0 ? draft.translations : undefined,
         script: draft.script,
         sourceType: draft.scriptSource || 'prompt',
         characterId: draft.characterId,
@@ -357,6 +423,59 @@ export default function VideoCreatePage() {
         <div className="flex gap-6">
           {/* Left Column - Steps (70%) */}
           <div className="w-[70%] space-y-3">
+            {/* Title & Language Section */}
+            <div className="bg-white-5 border border-white-10 rounded-xl p-6 space-y-6">
+              {/* Title Input */}
+              <div>
+                <label className="block text-sm font-medium text-text-primary mb-2">
+                  Video Title <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={draft.title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  placeholder="Enter a title for your video..."
+                  className="w-full px-4 py-3 bg-navy-dark border border-white-20 rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold/50"
+                />
+              </div>
+
+              {/* Language Selection */}
+              <div>
+                <label className="block text-sm font-medium text-text-primary mb-2">
+                  Languages <span className="text-red-400">*</span>
+                </label>
+                <p className="text-xs text-text-muted mb-3">
+                  Select the languages for your video. A separate video will be created for each language.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {LANGUAGES.map((lang) => {
+                    const isSelected = draft.selectedLanguages.includes(lang.code);
+                    const isOnlySelected = isSelected && draft.selectedLanguages.length === 1;
+                    return (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        onClick={() => handleLanguageToggle(lang.code)}
+                        disabled={isOnlySelected}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          isSelected
+                            ? 'bg-gold text-navy-dark'
+                            : 'bg-white-10 text-text-primary hover:bg-white-20'
+                        } ${isOnlySelected ? 'opacity-75 cursor-not-allowed' : ''}`}
+                      >
+                        {lang.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                {draft.selectedLanguages.length > 1 && (
+                  <p className="text-xs text-gold mt-2">
+                    {draft.selectedLanguages.length} videos will be created
+                  </p>
+                )}
+              </div>
+            </div>
+
             {/* Step 1: Script */}
             <CollapsibleStep
               stepNumber={1}
@@ -371,6 +490,10 @@ export default function VideoCreatePage() {
                 scriptSource={draft.scriptSource}
                 onScriptChange={handleScriptChange}
                 orgSlug={orgSlug}
+                title={draft.title}
+                selectedLanguages={draft.selectedLanguages}
+                translations={draft.translations}
+                onTranslationsChange={handleTranslationsChange}
               />
             </CollapsibleStep>
 

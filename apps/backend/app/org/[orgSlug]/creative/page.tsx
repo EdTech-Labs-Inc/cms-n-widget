@@ -4,11 +4,19 @@ import { use } from 'react';
 import Link from 'next/link';
 import { useStandaloneVideos } from '@repo/api-client';
 import { PortraitVideoPlayer } from '@/components/video/PortraitVideoPlayer';
-import { Loader2, Video, Plus, Clock, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
+import { Loader2, Video, Plus, Clock, AlertCircle, CheckCircle, Sparkles, Languages } from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ orgSlug: string }>;
 }
+
+const LANGUAGE_LABELS: Record<string, string> = {
+  ENGLISH: 'EN',
+  MARATHI: 'MR',
+  HINDI: 'HI',
+  BENGALI: 'BN',
+  GUJARATI: 'GU',
+};
 
 function getStatusBadge(status: string) {
   switch (status) {
@@ -190,7 +198,15 @@ export default function CreativePlatformPage({ params }: PageProps) {
                   <h3 className="font-medium text-text-primary line-clamp-1">
                     {video.title || 'Untitled Video'}
                   </h3>
-                  {getStatusBadge(video.status)}
+                  <div className="flex items-center gap-2 shrink-0">
+                    {video.language && video.language !== 'ENGLISH' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400">
+                        <Languages className="w-3 h-3" />
+                        {LANGUAGE_LABELS[video.language] || video.language}
+                      </span>
+                    )}
+                    {getStatusBadge(video.status)}
+                  </div>
                 </div>
                 <p className="text-text-muted text-sm">
                   {formatDate(video.createdAt)}
