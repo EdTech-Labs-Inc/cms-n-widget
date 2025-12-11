@@ -1,10 +1,18 @@
 /* Import shared utilities */
 @import './utilities.css';
 
+/* JioType Variable Font */
+@font-face {
+  font-family: 'JioType';
+  src: url('/assets/JioType-Variable.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
-  /* Professional Gamified Font System */
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* JioBlackRock Font System */
+  --font-primary: 'JioType', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'JioType', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
 
   font-family: var(--font-primary);
