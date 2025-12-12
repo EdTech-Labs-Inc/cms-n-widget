@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/config/database';
+import { config } from '@/lib/config/constants';
 import { queueService } from './core/queue.service';
 import { aiTaggingService } from './ai-tagging.service';
 import { logger } from '@repo/logging';
@@ -154,6 +155,7 @@ export class SubmissionService {
               enableMagicZooms: true,
               enableMagicBrolls: true,
               magicBrollsPercentage: 40,
+              environment: config.appEnvironment,
             },
           });
 

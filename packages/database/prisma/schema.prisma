@@ -288,9 +288,10 @@ model StandaloneVideo {
   duration     Int?
 
   // Meta
-  error     String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  error       String?  @db.Text
+  environment String?  // Environment where video was created (e.g., 'production', 'development')
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([organizationId])
   @@index([heygenVideoId])
@@ -531,9 +532,10 @@ model VideoOutput {
   // Relations
   tags VideoOutputTag[]
 
-  error     String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  error       String?  @db.Text
+  environment String?  // Environment where video was created (e.g., 'production', 'development')
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("video_outputs")
 

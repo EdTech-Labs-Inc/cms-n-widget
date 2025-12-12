@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/config/database';
+import { config } from '@/lib/config/constants';
 import { submagicService } from '@/lib/services/external/submagic.service';
 import { z } from 'zod';
 
@@ -95,6 +96,7 @@ export async function POST(request: NextRequest) {
         magicBrollsPercentage,
         // Mark as processing (we're skipping HeyGen)
         status: 'PROCESSING',
+        environment: config.appEnvironment,
       },
       include: {
         captionStyle: true,

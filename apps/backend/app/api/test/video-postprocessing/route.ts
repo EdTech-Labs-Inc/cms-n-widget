@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@repo/logging';
 import { prisma } from '@repo/database';
+import { config } from '@/lib/config/constants';
 import { queueService } from '@/lib/services/core/queue.service';
 
 /**
@@ -123,6 +124,7 @@ export async function POST(request: NextRequest) {
         endBumperDuration: endBumper?.duration,
         backgroundMusicId,
         backgroundMusicVolume: music?.volume ?? 0.15,
+        environment: config.appEnvironment,
       },
     });
 

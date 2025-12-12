@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/config/database';
+import { config } from '@/lib/config/constants';
 import { createClient } from '@/lib/supabase/server';
 import { getOrgFromSlug, validateOrgAccess } from '@/lib/context/org-context';
 import { queueService } from '@/lib/services/core/queue.service';
@@ -290,6 +291,7 @@ export async function POST(
           startBumperDuration: data.startBumperDuration || null,
           endBumperId: data.endBumperId || null,
           endBumperDuration: data.endBumperDuration || null,
+          environment: config.appEnvironment,
         },
       });
 

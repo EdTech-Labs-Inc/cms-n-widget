@@ -5,6 +5,7 @@ export const config = {
   // Server
   port: process.env.PORT || 4000,
   nodeEnv: process.env.NODE_ENV || "development",
+  appEnvironment: process.env.APP_ENVIRONMENT || "development", // For webhook filtering (e.g., 'production', 'development', 'ngrok-test')
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000",
 
   // Database

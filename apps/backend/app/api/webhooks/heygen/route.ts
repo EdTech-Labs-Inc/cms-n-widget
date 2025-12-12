@@ -7,6 +7,23 @@ import { submagicService } from '@/lib/services/external/submagic.service';
 import { prisma } from '@/lib/config/database';
 
 /**
+ * Check if this environment should process a video based on its environment field.
+ * - If video has no environment set (legacy), only production processes it
+ * - Otherwise, only process if environments match
+ */
+function shouldProcessVideo(videoEnvironment: string | null): boolean {
+  const currentEnv = config.appEnvironment;
+
+  // If video has no environment set (legacy), only production processes it
+  if (!videoEnvironment) {
+    return currentEnv === 'production';
+  }
+
+  // Otherwise, only process if environments match
+  return videoEnvironment === currentEnv;
+}
+
+/**
  * Handle successful video generation for VideoOutput (submission-based)
  * Uploads video to Submagic for AI editing (captions, zooms, B-rolls)
  */
@@ -27,10 +44,17 @@ async function handleVideoOutputSuccess(video_id: string, url: string): Promise<
     return false; // Not a VideoOutput, try StandaloneVideo
   }
 
+  // Check if this environment should process this video
+  if (!shouldProcessVideo(videoOutput.environment)) {
+    console.log(`⏭️  Skipping VideoOutput ${videoOutput.id} - belongs to "${videoOutput.environment || 'null'}", we are "${config.appEnvironment}"`);
+    return true; // Return true to indicate we found it but shouldn't process it here
+  }
+
   console.log(`✅ Found VideoOutput ${videoOutput.id}`);
   console.log(`   - Title: "${videoOutput.title || 'Untitled'}"`);
   console.log(`   - Submission ID: ${videoOutput.submissionId}`);
   console.log(`   - Language: ${videoOutput.submission.language}`);
+  console.log(`   - Environment: ${videoOutput.environment || 'null'} (current: ${config.appEnvironment})`);
 
   console.log(`\n📤 Uploading video to Submagic for AI editing...`);
 
@@ -95,11 +119,18 @@ async function handleStandaloneVideoSuccess(video_id: string, url: string): Prom
     return false; // Not a StandaloneVideo either
   }
 
+  // Check if this environment should process this video
+  if (!shouldProcessVideo(standaloneVideo.environment)) {
+    console.log(`⏭️  Skipping StandaloneVideo ${standaloneVideo.id} - belongs to "${standaloneVideo.environment || 'null'}", we are "${config.appEnvironment}"`);
+    return true; // Return true to indicate we found it but shouldn't process it here
+  }
+
   console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}`);
   console.log(`   - Title: "${standaloneVideo.title || 'Untitled'}"`);
   console.log(`   - Caption Style: ${standaloneVideo.captionStyle?.name || 'None'}`);
   console.log(`   - Magic Zooms: ${standaloneVideo.enableMagicZooms}`);
   console.log(`   - Magic B-Rolls: ${standaloneVideo.enableMagicBrolls} (${standaloneVideo.magicBrollsPercentage}%)`);
+  console.log(`   - Environment: ${standaloneVideo.environment || 'null'} (current: ${config.appEnvironment})`);
 
   console.log(`\n📤 Uploading video to Submagic for AI editing...`);
 
@@ -248,31 +279,48 @@ async function handleVideoFailure(eventData: {
     console.log(`🔗 Callback ID: ${callback_id}`);
   }
 
-  // Try VideoOutput first
-  const videoOutputHandled = await videoService.handleVideoFailure(video_id, msg);
+  // Try VideoOutput first - need to check environment
+  const videoOutput = await prisma.videoOutput.findFirst({
+    where: {
+      heygenVideoId: video_id,
+      status: 'PROCESSING',
+    },
+  });
 
-  // If not a VideoOutput, try StandaloneVideo
-  if (!videoOutputHandled) {
-    console.log(`🔍 Checking for StandaloneVideo...`);
-    const standaloneVideo = await prisma.standaloneVideo.findFirst({
-      where: {
-        heygenVideoId: video_id,
-        status: 'PROCESSING',
+  if (videoOutput) {
+    if (!shouldProcessVideo(videoOutput.environment)) {
+      console.log(`⏭️  Skipping VideoOutput failure - belongs to "${videoOutput.environment || 'null'}", we are "${config.appEnvironment}"`);
+      return;
+    }
+    // Let the service handle the actual failure update
+    await videoService.handleVideoFailure(video_id, msg);
+    return;
+  }
+
+  // Try StandaloneVideo next
+  console.log(`🔍 Checking for StandaloneVideo...`);
+  const standaloneVideo = await prisma.standaloneVideo.findFirst({
+    where: {
+      heygenVideoId: video_id,
+      status: 'PROCESSING',
+    },
+  });
+
+  if (standaloneVideo) {
+    if (!shouldProcessVideo(standaloneVideo.environment)) {
+      console.log(`⏭️  Skipping StandaloneVideo failure - belongs to "${standaloneVideo.environment || 'null'}", we are "${config.appEnvironment}"`);
+      return;
+    }
+    console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}, marking as FAILED`);
+    await prisma.standaloneVideo.update({
+      where: { id: standaloneVideo.id },
+      data: {
+        status: 'FAILED',
+        error: msg,
       },
     });
-
-    if (standaloneVideo) {
-      console.log(`✅ Found StandaloneVideo ${standaloneVideo.id}, marking as FAILED`);
-      await prisma.standaloneVideo.update({
-        where: { id: standaloneVideo.id },
-        data: {
-          status: 'FAILED',
-          error: msg,
-        },
-      });
-    } else {
-      console.error(`❌ No VideoOutput or StandaloneVideo found for failed HeyGen video ${video_id}`);
-    }
+  } else {
+    console.error(`❌ No VideoOutput or StandaloneVideo found for failed HeyGen video ${video_id}`);
   }
 }
 

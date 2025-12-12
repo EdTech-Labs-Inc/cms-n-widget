@@ -1,6 +1,7 @@
 import { agentaOpenAIService } from '../external/agenta-openai.service';
 import { heygenService } from '../external/heygen.service';
 import { prisma } from '../../config/database';
+import { config } from '../../config/constants';
 import { VideoScriptsSchema } from '@repo/types';
 import { logger } from '@repo/logging';
 import { getMaxVideosPerSubmission, getVideoCountForPrompt } from '@repo/config/limits';
@@ -105,6 +106,7 @@ export class VideoGeneratorService {
               status: 'PROCESSING',
               title,
               script,
+              environment: config.appEnvironment,
             },
           });
         }
